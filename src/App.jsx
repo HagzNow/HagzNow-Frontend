@@ -1,11 +1,10 @@
 import "./App.css";
-import Login from "./pages/Login/Login";
 
 function App() {
   return (
-    <>
-      <Login />
-    </>
+    <div className="app">
+      {/* App component can be used for layout wrapper if needed */}
+    </div>
   );
 }
 
