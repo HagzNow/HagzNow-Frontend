@@ -1,8 +1,81 @@
+import { useFormik } from "formik";
 import React from "react";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
+import { object, string, ref } from "yup";
+import axios from "axios";
+// import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const passwordRegx = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/;
+  const phoneRegx = /^01[0125][0-9]{8}$/;
+  //   const naviagte = useNavigate();
+
+  const validationSchema = object({
+    fName: string("الاسم الاول يجب أن يكون نصًّا")
+      .required("الاسم الاول مطلوب")
+      .min(3, "الاسم الاول يجب ألا يقل عن 3 أحرف")
+      .max(20, "الاسم الاول  يجب ألا يزيد عن 20 حرفًا"),
+
+    lName: string("الاسم الاخير يجب أن يكون نصًّا")
+      .required("الاسم الاخير مطلوب")
+      .min(3, "الاسم الاخير يجب ألا يقل عن 3 أحرف")
+      .max(20, "الاسم الاخير  يجب ألا يزيد عن 20 حرفًا"),
+
+    email: string("البريد الإلكتروني يجب أن يكون نصًّا")
+      .required("البريد الإلكتروني مطلوب")
+      .email("يجب إدخال بريد إلكتروني صالح"),
+    role: string().required("يجب اختيار الدور (مالك أو لاعب)"),
+    password: string()
+      .required("كلمة المرور مطلوبة")
+      .matches(
+        passwordRegx,
+        "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل، وحرف صغير واحد على الأقل، ورقم واحد على الأقل."
+      ),
+    rePassword: string()
+      .required("تأكيد كلمة المرور مطلوب")
+      .matches(passwordRegx, "صيغة كلمة المرور غير صحيحة")
+      .oneOf([ref("password")], "كلمة المرور غير متطابقة"),
+
+    phone: string()
+      .required("رقم الهاتف مطلوب")
+      .matches(phoneRegx, "يجب إدخال رقم هاتف مصري صالح"),
+  });
+
+  async function sendDataToRegister(values) {
+    try {
+      const { rePassword: _, ...userData } = values;
+
+      const option = {
+        url: "http://localhost:3000/auth/register",
+        method: "POST",
+        data: userData,
+      };
+
+      const { data } = await axios.request(option);
+      localStorage.setItem("token", data.token);
+      //   setTimeout(() => {
+      //     naviagte("/home");
+      //   }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      fName: "",
+      lName: "",
+      role: "user",
+      email: "",
+      phone: "",
+      password: "",
+      rePassword: "",
+    },
+    onSubmit: sendDataToRegister,
+    validationSchema,
+  });
+
   return (
     <>
       <section className="container text-center py-5">
@@ -14,7 +87,7 @@ export default function Register() {
           </p>
         </div>
 
-        <form action="" className=" mt-5">
+        <form action="" className=" mt-5" onSubmit={formik.handleSubmit}>
           <div className=" space-x-3 space-y-6 bg-secondColor w-1/2 m-auto p-7 rounded-2xl">
             <div className="flex gap-3 justify-center">
               <div>
@@ -22,12 +95,18 @@ export default function Register() {
                   type="radio"
                   id="owner"
                   name="role"
-                  value="A"
-                  class="hidden peer/option1"
+                  value="owner"
+                  className="hidden peer/option1"
+                  onChange={formik.handleChange}
+                  checked={formik.values.role === "owner"}
                 />
                 <label
-                  for="owner"
-                  className="btn bg-secondColor text-2xl text-black"
+                  htmlFor="owner"
+                  className={`btn text-2xl ${
+                    formik.values.role === "owner"
+                      ? "bg-mainColor text-white"
+                      : "bg-secondColor text-black"
+                  }`}
                 >
                   مالك
                 </label>
@@ -36,13 +115,21 @@ export default function Register() {
               <div>
                 <input
                   type="radio"
-                  id="player"
+                  id="user"
                   name="role"
-                  value="B"
+                  value="user"
                   className="hidden peer/option2"
-                  checked
+                  onChange={formik.handleChange}
+                  checked={formik.values.role === "user"}
                 />
-                <label for="player" class="btn bg-mainColor text-2xl ">
+                <label
+                  htmlFor="user"
+                  className={`btn text-2xl ${
+                    formik.values.role === "user"
+                      ? "bg-mainColor text-white"
+                      : "bg-secondColor text-black"
+                  }`}
+                >
                   لاعب
                 </label>
               </div>
@@ -55,10 +142,19 @@ export default function Register() {
               <input
                 type="text"
                 placeholder="أدخل اسمك الأول"
-                name="fristName"
+                name="fName"
+                value={formik.values.fName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
               />
             </div>
+            {formik.errors.fName && formik.touched.fName && (
+              <p className=" text-red-500 font-semibold">
+                {formik.errors.fName}
+              </p>
+            )}
+
             <div className="flex flex-col space-y-1.5 mt-5">
               <label htmlFor="" className=" text-start">
                 الاسم الاخير
@@ -66,10 +162,18 @@ export default function Register() {
               <input
                 type="text"
                 placeholder="أدخل اسمك الاخير"
-                name="fristLast"
+                name="lName"
+                value={formik.values.lName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
               />
             </div>
+            {formik.errors.lName && formik.touched.lName && (
+              <p className=" text-red-500 font-semibold">
+                {formik.errors.lName}
+              </p>
+            )}
             <div className="flex flex-col space-y-1.5 mt-5">
               <label htmlFor="" className=" text-start">
                 بريدك الإلكتروني
@@ -78,9 +182,17 @@ export default function Register() {
                 type="text"
                 placeholder="أدخل بريدك الإلكتروني"
                 name="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
               />
             </div>
+            {formik.errors.email && formik.touched.email && (
+              <p className=" text-red-500 font-semibold">
+                {formik.errors.email}
+              </p>
+            )}
             <div className="flex flex-col space-y-1.5 mt-5">
               <label htmlFor="" className=" text-start">
                 رقم هاتفك
@@ -89,31 +201,55 @@ export default function Register() {
                 type="text"
                 placeholder="أدخل رقم هاتفك"
                 name="phone"
+                value={formik.values.phone}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
               />
             </div>
+            {formik.errors.phone && formik.touched.phone && (
+              <p className=" text-red-500 font-semibold">
+                {formik.errors.phone}
+              </p>
+            )}
             <div className="flex flex-col space-y-1.5 mt-5">
               <label htmlFor="" className=" text-start">
                 كلمة المرور
               </label>
               <input
-                type="text"
+                type="password"
                 placeholder="أأدخل كلمة المرور"
                 name="password"
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
                 className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
               />
             </div>
+            {formik.errors.password && formik.touched.password && (
+              <p className=" text-red-500 font-semibold">
+                {formik.errors.password}
+              </p>
+            )}
             <div className="flex flex-col space-y-1.5 mt-5">
               <label htmlFor="" className=" text-start">
                 تاكيد كلمة المرور
               </label>
               <input
-                type="text"
+                type="password"
                 placeholder="أعد إدخال كلمة المرور"
-                name="phone"
+                name="rePassword"
+                value={formik.values.rePassword}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
                 className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
               />
             </div>
+            {formik.errors.rePassword && formik.touched.rePassword && (
+              <p className=" text-red-500 font-semibold">
+                {formik.errors.rePassword}
+              </p>
+            )}
             <button type="submit" className="btn bg-mainColor w-3/4">
               إنشاء حساب
             </button>
