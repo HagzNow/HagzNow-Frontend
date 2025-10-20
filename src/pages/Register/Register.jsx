@@ -3,18 +3,19 @@ import React from "react";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
 import { object, string, ref } from "yup";
+import axios from "axios";
 
 export default function Register() {
-  const passwordRegx = /^[A-Z][a-z0-9]{5,}$/;
+  const passwordRegx = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/;
   const phoneRegx = /^01[0125][0-9]{8}$/;
 
   const validationSchema = object({
-    firstName: string("الاسم الاول يجب أن يكون نصًّا")
+    fName: string("الاسم الاول يجب أن يكون نصًّا")
       .required("الاسم الاول مطلوب")
       .min(3, "الاسم الاول يجب ألا يقل عن 3 أحرف")
       .max(20, "الاسم الاول  يجب ألا يزيد عن 20 حرفًا"),
 
-    lastName: string("الاسم الاخير يجب أن يكون نصًّا")
+    lName: string("الاسم الاخير يجب أن يكون نصًّا")
       .required("الاسم الاخير مطلوب")
       .min(3, "الاسم الاخير يجب ألا يقل عن 3 أحرف")
       .max(20, "الاسم الاخير  يجب ألا يزيد عن 20 حرفًا"),
@@ -27,7 +28,7 @@ export default function Register() {
       .required("كلمة المرور مطلوبة")
       .matches(
         passwordRegx,
-        "يجب أن تبدأ كلمة المرور بحرف كبير متبوع بـ 5 أحرف أو أكثر"
+        "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل، وحرف صغير واحد على الأقل، ورقم واحد على الأقل."
       ),
     rePassword: string()
       .required("تأكيد كلمة المرور مطلوب")
@@ -40,13 +41,26 @@ export default function Register() {
   });
 
   async function sendDataToRegister(values) {
-    console.log(values);
+    try {
+      const { rePassword: _, ...userData } = values;
+
+      const option = {
+        url: "http://localhost:3000/auth/register",
+        method: "POST",
+        data: userData,
+      };
+
+      const { data } = await axios.request(option);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
+      fName: "",
+      lName: "",
       role: "player",
       email: "",
       phone: "",
@@ -123,16 +137,16 @@ export default function Register() {
               <input
                 type="text"
                 placeholder="أدخل اسمك الأول"
-                name="firstName"
-                value={formik.values.firstName}
+                name="fName"
+                value={formik.values.fName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
               />
             </div>
-            {formik.errors.firstName && formik.touched.firstName && (
+            {formik.errors.fName && formik.touched.fName && (
               <p className=" text-red-500 font-semibold">
-                {formik.errors.firstName}
+                {formik.errors.fName}
               </p>
             )}
 
@@ -143,16 +157,16 @@ export default function Register() {
               <input
                 type="text"
                 placeholder="أدخل اسمك الاخير"
-                name="lastName"
-                value={formik.values.lastName}
+                name="lName"
+                value={formik.values.lName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
               />
             </div>
-            {formik.errors.lastName && formik.touched.lastName && (
+            {formik.errors.lName && formik.touched.lName && (
               <p className=" text-red-500 font-semibold">
-                {formik.errors.lastName}
+                {formik.errors.lName}
               </p>
             )}
             <div className="flex flex-col space-y-1.5 mt-5">
@@ -198,7 +212,7 @@ export default function Register() {
                 كلمة المرور
               </label>
               <input
-                type="text"
+                type="password"
                 placeholder="أأدخل كلمة المرور"
                 name="password"
                 value={formik.values.password}
@@ -217,7 +231,7 @@ export default function Register() {
                 تاكيد كلمة المرور
               </label>
               <input
-                type="text"
+                type="password"
                 placeholder="أعد إدخال كلمة المرور"
                 name="rePassword"
                 value={formik.values.rePassword}
