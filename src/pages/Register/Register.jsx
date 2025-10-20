@@ -3,13 +3,14 @@ import React from "react";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
 import { object, string, ref } from "yup";
-import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+// import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const passwordRegx = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/;
   const phoneRegx = /^01[0125][0-9]{8}$/;
-  //   const naviagte = useNavigate();
+  const naviagte = useNavigate();
 
   const validationSchema = object({
     fName: string("الاسم الاول يجب أن يكون نصًّا")
@@ -54,9 +55,9 @@ export default function Register() {
 
       const { data } = await axios.request(option);
       localStorage.setItem("token", data.token);
-      //   setTimeout(() => {
-      //     naviagte("/home");
-      //   }, 2000);
+      setTimeout(() => {
+        naviagte("/home");
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -102,11 +103,10 @@ export default function Register() {
                 />
                 <label
                   htmlFor="owner"
-                  className={`btn text-2xl ${
-                    formik.values.role === "owner"
-                      ? "bg-mainColor text-white"
-                      : "bg-secondColor text-black"
-                  }`}
+                  className={`btn text-2xl ${formik.values.role === "owner"
+                    ? "bg-mainColor text-white"
+                    : "bg-secondColor text-black"
+                    }`}
                 >
                   مالك
                 </label>
@@ -124,11 +124,10 @@ export default function Register() {
                 />
                 <label
                   htmlFor="user"
-                  className={`btn text-2xl ${
-                    formik.values.role === "user"
-                      ? "bg-mainColor text-white"
-                      : "bg-secondColor text-black"
-                  }`}
+                  className={`btn text-2xl ${formik.values.role === "user"
+                    ? "bg-mainColor text-white"
+                    : "bg-secondColor text-black"
+                    }`}
                 >
                   لاعب
                 </label>
