@@ -8,8 +8,9 @@ body{
 
 
 @theme{
-    --color-mainColor :rgba(5, 137, 62, 1);
+    --color-mainColor :#0aad0a;
     --color-secondColor : rgba(243, 244, 246, 1);
+    --color-thirdColor :rgba(86, 93, 109, 1);
 }
 
 
@@ -23,6 +24,6 @@ body{
 
 @layer components{
     .btn{
-        @apply rounded-md text-white px-3 py-1
+        @apply rounded-md text-white px-15 py-2 
     }
 }
