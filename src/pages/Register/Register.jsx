@@ -4,10 +4,12 @@ import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
 import { object, string, ref } from "yup";
 import axios from "axios";
+// import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const passwordRegx = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/;
   const phoneRegx = /^01[0125][0-9]{8}$/;
+  //   const naviagte = useNavigate();
 
   const validationSchema = object({
     fName: string("الاسم الاول يجب أن يكون نصًّا")
@@ -51,7 +53,10 @@ export default function Register() {
       };
 
       const { data } = await axios.request(option);
-      console.log(data);
+      localStorage.setItem("token", data.token);
+      //   setTimeout(() => {
+      //     naviagte("/home");
+      //   }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +66,7 @@ export default function Register() {
     initialValues: {
       fName: "",
       lName: "",
-      role: "player",
+      role: "user",
       email: "",
       phone: "",
       password: "",
@@ -110,17 +115,17 @@ export default function Register() {
               <div>
                 <input
                   type="radio"
-                  id="player"
+                  id="user"
                   name="role"
-                  value="player"
+                  value="user"
                   className="hidden peer/option2"
                   onChange={formik.handleChange}
-                  checked={formik.values.role === "B"}
+                  checked={formik.values.role === "user"}
                 />
                 <label
-                  htmlFor="player"
+                  htmlFor="user"
                   className={`btn text-2xl ${
-                    formik.values.role === "player"
+                    formik.values.role === "user"
                       ? "bg-mainColor text-white"
                       : "bg-secondColor text-black"
                   }`}
