@@ -1,7 +1,51 @@
 {
-    "greeting": "Welcome to the Language Playground",
-    "detail": {
-        "line1": "dsaaaaaaaaaaaaaaaaaa you know that over 7,000 languages are spoken worldwide?",
-        "line2": "This Playground demonstrates how web applications can support users in multiple languages, making them accessible and inclusive to people from different backgrounds."
-    }
+  "title": "أرينا بوك",
+
+  "register_title": "إنشاء حساب في أرينا بوك",
+  "register_subtitle": "سجل لتبدأ رحلتك الرياضية",
+
+  "login_title": "ادخل إلى أرينا بوك",
+  "login_subtitle": "سجل لتبدأ رحلتك الرياضية",
+
+  "role_owner": "مالك",
+  "role_user": "لاعب",
+  "role_required": "يجب اختيار الدور (مالك أو لاعب)",
+
+  "first_name": "الاسم الأول",
+  "first_name_placeholder": "أدخل اسمك الأول",
+  "first_name_required": "الاسم الأول مطلوب",
+
+  "last_name": "الاسم الأخير",
+  "last_name_placeholder": "أدخل اسمك الأخير",
+  "last_name_required": "الاسم الأخير مطلوب",
+
+  "email": "البريد الإلكتروني",
+  "email_placeholder": "أدخل بريدك الإلكتروني",
+  "email_required": "البريد الإلكتروني مطلوب",
+  "email_invalid": "يرجى إدخال بريد إلكتروني صالح",
+
+  "phone": "رقم الهاتف",
+  "phone_placeholder": "أدخل رقم هاتفك",
+  "phone_required": "رقم الهاتف مطلوب",
+  "phone_invalid": "يجب إدخال رقم هاتف مصري صالح",
+
+  "password": "كلمة المرور",
+  "password_placeholder": "أدخل كلمة المرور",
+  "password_required": "كلمة المرور مطلوبة",
+  "password_invalid": "يجب أن تحتوي كلمة المرور على حرف كبير وصغير ورقم على الأقل",
+
+  "confirm_password": "تأكيد كلمة المرور",
+  "confirm_password_placeholder": "أعد إدخال كلمة المرور",
+  "confirm_password_required": "تأكيد كلمة المرور مطلوب",
+  "password_not_match": "كلمة المرور غير متطابقة",
+
+  "create_account": "إنشاء حساب",
+  "already_have_account": "لدي حساب بالفعل؟ تسجيل الدخول",
+
+  "login_button": "تسجيل الدخول",
+  "forgot_password": "هل نسيت كلمة المرور؟",
+  "or": "أو",
+
+  "continue_google": "المتابعة باستخدام جوجل",
+  "continue_facebook": "المتابعة باستخدام فيسبوك"
 }

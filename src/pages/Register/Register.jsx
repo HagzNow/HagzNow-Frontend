@@ -1,58 +1,43 @@
 import { useFormik } from "formik";
 import React from "react";
-import { FaGoogle } from "react-icons/fa";
-import { FaFacebookF } from "react-icons/fa";
+import { FaGoogle, FaFacebookF } from "react-icons/fa";
 import { object, string, ref } from "yup";
-import axios from 'axios';
-// import axios from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../components/LanguageSelector";
 
 export default function Register() {
+  const { t } = useTranslation();
   const passwordRegx = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/;
   const phoneRegx = /^01[0125][0-9]{8}$/;
   const naviagte = useNavigate();
 
   const validationSchema = object({
-    fName: string("الاسم الاول يجب أن يكون نصًّا")
-      .required("الاسم الاول مطلوب")
-      .min(3, "الاسم الاول يجب ألا يقل عن 3 أحرف")
-      .max(20, "الاسم الاول  يجب ألا يزيد عن 20 حرفًا"),
-
-    lName: string("الاسم الاخير يجب أن يكون نصًّا")
-      .required("الاسم الاخير مطلوب")
-      .min(3, "الاسم الاخير يجب ألا يقل عن 3 أحرف")
-      .max(20, "الاسم الاخير  يجب ألا يزيد عن 20 حرفًا"),
-
-    email: string("البريد الإلكتروني يجب أن يكون نصًّا")
-      .required("البريد الإلكتروني مطلوب")
-      .email("يجب إدخال بريد إلكتروني صالح"),
-    role: string().required("يجب اختيار الدور (مالك أو لاعب)"),
+    fName: string().required(t("first_name_required")).min(3).max(20),
+    lName: string().required(t("last_name_required")).min(3).max(20),
+    email: string().required(t("email_required")).email(t("email_invalid")),
+    role: string().required(t("role_required")),
     password: string()
-      .required("كلمة المرور مطلوبة")
-      .matches(
-        passwordRegx,
-        "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل، وحرف صغير واحد على الأقل، ورقم واحد على الأقل."
-      ),
+      .required(t("password_required"))
+      .matches(passwordRegx, t("password_invalid")),
     rePassword: string()
-      .required("تأكيد كلمة المرور مطلوب")
-      .matches(passwordRegx, "صيغة كلمة المرور غير صحيحة")
-      .oneOf([ref("password")], "كلمة المرور غير متطابقة"),
-
+      .required(t("confirm_password_required"))
+      .matches(passwordRegx, t("password_invalid"))
+      .oneOf([ref("password")], t("password_not_match")),
     phone: string()
-      .required("رقم الهاتف مطلوب")
-      .matches(phoneRegx, "يجب إدخال رقم هاتف مصري صالح"),
+      .required(t("phone_required"))
+      .matches(phoneRegx, t("phone_invalid")),
   });
 
   async function sendDataToRegister(values) {
     try {
       const { rePassword: _, ...userData } = values;
-
       const option = {
         url: "http://localhost:3000/auth/register",
         method: "POST",
         data: userData,
       };
-
       const { data } = await axios.request(option);
       localStorage.setItem("token", data.token);
       setTimeout(() => {
@@ -80,190 +65,188 @@ export default function Register() {
   return (
     <>
       <section className="container text-center py-5">
-        <div className="title  space-y-3">
-          <h2 className=" text-4xl font-bold text-mainColor ">ارينا بوك</h2>
-          <h2 className="text-4xl font-bold">إنشاء حساب في أرينا بوك</h2>
-          <p className=" font-medium text-thirdColor">
-            سجل لتبدأ رحلتك الرياضية
+        <div className="title space-y-2">
+          <h2 className="text-2xl font-bold text-mainColor">{t("title")}</h2>
+          <h2 className="text-2xl font-bold">{t("register_title")}</h2>
+          <p className="font-medium text-thirdColor text-xs md:text-sm">
+            {t("register_subtitle")}
           </p>
         </div>
 
-        <form action="" className=" mt-5" onSubmit={formik.handleSubmit}>
-          <div className=" space-x-3 space-y-6 bg-secondColor w-1/2 m-auto p-7 rounded-2xl">
-            <div className="flex gap-3 justify-center">
-              <div>
+        <form
+          className="mt-4"
+          onSubmit={formik.handleSubmit}
+          // dir={i18n.language === "ar" ? "rtl" : "ltr"}
+        >
+          <div
+            className="
+        bg-secondColor 
+        w-[90%] sm:w-[70%] md:w-[40%] lg:w-[30%]
+        mx-auto 
+        p-4 
+        rounded-xl 
+        shadow-md 
+        space-y-4
+      "
+          >
+            <div className="flex justify-center gap-2">
+              <label
+                htmlFor="owner"
+                className={`btn text-sm ${
+                  formik.values.role === "owner"
+                    ? "bg-mainColor text-white"
+                    : "bg-secondColor text-black"
+                }`}
+              >
                 <input
                   type="radio"
                   id="owner"
                   name="role"
                   value="owner"
-                  className="hidden peer/option1"
+                  className="hidden"
                   onChange={formik.handleChange}
                   checked={formik.values.role === "owner"}
                 />
-                <label
-                  htmlFor="owner"
-                  className={`btn text-2xl ${formik.values.role === "owner"
+                {t("role_owner")}
+              </label>
+
+              <label
+                htmlFor="user"
+                className={`btn text-sm ${
+                  formik.values.role === "user"
                     ? "bg-mainColor text-white"
                     : "bg-secondColor text-black"
-                    }`}
-                >
-                  مالك
-                </label>
-              </div>
-
-              <div>
+                }`}
+              >
                 <input
                   type="radio"
                   id="user"
                   name="role"
                   value="user"
-                  className="hidden peer/option2"
+                  className="hidden"
                   onChange={formik.handleChange}
                   checked={formik.values.role === "user"}
                 />
-                <label
-                  htmlFor="user"
-                  className={`btn text-2xl ${formik.values.role === "user"
-                    ? "bg-mainColor text-white"
-                    : "bg-secondColor text-black"
-                    }`}
-                >
-                  لاعب
-                </label>
-              </div>
+                {t("role_user")}
+              </label>
             </div>
 
-            <div className="flex flex-col space-y-1.5 mt-5">
-              <label htmlFor="" className=" text-start">
-                الاسم الاول
-              </label>
+            <div className="flex flex-col text-start space-y-2 text-sm">
+              <label>{t("first_name")}</label>
               <input
                 type="text"
-                placeholder="أدخل اسمك الأول"
                 name="fName"
+                placeholder={t("first_name_placeholder")}
                 value={formik.values.fName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
+                className="p-2 rounded-md border border-gray-300 focus:outline-none"
               />
+              {formik.errors.fName && formik.touched.fName && (
+                <p className="text-red-500 text-xs">{formik.errors.fName}</p>
+              )}
             </div>
-            {formik.errors.fName && formik.touched.fName && (
-              <p className=" text-red-500 font-semibold">
-                {formik.errors.fName}
-              </p>
-            )}
 
-            <div className="flex flex-col space-y-1.5 mt-5">
-              <label htmlFor="" className=" text-start">
-                الاسم الاخير
-              </label>
+            <div className="flex flex-col text-start space-y-2 text-sm">
+              <label>{t("last_name")}</label>
               <input
                 type="text"
-                placeholder="أدخل اسمك الاخير"
                 name="lName"
+                placeholder={t("last_name_placeholder")}
                 value={formik.values.lName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
+                className="p-2 rounded-md border border-gray-300 focus:outline-none"
               />
+              {formik.errors.lName && formik.touched.lName && (
+                <p className="text-red-500 text-xs">{formik.errors.lName}</p>
+              )}
             </div>
-            {formik.errors.lName && formik.touched.lName && (
-              <p className=" text-red-500 font-semibold">
-                {formik.errors.lName}
-              </p>
-            )}
-            <div className="flex flex-col space-y-1.5 mt-5">
-              <label htmlFor="" className=" text-start">
-                بريدك الإلكتروني
-              </label>
+
+            <div className="flex flex-col text-start space-y-2 text-sm">
+              <label>{t("email")}</label>
               <input
                 type="text"
-                placeholder="أدخل بريدك الإلكتروني"
                 name="email"
+                placeholder={t("email_placeholder")}
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
+                className="p-2 rounded-md border border-gray-300 focus:outline-none"
               />
+              {formik.errors.email && formik.touched.email && (
+                <p className="text-red-500 text-xs">{formik.errors.email}</p>
+              )}
             </div>
-            {formik.errors.email && formik.touched.email && (
-              <p className=" text-red-500 font-semibold">
-                {formik.errors.email}
-              </p>
-            )}
-            <div className="flex flex-col space-y-1.5 mt-5">
-              <label htmlFor="" className=" text-start">
-                رقم هاتفك
-              </label>
+
+            <div className="flex flex-col text-start space-y-2 text-sm">
+              <label>{t("phone")}</label>
               <input
                 type="text"
-                placeholder="أدخل رقم هاتفك"
                 name="phone"
+                placeholder={t("phone_placeholder")}
                 value={formik.values.phone}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
+                className="p-2 rounded-md border border-gray-300 focus:outline-none"
               />
+              {formik.errors.phone && formik.touched.phone && (
+                <p className="text-red-500 text-xs">{formik.errors.phone}</p>
+              )}
             </div>
-            {formik.errors.phone && formik.touched.phone && (
-              <p className=" text-red-500 font-semibold">
-                {formik.errors.phone}
-              </p>
-            )}
-            <div className="flex flex-col space-y-1.5 mt-5">
-              <label htmlFor="" className=" text-start">
-                كلمة المرور
-              </label>
+
+            <div className="flex flex-col text-start space-y-2 text-sm">
+              <label>{t("password")}</label>
               <input
                 type="password"
-                placeholder="أأدخل كلمة المرور"
                 name="password"
+                placeholder={t("password_placeholder")}
                 value={formik.values.password}
-                onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
+                onBlur={formik.handleBlur}
+                className="p-2 rounded-md border border-gray-300 focus:outline-none"
               />
+              {formik.errors.password && formik.touched.password && (
+                <p className="text-red-500 text-xs">{formik.errors.password}</p>
+              )}
             </div>
-            {formik.errors.password && formik.touched.password && (
-              <p className=" text-red-500 font-semibold">
-                {formik.errors.password}
-              </p>
-            )}
-            <div className="flex flex-col space-y-1.5 mt-5">
-              <label htmlFor="" className=" text-start">
-                تاكيد كلمة المرور
-              </label>
+
+            <div className="flex flex-col text-start space-y-2 text-sm">
+              <label>{t("confirm_password")}</label>
               <input
                 type="password"
-                placeholder="أعد إدخال كلمة المرور"
                 name="rePassword"
+                placeholder={t("confirm_password_placeholder")}
                 value={formik.values.rePassword}
-                onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                className="p-3 rounded-md bg-white border-2 border-slate-200  focus:outline-none"
+                onBlur={formik.handleBlur}
+                className="p-2 rounded-md border border-gray-300 focus:outline-none"
               />
+              {formik.errors.rePassword && formik.touched.rePassword && (
+                <p className="text-red-500 text-xs">
+                  {formik.errors.rePassword}
+                </p>
+              )}
             </div>
-            {formik.errors.rePassword && formik.touched.rePassword && (
-              <p className=" text-red-500 font-semibold">
-                {formik.errors.rePassword}
-              </p>
-            )}
-            <button type="submit" className="btn bg-mainColor w-3/4">
-              إنشاء حساب
+
+            <button
+              type="submit"
+              className="btn bg-mainColor text-white w-full py-2 text-sm"
+            >
+              {t("create_account")}
             </button>
 
-            <p className=" text-mainColor py-3">
-              لدي حساب بالفعل؟ تسجيل الدخول
+            <p className="text-mainColor text-xs py-1">
+              {t("already_have_account")}
             </p>
-            <p>او</p>
+            <p className="text-xs">{t("or")}</p>
 
-            <div className="flex flex-col  space-y-2 items-center w-3/4 m-auto">
-              <button className="p-4 border rounded-2xl w-full bg-white border-thirdColor flex justify-center  items-center gap-3">
-                <FaGoogle /> المتابعة باستخدام جوجل
+            <div className="flex flex-col space-y-2">
+              <button className="p-2 border rounded-lg w-full bg-white border-thirdColor flex justify-center items-center gap-2 text-xs">
+                <FaGoogle /> {t("continue_google")}
               </button>
-              <button className="p-4 border rounded-2xl w-full bg-white border-thirdColor flex justify-center  items-center gap-3">
-                <FaFacebookF /> المتابعة باستخدام فيسبوك
+              <button className="p-2 border rounded-lg w-full bg-white border-thirdColor flex justify-center items-center gap-2 text-xs">
+                <FaFacebookF /> {t("continue_facebook")}
               </button>
             </div>
           </div>
