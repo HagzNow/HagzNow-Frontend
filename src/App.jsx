@@ -4,6 +4,7 @@ import Login from "./pages/Login/Login";
 import Layout from "./components/Layout/Layout";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
+import UserArenas from "./pages/UserArenas/UserArenas";
 
 function App() {
   const routes = createBrowserRouter([
@@ -14,6 +15,7 @@ function App() {
         { path: "/home", element: <Home /> },
         { path: "/login", element: <Login /> },
         { path: "register", element: <Register /> },
+        { path: "user-arena", element: <UserArenas /> },
       ],
     },
   ]);
