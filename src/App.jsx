@@ -4,6 +4,7 @@ import Login from "./pages/Login/Login";
 import Layout from "./components/Layout/Layout";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
+import Reservation from "./pages/Reservation/Reservation";
 
 function App() {
   const routes = createBrowserRouter([
@@ -13,7 +14,8 @@ function App() {
       children: [
         { path: "/home", element: <Home /> },
         { path: "/login", element: <Login /> },
-        { path: "register", element: <Register /> },
+        { path: "/register", element: <Register /> },
+        { path: "/reservation", element: <Reservation /> },
       ],
     },
   ]);

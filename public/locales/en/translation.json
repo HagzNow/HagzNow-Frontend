@@ -47,5 +47,15 @@
   "or": "or",
 
   "continue_google": "Continue with Google",
-  "continue_facebook": "Continue with Facebook"
+  "continue_facebook": "Continue with Facebook",
+
+  "reservation": {
+    "step1": "Select Date & Time",
+    "step2": "Add-ons",
+    "step3": "Confirm Reservation",
+    "previous": "Previous",
+    "next": "Next",
+    "available_times": "Available Times",
+  "select_preferred_time": "Select your preferred field time"
+  }
 }
