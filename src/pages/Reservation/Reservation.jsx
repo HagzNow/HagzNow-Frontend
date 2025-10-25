@@ -3,7 +3,7 @@ import BookingStepper from "../../components/BookingStepper/BookingStepper";
 import { Box } from "@mui/material";
 import ReservationStep from "../../components/Steps/ReservationStep";
 import { useTranslation } from "react-i18next";
-import LanguageSelector from "./../../components/LanguageSelector/LanguageSelector";
+
 
 export default function Reservation() {
   const { t } = useTranslation();

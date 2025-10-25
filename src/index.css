@@ -24,6 +24,6 @@ body{
 
 @layer components{
     .btn{
-        @apply rounded-md text-white px-15 py-2 border-2 border-thirdColor
+        @apply rounded-md text-white px-10 py-2 border-2 border-thirdColor
     }
 }

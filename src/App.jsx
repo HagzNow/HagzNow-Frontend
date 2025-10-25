@@ -5,6 +5,7 @@ import Layout from "./components/Layout/Layout";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
 import Reservation from "./pages/Reservation/Reservation";
+import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
 
 function App() {
   const routes = createBrowserRouter([
@@ -16,6 +17,7 @@ function App() {
         { path: "/login", element: <Login /> },
         { path: "/register", element: <Register /> },
         { path: "/reservation", element: <Reservation /> },
+        { path: "/reservationDetails", element: <ReservationDetails /> },
       ],
     },
   ]);
