@@ -5,7 +5,6 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import LanguageSelector from "../../components/LanguageSelector";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -108,7 +107,6 @@ export default function Login() {
           </div>
         </div>
       </form>
-      <LanguageSelector />
     </section>
   );
 }

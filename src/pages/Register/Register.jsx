@@ -5,7 +5,6 @@ import { object, string, ref } from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import LanguageSelector from "../../components/LanguageSelector";
 
 export default function Register() {
   const { t } = useTranslation();
