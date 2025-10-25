@@ -39,7 +39,7 @@ export default function ArenaCard({ title, location, price, rating, image }) {
 
                 {/* Price */}
                 <div className="flex items-center justify-end mt-3">
-                    <span className="text-green-600 font-semibold text-lg">{price} ج.م</span>
+                    <span className="text-green-600 font-bold text-xl">{price} ج.م</span>
                     <span className="text-gray-500 text-sm mr-1">/ساعة</span>
                 </div>
             </div>
