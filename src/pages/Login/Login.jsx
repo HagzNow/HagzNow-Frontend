@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { useContext, useState } from "react";
 import { authContext } from "../../Contexts/AuthContext";
 import toast from "react-hot-toast";
-import LanguageSelector from "./../../components/LanguageSelector/LanguageSelector";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -35,15 +34,13 @@ export default function Login() {
       };
 
       const { data } = await axios.request(option);
-      setToken(data.token);
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.data.token);
+      setToken(data.data.token);
       toast.success("Login successfuly");
       setTimeout(() => {
         navigate("/home");
       }, 2000);
     } catch (error) {
-      console.log(error);
-
       const msg = error.response?.data?.error?.code || "Unknown error";
       const translated = t(`errors.${msg}`, { defaultValue: msg });
       toast.error(translated);
@@ -61,7 +58,6 @@ export default function Login() {
 
   return (
     <section className="container text-center py-5">
-      <LanguageSelector />
       <div className="title space-y-2">
         <h2 className="text-2xl font-bold text-mainColor">{t("title")}</h2>
         <h2 className="text-2xl font-bold">{t("login_title")}</h2>

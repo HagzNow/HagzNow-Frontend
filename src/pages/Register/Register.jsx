@@ -44,14 +44,17 @@ export default function Register() {
         data: userData,
       };
       const { data } = await axios.request(option);
-      setToken(data.token);
-      localStorage.setItem("token", data.token);
+      setToken(data.data.token);
+      localStorage.setItem("token", data.data.token);
       toast.success("Account registerd successfuly");
+      setToken(data.data.token);
       setTimeout(() => {
         naviagte("/home");
       }, 2000);
     } catch (error) {
-      toast.error(error.response.data.message);
+      const msg = error.response?.data?.error?.code || "Unknown error";
+      const translated = t(`errors.${msg}`, { defaultValue: msg });
+      toast.error(translated);
     } finally {
       toast.dismiss(loadingToast);
       setLoadButtom(false);

@@ -39,7 +39,14 @@ function App() {
           ),
         },
 
-        { path: "/reservation", element: <Reservation /> },
+        {
+          path: "/reservation",
+          element: (
+            <ProtectedRoutes>
+              <Reservation />
+            </ProtectedRoutes>
+          ),
+        },
         { path: "/reservationDetails", element: <ReservationDetails /> },
       ],
     },
