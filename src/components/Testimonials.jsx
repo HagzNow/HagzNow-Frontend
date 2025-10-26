@@ -23,7 +23,7 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="py-16 sm:py-24 bg-[#FAFAFB] ml-15 mr-15">
+    <section className="py-16 sm:py-24 bg-[#FAFAFB] ml-10 mr-10">
       <div className="container mx-auto px-4">
         {/* العنوان */}
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 text-center mb-12">
