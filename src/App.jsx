@@ -10,8 +10,11 @@ import AuthContextProvider from "./Contexts/AuthContext";
 import ProtectedLoginAndRegister from "./Routes/protectedLoginAndRegister";
 import ProtectedRoutes from "./Routes/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 function App() {
+  const { i18n } = useTranslation();
+
   const routes = createBrowserRouter([
     {
       path: "",
@@ -45,8 +48,16 @@ function App() {
   return (
     <>
       <AuthContextProvider>
+        <Toaster
+          key={i18n.language}
+          position="bottom-left"
+          toastOptions={{
+            style: {
+              direction: i18n.language === "ar" ? "rtl" : "ltr",
+            },
+          }}
+        />
         <RouterProvider router={routes} />
-        <Toaster />
       </AuthContextProvider>
     </>
   );

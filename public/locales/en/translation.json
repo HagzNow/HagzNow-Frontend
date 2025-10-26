@@ -57,5 +57,9 @@
     "next": "Next",
     "available_times": "Available Times",
   "select_preferred_time": "Select your preferred field time"
-  }
+  },
+  "errors" :{
+  "EMAIL_IN_USE": "Email already exists",
+  "INVALID_CREDENTIALS": "Invalid email or password"
+} 
 }

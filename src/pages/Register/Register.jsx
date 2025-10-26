@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FaGoogle, FaFacebookF } from "react-icons/fa";
 import { object, string, ref } from "yup";
 import axios from "axios";
@@ -14,6 +14,7 @@ export default function Register() {
   const phoneRegx = /^01[0125][0-9]{8}$/;
   const naviagte = useNavigate();
   let { setToken } = useContext(authContext);
+  let [loadbuttom, setLoadButtom] = useState(false);
 
   const validationSchema = object({
     fName: string().required(t("first_name_required")).min(3).max(20),
@@ -33,6 +34,8 @@ export default function Register() {
   });
 
   async function sendDataToRegister(values) {
+    const loadingToast = toast.loading("loading.....");
+    setLoadButtom(true);
     try {
       const { rePassword: _, ...userData } = values;
       const option = {
@@ -45,10 +48,13 @@ export default function Register() {
       localStorage.setItem("token", data.token);
       toast.success("Account registerd successfuly");
       setTimeout(() => {
-        naviagte("/login");
+        naviagte("/home");
       }, 2000);
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message);
+    } finally {
+      toast.dismiss(loadingToast);
+      setLoadButtom(false);
     }
   }
 
@@ -234,10 +240,15 @@ export default function Register() {
             </div>
 
             <button
+              disabled={loadbuttom}
               type="submit"
               className="btn bg-mainColor text-white w-full py-2 text-sm"
             >
-              {t("create_account")}
+              {loadbuttom ? (
+                <i className=" fa-solid fa-spinner fa-spin"></i>
+              ) : (
+                t("create_account")
+              )}
             </button>
 
             <p className="text-mainColor text-xs py-1">
