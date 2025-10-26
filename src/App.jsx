@@ -42,12 +42,19 @@ function App() {
         {
           path: "/reservation",
           element: (
-            <ProtectedRoutes>
+            <ProtectedRoutes role="user">
               <Reservation />
             </ProtectedRoutes>
           ),
         },
-        { path: "/reservationDetails", element: <ReservationDetails /> },
+        {
+          path: "/reservationDetails",
+          element: (
+            <ProtectedRoutes role="user">
+              <ReservationDetails />
+            </ProtectedRoutes>
+          ),
+        },
       ],
     },
   ]);

@@ -25,8 +25,6 @@ export default function AuthContextProvider({ children }) {
     if (token) decodeToken(token);
   }, [token]);
 
-  console.log("Decoded user:", JSON.stringify(user, null, 2));
-
   return (
     <authContext.Provider value={{ user, token, setToken, decodeToken }}>
       {children}
