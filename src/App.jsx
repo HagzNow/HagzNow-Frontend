@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
 import Reservation from "./pages/Reservation/Reservation";
 import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
+import AuthContextProvider from "./Contexts/AuthContext";
 
 function App() {
   const routes = createBrowserRouter([
@@ -24,7 +25,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={routes} />
+      <AuthContextProvider>
+        <RouterProvider router={routes} />
+      </AuthContextProvider>
     </>
   );
 }

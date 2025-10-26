@@ -1,4 +1,3 @@
-import React from "react";
 import { FaGoogle, FaFacebookF } from "react-icons/fa";
 import { object, string } from "yup";
 import { useFormik } from "formik";

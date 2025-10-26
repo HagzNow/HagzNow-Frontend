@@ -1,16 +1,18 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useContext } from "react";
 import { FaGoogle, FaFacebookF } from "react-icons/fa";
 import { object, string, ref } from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { authContext } from "../../Contexts/AuthContext";
 
 export default function Register() {
   const { t } = useTranslation();
   const passwordRegx = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/;
   const phoneRegx = /^01[0125][0-9]{8}$/;
   const naviagte = useNavigate();
+  let { decodeToken } = useContext(authContext);
 
   const validationSchema = object({
     fName: string().required(t("first_name_required")).min(3).max(20),
@@ -38,9 +40,10 @@ export default function Register() {
         data: userData,
       };
       const { data } = await axios.request(option);
+      console.log(decodeToken(data.token));
       localStorage.setItem("token", data.token);
       setTimeout(() => {
-        naviagte("/home");
+        naviagte("/login");
       }, 2000);
     } catch (error) {
       console.log(error);
