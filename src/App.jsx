@@ -7,6 +7,9 @@ import Register from "./pages/Register/Register";
 import Reservation from "./pages/Reservation/Reservation";
 import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
 import AuthContextProvider from "./Contexts/AuthContext";
+import ProtectedLoginAndRegister from "./Routes/protectedLoginAndRegister";
+import ProtectedRoutes from "./Routes/ProtectedRoute";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const routes = createBrowserRouter([
@@ -15,8 +18,24 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/home", element: <Home /> },
-        { path: "/login", element: <Login /> },
-        { path: "/register", element: <Register /> },
+
+        {
+          path: "/login",
+          element: (
+            <ProtectedLoginAndRegister>
+              <Login />
+            </ProtectedLoginAndRegister>
+          ),
+        },
+        {
+          path: "/register",
+          element: (
+            <ProtectedLoginAndRegister>
+              <Register />
+            </ProtectedLoginAndRegister>
+          ),
+        },
+
         { path: "/reservation", element: <Reservation /> },
         { path: "/reservationDetails", element: <ReservationDetails /> },
       ],
@@ -27,6 +46,7 @@ function App() {
     <>
       <AuthContextProvider>
         <RouterProvider router={routes} />
+        <Toaster />
       </AuthContextProvider>
     </>
   );

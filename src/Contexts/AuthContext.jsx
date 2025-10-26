@@ -5,31 +5,29 @@ import { jwtDecode } from "jwt-decode";
 export let authContext = createContext(null);
 
 export default function AuthContextProvider({ children }) {
-  let [role, setRole] = useState(null);
+  let [user, setUser] = useState(null);
   let [token, setToken] = useState(localStorage.getItem("token"));
 
   function decodeToken(token) {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        setRole(decoded);
-        console.log(decoded);
+        setUser(decoded);
       } catch (error) {
         console.error("Invalid token", error);
-        setRole(null);
+        localStorage.removeItem("token");
+        setUser(null);
       }
     }
   }
 
   useEffect(() => {
-    decodeToken(token);
-  }, [token]);
+    if (token) decodeToken(token);
+  }, []);
 
   return (
-    <div>
-      <authContext.Provider value={{ role, token, setToken, decodeToken }}>
-        {children}
-      </authContext.Provider>
-    </div>
+    <authContext.Provider value={{ user, token, setToken, decodeToken }}>
+      {children}
+    </authContext.Provider>
   );
 }
