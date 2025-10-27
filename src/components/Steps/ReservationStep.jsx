@@ -4,14 +4,28 @@ import DateSelector from "./DateSelector";
 import TimeSlots from "./TimeSlots";
 import { useTranslation } from "react-i18next";
 
-export default function ReservationStep() {
+export default function ReservationStep({}) {
+  let [times, setTimes] = useState([]);
+  async function getTimeAvailable(selectedDate) {
+    setDate(selectedDate);
+    const formattedDate = date.format("YYYY-MM-DD");
+    try {
+      let { data } = await baseUrl.get(
+        `/arenas/0d730fd2-1c4b-4a0d-8ddf-5462be0a58c6/slots/available?date=${formattedDate}`
+      );
+      console.log(data);
+      setTimes(data.availableHours);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const { t } = useTranslation();
   return (
     <>
       <div>
         <Grid container spacing={5} sx={{ p: 3 }}>
           <Grid item xs={6}>
-            <DateSelector />
+            <DateSelector getTimeAvailable={getTimeAvailable} />
           </Grid>
 
           <Grid item xs={6}>
