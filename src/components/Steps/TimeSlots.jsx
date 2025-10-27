@@ -1,23 +1,12 @@
 import { Button, Grid } from "@mui/material";
+import { useContext } from "react";
+import { reservationContext } from "../../Contexts/ReservationContext";
 export default function TimeSlots() {
-  const times = [
-    "09:00 ص",
-    "10:00 ص",
-    "11:00 ص",
-    "12:00 م",
-    "12:00 م",
-    "12:00 م",
-    "12:00 م",
-    "12:00 م",
-    "12:00 م",
-    "12:00 م",
-    "12:00 م",
-    "12:00 م",
-  ];
+  let { times } = useContext(reservationContext);
 
   return (
     <>
-      {times.map((time, i) => {
+      {times?.map((time, i) => {
         return (
           <button className="btn bg-mainColor" key={i}>
             {time}

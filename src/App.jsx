@@ -11,6 +11,7 @@ import ProtectedLoginAndRegister from "./Routes/protectedLoginAndRegister";
 import ProtectedRoutes from "./Routes/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import ReservationContextProvider from "./Contexts/ReservationContext";
 
 function App() {
   const { i18n } = useTranslation();
@@ -62,16 +63,18 @@ function App() {
   return (
     <>
       <AuthContextProvider>
-        <Toaster
-          key={i18n.language}
-          position="bottom-left"
-          toastOptions={{
-            style: {
-              direction: i18n.language === "ar" ? "rtl" : "ltr",
-            },
-          }}
-        />
-        <RouterProvider router={routes} />
+        <ReservationContextProvider>
+          <Toaster
+            key={i18n.language}
+            position="bottom-left"
+            toastOptions={{
+              style: {
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
+              },
+            }}
+          />
+          <RouterProvider router={routes} />
+        </ReservationContextProvider>
       </AuthContextProvider>
     </>
   );
