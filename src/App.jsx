@@ -5,9 +5,10 @@ import Layout from "./components/Layout/Layout";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
 import UserArenas from "./pages/UserArenas/UserArenas";
 import AdminArenaRequests from "./pages/AdminArenaRequests/AdminArenaRequests";
+// =======
 import Reservation from "./pages/Reservation/Reservation";
 import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
 import AuthContextProvider from "./Contexts/AuthContext";
@@ -15,7 +16,7 @@ import ProtectedLoginAndRegister from "./Routes/protectedLoginAndRegister";
 import ProtectedRoutes from "./Routes/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
->>>>>>> origin/master
+// >>>>>>> origin/master
 
 function App() {
   const { i18n } = useTranslation();
