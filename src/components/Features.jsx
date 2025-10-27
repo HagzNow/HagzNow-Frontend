@@ -1,4 +1,4 @@
-import React from "react";
+
 import { FiAward, FiLock, FiZap } from "react-icons/fi";
 
 export default function WhyChooseArenaBook() {

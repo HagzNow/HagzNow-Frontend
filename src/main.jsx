@@ -5,11 +5,15 @@ import './index.css'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Home from './pages/Home/Home';
+import AddArena from './pages/Add_Arena/AddArena';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },{
+    path:"/addarena",
+    element:<AddArena/>
   },
   {
     path: "/login",

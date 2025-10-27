@@ -1,11 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
     <section className="px-4 sm:px-6">
-      <div
-        className="relative container mx-auto h-[280px] sm:h-[360px] md:h-[420px] overflow-hidden rounded-xl shadow-lg"
-      >
+      <div className="relative container mx-auto h-[280px] sm:h-[360px] md:h-[420px] overflow-hidden rounded-xl shadow-lg">
         {/* الخلفية */}
         <img
           src="https://images.unsplash.com/photo-1521417538736-0a5f1a6f3cdd?q=80&w=1600&auto=format&fit=crop"
@@ -31,11 +30,15 @@ export default function Hero() {
             احجز ملعبك المفضل بسهولة وسرعة
           </h1>
           <p className="text-sm sm:text-base text-white/90 max-w-2xl mb-4">
-            منصة <span className="font-semibold">ArenaBook</span> في خدمتك لعالم الملاعب الرياضية. ابحث، قارِن، واحجز خلال دقائق.
+            منصة <span className="font-semibold">ArenaBook</span> في خدمتك لعالم
+            الملاعب الرياضية. ابحث، قارِن، واحجز خلال دقائق.
           </p>
-          <button className="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-md shadow transition">
+          <Link
+            to="/addarena"
+            className="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-md shadow transition"
+          >
             احجز ملعبك الآن
-          </button>
+          </Link>
         </div>
       </div>
     </section>
