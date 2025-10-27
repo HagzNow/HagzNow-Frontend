@@ -8,7 +8,6 @@ import Register from "./pages/Register/Register";
 <<<<<<< HEAD
 import UserArenas from "./pages/UserArenas/UserArenas";
 import AdminArenaRequests from "./pages/AdminArenaRequests/AdminArenaRequests";
-=======
 import Reservation from "./pages/Reservation/Reservation";
 import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
 import AuthContextProvider from "./Contexts/AuthContext";
