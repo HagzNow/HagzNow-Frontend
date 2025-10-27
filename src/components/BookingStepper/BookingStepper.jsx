@@ -1,14 +1,10 @@
 import React from "react";
 import { Stepper, Step, StepLabel, Box } from "@mui/material";
-import { useTranslation } from "react-i18next";
 
 export default function BookingStepper({ steps, activeStep }) {
-  const { i18n } = useTranslation();
-  let x = i18n.language;
-
   return (
     <div className=" w-1/2">
-      <Box sx={{ direction: x === "ar" ? "rtl" : "ltr" }}>
+      <Box sx={{ direction: "ltr" }}>
         <Stepper
           activeStep={activeStep}
           alternativeLabel

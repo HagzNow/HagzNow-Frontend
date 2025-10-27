@@ -8,17 +8,22 @@ export let reservationContext = createContext(null);
 
 export default function ReservationContextProvider({ children }) {
   let [date, setDate] = useState(dayjs());
+  const [arenaId, setArenaId] = useState(null);
+  const [slots, setSlots] = useState([]);
   let [times, setTimes] = useState([]);
   let [loading, setLoading] = useState(false);
   let [extras, setExtras] = useState(null);
 
-  async function getTimeAvailable(selectedDate) {
+  async function getTimeAvailable(
+    selectedDate,
+    arenaId = "6bff58ed-88b7-4a31-bfbb-2a2f26ee3f47"
+  ) {
     setDate(selectedDate);
     const formattedDate = selectedDate.format("YYYY-MM-DD");
     setLoading(true);
     try {
       let { data } = await baseUrl.get(
-        `/arenas/0d730fd2-1c4b-4a0d-8ddf-5462be0a58c6/slots/available?date=${formattedDate}`
+        `/arenas/${arenaId}/slots/available?date=${formattedDate}`
       );
       setTimes(data.data.availableHours);
     } catch (error) {
@@ -28,11 +33,25 @@ export default function ReservationContextProvider({ children }) {
     }
   }
 
-  async function getExtras() {
+  async function submitReservation() {
+    const payload = {
+      arenaId,
+      date: date.format("YYYY-MM-DD"),
+      slots,
+      extras,
+    };
+    console.log("Reservation payload:", payload);
     try {
-      let { data } = await baseUrl.get(
-        `/arenas/0d730fd2-1c4b-4a0d-8ddf-5462be0a58c6/extras`
-      );
+      let { data } = await baseUrl.post("/reservations/", payload);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getExtras(arenaId = "6bff58ed-88b7-4a31-bfbb-2a2f26ee3f47") {
+    try {
+      let { data } = await baseUrl.get(`/arenas/${arenaId}/extras`);
       setExtras(data.data);
     } catch (error) {
       console.log(error);
@@ -49,6 +68,12 @@ export default function ReservationContextProvider({ children }) {
         loading,
         getExtras,
         extras,
+        setExtras,
+        setSlots,
+        slots,
+        arenaId,
+        setArenaId,
+        submitReservation,
       }}
     >
       {children}

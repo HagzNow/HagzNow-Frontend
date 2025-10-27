@@ -12,6 +12,7 @@ import ProtectedRoutes from "./Routes/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import ReservationContextProvider from "./Contexts/ReservationContext";
+import Extras from "./pages/Extras/Extras";
 
 function App() {
   const { i18n } = useTranslation();
@@ -41,10 +42,18 @@ function App() {
         },
 
         {
-          path: "/reservation",
+          path: "/reservation/:id",
           element: (
             <ProtectedRoutes role="user">
               <Reservation />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/extras/:id",
+          element: (
+            <ProtectedRoutes role="user">
+              <Extras />
             </ProtectedRoutes>
           ),
         },

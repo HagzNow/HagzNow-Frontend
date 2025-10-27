@@ -2,11 +2,10 @@ import { useContext, useState } from "react";
 import { reservationContext } from "../../Contexts/ReservationContext";
 import Loader from "../Loader/Loader";
 import { useTranslation } from "react-i18next";
-import LanguageSelector from "./../LanguageSelector/LanguageSelector";
 
 export default function TimeSlots() {
   const { times, loading } = useContext(reservationContext);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTimes, setSelectedTimes] = useState([]);
   const { i18n } = useTranslation();
 
   const formatTime = (time) => {
@@ -25,18 +24,26 @@ export default function TimeSlots() {
     return `${hour} ${suffix}`;
   };
 
+  const toggleTime = (time) => {
+    if (selectedTimes.includes(time)) {
+      setSelectedTimes(selectedTimes.filter((t) => t !== time));
+    } else {
+      setSelectedTimes([...selectedTimes, time]);
+    }
+  };
+
   if (loading) return <Loader />;
 
   return (
     <>
       {times?.map((time, i) => {
         const formatted = formatTime(time);
-        const isSelected = selectedTime === time;
+        const isSelected = selectedTimes.includes(time);
 
         return (
           <button
             key={i}
-            onClick={() => setSelectedTime(time)}
+            onClick={() => toggleTime(time)}
             className={`px-4 py-2 rounded-lg transition-all duration-200 ${
               isSelected
                 ? "bg-green-500 text-white"

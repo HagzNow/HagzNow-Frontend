@@ -4,13 +4,14 @@ import { Box } from "@mui/material";
 import ReservationStep from "../../components/Steps/ReservationStep";
 import { useTranslation } from "react-i18next";
 import { reservationContext } from "../../Contexts/ReservationContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Reservation() {
   const { t } = useTranslation();
   let navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   let { getExtras, extras } = useContext(reservationContext);
+  let { id } = useParams();
 
   const steps = [
     t("reservation.step1"),
@@ -27,12 +28,12 @@ export default function Reservation() {
     if (extras.length == 0) {
       navigate("/reservationDetails");
     } else {
-      navigate("/");
+      navigate(`/extras/${id}`);
     }
   };
 
   useEffect(() => {
-    getExtras();
+    getExtras(id);
   }, []);
 
   return (
