@@ -17,10 +17,5 @@ export default function Home() {
       <Testimonials/>
       <Footer/>
     </>
-  
-   
-    
-    
-   
   )
 }

@@ -3,15 +3,15 @@ import { Formik, Form } from "formik";
 import { useTranslation } from "react-i18next";
 
 import Header from "../../components/OwnerComponents/Header";
+import Sidebar from "../../components/OwnerComponents/Sidebar";
+import LocationPriceSection from "../../components/OwnerComponents/AddArenaComponents/LocationPriceSection";
+import FeaturesSection from "../../components/OwnerComponents/AddArenaComponents/FeaturesSection";
+import DescriptionSection from "../../components/OwnerComponents/AddArenaComponents/DescriptionSection";
+import MediaSection from "../../components/OwnerComponents/AddArenaComponents/MediaSection";
+import BasicInfoSection from "../../components/OwnerComponents/AddArenaComponents/BasicInfoSection";
+import ArenaSchema from "../../components/OwnerComponents/AddArenaComponents/ArenaSchema";
 
 
-import ArenaSchema from "../../components/OwnerComponents/ArenaSchema";
-import BasicInfoSection from "../../components/OwnerComponents/BasicInfoSection";
-import MediaSection from "../../components/OwnerComponents/MediaSection";
-import LocationPriceSection from "../../components/OwnerComponents/LocationPriceSection";
-import FeaturesSection from "../../components/OwnerComponents/FeaturesSection";
-import DescriptionSection from "../../components/OwnerComponents/DescriptionSection";
-import Sidebar from "../../components/OwnerComponents/SideBar";
 
 const AddArena = () => {
   const { t, i18n } = useTranslation();
