@@ -2,10 +2,10 @@
   "title": "أرينا بوك",
 
   "register_title": "إنشاء حساب في أرينا بوك",
-  "register_subtitle": "سجل لتبدأ رحلتك الرياضية",
+  "register_subtitle": "سجّل لتبدأ رحلتك الرياضية",
 
-  "login_title": "ادخل إلى أرينا بوك",
-  "login_subtitle": "سجل لتبدأ رحلتك الرياضية",
+  "login_title": "تسجيل الدخول إلى أرينا بوك",
+  "login_subtitle": "سجّل الدخول لمتابعة رحلتك الرياضية",
 
   "role_owner": "مالك",
   "role_user": "لاعب",
@@ -27,25 +27,39 @@
   "phone": "رقم الهاتف",
   "phone_placeholder": "أدخل رقم هاتفك",
   "phone_required": "رقم الهاتف مطلوب",
-  "phone_invalid": "يجب إدخال رقم هاتف مصري صالح",
+  "phone_invalid": "يرجى إدخال رقم هاتف مصري صحيح",
 
   "password": "كلمة المرور",
   "password_placeholder": "أدخل كلمة المرور",
   "password_required": "كلمة المرور مطلوبة",
-  "password_invalid": "يجب أن تحتوي كلمة المرور على حرف كبير وصغير ورقم على الأقل",
+  "password_invalid": "يجب أن تحتوي كلمة المرور على حرف كبير وحرف صغير ورقم واحد على الأقل",
 
   "confirm_password": "تأكيد كلمة المرور",
   "confirm_password_placeholder": "أعد إدخال كلمة المرور",
   "confirm_password_required": "تأكيد كلمة المرور مطلوب",
-  "password_not_match": "كلمة المرور غير متطابقة",
+  "password_not_match": "كلمتا المرور غير متطابقتين",
 
   "create_account": "إنشاء حساب",
-  "already_have_account": "لدي حساب بالفعل؟ تسجيل الدخول",
+  "already_have_account": "هل لديك حساب بالفعل؟ سجّل الدخول",
 
   "login_button": "تسجيل الدخول",
   "forgot_password": "هل نسيت كلمة المرور؟",
   "or": "أو",
 
   "continue_google": "المتابعة باستخدام جوجل",
-  "continue_facebook": "المتابعة باستخدام فيسبوك"
+  "continue_facebook": "المتابعة باستخدام فيسبوك",
+
+  "reservation": {
+    "step1": "تحديد التاريخ والوقت",
+    "step2": "إضافات",
+    "step3": "تأكيد الحجز",
+    "previous": "السابق",
+    "next": "التالي",
+     "available_times": "أوقات متاحة",
+  "select_preferred_time": "حدد الوقت المفضل لحجز الملعب"
+  },
+  "errors" :{
+  "EMAIL_IN_USE": "البريد الإلكتروني موجود بالفعل",
+  "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+}
 }
