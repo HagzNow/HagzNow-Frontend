@@ -34,7 +34,7 @@ export default function Hero() {
             الملاعب الرياضية. ابحث، قارِن، واحجز خلال دقائق.
           </p>
           <Link
-            to="/addarena"
+            to="/booking"
             className="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-md shadow transition"
           >
             احجز ملعبك الآن

@@ -7,7 +7,7 @@ import StadiumInfo from './components/StaduimInfo'
 import StadiumMap from './components/StaduimMap'
 import StaduimReviews from './components/StaduimReviews'
 
-const AddArena = () => {
+const BookingArena = () => {
   return (
     <>
     <Navbar/>
@@ -36,4 +36,4 @@ const AddArena = () => {
   )
 }
 
-export default AddArena
+export default BookingArena
