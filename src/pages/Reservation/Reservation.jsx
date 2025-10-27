@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BookingStepper from "../../components/BookingStepper/BookingStepper";
 import { Box } from "@mui/material";
 import ReservationStep from "../../components/Steps/ReservationStep";
 import { useTranslation } from "react-i18next";
-
+import { reservationContext } from "../../Contexts/ReservationContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Reservation() {
   const { t } = useTranslation();
+  let navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
+  let { getExtras, extras } = useContext(reservationContext);
 
   const steps = [
     t("reservation.step1"),
@@ -21,7 +24,16 @@ export default function Reservation() {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (extras.length == 0) {
+      navigate("/reservationDetails");
+    } else {
+      navigate("/");
+    }
   };
+
+  useEffect(() => {
+    getExtras();
+  }, []);
 
   return (
     <div className="flex flex-col space-y-5 justify-center items-center py-5">

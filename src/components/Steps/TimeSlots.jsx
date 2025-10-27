@@ -1,22 +1,28 @@
 import { useContext, useState } from "react";
 import { reservationContext } from "../../Contexts/ReservationContext";
 import Loader from "../Loader/Loader";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "./../LanguageSelector/LanguageSelector";
 
 export default function TimeSlots() {
-  let { times, loading } = useContext(reservationContext);
+  const { times, loading } = useContext(reservationContext);
   const [selectedTime, setSelectedTime] = useState(null);
+  const { i18n } = useTranslation();
 
   const formatTime = (time) => {
     if (typeof time !== "number") return "Invalid time";
 
-    const hours = Math.floor(time / 100);
-    const minutes = time % 100;
+    let hour = time;
+    const suffix = hour >= 12 ? "PM" : "AM";
 
-    const suffix = hours >= 12 ? "PM" : "AM";
-    const formattedHours = ((hours + 11) % 12) + 1;
-    const formattedMinutes = minutes.toString().padStart(2, "0");
+    if (hour === 0) hour = 12;
+    if (hour > 12) hour -= 12;
 
-    return `${formattedHours}:${formattedMinutes} ${suffix}`;
+    if (i18n.language === "ar") {
+      return `${hour} ${suffix === "AM" ? "ص" : "م"}`;
+    }
+
+    return `${hour} ${suffix}`;
   };
 
   if (loading) return <Loader />;
