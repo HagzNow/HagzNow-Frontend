@@ -1,12 +1,8 @@
-export default function StadiumInfo() {
+export default function StadiumInfo({ description, policy, extras }) {
   return (
     <div className="bg-white rounded-md shadow p-6">
       <h2 className="text-lg font-bold text-green-700 mb-2">وصف الملعب</h2>
-      <p className="text-slate-700 leading-relaxed mb-4">
-        ملعب الأبطال هو واحد من أحدث الملاعب الرياضية المجهزة بأفضل أنظمة الإضاءة
-        والعشب الصناعي عالي الجودة. مناسب لكرة القدم والخماسيات، ويوفر بيئة مثالية
-        للعب الترفيهي والمنافسات الرسمية.
-      </p>
+      <p className="text-slate-700 leading-relaxed mb-4">{description}</p>
 
       <h3 className="font-semibold text-green-700 mb-1">القواعد والأنظمة</h3>
       <ul className="list-disc list-inside text-slate-600 mb-3">
@@ -16,12 +12,18 @@ export default function StadiumInfo() {
       </ul>
 
       <h3 className="font-semibold text-green-700 mb-1">السياسات</h3>
-      <p className="text-slate-600 text-sm">يُسمح بالإلغاء قبل 24 ساعة من موعد الحجز.</p>
+      <p className="text-slate-600 text-sm">{policy}</p>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">غرف تبديل</span>
-        <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">إضاءة ليلية</span>
-        <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">موقف سيارات</span>
+      <h3 className="font-semibold text-green-700 mb-2 mt-4">الخدمات الإضافية</h3>
+      <div className="flex flex-wrap gap-2">
+        {extras.map((extra) => (
+          <span
+            key={extra.id}
+            className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full"
+          >
+            {extra.name} ({extra.price} جنيه)
+          </span>
+        ))}
       </div>
     </div>
   );

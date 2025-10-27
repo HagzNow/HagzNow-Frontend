@@ -1,11 +1,22 @@
-export default function StadiumImage() {
+import React from "react";
+
+const StadiumImage = ({ images = [], name }) => {
+  if (!images.length) return <p className="text-center">لا توجد صور متاحة</p>;
+
   return (
-    <div className="rounded-lg overflow-hidden shadow-md">
-      <img
-        src="https://images.unsplash.com/photo-1509023915371-3d5aa6c3d2a0?q=80&w=1600"
-        alt="ملعب الأبطال"
-        className="w-full h-64 sm:h-80 md:h-96 object-cover"
-      />
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      {images.map((img) => (
+        <img
+          key={img.id}
+          //src={`src/assets/${img.path}`}
+           // src={new URL(`../../assets/uploads/arenas/${img.path.split('/').pop()}`, import.meta.url).href}
+             src={`/uploads/arenas/${img.path.split('/').pop()}`}
+          alt={name}
+          className="w-full h-64 object-cover rounded-lg shadow"
+        />
+      ))}
     </div>
   );
-}
+};
+
+export default StadiumImage;
