@@ -11,6 +11,7 @@ export default function UserArenas() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [filters, setFilters] = useState({
+        categoryId: '',
         location: '',
         sport: '',
         minPrice: '',
