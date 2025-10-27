@@ -4,6 +4,9 @@ import Login from "./pages/Login/Login";
 import Layout from "./components/Layout/Layout";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
+
+import UserArenas from "./pages/UserArenas/UserArenas";
+import AdminArenaRequests from "./pages/AdminArenaRequests/AdminArenaRequests";
 import Reservation from "./pages/Reservation/Reservation";
 import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
 import AuthContextProvider from "./Contexts/AuthContext";
@@ -24,6 +27,12 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/home", element: <Home /> },
+        // <<<<<<< HEAD
+        //         { path: "/login", element: <Login /> },
+        //         { path: "register", element: <Register /> },
+        //         { path: "user-arena", element: <UserArenas /> },
+        //         { path: "admin-arena-requests", element: <AdminArenaRequests /> },
+        // =======
 
         // {
         //   path: "/login",
@@ -82,6 +91,23 @@ function App() {
             // </ProtectedRoutes>
           ),
         },
+        {
+          path: "/user-arena",
+          element: (
+            <ProtectedRoutes role="user">
+              <UserArenas />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/admin-arena-requests",
+          element: (
+            <ProtectedRoutes role="admin">
+              <AdminArenaRequests />
+            </ProtectedRoutes>
+          ),
+        },
+        // >>>>>>> origin/master
       ],
     },
   ]);
