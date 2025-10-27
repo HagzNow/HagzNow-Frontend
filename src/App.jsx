@@ -27,29 +27,29 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/home", element: <Home /> },
-        // <<<<<<< HEAD
-        //         { path: "/login", element: <Login /> },
-        //         { path: "register", element: <Register /> },
-        //         { path: "user-arena", element: <UserArenas /> },
-        //         { path: "admin-arena-requests", element: <AdminArenaRequests /> },
-        // =======
+        
+                { path: "/login", element: <Login /> },
+                 { path: "register", element: <Register /> },
+                 { path: "user-arena", element: <UserArenas /> },
+                { path: "admin-arena-requests", element: <AdminArenaRequests /> },
+       
 
-        // {
-        //   path: "/login",
-        //   element: (
-        //     // <ProtectedLoginAndRegister>
-        //       <Login />
-        //     // </ProtectedLoginAndRegister>
-        //   ),
-        // },
-        // {
-        //   path: "/register",
-        //   element: (
-        //     // <ProtectedLoginAndRegister>
-        //       <Register />
-        //     // </ProtectedLoginAndRegister>
-        //   ),
-        // },
+        {
+          path: "/login",
+          element: (
+            // <ProtectedLoginAndRegister>
+              <Login />
+            // </ProtectedLoginAndRegister>
+          ),
+        },
+        {
+          path: "/register",
+          element: (
+            // <ProtectedLoginAndRegister>
+              <Register />
+            // </ProtectedLoginAndRegister>
+          ),
+        },
 
         {
           path: "/reservation",
@@ -107,7 +107,7 @@ function App() {
             </ProtectedRoutes>
           ),
         },
-        // >>>>>>> origin/master
+     
       ],
     },
   ]);

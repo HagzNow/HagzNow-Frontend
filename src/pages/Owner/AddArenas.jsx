@@ -1,7 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import { useTranslation } from "react-i18next";
-
 import Header from "../../components/OwnerComponents/Header";
 import Sidebar from "../../components/OwnerComponents/Sidebar";
 import LocationPriceSection from "../../components/OwnerComponents/AddArenaComponents/LocationPriceSection";
@@ -11,8 +10,6 @@ import MediaSection from "../../components/OwnerComponents/AddArenaComponents/Me
 import BasicInfoSection from "../../components/OwnerComponents/AddArenaComponents/BasicInfoSection";
 import ArenaSchema from "../../components/OwnerComponents/AddArenaComponents/ArenaSchema";
 
-
-
 const AddArena = () => {
   const { t, i18n } = useTranslation();
   const [mainImage, setMainImage] = useState(null);
@@ -21,34 +18,36 @@ const AddArena = () => {
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
-      {/* Header */}
+      {/* ✅ Header */}
       <Header onMenuClick={() => setSidebarOpen(true)} />
 
-      {/* Main Layout */}
-      <div className="max-w-7xl mx-auto px-4 py-6 grid md:grid-cols-12 gap-6">
-        {/* Sidebar */}
+      <div className="flex">
+        {/* ✅ Sidebar */}
         <div className="md:col-span-3 hidden md:block">
           <Sidebar open={true} onClose={() => setSidebarOpen(false)} />
         </div>
 
-        {/* Form Section */}
-        <div className="md:col-span-9">
+        {/* ✅ Main Content */}
+        <main className="flex-1 max-w-7xl mx-auto px-4 py-6">
+          {/* ✅ Language Switcher */}
+          <div className="flex justify-end mb-4">
+            <button
+              className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 transition"
+              onClick={() =>
+                i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
+              }
+            >
+              {i18n.language === "en" ? "العربية" : "English"}
+            </button>
+          </div>
+
+          {/* ✅ Page Title */}
+          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+            {t("addArenaTitle")}
+          </h2>
+
+          {/* ✅ Form */}
           <div className="bg-white shadow-md rounded-2xl p-8">
-            <div className="flex justify-end mb-4">
-              <button
-                className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 transition"
-                onClick={() =>
-                  i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
-                }
-              >
-                {i18n.language === "en" ? "العربية" : "English"}
-              </button>
-            </div>
-
-            <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">
-              {t("addArenaTitle")}
-            </h2>
-
             <Formik
               initialValues={{
                 name: "",
@@ -95,10 +94,10 @@ const AddArena = () => {
               )}
             </Formik>
           </div>
-        </div>
+        </main>
       </div>
 
-      {/* Sidebar for mobile */}
+      {/* ✅ Sidebar for Mobile */}
       <div className="md:hidden">
         <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       </div>
