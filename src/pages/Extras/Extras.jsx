@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { reservationContext } from "../../Contexts/ReservationContext";
 import { useParams } from "react-router-dom";
 
 export default function Extras() {
-  const [selected, setSelected] = useState([]);
-  let { getExtras, extras } = useContext(reservationContext);
+  const { getExtras, extras, selectedExtras, setSelectedExtras } =
+    useContext(reservationContext);
+
   let { id } = useParams();
 
   useEffect(() => {
@@ -12,11 +13,15 @@ export default function Extras() {
   }, [id]);
 
   const toggleSelect = (extraId) => {
-    setSelected((prev) =>
-      prev.includes(extraId)
-        ? prev.filter((x) => x !== extraId)
-        : [...prev, extraId]
-    );
+    setSelectedExtras((prev) => {
+      const isSelected = prev.includes(extraId);
+      if (isSelected) {
+        return prev.filter((id) => id !== extraId);
+      } else {
+        return [...prev, extraId];
+      }
+    });
+    console.log(selectedExtras);
   };
 
   return (
@@ -33,7 +38,7 @@ export default function Extras() {
           <div
             key={extra?.id}
             className={`flex items-center justify-between p-4 rounded-xl transition-all duration-300 border hover:shadow-md ${
-              selected.includes(extra.id)
+              selectedExtras.includes(extra.id)
                 ? "bg-green-50 border-green-300"
                 : "bg-gray-50 border-gray-200"
             } ${!extra.isActive ? "opacity-50 pointer-events-none" : ""}`}
@@ -41,7 +46,7 @@ export default function Extras() {
             <div className="flex items-center gap-4">
               <input
                 type="checkbox"
-                checked={selected.includes(extra.id)}
+                checked={selectedExtras.includes(extra.id)}
                 onChange={() => toggleSelect(extra.id)}
                 className="w-5 h-5 accent-green-600 cursor-pointer rounded"
                 disabled={!extra.isActive}

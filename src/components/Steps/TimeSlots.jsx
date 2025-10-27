@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { reservationContext } from "../../Contexts/ReservationContext";
 import Loader from "../Loader/Loader";
 import { useTranslation } from "react-i18next";
 
 export default function TimeSlots() {
-  const { times, loading } = useContext(reservationContext);
-  const [selectedTimes, setSelectedTimes] = useState([]);
+  const { times, loading, slots, setSlots } = useContext(reservationContext);
+
   const { i18n } = useTranslation();
 
   const formatTime = (time) => {
@@ -25,20 +25,17 @@ export default function TimeSlots() {
   };
 
   const toggleTime = (time) => {
-    if (selectedTimes.includes(time)) {
-      setSelectedTimes(selectedTimes.filter((t) => t !== time));
-    } else {
-      setSelectedTimes([...selectedTimes, time]);
-    }
+    setSlots((prev) =>
+      prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]
+    );
   };
-
   if (loading) return <Loader />;
 
   return (
     <>
       {times?.map((time, i) => {
         const formatted = formatTime(time);
-        const isSelected = selectedTimes.includes(time);
+        const isSelected = slots.includes(time);
 
         return (
           <button

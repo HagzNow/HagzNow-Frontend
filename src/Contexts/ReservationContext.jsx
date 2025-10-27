@@ -13,6 +13,7 @@ export default function ReservationContextProvider({ children }) {
   let [times, setTimes] = useState([]);
   let [loading, setLoading] = useState(false);
   let [extras, setExtras] = useState(null);
+  const [selectedExtras, setSelectedExtras] = useState([]);
 
   async function getTimeAvailable(
     selectedDate,
@@ -74,6 +75,8 @@ export default function ReservationContextProvider({ children }) {
         arenaId,
         setArenaId,
         submitReservation,
+        setSelectedExtras,
+        selectedExtras,
       }}
     >
       {children}

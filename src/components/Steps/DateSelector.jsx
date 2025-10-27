@@ -7,14 +7,17 @@ import { reservationContext } from "../../Contexts/ReservationContext";
 import { useParams } from "react-router-dom";
 
 export default function DateSelector() {
-  let { getTimeAvailable, date } = useContext(reservationContext);
+  let { getTimeAvailable, date, setDate, setArenaId } =
+    useContext(reservationContext);
   let { id } = useParams();
 
   function handleChange(newDate) {
+    setDate(newDate);
     getTimeAvailable(newDate, id);
   }
 
   useEffect(() => {
+    setArenaId(id);
     getTimeAvailable(date, id);
   }, []);
 
