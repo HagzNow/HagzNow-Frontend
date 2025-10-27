@@ -11,6 +11,9 @@ import ProtectedLoginAndRegister from "./Routes/protectedLoginAndRegister";
 import ProtectedRoutes from "./Routes/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import ManualBookingForm from "./pages/Owner/ManualBooking";
+import ArenaCardPremium from "./components/OwnerComponents/ArenaCardComponent/ArenaCard";
+import AddArena from "./pages/Owner/AddArenas";
 
 function App() {
   const { i18n } = useTranslation();
@@ -22,37 +25,61 @@ function App() {
       children: [
         { path: "/home", element: <Home /> },
 
-        {
-          path: "/login",
-          element: (
-            <ProtectedLoginAndRegister>
-              <Login />
-            </ProtectedLoginAndRegister>
-          ),
-        },
-        {
-          path: "/register",
-          element: (
-            <ProtectedLoginAndRegister>
-              <Register />
-            </ProtectedLoginAndRegister>
-          ),
-        },
+        // {
+        //   path: "/login",
+        //   element: (
+        //     // <ProtectedLoginAndRegister>
+        //       <Login />
+        //     // </ProtectedLoginAndRegister>
+        //   ),
+        // },
+        // {
+        //   path: "/register",
+        //   element: (
+        //     // <ProtectedLoginAndRegister>
+        //       <Register />
+        //     // </ProtectedLoginAndRegister>
+        //   ),
+        // },
 
         {
           path: "/reservation",
           element: (
-            <ProtectedRoutes role="user">
+            // <ProtectedRoutes role="user">
               <Reservation />
-            </ProtectedRoutes>
+            // </ProtectedRoutes>
           ),
         },
         {
           path: "/reservationDetails",
           element: (
-            <ProtectedRoutes role="user">
+            // <ProtectedRoutes role="user">
               <ReservationDetails />
-            </ProtectedRoutes>
+            // </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/addarena",
+          element: (
+            // <ProtectedRoutes role="user">
+              <AddArena />
+            // </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/manualbooking",
+          element: (
+            // <ProtectedRoutes role="user">
+              <ManualBookingForm />
+            // </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/arenacard",
+          element: (
+            // <ProtectedRoutes role="user">
+              <ArenaCardPremium />
+            // </ProtectedRoutes>
           ),
         },
       ],
