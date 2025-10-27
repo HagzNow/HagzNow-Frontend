@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "Arena One",
+    "sportType": "football",
+    "location": "Cairo, Egypt",
+    "addressDescription": "Near Nile River",
+    "price": 150,
+    "description": "أفضل صالة كرة قدم في القاهرة.",
+    "features": ["greatLocation", "wifi", "parking"],
+    "notes": "مفتوحة طوال الأسبوع",
+    "status": "active",
+    "latitude": 30.0444,
+    "longitude": 31.2357,
+    "mainImage": "arena1.jpg",
+    "galleryImages": ["arena1-1.jpg", "arena1-2.jpg"]
+  },
+  {
+    "id": 2,
+    "name": "Arena Two",
+    "sportType": "basketball",
+    "location": "Giza, Egypt",
+    "addressDescription": "Next to Pyramid",
+    "price": 200,
+    "description": "صالة كرة سلة مجهزة بالكامل.",
+    "features": ["wifi", "stands", "nightLighting"],
+    "notes": "",
+    "status": "inactive",
+    "latitude": 30.0131,
+    "longitude": 31.2089,
+    "mainImage": "arena2.jpg",
+    "galleryImages": ["arena2-1.jpg"]
+  }
+]
