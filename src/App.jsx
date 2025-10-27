@@ -29,36 +29,31 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/home", element: <Home /> },
-        // <<<<<<< HEAD
-        //         { path: "/login", element: <Login /> },
-        //         { path: "register", element: <Register /> },
-        //         { path: "user-arena", element: <UserArenas /> },
-        //         { path: "admin-arena-requests", element: <AdminArenaRequests /> },
-        // =======
+       
 
-        // {
-        //   path: "/login",
-        //   element: (
-        //     // <ProtectedLoginAndRegister>
-        //       <Login />
-        //     // </ProtectedLoginAndRegister>
-        //   ),
-        // },
-        // {
-        //   path: "/register",
-        //   element: (
-        //     // <ProtectedLoginAndRegister>
-        //       <Register />
-        //     // </ProtectedLoginAndRegister>
-        //   ),
-        // },
+        {
+          path: "/login",
+          element: (
+            <ProtectedLoginAndRegister>
+              <Login />
+            </ProtectedLoginAndRegister>
+          ),
+        },
+        {
+          path: "/register",
+          element: (
+            <ProtectedLoginAndRegister>
+              <Register />
+            </ProtectedLoginAndRegister>
+          ),
+        },
 
         {
           path: "/reservation/:id",
           element: (
-            // <ProtectedRoutes role="user">
+            <ProtectedRoutes role="user">
               <Reservation />
-            // </ProtectedRoutes>
+            </ProtectedRoutes>
           ),
         },
         {
@@ -72,33 +67,33 @@ function App() {
         {
           path: "/reservationDetails",
           element: (
-            // <ProtectedRoutes role="user">
+            <ProtectedRoutes role="user">
               <ReservationDetails />
-            // </ProtectedRoutes>
+            </ProtectedRoutes>
           ),
         },
         {
           path: "/addarena",
           element: (
-            // <ProtectedRoutes role="user">
+            <ProtectedRoutes role="user">
               <AddArena />
-            // </ProtectedRoutes>
+            </ProtectedRoutes>
           ),
         },
         {
           path: "/manualbooking",
           element: (
-            // <ProtectedRoutes role="user">
+            <ProtectedRoutes role="user">
               <ManualBookingForm />
-            // </ProtectedRoutes>
+            </ProtectedRoutes>
           ),
         },
         {
           path: "/arenacard",
           element: (
-            // <ProtectedRoutes role="user">
+            <ProtectedRoutes role="user">
               <ArenaCardPremium />
-            // </ProtectedRoutes>
+            </ProtectedRoutes>
           ),
         },
         {
@@ -117,7 +112,7 @@ function App() {
             </ProtectedRoutes>
           ),
         },
-        // >>>>>>> origin/master
+        
       ],
     },
   ]);
