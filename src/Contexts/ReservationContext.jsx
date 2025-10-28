@@ -16,7 +16,7 @@ export default function ReservationContextProvider({ children }) {
   const [selectedExtras, setSelectedExtras] = useState([]);
 
   async function getTimeAvailable(
-    selectedDate,
+    selectedDate = date,
     arenaId = "6bff58ed-88b7-4a31-bfbb-2a2f26ee3f47"
   ) {
     setDate(selectedDate);
@@ -44,10 +44,20 @@ export default function ReservationContextProvider({ children }) {
     console.log("Reservation payload:", payload);
     try {
       let { data } = await baseUrl.post("/reservations/", payload);
+      console.log(data);
+
       return data;
     } catch (error) {
       console.log(error);
     }
+  }
+
+
+
+  function cancelAndUpdateReservation() {
+    setSlots([]);
+    setSelectedExtras([]);
+    setDate(dayjs());
   }
 
   async function getExtras(arenaId = "6bff58ed-88b7-4a31-bfbb-2a2f26ee3f47") {
@@ -77,6 +87,7 @@ export default function ReservationContextProvider({ children }) {
         submitReservation,
         setSelectedExtras,
         selectedExtras,
+        cancelAndUpdateReservation,
       }}
     >
       {children}

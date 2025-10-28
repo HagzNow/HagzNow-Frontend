@@ -12,13 +12,13 @@ export default function Extras() {
     getExtras(id);
   }, [id]);
 
-  const toggleSelect = (extraId) => {
+  const toggleSelect = (extraName) => {
     setSelectedExtras((prev) => {
-      const isSelected = prev.includes(extraId);
+      const isSelected = prev.includes(extraName);
       if (isSelected) {
-        return prev.filter((id) => id !== extraId);
+        return prev.filter((name) => name !== extraName);
       } else {
-        return [...prev, extraId];
+        return [...prev, extraName];
       }
     });
     console.log(selectedExtras);
@@ -38,7 +38,7 @@ export default function Extras() {
           <div
             key={extra?.id}
             className={`flex items-center justify-between p-4 rounded-xl transition-all duration-300 border hover:shadow-md ${
-              selectedExtras.includes(extra.id)
+              selectedExtras.includes(extra.name)
                 ? "bg-green-50 border-green-300"
                 : "bg-gray-50 border-gray-200"
             } ${!extra.isActive ? "opacity-50 pointer-events-none" : ""}`}
@@ -46,8 +46,8 @@ export default function Extras() {
             <div className="flex items-center gap-4">
               <input
                 type="checkbox"
-                checked={selectedExtras.includes(extra.id)}
-                onChange={() => toggleSelect(extra.id)}
+                checked={selectedExtras.includes(extra.name)}
+                onChange={() => toggleSelect(extra.name)}
                 className="w-5 h-5 accent-green-600 cursor-pointer rounded"
                 disabled={!extra.isActive}
               />
@@ -76,12 +76,6 @@ export default function Extras() {
           </div>
         ))}
       </div>
-
-      {extras?.length === 0 && (
-        <div className="text-center text-gray-500 py-8 border rounded-xl mt-4">
-          لا توجد خدمات إضافية متاحة حاليًا.
-        </div>
-      )}
     </div>
   );
 }

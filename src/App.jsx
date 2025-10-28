@@ -20,6 +20,7 @@ import ManualBookingForm from "./pages/Owner/ManualBooking";
 import ArenaCardPremium from "./components/OwnerComponents/ArenaCardComponent/ArenaCard";
 import AddArena from "./pages/Owner/AddArenas";
 import BookingArena from "./pages/BookingArena/BookingArena";
+import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
 
 function App() {
   const { i18n } = useTranslation();
@@ -92,9 +93,17 @@ function App() {
         {
           path: "/arenacard",
           element: (
-            <ProtectedRoutes role="user">
-              <ArenaCardPremium />
-            </ProtectedRoutes>
+            // <ProtectedRoutes role="user">
+            <ArenaCardPremium />
+            // </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/confirm",
+          element: (
+            // <ProtectedRoutes role="user">
+            <ConfirmReservation />
+            // </ProtectedRoutes>
           ),
         },
         {
