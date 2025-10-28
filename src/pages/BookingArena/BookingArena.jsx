@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+
 import StaduimReviews from "./components/StaduimReviews";
 import StadiumHeader from "./components/StaduimHeader";
 import StadiumMap from "./components/StaduimMap";
@@ -30,17 +29,18 @@ const BookingArena = () => {
     fetchArena();
   }, [id]);
 
-  if (loading) return <p className="text-center mt-10">جاري تحميل بيانات الملعب...</p>;
-  if (!arena) return <p className="text-center mt-10">حدث خطأ أثناء تحميل البيانات.</p>;
+  if (loading)
+    return <p className="text-center mt-10">جاري تحميل بيانات الملعب...</p>;
+  if (!arena)
+    return <p className="text-center mt-10">حدث خطأ أثناء تحميل البيانات.</p>;
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-slate-50 py-8">
         <div className="container mx-auto px-4">
           <StadiumImage images={arena.images} name={arena.name} />
           {console.log(arena.images)}
-          <StadiumHeader name={arena.name} />
+          <StadiumHeader name={arena.name} id={arena.id} />
           <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2 space-y-4">
               <StadiumInfo
@@ -56,7 +56,6 @@ const BookingArena = () => {
           <StaduimReviews />
         </div>
       </div>
-      <Footer />
     </>
   );
 };

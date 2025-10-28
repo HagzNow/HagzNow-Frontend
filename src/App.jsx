@@ -31,7 +31,6 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/home", element: <Home /> },
-       
 
         {
           path: "/login",
@@ -108,11 +107,7 @@ function App() {
         },
         {
           path: "/user-arena",
-          element: (
-            <ProtectedRoutes role="user">
-              <UserArenas />
-            </ProtectedRoutes>
-          ),
+          element: <UserArenas />,
         },
         {
           path: "/admin-arena-requests",
@@ -125,9 +120,9 @@ function App() {
         {
           path: "/booking/:id",
           element: (
-           // <ProtectedRoutes role="user">
-              <BookingArena />
-           // </ProtectedRoutes>
+            // <ProtectedRoutes role="user">
+            <BookingArena />
+            // </ProtectedRoutes>
           ),
         },
       ],

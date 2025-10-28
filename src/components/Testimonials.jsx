@@ -6,12 +6,12 @@ export default function Testimonials() {
   const testimonials = [
     {
       img: Image1,
-      name: "يوسف أحمد",
+      name: "ساره علي",
       text: "الدعم ممتاز والعملية سلسة. لم أعد أجد صعوبة في حجز ملاعبي المفضلة.",
     },
     {
       img: Image2,
-      name: "سارة محمود",
+      name: "اسامه محمد",
       text: "واجهة رائعة ومجموعة كبيرة من الملاعب. أوصي به بشدة لكل رياضي.",
     },
     {

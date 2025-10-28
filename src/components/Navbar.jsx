@@ -1,16 +1,20 @@
+import { useContext } from "react";
 import { CiSearch } from "react-icons/ci";
 import { Link } from "react-router-dom";
+import { authContext } from "../Contexts/AuthContext";
 
 const Navbar = () => {
+  const { logout } = useContext(authContext);
+
   return (
     <nav className="bg-green-700 text-white py-3 px-6 shadow-md">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
         {/* ✅ اللوجو + السيرش */}
         <div className="flex items-center justify-center lg:justify-start gap-8 w-full lg:w-auto">
           {/* اللوجو */}
-          <span className="text-2xl font-bold whitespace-nowrap">
+          <Link to="/home" className="text-2xl font-bold whitespace-nowrap">
             ArenaBook
-          </span>
+          </Link>
 
           {/* مربع البحث */}
           <div className="relative w-full sm:w-[240px] md:w-[280px] lg:w-[300px]">
@@ -48,21 +52,31 @@ const Navbar = () => {
         </div>
 
         {/* أزرار الدخول / التسجيل */}
-        <div className="inline-flex rounded-md overflow-hidden shadow bg-white text-green-700">
+        {!localStorage.getItem("token") ? (
+          <div className="inline-flex rounded-md overflow-hidden shadow bg-white text-green-700">
+            <Link
+              to="login"
+              className="px-3 py-1 hover:bg-green-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+            >
+              تسجيل الدخول
+            </Link>
+            <div className="w-px bg-green-200/60" />
+            <Link
+              to="register"
+              className="px-3 py-1 hover:bg-green-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+            >
+              التسجيل
+            </Link>
+          </div>
+        ) : (
           <Link
             to="/login"
-            className="px-3 py-1 hover:bg-green-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+            className="px-3 py-1 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 bg-red-600 rounded-2xl"
+            onClick={logout}
           >
-            تسجيل الدخول
+            تسجيل خروج
           </Link>
-          <div className="w-px bg-green-200/60" />
-          <Link
-            to="/register"
-            className="px-3 py-1 hover:bg-green-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-          >
-            التسجيل
-          </Link>
-        </div>
+        )}
       </div>
     </nav>
   );

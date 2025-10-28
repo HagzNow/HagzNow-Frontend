@@ -1,6 +1,7 @@
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { PiSoccerBall } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
 
 export default function ArenaCard({
   title,
@@ -9,13 +10,20 @@ export default function ArenaCard({
   price,
   rating,
   image,
+  id,
 }) {
+  const navigate = useNavigate();
+  function handleCardClick() {
+    // Navigate to booking page
+    navigate(`/booking/${id}`);
+  }
   const stars = [1, 2, 3, 4, 5];
 
   return (
     <div
       dir="rtl"
       className="w-80 bg-white rounded-2xl shadow-md overflow-hidden"
+      onClick={handleCardClick}
     >
       {/* Image */}
       <img src={image} alt="playground" className="w-full h-50 object-cover" />

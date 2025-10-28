@@ -1,78 +1,69 @@
-  import React from "react";
+import { FaStar, FaRegStar } from "react-icons/fa";
+import { IoLocationOutline } from "react-icons/io5";
+import { PiSoccerBall } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
 
-const ArenaCardPremium = ({ arena }) => {
-  const a = arena || {};
+export default function ArenaCard({
+  id,
+  title,
+  location,
+  category,
+  price,
+  rating,
+  image,
+}) {
+  const stars = [1, 2, 3, 4, 5];
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/booking/${id}`);
+  };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-4xl mx-auto hover:shadow-2xl transition-shadow duration-300">
-      <div className="grid md:grid-cols-3 gap-6 p-6">
-        {/* Main Image */}
-        <div className="md:col-span-1">
-          {a.mainImage ? (
-            <img
-              src={a.mainImage}
-              alt={a.name || "Arena"}
-              className="w-full h-48 md:h-full object-cover rounded-xl"
-            />
-          ) : (
-            <div className="w-full h-48 md:h-full bg-gray-100 flex items-center justify-center rounded-xl text-gray-400">
-              No Image
-            </div>
+    <div
+      dir="rtl"
+      className="w-80 bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+      onClick={handleCardClick}
+    >
+      {/* Image */}
+      <img src={image} alt="playground" className="w-full h-50 object-cover" />
+
+      <div className="p-4">
+        {/* Title */}
+        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+
+        {/* Location */}
+        <div className="flex items-center text-gray-500 text-sm mt-1">
+          <IoLocationOutline className="ml-1 text-gray-500" />
+          {location}
+        </div>
+
+        {/* Category */}
+        {category && (
+          <div className="flex items-center text-gray-500 text-sm mt-1">
+            <PiSoccerBall className="ml-1 text-gray-500" />
+            {category}
+          </div>
+        )}
+
+        {/* Rating */}
+        <div className="flex items-center mt-2 gap-1">
+          <span className="text-sm font-medium text-gray-600">{rating}</span>
+          {stars.map((star, i) =>
+            rating >= star ? (
+              <FaStar key={i} className="text-yellow-400" />
+            ) : (
+              <FaRegStar key={i} className="text-gray-300" />
+            )
           )}
         </div>
 
-        {/* Details */}
-        <div className="md:col-span-2 flex flex-col justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-green-700 mb-2">{a.name || "Arena Name"}</h2>
-
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-gray-600 font-medium">{a.sportType || "Sport Type"}</span>
-              <span
-                className={`font-semibold ${
-                  a.status === "active" ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {a.status || "Inactive"}
-              </span>
-            </div>
-
-            <p className="text-gray-700 mb-2">{a.location || "Location"}</p>
-            <p className="text-gray-700 font-semibold mb-3">
-              سعر الساعة: {a.price || "-"} جنيه
-            </p>
-
-            {/* Features Badges */}
-            <div className="flex flex-wrap gap-2 mb-4">
-              {a.features && a.features.length > 0
-                ? a.features.map((f, i) => (
-                    <span
-                      key={i}
-                      className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium"
-                    >
-                      {f}
-                    </span>
-                  ))
-                : null}
-            </div>
-
-            {/* Description */}
-            {a.description && <p className="text-gray-700 text-sm mb-2">{a.description}</p>}
-          </div>
-
-          {/* Notes & Coordinates */}
-          <div className="mt-4">
-            {a.notes && <p className="text-gray-500 text-sm italic mb-2">{a.notes}</p>}
-            {a.latitude && a.longitude && (
-              <p className="text-gray-500 text-sm">
-                Lat: {a.latitude.toFixed(4)}, Lng: {a.longitude.toFixed(4)}
-              </p>
-            )}
-          </div>
+        {/* Price */}
+        <div className="flex items-center justify-end mt-3">
+          <span className="text-green-600 font-bold text-xl">{price} ج.م</span>
+          <span className="text-gray-500 text-sm mr-1">/ساعة</span>
         </div>
       </div>
     </div>
   );
-};
-
-export default ArenaCardPremium;
+}
