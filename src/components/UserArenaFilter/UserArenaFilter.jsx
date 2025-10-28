@@ -1,21 +1,73 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaRegStar, FaStar } from "react-icons/fa";
+import { categoryService } from "../../services/categoryService";
 
-export default function UserArenaFilter() {
-    const [price, setPrice] = useState(50);
-    const [rating, setRating] = useState(0);
+export default function UserArenaFilter({ onFilterChange }) {
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    // Fetch categories on component mount
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+        setLoading(true);
+        try {
+            const data = await categoryService.getCategories();
+            setCategories(data);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleApplyFilter = () => {
+        if (onFilterChange) {
+            onFilterChange({
+                categoryId: selectedCategory,
+            });
+        }
+    };
+
+    const handleCategoryChange = (e) => {
+        setSelectedCategory(e.target.value);
+    };
 
     return (
-        <div dir="ltr" className="w-full bg-white shadow-sm rounded-xl p-4 flex items-center justify-around gap-6 flex-wrap my-6">
+        <div dir="rtl" className="w-full bg-white shadow-sm rounded-xl p-4 flex items-center justify-center gap-6 flex-wrap my-6">
+
+            {/* Sport Type Dropdown */}
+            <div className="flex items-center gap-2">
+                {/* <FaSearch className="text-green-600" /> */}
+                <select
+                    value={selectedCategory}
+                    onChange={handleCategoryChange}
+                    disabled={loading}
+                    className="border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition focus:outline-none focus:ring-2 focus:ring-green-500 min-w-[150px]"
+                >
+                    <option value="">نوع الرياضة - الكل</option>
+                    {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                            {category.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
             {/* Apply Button */}
-            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg">
+            <button
+                onClick={handleApplyFilter}
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition"
+            >
                 تطبيق الفلاتر
             </button>
 
             {/* Price Range */}
-            <div className="flex flex-col items-center">
+            {/* <div className="flex flex-col items-center">
                 <span className="text-gray-600 text-sm mb-1">نطاق السعر</span>
                 <input
                     type="range"
@@ -29,21 +81,16 @@ export default function UserArenaFilter() {
                     <span>50 ج.م</span>
                     <span>200 ج.م</span>
                 </div>
-            </div>
-
-            {/* Sport Type */}
-            <button className="flex items-center border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition">
-                <FaSearch className="ml-2" /> نوع الرياضة
-            </button>
+            </div> */}
 
             {/* Date Picker */}
-            <input
+            {/* <input
                 type="date"
                 className="border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition"
-            />
+            /> */}
 
             {/* Rating */}
-            <div className="flex flex-col items-center">
+            {/* <div className="flex flex-col items-center">
                 <span className="text-gray-600 text-sm mb-1">التقييم الأدنى</span>
                 <div className="flex gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -59,7 +106,7 @@ export default function UserArenaFilter() {
                         </button>
                     ))}
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

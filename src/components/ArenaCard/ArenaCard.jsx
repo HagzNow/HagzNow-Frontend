@@ -1,7 +1,8 @@
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
+import { PiSoccerBall } from "react-icons/pi";
 
-export default function ArenaCard({ title, location, price, rating, image }) {
+export default function ArenaCard({ title, location, category, price, rating, image }) {
     const stars = [1, 2, 3, 4, 5];
 
     return (
@@ -24,6 +25,14 @@ export default function ArenaCard({ title, location, price, rating, image }) {
                     <IoLocationOutline className="ml-1 text-gray-500" />
                     {location}
                 </div>
+
+                {/* Category */}
+                {category && (
+                    <div className="flex items-center text-gray-500 text-sm mt-1">
+                        <PiSoccerBall className="ml-1 text-gray-500" />
+                        {category}
+                    </div>
+                )}
 
                 {/* Rating */}
                 <div className="flex items-center mt-2 gap-1">

@@ -14,6 +14,8 @@ import ProtectedLoginAndRegister from "./Routes/protectedLoginAndRegister";
 import ProtectedRoutes from "./Routes/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import ReservationContextProvider from "./Contexts/ReservationContext";
+import Extras from "./pages/Extras/Extras";
 import ManualBookingForm from "./pages/Owner/ManualBooking";
 import ArenaCardPremium from "./components/OwnerComponents/ArenaCardComponent/ArenaCard";
 import AddArena from "./pages/Owner/AddArenas";
@@ -28,11 +30,7 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/home", element: <Home /> },
-
-        { path: "/login", element: <Login /> },
-        { path: "register", element: <Register /> },
-        { path: "user-arena", element: <UserArenas /> },
-        { path: "admin-arena-requests", element: <AdminArenaRequests /> },
+       
 
         {
           path: "/login",
@@ -52,7 +50,7 @@ function App() {
         },
 
         {
-          path: "/reservation",
+          path: "/reservation/:id",
           element: (
             <ProtectedRoutes role="user">
               <Reservation />
@@ -60,35 +58,43 @@ function App() {
           ),
         },
         {
+          path: "/extras/:id",
+          element: (
+            <ProtectedRoutes role="user">
+              <Extras />
+            </ProtectedRoutes>
+          ),
+        },
+        {
           path: "/reservationDetails",
           element: (
-            // <ProtectedRoutes role="user">
-            <ReservationDetails />
-            // </ProtectedRoutes>
+            <ProtectedRoutes role="user">
+              <ReservationDetails />
+            </ProtectedRoutes>
           ),
         },
         {
           path: "/addarena",
           element: (
-            // <ProtectedRoutes role="user">
-            <AddArena />
-            // </ProtectedRoutes>
+            <ProtectedRoutes role="user">
+              <AddArena />
+            </ProtectedRoutes>
           ),
         },
         {
           path: "/manualbooking",
           element: (
-            // <ProtectedRoutes role="user">
-            <ManualBookingForm />
-            // </ProtectedRoutes>
+            <ProtectedRoutes role="user">
+              <ManualBookingForm />
+            </ProtectedRoutes>
           ),
         },
         {
           path: "/arenacard",
           element: (
-            // <ProtectedRoutes role="user">
-            <ArenaCardPremium />
-            // </ProtectedRoutes>
+            <ProtectedRoutes role="user">
+              <ArenaCardPremium />
+            </ProtectedRoutes>
           ),
         },
         {
@@ -122,16 +128,18 @@ function App() {
   return (
     <>
       <AuthContextProvider>
-        <Toaster
-          key={i18n.language}
-          position="bottom-left"
-          toastOptions={{
-            style: {
-              direction: i18n.language === "ar" ? "rtl" : "ltr",
-            },
-          }}
-        />
-        <RouterProvider router={routes} />
+        <ReservationContextProvider>
+          <Toaster
+            key={i18n.language}
+            position="bottom-left"
+            toastOptions={{
+              style: {
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
+              },
+            }}
+          />
+          <RouterProvider router={routes} />
+        </ReservationContextProvider>
       </AuthContextProvider>
     </>
   );

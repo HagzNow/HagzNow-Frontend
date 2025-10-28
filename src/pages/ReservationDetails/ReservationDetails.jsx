@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import arena from "../../../public/arena.jpg";
 import { MdOutlineDateRange } from "react-icons/md";
 import { FaRegClock } from "react-icons/fa";
 import { GiDuration } from "react-icons/gi";
 import { CiCreditCard1 } from "react-icons/ci";
+import { reservationContext } from "../../Contexts/ReservationContext";
 
 export default function ReservationDetails() {
+  let { selectedExtras, slots, date } = useContext(reservationContext);
+  console.log(selectedExtras);
+  console.log(slots);
+  console.log(date);
+
   return (
     <>
       <div className="max-w-6xl mx-auto p-4 py-5">
@@ -64,8 +70,8 @@ export default function ReservationDetails() {
               </div>
             </div>
             <p className=" font-bold text-thirdColor text-2xl">
-              الإجمالي : 
-               <span className=" text-mainColor font-bold"> 250 جنية مصرى </span>
+              الإجمالي :
+              <span className=" text-mainColor font-bold"> 250 جنية مصرى </span>
             </p>
           </div>
           <div>
