@@ -5,12 +5,42 @@ import { FaRegClock } from "react-icons/fa";
 import { GiDuration } from "react-icons/gi";
 import { CiCreditCard1 } from "react-icons/ci";
 import { reservationContext } from "../../Contexts/ReservationContext";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export default function ReservationDetails() {
-  let { selectedExtras, slots, date } = useContext(reservationContext);
-  console.log(selectedExtras);
-  console.log(slots);
-  console.log(date);
+  let {
+    selectedExtras,
+    slots,
+    date,
+    submitReservation,
+    cancelAndUpdateReservation,
+    arenaId,
+  } = useContext(reservationContext);
+
+  console.log(arenaId);
+
+  const navigate = useNavigate();
+  function handelSubmit() {
+    submitReservation();
+    navigate("/confirm");
+  }
+
+  function handleCancelReservation() {
+    cancelAndUpdateReservation();
+    navigate("/user-arena");
+  }
+
+  // function handleRebook() {
+  //   cancelAndUpdateReservation();
+  //   navigate(`/reservation/${arenaId}`);
+  // }
+
+  const { i18n } = useTranslation();
+  const dayName =
+    i18n.language === "ar"
+      ? date.locale("ar").format("dddd")
+      : date.locale("en").format("dddd");
 
   return (
     <>
@@ -37,7 +67,7 @@ export default function ReservationDetails() {
                 <p className=" text-sm text-gray-500 mb-2"> التاريخ : </p>
                 <div className="flex space-x-2 items-center">
                   <MdOutlineDateRange className=" text-blue-400" />
-                  <h4>الأحد، 15 ديسمبر 2024</h4>
+                  <h4>{dayName}</h4>
                 </div>
               </div>
               <div>
@@ -51,7 +81,9 @@ export default function ReservationDetails() {
                 <p className="text-sm text-gray-500 mb-2">المدة :</p>
                 <div className="flex space-x-2 items-center">
                   <GiDuration className=" text-blue-400" />
-                  <h4>ساعة واحدة</h4>
+                  <h4>
+                    {slots.length < 2 ? "ساعة واحدة" : `${slots.length} ساعات`}
+                  </h4>
                 </div>
               </div>
               <div>
@@ -65,7 +97,9 @@ export default function ReservationDetails() {
                 <p className="text-sm text-gray-500 mb-2">إضافات :</p>
                 <div className="flex space-x-2 items-center">
                   <CiCreditCard1 className=" text-blue-400" />
-                  <h4>كرة قدم قياس 5</h4>
+                  <h4>
+                    {selectedExtras.join(", ") || "لا توجد إضافات مختارة"}
+                  </h4>
                 </div>
               </div>
             </div>
@@ -77,9 +111,21 @@ export default function ReservationDetails() {
           <div>
             <h3 className=" mb-5 font-bold">الاجراءات</h3>
             <div className="flex flex-col gap-4 p-5">
-              <button className="btn bg-mainColor w-1/2">تاكيد الحجز</button>
-              <button className="btn bg-red-600 w-1/2">الغاء الحجز</button>
-              <button className="btn bg-thirdColor w-1/2">اعاده الحجز</button>
+              <button className="btn bg-mainColor w-1/2" onClick={handelSubmit}>
+                تاكيد الحجز
+              </button>
+              <button
+                className="btn bg-red-600 w-1/2"
+                onClick={handleCancelReservation}
+              >
+                الغاء الحجز
+              </button>
+              {/* <button
+                className="btn bg-thirdColor w-1/2"
+                onClick={handleRebook}
+              >
+                اعاده الحجز
+              </button> */}
             </div>
           </div>
         </div>

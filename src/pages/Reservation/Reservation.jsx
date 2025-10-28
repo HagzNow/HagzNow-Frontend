@@ -28,16 +28,18 @@ export default function Reservation() {
   };
 
   const handleNext = () => {
-    setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
+    setActiveStep((prev) => {
+      if (prev === 0 && (!extras || extras.length === 0)) {
+        return Math.min(prev + 2, steps.length - 1);
+      }
+      return Math.min(prev + 1, steps.length - 1);
+    });
   };
-
-  // ✳️ هنا بنبدّل الـ Component حسب الخطوة الحالية
   const renderStepContent = () => {
     switch (activeStep) {
       case 0:
         return <ReservationStep />;
       case 1:
-        // لو فيه extras فعلاً، يعرضها
         return extras?.length > 0 ? <Extras /> : <ReservationDetails />;
       case 2:
         return <ReservationDetails />;
@@ -52,22 +54,24 @@ export default function Reservation() {
 
       <div className="w-full flex justify-center">{renderStepContent()}</div>
 
-      <div className="w-3/4 flex justify-between items-center">
-        <button
-          onClick={handleBack}
-          disabled={activeStep === 0}
-          className="btn text-black"
-        >
-          {t("reservation.previous")}
-        </button>
-        <button
-          onClick={handleNext}
-          disabled={activeStep === steps.length - 1}
-          className="btn text-black bg-mainColor"
-        >
-          {t("reservation.next")}
-        </button>
-      </div>
+      {activeStep !== steps.length - 1 && (
+        <div className="w-3/4 flex justify-between items-center">
+          <button
+            onClick={handleBack}
+            disabled={activeStep === 0}
+            className="btn text-black"
+          >
+            {t("reservation.previous")}
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={activeStep === steps.length - 1}
+            className="btn text-black bg-mainColor"
+          >
+            {t("reservation.next")}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

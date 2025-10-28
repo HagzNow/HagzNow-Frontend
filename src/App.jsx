@@ -19,6 +19,7 @@ import Extras from "./pages/Extras/Extras";
 import ManualBookingForm from "./pages/Owner/ManualBooking";
 import ArenaCardPremium from "./components/OwnerComponents/ArenaCardComponent/ArenaCard";
 import AddArena from "./pages/Owner/AddArenas";
+import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
 
 function App() {
   const { i18n } = useTranslation();
@@ -57,7 +58,7 @@ function App() {
           path: "/reservation/:id",
           element: (
             // <ProtectedRoutes role="user">
-              <Reservation />
+            <Reservation />
             // </ProtectedRoutes>
           ),
         },
@@ -73,7 +74,7 @@ function App() {
           path: "/reservationDetails",
           element: (
             // <ProtectedRoutes role="user">
-              <ReservationDetails />
+            <ReservationDetails />
             // </ProtectedRoutes>
           ),
         },
@@ -81,7 +82,7 @@ function App() {
           path: "/addarena",
           element: (
             // <ProtectedRoutes role="user">
-              <AddArena />
+            <AddArena />
             // </ProtectedRoutes>
           ),
         },
@@ -89,7 +90,7 @@ function App() {
           path: "/manualbooking",
           element: (
             // <ProtectedRoutes role="user">
-              <ManualBookingForm />
+            <ManualBookingForm />
             // </ProtectedRoutes>
           ),
         },
@@ -97,7 +98,15 @@ function App() {
           path: "/arenacard",
           element: (
             // <ProtectedRoutes role="user">
-              <ArenaCardPremium />
+            <ArenaCardPremium />
+            // </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/confirm",
+          element: (
+            // <ProtectedRoutes role="user">
+            <ConfirmReservation />
             // </ProtectedRoutes>
           ),
         },
