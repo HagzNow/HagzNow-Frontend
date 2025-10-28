@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import arena from "/public/arena.jpg";
 
 export default function Hero() {
   return (
@@ -7,7 +8,7 @@ export default function Hero() {
       <div className="relative container mx-auto h-[280px] sm:h-[360px] md:h-[420px] overflow-hidden rounded-xl shadow-lg">
         {/* الخلفية */}
         <img
-          src="https://images.unsplash.com/photo-1521417538736-0a5f1a6f3cdd?q=80&w=1600&auto=format&fit=crop"
+          src={arena}
           alt="ملعب رياضي"
           className="absolute inset-0 w-full h-full object-cover"
         />

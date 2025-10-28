@@ -11,11 +11,11 @@ export default function Home() {
   return (
    
     <>
-      <Navbar/>
+  
       <Hero/>
       <Features/>
       <Testimonials/>
-      <Footer/>
+      
     </>
   
    
