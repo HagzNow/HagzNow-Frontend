@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { categoryService } from "../../services/categoryService";
+import { CiSearch } from "react-icons/ci";
 
 export default function UserArenaFilter({ onFilterChange }) {
     const [categories, setCategories] = useState([]);
@@ -56,6 +57,15 @@ export default function UserArenaFilter({ onFilterChange }) {
                         </option>
                     ))}
                 </select>
+
+                <div className="relative w-full sm:w-[240px] md:w-[280px] lg:w-[300px]">
+                    <CiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-green-600 w-5 h-5 pointer-events-none" />
+                    <input
+                        type="text"
+                        placeholder="ابحث عن ملعب ..."
+                        className="w-full py-2 pr-10 pl-3 rounded-md focus:outline-none text-black-600 bg-transparent border border-green-500 focus:border-green-600 placeholder-green-300 transition"
+                    />
+                </div>
             </div>
 
             {/* Apply Button */}
