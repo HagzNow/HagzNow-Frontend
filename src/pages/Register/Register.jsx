@@ -1,16 +1,20 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { FaGoogle, FaFacebookF } from "react-icons/fa";
 import { object, string, ref } from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { authContext } from "../../Contexts/AuthContext";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const { t } = useTranslation();
   const passwordRegx = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/;
   const phoneRegx = /^01[0125][0-9]{8}$/;
   const naviagte = useNavigate();
+  let { setToken } = useContext(authContext);
+  let [loadbuttom, setLoadButtom] = useState(false);
 
   const validationSchema = object({
     fName: string().required(t("first_name_required")).min(3).max(20),
@@ -30,6 +34,8 @@ export default function Register() {
   });
 
   async function sendDataToRegister(values) {
+    const loadingToast = toast.loading("loading.....");
+    setLoadButtom(true);
     try {
       const { rePassword: _, ...userData } = values;
       const option = {
@@ -38,12 +44,20 @@ export default function Register() {
         data: userData,
       };
       const { data } = await axios.request(option);
-      localStorage.setItem("token", data.token);
+      setToken(data.data.token);
+      localStorage.setItem("token", data.data.token);
+      toast.success("Account registerd successfuly");
+      setToken(data.data.token);
       setTimeout(() => {
         naviagte("/home");
       }, 2000);
     } catch (error) {
-      console.log(error);
+      const msg = error.response?.data?.error?.code || "Unknown error";
+      const translated = t(`errors.${msg}`, { defaultValue: msg });
+      toast.error(translated);
+    } finally {
+      toast.dismiss(loadingToast);
+      setLoadButtom(false);
     }
   }
 
@@ -229,10 +243,15 @@ export default function Register() {
             </div>
 
             <button
+              disabled={loadbuttom}
               type="submit"
               className="btn bg-mainColor text-white w-full py-2 text-sm"
             >
-              {t("create_account")}
+              {loadbuttom ? (
+                <i className=" fa-solid fa-spinner fa-spin"></i>
+              ) : (
+                t("create_account")
+              )}
             </button>
 
             <p className="text-mainColor text-xs py-1">

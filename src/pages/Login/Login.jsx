@@ -1,14 +1,18 @@
-import React from "react";
 import { FaGoogle, FaFacebookF } from "react-icons/fa";
 import { object, string } from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { useContext, useState } from "react";
+import { authContext } from "../../Contexts/AuthContext";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  let { setToken } = useContext(authContext);
+  let [loadbuttom, setLoadButtom] = useState(false);
 
   const passwordRegx = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/;
 
@@ -20,6 +24,8 @@ export default function Login() {
   });
 
   async function sendDataToLogin(values) {
+    const loadingToast = toast.loading("loading.....");
+    setLoadButtom(true);
     try {
       const option = {
         url: "http://localhost:3000/auth/login",
@@ -28,12 +34,20 @@ export default function Login() {
       };
 
       const { data } = await axios.request(option);
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.data.token);
+
+      setToken(data.data.token);
+      toast.success("Login successfuly");
       setTimeout(() => {
         navigate("/home");
       }, 2000);
     } catch (error) {
-      console.log(error);
+      const msg = error.response?.data?.error?.code || "Unknown error";
+      const translated = t(`errors.${msg}`, { defaultValue: msg });
+      toast.error(translated);
+    } finally {
+      toast.dismiss(loadingToast);
+      setLoadButtom(false);
     }
   }
 
@@ -88,10 +102,15 @@ export default function Login() {
           </div>
 
           <button
+            disabled={loadbuttom}
             type="submit"
-            className="btn bg-mainColor w-full md:w-3/4 text-sm py-2"
+            className="btn bg-mainColor text-white w-full py-2 text-sm"
           >
-            {t("login_button")}
+            {loadbuttom ? (
+              <i className=" fa-solid fa-spinner fa-spin"></i>
+            ) : (
+              t("login_button")
+            )}
           </button>
 
           <p className="text-mainColor py-2 text-xs">{t("forgot_password")}</p>
