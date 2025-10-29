@@ -47,11 +47,11 @@ export default function AdminArenaCard({ title, location, sport, price, image, o
                     {/* Reject Button */}
                     <button
                         onClick={onReject}
-<<<<<<< HEAD
-                        className="flex-1 py-2 px-4 bg-red-900 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
-=======
+                        // <<<<<<< HEAD
+                        //                         className="flex-1 py-2 px-4 bg-red-900 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
+                        // =======
                         className="flex-1 py-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
->>>>>>> master
+
                     >
                         رفض
                     </button>
