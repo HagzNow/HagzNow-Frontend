@@ -7,8 +7,8 @@ export default function Pagination({ currentPage = 1, totalPages = 4, onPageChan
         <div dir="ltr" className="flex items-center justify-center gap-2 my-8">
             {/* Previous Button */}
             <button
-                onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
-                disabled={currentPage === 1}
+                onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
                 className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 <IoChevronBack className="text-gray-600" />
@@ -31,8 +31,8 @@ export default function Pagination({ currentPage = 1, totalPages = 4, onPageChan
 
             {/* Next Button */}
             <button
-                onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
+                onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
+                disabled={currentPage === 1}
                 className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 <IoChevronForward className="text-gray-600" />

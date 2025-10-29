@@ -21,7 +21,7 @@ export default function ArenasList({ arenas, loading }) {
   return (
     <div
       dir="ltr"
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-[5px] my-10 mx-10"
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-[15px] my-10 mx-10"
     >
       {arenas.map((arena) => {
         // Format location
