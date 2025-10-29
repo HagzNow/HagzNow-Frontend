@@ -49,10 +49,10 @@ export default function UserArenas() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const handleFilterChange = (newFilters) => {
+    const handleFilterChange = useCallback((newFilters) => {
         setFilters(newFilters);
         setCurrentPage(1); // Reset to first page when filters change
-    };
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-50">
