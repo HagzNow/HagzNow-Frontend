@@ -21,6 +21,7 @@ export const arenaService = {
       queryParams.append('limit', params.limit || 12);
 
       // Add optional filters
+      if (params.name) queryParams.append('name', params.name);
       if (params.categoryId) queryParams.append('categoryId', params.categoryId);
       if (params.location) queryParams.append('location', params.location);
       if (params.sport) queryParams.append('sport', params.sport);

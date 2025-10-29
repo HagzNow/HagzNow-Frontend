@@ -7,6 +7,7 @@ import { CiSearch } from "react-icons/ci";
 export default function UserArenaFilter({ onFilterChange }) {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [searchName, setSearchName] = useState('');
     const [loading, setLoading] = useState(false);
 
     // Fetch categories on component mount
@@ -30,12 +31,23 @@ export default function UserArenaFilter({ onFilterChange }) {
         if (onFilterChange) {
             onFilterChange({
                 categoryId: selectedCategory,
+                name: searchName.trim(),
             });
         }
     };
 
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
+    };
+
+    const handleSearchChange = (e) => {
+        setSearchName(e.target.value);
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleApplyFilter();
+        }
     };
 
     return (
@@ -63,6 +75,9 @@ export default function UserArenaFilter({ onFilterChange }) {
                     <input
                         type="text"
                         placeholder="ابحث عن ملعب ..."
+                        value={searchName}
+                        onChange={handleSearchChange}
+                        onKeyPress={handleKeyPress}
                         className="w-full py-2 pr-10 pl-3 rounded-md focus:outline-none text-black-600 bg-transparent border border-green-500 focus:border-green-600 placeholder-green-300 transition"
                     />
                 </div>
