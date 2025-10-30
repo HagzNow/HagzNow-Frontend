@@ -51,7 +51,7 @@ export default function UserArenaFilter({ onFilterChange }) {
     };
 
     return (
-        <div dir="rtl" className="w-full bg-white shadow-sm rounded-xl p-4 flex items-center justify-center gap-6 flex-wrap my-6">
+        <div dir="rtl" className="w-full bg-white shadow-sm rounded-xl p-4 flex items-center justify-center gap-6 flex-wrap ">
 
             {/* Sport Type Dropdown */}
             <div className="flex items-center gap-2">
