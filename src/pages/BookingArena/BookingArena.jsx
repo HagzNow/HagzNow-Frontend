@@ -9,7 +9,7 @@ import StadiumInfo from "./components/StaduimInfo";
 import StadiumImage from "./components/StaduimImages";
 
 const BookingArena = () => {
-  const { id } = useParams(); // 👈 نجيب الـ ID من الـ URL
+  const { id } = useParams();
   const [arena, setArena] = useState(null);
   const [loading, setLoading] = useState(true);
 

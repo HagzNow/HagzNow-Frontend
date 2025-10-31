@@ -14,7 +14,7 @@ export default function ReservationDetails() {
     slots,
     date,
     submitReservation,
-    cancelAndUpdateReservation,
+    resetReservation,
     arenaId,
   } = useContext(reservationContext);
 
@@ -27,14 +27,14 @@ export default function ReservationDetails() {
   }
 
   function handleCancelReservation() {
-    cancelAndUpdateReservation();
+    resetReservation();
     navigate("/user-arena");
   }
 
-  // function handleRebook() {
-  //   cancelAndUpdateReservation();
-  //   navigate(`/reservation/${arenaId}`);
-  // }
+  function handleRebook() {
+    resetReservation();
+    navigate(`/reservation/${arenaId}`);
+  }
 
   const { i18n } = useTranslation();
   const dayName =
@@ -120,12 +120,12 @@ export default function ReservationDetails() {
               >
                 الغاء الحجز
               </button>
-              {/* <button
+              <button
                 className="btn bg-thirdColor w-1/2"
                 onClick={handleRebook}
               >
                 اعاده الحجز
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
