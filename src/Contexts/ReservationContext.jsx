@@ -49,11 +49,10 @@ export default function ReservationContextProvider({ children }) {
       slots,
       selectedExtras,
     };
-    console.log("Reservation payload:", payload);
     try {
       let { data } = await baseUrl.post("/reservations/", payload);
-      console.log(data);
       resetReservation();
+      console.log(data);
       return data;
     } catch (error) {
       console.log(error);
