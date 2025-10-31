@@ -52,7 +52,7 @@ export default function Sidebar({ open, onClose }) {
       <div className="rounded-xl border border-gray-100 bg-white">
         <button
           onClick={() => setExpanded((s) => ({ ...s, [section.title]: !s[section.title] }))}
-          className="w-full px-3 py-2 flex items-center justify-between text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl"
+          className="w-full px-3 py-2 flex items-center justify-between text-2xl font-medium text-gray-700 hover:bg-gray-50 rounded-xl"
         >
           <span>{section.title}</span>
           {isOpen ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
