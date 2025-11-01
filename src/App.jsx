@@ -66,14 +66,6 @@ function App() {
           ),
         },
         {
-          path: "/reservationDetails",
-          element: (
-            <ProtectedRoutes role="user">
-              <ReservationDetails />
-            </ProtectedRoutes>
-          ),
-        },
-        {
           path: "/addarena",
           element: (
             <ProtectedRoutes role="user">

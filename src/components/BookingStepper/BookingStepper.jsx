@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Stepper, Step, StepLabel, Box } from "@mui/material";
+import { reservationContext } from "../../Contexts/ReservationContext";
 
-export default function BookingStepper({ steps, activeStep }) {
+export default function BookingStepper() {
+  const { steps, activeStep } = useContext(reservationContext);
   return (
     <div className=" w-1/2">
       <Box sx={{ direction: "ltr" }}>
