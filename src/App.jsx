@@ -76,14 +76,6 @@ function App() {
           ),
         },
         {
-          path: "/arenacard",
-          element: (
-            // <ProtectedRoutes role="user">
-              <ArenaCardPremium />
-            // </ProtectedRoutes>
-          ),
-        },
-        {
           path: "/reservationcalender",
           element: (
             // <ProtectedRoutes role="user">
