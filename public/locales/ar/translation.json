@@ -133,6 +133,28 @@
   "paymentStatus": "حالة الدفع",
   "paid": "مدفوع",
   "unpaid": "لم يُدفع",
-  "saveBooking": "حفظ الحجز"
+  "saveBooking": "حفظ الحجز",
+
+  "ratings": "تقييم الحجوزات",
+  "filters": {
+    "sport": "كل الرياضات",
+    "field": "ملعب النادي",
+    "speed": "السريع",
+    "date": "التاريخ"
+  },
+  "calendar": {
+    "selectDate": "اختر التاريخ",
+    "today": "اليوم"
+  },
+  "arena": {
+    "location": "الموقع",
+    "description": "الوصف",
+    "price": "السعر",
+    "features": "المميزات",
+    "notes": "ملاحظات"
+  },
+  "noResults": "لا توجد حجوزات مطابقة للفلاتر الحالية."
 }
+
+
 

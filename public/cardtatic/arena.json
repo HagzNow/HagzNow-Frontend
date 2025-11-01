@@ -30,5 +30,53 @@
     "longitude": 31.2089,
     "mainImage": "arena2.jpg",
     "galleryImages": ["arena2-1.jpg"]
+  },
+   {
+    "id": 3,
+    "name": "Arena Three",
+    "sportType": "football",
+    "location": "Giza, Egypt",
+    "addressDescription": "Next to Pyramid",
+    "price": 200,
+    "description": "صالة كرة سلة مجهزة بالكامل.",
+    "features": ["wifi", "stands", "nightLighting"],
+    "notes": "",
+    "status": "inactive",
+    "latitude": 30.0131,
+    "longitude": 31.2089,
+    "mainImage": "arena2.jpg",
+    "galleryImages": ["arena2-1.jpg"]
+  },
+  {
+    "id": 3,
+    "name": "Arena Two",
+    "sportType": "basketball",
+    "location": "Giza, Egypt",
+    "addressDescription": "Next to Pyramid",
+    "price": 200,
+    "description": "صالة كرة سلة مجهزة بالكامل.",
+    "features": ["wifi", "stands", "nightLighting"],
+    "notes": "",
+    "status": "inactive",
+    "latitude": 30.0131,
+    "longitude": 31.2089,
+    "mainImage": "arena2.jpg",
+    "galleryImages": ["arena2-1.jpg"]
+  },
+  {
+    "id": 3,
+    "name": "Arena Four",
+    "sportType": "basketball",
+    "location": "Giza, Egypt",
+    "addressDescription": "Next to Pyramid",
+    "price": 200,
+    "description": "صالة كرة سلة مجهزة بالكامل.",
+    "features": ["wifi", "stands", "nightLighting"],
+    "notes": "",
+    "status": "inactive",
+    "latitude": 30.0131,
+    "longitude": 31.2089,
+    "mainImage": "arena2.jpg",
+    "galleryImages": ["arena2-1.jpg"]
   }
 ]

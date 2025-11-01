@@ -10,7 +10,27 @@ export default {
         sm: "1200px",
       },
     },
-    extend: {},
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: '#2e7d32',     // أخضر داكن
+          light: '#4caf50',       // أخضر متوسط
+          dark: '#1b5e20',        // أخضر غامق
+        },
+      },
+      fontFamily: {
+        arabic: ['"Cairo"', 'sans-serif'],
+      },
+      boxShadow: {
+        card: '0 4px 12px rgba(46, 125, 50, 0.15)', // ظل أخضر ناعم
+      },
+      borderRadius: {
+        xl: '1rem',
+      },
+      spacing: {
+        'card': '1.5rem',
+      },
+    },
   },
   plugins: [],
 };

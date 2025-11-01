@@ -133,5 +133,28 @@
   "paymentStatus": "Payment Status",
   "paid": "Paid",
   "unpaid": "Unpaid",
-  "saveBooking": "Save Booking"
+  "saveBooking": "Save Booking",
+
+  
+  "ratings": "Booking Evaluation",
+  "filters": {
+    "sport": "All Sports",
+    "field": "Club Field",
+    "speed": "Fast",
+    "date": "Date"
+  },
+  "calendar": {
+    "selectDate": "Select a date",
+    "today": "Today"
+  },
+  "arena": {
+    "location": "Location",
+    "description": "Description",
+    "price": "Price",
+    "features": "Features",
+    "notes": "Notes"
+  },
+  "noResults": "No matching reservations found."
+
+
 }

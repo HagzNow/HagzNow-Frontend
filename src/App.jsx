@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import ManualBookingForm from "./pages/Owner/ManualBooking";
 import ArenaCardPremium from "./components/OwnerComponents/ArenaCardComponent/ArenaCard";
 import AddArena from "./pages/Owner/AddArenas";
+import ReservationCalender from "./pages/Owner/ReservationCalender";
 
 function App() {
   const { i18n } = useTranslation();
@@ -79,6 +80,14 @@ function App() {
           element: (
             // <ProtectedRoutes role="user">
               <ArenaCardPremium />
+            // </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/reservationcalender",
+          element: (
+            // <ProtectedRoutes role="user">
+              <ReservationCalender />
             // </ProtectedRoutes>
           ),
         },
