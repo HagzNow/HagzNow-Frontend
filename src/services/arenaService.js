@@ -42,7 +42,14 @@ export const arenaService = {
         throw new Error(result.message || 'Failed to fetch arenas');
       }
 
-      return result.data;
+      // Return the nested data structure with proper mapping
+      return {
+        data: result.data.data,
+        total: result.data.total,
+        page: result.data.page,
+        limit: result.data.limit,
+        totalPages: result.data.totalPages
+      };
     } catch (error) {
       console.error('Error fetching arenas:', error);
       throw error;

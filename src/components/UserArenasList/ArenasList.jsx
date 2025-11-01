@@ -24,13 +24,11 @@ export default function ArenasList({ arenas, loading }) {
       className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-[15px] my-10 mx-10"
     >
       {arenas.map((arena) => {
-        // Format location
-        const location = arena.location
-          ? `${arena.location.city}, ${arena.location.governorate}`
-          : "غير محدد";
+        // Format location - handle new API structure
+        const location = arena.locationSummary || "غير محدد";
 
-        // Get category name
-        const category = arena.category?.name || null;
+        // Get category name - handle new API structure
+        const category = arena.categoryName || null;
 
         return (
           <ArenaCard
@@ -41,8 +39,7 @@ export default function ArenasList({ arenas, loading }) {
             category={category}
             price={arena.pricePerHour}
             rating={arena.rating || 0}
-            // image={arena.thumbnail ? http://localhost:3000/${arena.thumbnail} : 'src/assets/imgs/arena-img.png'}
-            image={`src/assets/${arena.thumbnail}`}
+            image={arena.thumbnail || 'src/assets/imgs/arena-img.png'}
           />
         );
       })}
