@@ -78,15 +78,15 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
             />
 
             {loading ? (
-                <div className="flex justify-center items-center py-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+                <div className="flex justify-center items-center py-12 sm:py-16 md:py-20">
+                    <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-green-600"></div>
                 </div>
             ) : !arenaRequests || arenaRequests.length === 0 ? (
-                <div className="text-center py-20">
-                    <p className="text-gray-500 text-lg">لا توجد طلبات ملاعب متاحة</p>
+                <div className="text-center py-12 sm:py-16 md:py-20 px-4">
+                    <p className="text-gray-500 text-base sm:text-lg md:text-xl">لا توجد طلبات ملاعب متاحة</p>
                 </div>
             ) : (
-                <div dir="ltr" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-[10px] my-10 mx-10">
+                <div dir="ltr" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 my-6 sm:my-8 md:my-10 mx-4 sm:mx-6 md:mx-8 lg:mx-10">
                     {arenaRequests.map((arena) => (
                         <AdminArenaCard
                             key={arena.id}
