@@ -1,8 +1,15 @@
 import { IoLocationOutline } from "react-icons/io5";
 import { PiSoccerBall } from "react-icons/pi";
 import { BiDollar } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
-export default function AdminArenaCard({ title, location, sport, price, image, onApprove, onReject, onViewMore, isProcessing = false }) {
+export default function AdminArenaCard({ id, title, location, sport, price, image, onApprove, onReject, isProcessing = false }) {
+    const navigate = useNavigate();
+
+    const handleViewMore = () => {
+        navigate(`/booking/${id}`);
+    };
+
     return (
         <div dir="rtl" className="w-100 bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl hover:-translate-y-1 hover:bg-green-600 transition-all duration-300 ease-in-out group">
             {/* Image */}
@@ -59,7 +66,7 @@ export default function AdminArenaCard({ title, location, sport, price, image, o
 
                     {/* View More Button */}
                     <button
-                        onClick={onViewMore}
+                        onClick={handleViewMore}
                         disabled={isProcessing}
                         className="flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed group-hover:bg-white group-hover:text-gray-700 group-hover:border-white"
                     >

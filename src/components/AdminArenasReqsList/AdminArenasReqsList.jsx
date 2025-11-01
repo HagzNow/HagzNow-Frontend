@@ -51,11 +51,6 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
         }
     };
 
-    const handleViewMore = (id) => {
-        console.log("View more details for arena:", id);
-        // Add your view more logic here (e.g., navigate to details page)
-    };
-
     return (
         <>
             {/* Confirm Dialog */}
@@ -95,6 +90,7 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
                     {arenaRequests.map((arena) => (
                         <AdminArenaCard
                             key={arena.id}
+                            id={arena.id}
                             title={arena.name}
                             location={arena.locationSummary}
                             sport={arena.categoryName}
@@ -102,7 +98,6 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
                             image={arena.thumbnail || 'src/assets/imgs/arena-img.png'}
                             onApprove={() => handleApprove(arena.id)}
                             onReject={() => handleReject(arena.id)}
-                            onViewMore={() => handleViewMore(arena.id)}
                             isProcessing={processingId === arena.id}
                         />
                     ))}
