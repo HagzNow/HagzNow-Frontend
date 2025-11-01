@@ -8,8 +8,15 @@ import Extras from "../Extras/Extras";
 import { useTranslation } from "react-i18next";
 
 export default function Reservation() {
-  const { getExtras, extras, activeStep, steps, handleNext, handleBack } =
-    useContext(reservationContext);
+  const {
+    getExtras,
+    extras,
+    activeStep,
+    steps,
+    handleNext,
+    handleBack,
+    slots,
+  } = useContext(reservationContext);
   let { t } = useTranslation();
   const { id } = useParams();
 
@@ -47,8 +54,16 @@ export default function Reservation() {
           </button>
           <button
             onClick={handleNext}
-            disabled={activeStep === steps.length - 1}
-            className="btn text-black bg-mainColor"
+            disabled={
+              (activeStep === 0 && (!slots || slots.length === 0)) ||
+              activeStep === steps.length - 1
+            }
+            className={`
+    ${
+      activeStep === 0 && (!slots || slots.length === 0)
+        ? "opacity-50 cursor-not-allowed bg-gray-300 btn text-black"
+        : "btn text-black bg-mainColor"
+    }`}
           >
             {t("reservation.next")}
           </button>

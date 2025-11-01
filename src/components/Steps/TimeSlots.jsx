@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 export default function TimeSlots() {
   const { times, loading, slots, setSlots } = useContext(reservationContext);
-
   const { i18n } = useTranslation();
 
   const formatTime = (time) => {
@@ -29,12 +28,18 @@ export default function TimeSlots() {
       prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]
     );
   };
+
   if (loading) return <Loader />;
 
   return (
     <>
       {times?.map((time, i) => {
-        const formatted = formatTime(time);
+        const nextHour = time + 1;
+        const formattedRange =
+          i18n.language === "ar"
+            ? `${formatTime(time)} الى ${formatTime(nextHour)}`
+            : `${formatTime(time)} to ${formatTime(nextHour)}`;
+
         const isSelected = slots.includes(time);
 
         return (
@@ -47,7 +52,7 @@ export default function TimeSlots() {
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
           >
-            {formatted}
+            {formattedRange}
           </button>
         );
       })}
