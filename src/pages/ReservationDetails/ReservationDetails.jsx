@@ -7,6 +7,7 @@ import { reservationContext } from "../../Contexts/ReservationContext";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import baseUrl from "../../apis/config";
+import { formatTime, getTimeRanges } from "../../utils/timeRange";
 
 export default function ReservationDetails() {
   let [arena, setArena] = useState();
@@ -21,8 +22,15 @@ export default function ReservationDetails() {
     resetReservation,
     handleBack,
   } = useContext(reservationContext);
-  const startHour = slots[0];
-  const endHour = slots.length > 0 ? slots[slots.length - 1] + 1 : null;
+
+  /* to calculate price  */
+  const hoursPrice = arena?.data.pricePerHour * slots.length;
+  const extrasPrice = arena?.data.extras
+    ?.filter((extra) => selectedExtras.includes(extra.name))
+    .reduce((sum, extra) => sum + Number(extra.price), 0);
+
+  const totalPrice = hoursPrice + extrasPrice;
+
   const navigate = useNavigate();
 
   async function handelSubmit() {
@@ -47,22 +55,9 @@ export default function ReservationDetails() {
   function handleCancelReservation() {
     resetReservation();
     navigate("/user-arena");
-    
-  }
-  function formatHour(hour) {
-    if (hour == null) return "";
-    const period = hour >= 12 ? "مساءً" : "صباحًا";
-    const hour12 = hour % 12 === 0 ? 12 : hour % 12;
-    return `${hour12} ${period}`;
   }
 
-  const timeRange =
-    slots.length > 0
-      ? `من ${formatHour(startHour)} إلى ${formatHour(endHour)}`
-      : "لم يتم اختيار وقت";
-
-
-
+  const ranges = getTimeRanges(slots);
   const { i18n } = useTranslation();
   const dayName =
     i18n.language === "ar"
@@ -75,7 +70,7 @@ export default function ReservationDetails() {
 
   return (
     <>
-      <div className="max-w-6xl mx-auto p-4 py-5">
+      <div className="">
         <div className="rounded-xl overflow-hidden shadow-md">
           <div className="relative">
             <img
@@ -92,76 +87,98 @@ export default function ReservationDetails() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-5 mt-5  p-5 ">
-          <div>
-            <h3 className="mb-5 font-bold ">تفاصيل الحجز</h3>
-            <div className="grid grid-cols-2 gap-2 p-5 border-2 border-secondColor rounded-2xl ">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 mt-8">
+          <div className="flex flex-col space-y-6">
+            <h3 className="font-bold text-lg">تفاصيل الحجز</h3>
+
+            <div className="p-6 border-2 border-secondColor rounded-2xl grid sm:grid-cols-2 grid-cols-1 gap-6">
               <div>
-                <p className=" text-sm text-gray-500 mb-2"> التاريخ : </p>
-                <div className="flex space-x-2 items-center">
-                  <MdOutlineDateRange className=" text-blue-400" />
+                <p className="text-sm text-gray-500 mb-2">التاريخ :</p>
+                <div className="flex items-center gap-2">
+                  <MdOutlineDateRange className="text-blue-400" />
                   <h4>{dayName}</h4>
                 </div>
               </div>
+
               <div>
-                <p className="text-sm text-gray-500 mb-2"> الوقت :</p>
-                <div className="flex space-x-2 items-center">
-                  <FaRegClock className=" text-blue-400" />
-                  <h4>{timeRange}</h4>
+                <p className="text-sm text-gray-500 mb-2">الوقت :</p>
+                <div className="flex items-start gap-2">
+                  <FaRegClock className="text-blue-400 mt-1" />
+                  <div className="flex flex-col gap-1">
+                    {ranges.map((range, index) => (
+                      <span
+                        key={index}
+                        className="bg-gray-100 text-gray-800 px-3 py-1 rounded-lg shadow-sm text-sm"
+                      >
+                        من {formatTime(range.start, i18n.language)} إلى{" "}
+                        {formatTime(range.end + 1, i18n.language)}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
+
               <div>
                 <p className="text-sm text-gray-500 mb-2">المدة :</p>
-                <div className="flex space-x-2 items-center">
-                  <GiDuration className=" text-blue-400" />
+                <div className="flex items-center gap-2">
+                  <GiDuration className="text-blue-400" />
                   <h4>
                     {slots.length < 2 ? "ساعة واحدة" : `${slots.length} ساعات`}
                   </h4>
                 </div>
               </div>
+
               <div>
-                <p className="text-sm text-gray-500 mb-2"> طريقة الدفع :</p>
-                <div className="flex space-x-2 items-center">
-                  <CiCreditCard1 className=" text-blue-400" />
+                <p className="text-sm text-gray-500 mb-2">طريقة الدفع :</p>
+                <div className="flex items-center gap-2">
+                  <CiCreditCard1 className="text-blue-400" />
                   <h4>محفظة التطبيق</h4>
                 </div>
               </div>
-              <div>
-                <p className="text-sm text-gray-500 mb-2">إضافات :</p>
-                <div className="flex space-x-2 items-center">
-                  <CiCreditCard1 className=" text-blue-400" />
+
+              <div className="sm:col-span-2">
+                <p className="text-sm text-gray-500 mb-2">الإضافات :</p>
+                <div className="flex items-start gap-2">
+                  <CiCreditCard1 className="text-blue-400 mt-1" />
                   <h4>
                     {selectedExtras.join(", ") || "لا توجد إضافات مختارة"}
                   </h4>
                 </div>
               </div>
             </div>
-            <p className=" font-bold text-thirdColor text-2xl">
+
+            <p className="font-bold text-thirdColor text-2xl">
               الإجمالي :
-              <span className=" text-mainColor font-bold"> 250 جنية مصرى </span>
+              <span className="text-mainColor font-bold">
+                {" "}
+                {totalPrice} جنيه مصري{" "}
+              </span>
             </p>
           </div>
-          <div>
-            <h3 className=" mb-5 font-bold">الاجراءات</h3>
-            <div className="flex flex-col gap-4 p-5">
+
+          <div className="flex flex-col space-y-6">
+            <h3 className="font-bold text-lg">الإجراءات</h3>
+            <div className="flex flex-col gap-4 p-5 border border-gray-200 rounded-2xl shadow-sm">
               <button
                 disabled={loadbuttom}
-                className="btn bg-mainColor w-1/2"
+                className="btn bg-mainColor w-full"
                 onClick={handelSubmit}
               >
                 {loadbuttom ? (
-                  <i className=" fa-solid fa-spinner fa-spin"></i>
+                  <i className="fa-solid fa-spinner fa-spin"></i>
                 ) : (
-                  " تاكيد الحجز"
+                  "تأكيد الحجز"
                 )}
               </button>
+
               <button
-                className="btn bg-red-600 w-1/2"
+                className="btn bg-red-600 w-full"
                 onClick={handleCancelReservation}
               >
-                الغاء الحجز
+                إلغاء الحجز
               </button>
-              <button className="btn bg-thirdColor w-1/2" onClick={handleBack}>
+
+              <button className="btn bg-thirdColor w-full" onClick={handleBack}>
                 تعديل الحجز
               </button>
             </div>

@@ -2,26 +2,11 @@ import { useContext } from "react";
 import { reservationContext } from "../../Contexts/ReservationContext";
 import Loader from "../Loader/Loader";
 import { useTranslation } from "react-i18next";
+import { formatTime } from "../../utils/timeRange";
 
 export default function TimeSlots() {
   const { times, loading, slots, setSlots } = useContext(reservationContext);
   const { i18n } = useTranslation();
-
-  const formatTime = (time) => {
-    if (typeof time !== "number") return "Invalid time";
-
-    let hour = time;
-    const suffix = hour >= 12 ? "PM" : "AM";
-
-    if (hour === 0) hour = 12;
-    if (hour > 12) hour -= 12;
-
-    if (i18n.language === "ar") {
-      return `${hour} ${suffix === "AM" ? "ص" : "م"}`;
-    }
-
-    return `${hour} ${suffix}`;
-  };
 
   const toggleTime = (time) => {
     setSlots((prev) =>
@@ -37,8 +22,8 @@ export default function TimeSlots() {
         const nextHour = time + 1;
         const formattedRange =
           i18n.language === "ar"
-            ? `${formatTime(time)} الى ${formatTime(nextHour)}`
-            : `${formatTime(time)} to ${formatTime(nextHour)}`;
+            ? `من ${formatTime(time, "ar")} إلى ${formatTime(nextHour, "ar")}`
+            : `${formatTime(time, "en")} - ${formatTime(nextHour, "en")}`;
 
         const isSelected = slots.includes(time);
 
