@@ -2,7 +2,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { PiSoccerBall } from "react-icons/pi";
 import { BiDollar } from "react-icons/bi";
 
-export default function AdminArenaCard({ title, location, sport, price, image, onApprove, onReject, onViewMore }) {
+export default function AdminArenaCard({ title, location, sport, price, image, onApprove, onReject, onViewMore, isProcessing = false }) {
     return (
         <div dir="rtl" className="w-100 bg-white rounded-2xl shadow-md overflow-hidden">
             {/* Image */}
@@ -39,27 +39,27 @@ export default function AdminArenaCard({ title, location, sport, price, image, o
                     {/* Approve Button */}
                     <button
                         onClick={onApprove}
-                        className="flex-1 py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                        disabled={isProcessing}
+                        className="flex-1 py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        موافقة
+                        {isProcessing ? "جاري المعالجة..." : "موافقة"}
                     </button>
 
                     {/* Reject Button */}
                     <button
                         onClick={onReject}
-                        // <<<<<<< HEAD
-                        //                         className="flex-1 py-2 px-4 bg-red-900 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
-                        // =======
-                        className="flex-1 py-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
+                        disabled={isProcessing}
+                        className="flex-1 py-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
 
                     >
-                        رفض
+                        {isProcessing ? "جاري المعالجة..." : "رفض"}
                     </button>
 
                     {/* View More Button */}
                     <button
                         onClick={onViewMore}
-                        className="flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                        disabled={isProcessing}
+                        className="flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         عرض المزيد
                     </button>
