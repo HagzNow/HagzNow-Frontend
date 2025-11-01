@@ -53,8 +53,8 @@ export default function ReservationDetails() {
   }
 
   function handleCancelReservation() {
-    resetReservation();
     navigate("/user-arena");
+    resetReservation();
   }
 
   const ranges = getTimeRanges(slots);

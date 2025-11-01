@@ -9,7 +9,6 @@ export let reservationContext = createContext(null);
 
 export default function ReservationContextProvider({ children }) {
   const { t } = useTranslation();
-  const [selectedTime, setSelectedTime] = useState(null);
   let [date, setDate] = useState(dayjs());
   const [arenaId, setArenaId] = useState(null);
   const [slots, setSlots] = useState([]);
@@ -52,6 +51,15 @@ export default function ReservationContextProvider({ children }) {
     };
     try {
       let { data } = await baseUrl.post("/reservations/", payload);
+      localStorage.setItem(
+        "lastReservation",
+        JSON.stringify({
+          arenaId,
+          date: date.format("YYYY-MM-DD"),
+          slots,
+          selectedExtras,
+        })
+      );
       resetReservation();
       console.log(data);
       return data;
@@ -110,8 +118,6 @@ export default function ReservationContextProvider({ children }) {
         handleBack,
         activeStep,
         steps,
-        selectedTime,
-        setSelectedTime,
       }}
     >
       {children}

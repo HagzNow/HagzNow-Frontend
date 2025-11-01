@@ -1,9 +1,73 @@
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import baseUrl from "../../apis/config";
+import { formatTime, getTimeRanges } from "../../utils/timeRange";
+import { useTranslation } from "react-i18next";
 
-export default function ConfirnReservation() {
-  const navegate = useNavigate();
+export default function ConfirmReservation() {
+  const navigate = useNavigate();
+  const { i18n } = useTranslation();
+
+  const [reservation, setReservation] = useState(null);
+  const [arenaDetails, setArenaDetails] = useState(null);
+  const [loadingArena, setLoadingArena] = useState(false);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("lastReservation");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setReservation(parsed);
+        if (parsed?.arenaId) {
+          getArenaDetails(parsed.arenaId);
+        }
+      }
+    } catch (error) {
+      console.error("Error parsing reservation from localStorage:", error);
+    }
+  }, []);
+
+  async function getArenaDetails(arenaId) {
+    try {
+      setLoadingArena(true);
+      const { data } = await baseUrl.get(`/arenas/${arenaId}`);
+      setArenaDetails(data.data);
+    } catch (err) {
+      console.error("Error fetching arena details:", err);
+    } finally {
+      setLoadingArena(false);
+    }
+  }
+
+  const { hoursPrice, extrasPrice, totalPrice } = useMemo(() => {
+    if (!arenaDetails || !reservation)
+      return { hoursPrice: 0, extrasPrice: 0, totalPrice: 0 };
+
+    const slots = reservation?.slots || [];
+    const selectedExtras = reservation?.selectedExtras || [];
+
+    const pricePerHour = Number(arenaDetails.pricePerHour) || 0;
+    const hoursPrice = pricePerHour * slots.length;
+
+    const extrasPrice =
+      arenaDetails?.extras
+        ?.filter((extra) => selectedExtras.includes(extra.name))
+        ?.reduce((sum, extra) => sum + Number(extra.price), 0) || 0;
+
+    return { hoursPrice, extrasPrice, totalPrice: hoursPrice + extrasPrice };
+  }, [arenaDetails, reservation]);
+
+  if (!reservation) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-600 text-lg">
+        لا توجد بيانات حجز متاحة
+      </div>
+    );
+  }
+
+  const { date, slots = [], selectedExtras = [] } = reservation;
+  const ranges = getTimeRanges(slots);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10">
@@ -13,7 +77,7 @@ export default function ConfirnReservation() {
           تم تأكيد حجزك!
         </h1>
         <p className="text-gray-600">
-          لقد تم تأكيد حجزك بنجاح. نتطلع لرؤيتك قريبًا
+          لقد تم تأكيد حجزك بنجاح. نتطلع لرؤيتك قريبًا.
         </p>
       </div>
 
@@ -21,35 +85,62 @@ export default function ConfirnReservation() {
         <h2 className="text-lg font-semibold mb-4 text-right border-b pb-2 border-b-gray-300">
           تفاصيل الحجز
         </h2>
-        <div className="grid grid-cols-2 gap-3 text-sm text-gray-700">
-          <p className="font-medium">الخدمة</p>
-          <p className="text-right">جلسة تدريب شخصي</p>
 
-          <p className="font-medium">المقدّم</p>
-          <p className="text-right">المدرب أحمد</p>
-
+        <div className="grid grid-cols-2 gap-y-3 text-sm text-gray-700">
           <p className="font-medium">التاريخ</p>
-          <p className="text-right">الأربعاء، 24 يوليو 2024</p>
+          <p className="text-right">{date || "غير محدد"}</p>
 
           <p className="font-medium">الوقت</p>
-          <p className="text-right">10:00 صباحًا - 11:00 صباحًا</p>
+          <div className="text-right flex flex-wrap gap-2 justify-start">
+            {ranges.length > 0 ? (
+              ranges.map((range, index) => (
+                <span
+                  key={index}
+                  className="bg-gray-100 text-gray-800 px-3 py-1 rounded-lg shadow-sm text-sm"
+                >
+                  من {formatTime(range.start, i18n.language)} إلى{" "}
+                  {formatTime(range.end + 1, i18n.language)}
+                </span>
+              ))
+            ) : (
+              <span>غير محدد</span>
+            )}
+          </div>
+
+          <p className="font-medium">الإضافات</p>
+          <p className="text-right">
+            {selectedExtras.length > 0
+              ? selectedExtras.join("، ")
+              : "لا توجد إضافات"}
+          </p>
+
+          <p className="font-medium">الملعب</p>
+          <p className="text-right">
+            {loadingArena
+              ? "جارِ التحميل..."
+              : arenaDetails?.name || "غير متاح"}
+          </p>
 
           <p className="font-medium">الموقع</p>
-          <p className="text-right">صالة الألعاب الرياضية المركزية</p>
+          <p className="text-right">
+            {arenaDetails?.location
+              ? `${arenaDetails.location.city} - ${arenaDetails.location.governorate}`
+              : "غير متاح"}
+          </p>
         </div>
 
-        <div className="border-t border-t-gray-300 mt-4 pt-3 text-sm ">
+        <div className="border-t border-t-gray-300 mt-4 pt-3 text-sm">
           <div className="flex justify-between">
-            <span>السعر الأصلي</span>
-            <span>200.00 رس</span>
+            <span>سعر الساعات</span>
+            <span>{hoursPrice} جنيه</span>
           </div>
-          <div className="flex justify-between text-gray-500">
-            <span>الخصم</span>
-            <span>-50.00 رس</span>
+          <div className="flex justify-between">
+            <span>سعر الإضافات</span>
+            <span>{extrasPrice} جنيه</span>
           </div>
           <div className="flex justify-between font-bold text-green-600 mt-2">
             <span>الإجمالي المستحق</span>
-            <span>150.00 رس</span>
+            <span>{totalPrice} جنيه</span>
           </div>
         </div>
       </div>
@@ -64,10 +155,9 @@ export default function ConfirnReservation() {
         </p>
       </div>
 
-      {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl justify-center">
         <button
-          onClick={() => navegate("/user-arena")}
+          onClick={() => navigate("/user-arena")}
           className="bg-green-600 text-white py-2 px-6 rounded-full hover:bg-green-700 transition"
         >
           العودة للرئيسية
