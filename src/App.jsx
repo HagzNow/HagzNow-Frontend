@@ -21,6 +21,7 @@ import ArenaCardPremium from "./components/OwnerComponents/ArenaCardComponent/Ar
 import AddArena from "./pages/Owner/AddArenas";
 import BookingArena from "./pages/BookingArena/BookingArena";
 import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
+import Wallet from "./pages/Wallet/Wallet";
 
 function App() {
   const { i18n } = useTranslation();
@@ -116,6 +117,10 @@ function App() {
             <BookingArena />
             // </ProtectedRoutes>
           ),
+        },
+        {
+          path: "/wallet",
+          element: <Wallet />,
         },
       ],
     },
