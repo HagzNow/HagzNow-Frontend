@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import AddFundsModal from "../../components/Wallet/AddFundsModal";
 import { useSearchParams } from "react-router-dom";
 import PaymentResultModal from "../../components/Wallet/PaymentResultModal";
+import baseUrl from "../../apis/config";
+import TransactionItem from "../../components/Wallet/TransactionItem";
 
 export default function Wallet() {
   const [showModal, setShowModal] = useState(false);
@@ -9,6 +11,7 @@ export default function Wallet() {
   const [status, setStatus] = useState(false);
   const [amount, setAmount] = useState(0);
   const [showResultModal, setShowResultModal] = useState(false);
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     const success = searchParams.get("success");
@@ -26,6 +29,21 @@ export default function Wallet() {
       }
     }
   }, [searchParams]);
+
+  async function getAllTransaction() {
+    try {
+      let { data } = await baseUrl.get(`/transactions?limit=${2}&page=${2}`);
+      console.log(data);
+
+      setTransactions(data?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getAllTransaction();
+  }, []);
 
   return (
     <>
@@ -50,12 +68,10 @@ export default function Wallet() {
             <p>النوع</p>
             <p>التاريخ</p>
           </div>
-          <div className="flex p-3 bg-secondColor justify-around items-center mt-2">
-            <p className="bg-mainColor p-2 rounded-2xl">مكتمل</p>
-            <p>+٥٠٠.٠٠ ج.م</p>
-            <p>#٩٨٧٦٥٤</p>
-            <p>إيداع</p>
-            <p>٢٠٢٤-١٠-٢٦</p>
+          <div className="p-3 bg-secondColor mt-2 space-y-3">
+            {transactions?.map((transaction) => (
+              <TransactionItem key={transaction.id} transaction={transaction} />
+            ))}
           </div>
         </div>
       </div>
