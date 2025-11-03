@@ -24,21 +24,23 @@ export default function ReservationDetails() {
   } = useContext(reservationContext);
 
   /* to calculate price  */
-  const hoursPrice = arena?.data.pricePerHour * slots.length;
-  const extrasPrice = arena?.data.extras
-    ?.filter((extra) => selectedExtras.includes(extra.name))
-    .reduce((sum, extra) => sum + Number(extra.price), 0);
-
+  const hoursPrice =
+    (arena?.data.pricePerHour * slots.length * arena?.data.depositPercent) /
+    100;
+  const extrasPrice = selectedExtras.reduce(
+    (sum, extra) => sum + Number(extra.price || 0),
+    0
+  );
   const totalPrice = hoursPrice + extrasPrice;
 
   const navigate = useNavigate();
 
   async function handelSubmit() {
     setLoadButtom(true);
-    let { isSuccess } = await submitReservation();
+    let response = await submitReservation();
     setLoadButtom(false);
-    if (isSuccess) {
-      navigate("/confirm");
+    if (response.isSuccess) {
+      navigate("/confirm", { state: response });
     }
   }
 
@@ -140,9 +142,26 @@ export default function ReservationDetails() {
                 <p className="text-sm text-gray-500 mb-2">الإضافات :</p>
                 <div className="flex items-start gap-2">
                   <CiCreditCard1 className="text-blue-400 mt-1" />
-                  <h4>
-                    {selectedExtras.join(", ") || "لا توجد إضافات مختارة"}
-                  </h4>
+                  {selectedExtras.length > 0 ? (
+                    <ul className="flex flex-col gap-2">
+                      {selectedExtras.map((extra) => (
+                        <li
+                          key={extra.id}
+                          className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg border border-gray-100 shadow-sm"
+                        >
+                          <span className="text-gray-800 font-medium">
+                            {extra.name}
+                          </span>
+                          <span className="text-mainColor font-semibold">
+                            {extra.price}{" "}
+                            <span className="text-sm text-gray-500">ج.م</span>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <h4 className="text-gray-500">لا توجد إضافات مختارة</h4>
+                  )}
                 </div>
               </div>
             </div>

@@ -133,6 +133,29 @@
   "paymentStatus": "حالة الدفع",
   "paid": "مدفوع",
   "unpaid": "لم يُدفع",
-  "saveBooking": "حفظ الحجز"
+  "saveBooking": "حفظ الحجز",
+
+  "transaction_status": {
+    "hold": "معلق",
+    "released": "ملغي",
+    "failed": "فشل",
+    "settled": "مكتمل",
+    "pending": "قيد المعالجة"
+  },
+  "transaction_type": {
+    "deposit": "إيداع",
+    "withdrawal": "سحب",
+    "payment": "دفع",
+    "refund": "استرجاع"
+  },
+   "wallet": {
+    "current_balance": "رصيدك الحالي",
+    "add_balance": "إضافة رصيد",
+    "transaction_history": "سجل المعاملات",
+    "status": "الحالة",
+    "amount": "المبلغ",
+    "type": "النوع",
+    "date": "التاريخ"
+  }
 }
 
