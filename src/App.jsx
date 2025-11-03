@@ -22,6 +22,9 @@ import AddArena from "./pages/Owner/AddArenas";
 import BookingArena from "./pages/BookingArena/BookingArena";
 import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
 import Wallet from "./pages/Wallet/Wallet";
+import OwnerLayout from "./pages/AdminLayout";
+
+
 
 function App() {
   const { i18n } = useTranslation();
@@ -121,6 +124,15 @@ function App() {
         {
           path: "/wallet",
           element: <Wallet />,
+        },
+
+        {
+          path: "/owner",
+          element: (
+           // <ProtectedRoutes role="owner">
+              <OwnerLayout />
+           // </ProtectedRoutes>
+          ),
         },
       ],
     },
