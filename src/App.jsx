@@ -25,8 +25,6 @@ import Wallet from "./pages/Wallet/Wallet";
 import OwnerLayout from "./components/AdminLayout/AdminLayout";
 import AdminLayout from "./components/AdminLayout/AdminLayout";
 
-
-
 function App() {
   const { i18n } = useTranslation();
 
@@ -36,14 +34,12 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/home", element: <Home /> },
-        
-       
 
         {
           path: "/login",
           element: (
             // <ProtectedLoginAndRegister>
-              <Login />
+            <Login />
             // </ProtectedLoginAndRegister>
           ),
         },
@@ -51,7 +47,7 @@ function App() {
           path: "/register",
           element: (
             // <ProtectedLoginAndRegister>
-              <Register />
+            <Register />
             // </ProtectedLoginAndRegister>
           ),
         },
@@ -83,8 +79,8 @@ function App() {
         {
           path: "/manualbooking",
           element: (
-           // <ProtectedRoutes role="user">
-              <ManualBookingForm />
+            // <ProtectedRoutes role="user">
+            <ManualBookingForm />
             //</ProtectedRoutes>
           ),
         },
@@ -116,7 +112,27 @@ function App() {
             </ProtectedRoutes>
           ),
         },
-     
+        {
+          path: "/booking/:id",
+          element: (
+            // <ProtectedRoutes role="user">
+            <BookingArena />
+            // </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/wallet",
+          element: <Wallet />,
+        },
+
+        {
+          path: "/SettingsPage",
+          element: (
+            <ProtectedRoutes role="admin">
+              <AdminLayout />
+            </ProtectedRoutes>
+          ),
+        },
       ],
     },
   ]);

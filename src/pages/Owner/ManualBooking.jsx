@@ -6,10 +6,10 @@ import { useTranslation } from "react-i18next";
 
 import Header from "../../components/OwnerComponents/Header";
 import Sidebar from "../../components/OwnerComponents/Sidebar";
-import FieldSelect from "../../components/OwnerComponents/ManualBookingComponents.jsx/FieldSelect";
-import FieldInput from "../../components/OwnerComponents/ManualBookingComponents.jsx/FieldInput";
-import FieldTextarea from "../../components/OwnerComponents/ManualBookingComponents.jsx/FieldTextarea";
-import Section from "../../components/OwnerComponents/ManualBookingComponents.jsx/Section";
+import FieldSelect from "../../components/OwnerComponents/ManualBookingComponents/FieldSelect";
+import FieldInput from "../../components/OwnerComponents/ManualBookingComponents/FieldInput";
+import FieldTextarea from "../../components/OwnerComponents/ManualBookingComponents/FieldTextarea";
+import Section from "../../components/OwnerComponents/ManualBookingComponents/Section";
 
 const ManualBookingForm = () => {
   const { t, i18n } = useTranslation();
