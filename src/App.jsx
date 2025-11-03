@@ -22,6 +22,8 @@ import AddArena from "./pages/Owner/AddArenas";
 import BookingArena from "./pages/BookingArena/BookingArena";
 import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
 import Wallet from "./pages/Wallet/Wallet";
+import OwnerLayout from "./components/AdminLayout/AdminLayout";
+import AdminLayout from "./components/AdminLayout/AdminLayout";
 
 function App() {
   const { i18n } = useTranslation();
@@ -36,17 +38,17 @@ function App() {
         {
           path: "/login",
           element: (
-            <ProtectedLoginAndRegister>
-              <Login />
-            </ProtectedLoginAndRegister>
+            // <ProtectedLoginAndRegister>
+            <Login />
+            // </ProtectedLoginAndRegister>
           ),
         },
         {
           path: "/register",
           element: (
-            <ProtectedLoginAndRegister>
-              <Register />
-            </ProtectedLoginAndRegister>
+            // <ProtectedLoginAndRegister>
+            <Register />
+            // </ProtectedLoginAndRegister>
           ),
         },
 
@@ -77,9 +79,9 @@ function App() {
         {
           path: "/manualbooking",
           element: (
-            <ProtectedRoutes role="user">
-              <ManualBookingForm />
-            </ProtectedRoutes>
+            // <ProtectedRoutes role="user">
+            <ManualBookingForm />
+            //</ProtectedRoutes>
           ),
         },
         {
@@ -121,6 +123,15 @@ function App() {
         {
           path: "/wallet",
           element: <Wallet />,
+        },
+
+        {
+          path: "/SettingsPage",
+          element: (
+            <ProtectedRoutes role="admin">
+              <AdminLayout />
+            </ProtectedRoutes>
+          ),
         },
       ],
     },
