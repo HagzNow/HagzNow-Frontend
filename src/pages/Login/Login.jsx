@@ -35,6 +35,7 @@ export default function Login() {
 
       const { data } = await axios.request(option);
       localStorage.setItem("token", data.data.token);
+
       setToken(data.data.token);
       toast.success("Login successfuly");
       setTimeout(() => {

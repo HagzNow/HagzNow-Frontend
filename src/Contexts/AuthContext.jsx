@@ -21,12 +21,20 @@ export default function AuthContextProvider({ children }) {
     }
   }
 
+  function logout() {
+    localStorage.removeItem("token");
+    setUser(null);
+    setToken(null);
+  }
+
   useEffect(() => {
     if (token) decodeToken(token);
   }, [token]);
 
   return (
-    <authContext.Provider value={{ user, token, setToken, decodeToken }}>
+    <authContext.Provider
+      value={{ user, token, setToken, decodeToken, logout }}
+    >
       {children}
     </authContext.Provider>
   );

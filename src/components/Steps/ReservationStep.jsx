@@ -1,10 +1,12 @@
 import { Box, Grid } from "@mui/material";
-import React from "react";
+
 import DateSelector from "./DateSelector";
 import TimeSlots from "./TimeSlots";
 import { useTranslation } from "react-i18next";
 
+
 export default function ReservationStep() {
+ 
   const { t } = useTranslation();
   return (
     <>

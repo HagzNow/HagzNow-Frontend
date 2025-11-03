@@ -14,9 +14,18 @@ import ProtectedLoginAndRegister from "./Routes/protectedLoginAndRegister";
 import ProtectedRoutes from "./Routes/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import ReservationContextProvider from "./Contexts/ReservationContext";
+import Extras from "./pages/Extras/Extras";
 import ManualBookingForm from "./pages/Owner/ManualBooking";
 import ArenaCardPremium from "./components/OwnerComponents/ArenaCardComponent/ArenaCard";
 import AddArena from "./pages/Owner/AddArenas";
+import BookingArena from "./pages/BookingArena/BookingArena";
+import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
+import Wallet from "./pages/Wallet/Wallet";
+import OwnerLayout from "./components/AdminLayout/AdminLayout";
+import AdminLayout from "./components/AdminLayout/AdminLayout";
+
+
 
 function App() {
   const { i18n } = useTranslation();
@@ -28,10 +37,6 @@ function App() {
       children: [
         { path: "/home", element: <Home /> },
         
-                { path: "/login", element: <Login /> },
-                 { path: "register", element: <Register /> },
-                 { path: "user-arena", element: <UserArenas /> },
-                { path: "admin-arena-requests", element: <AdminArenaRequests /> },
        
 
         {
@@ -52,52 +57,56 @@ function App() {
         },
 
         {
-          path: "/reservation",
+          path: "/reservation/:id",
           element: (
-            // <ProtectedRoutes role="user">
+            <ProtectedRoutes role="user">
               <Reservation />
-            // </ProtectedRoutes>
+            </ProtectedRoutes>
           ),
         },
         {
-          path: "/reservationDetails",
+          path: "/extras/:id",
           element: (
-            // <ProtectedRoutes role="user">
-              <ReservationDetails />
-            // </ProtectedRoutes>
+            <ProtectedRoutes role="user">
+              <Extras />
+            </ProtectedRoutes>
           ),
         },
         {
           path: "/addarena",
           element: (
-            // <ProtectedRoutes role="user">
+            <ProtectedRoutes role="user">
               <AddArena />
-            // </ProtectedRoutes>
+            </ProtectedRoutes>
           ),
         },
         {
           path: "/manualbooking",
           element: (
-            // <ProtectedRoutes role="user">
+           // <ProtectedRoutes role="user">
               <ManualBookingForm />
-            // </ProtectedRoutes>
+            //</ProtectedRoutes>
           ),
         },
         {
           path: "/arenacard",
           element: (
             // <ProtectedRoutes role="user">
-              <ArenaCardPremium />
+            <ArenaCardPremium />
+            // </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/confirm",
+          element: (
+            // <ProtectedRoutes role="user">
+            <ConfirmReservation />
             // </ProtectedRoutes>
           ),
         },
         {
           path: "/user-arena",
-          element: (
-            <ProtectedRoutes role="user">
-              <UserArenas />
-            </ProtectedRoutes>
-          ),
+          element: <UserArenas />,
         },
         {
           path: "/admin-arena-requests",
@@ -115,16 +124,18 @@ function App() {
   return (
     <>
       <AuthContextProvider>
-        <Toaster
-          key={i18n.language}
-          position="bottom-left"
-          toastOptions={{
-            style: {
-              direction: i18n.language === "ar" ? "rtl" : "ltr",
-            },
-          }}
-        />
-        <RouterProvider router={routes} />
+        <ReservationContextProvider>
+          <Toaster
+            key={i18n.language}
+            position="bottom-left"
+            toastOptions={{
+              style: {
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
+              },
+            }}
+          />
+          <RouterProvider router={routes} />
+        </ReservationContextProvider>
       </AuthContextProvider>
     </>
   );
