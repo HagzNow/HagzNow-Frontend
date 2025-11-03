@@ -33,7 +33,7 @@ export default function UserReservationsCard({ reservation }) {
                 </h3>
 
                 {/* Date and Time */}
-                <div className="flex flex-col items-end justify-end text-gray-600 text-sm mb-4 gap-4">
+                <div className="flex flex-col items-start justify-end text-gray-600 text-sm mb-4 gap-4">
                     <div className="flex items-center gap-1.5">
                         <span>{date}</span>
                         <CalendarDays size={16} className="text-gray-500" />
