@@ -12,6 +12,7 @@ export default function AuthContextProvider({ children }) {
     if (token) {
       try {
         const decoded = jwtDecode(token);
+        console.log(decoded.role);
         setUser(decoded);
       } catch (error) {
         console.error("Invalid token", error);

@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
+import { authContext } from "../../Contexts/AuthContext";
+import AdminNavbar from "../AdminLayout/AdminNavbar";
+import AdminFooter from "../AdminLayout/AdminFooter";
 
 export default function Layout() {
+  let { user } = useContext(authContext);
+
+
   return (
     <div>
-      <Navbar />
-      <div className="py-15">
+      {user?.role === "admin" ? <AdminNavbar /> : <Navbar />}
+      <div >
         <Outlet />
       </div>
-      <Footer />
+      {user?.role === "admin" ? <AdminFooter /> : <Footer />}
     </div>
   );
 }

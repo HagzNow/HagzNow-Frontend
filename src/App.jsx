@@ -22,7 +22,8 @@ import AddArena from "./pages/Owner/AddArenas";
 import BookingArena from "./pages/BookingArena/BookingArena";
 import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
 import Wallet from "./pages/Wallet/Wallet";
-import OwnerLayout from "./pages/AdminLayout";
+import OwnerLayout from "./components/AdminLayout/AdminLayout";
+import AdminLayout from "./components/AdminLayout/AdminLayout";
 
 
 
@@ -80,9 +81,9 @@ function App() {
         {
           path: "/manualbooking",
           element: (
-            <ProtectedRoutes role="user">
+           // <ProtectedRoutes role="user">
               <ManualBookingForm />
-            </ProtectedRoutes>
+            //</ProtectedRoutes>
           ),
         },
         {
@@ -127,11 +128,11 @@ function App() {
         },
 
         {
-          path: "/owner",
+          path: "/SettingsPage",
           element: (
-           // <ProtectedRoutes role="owner">
-              <OwnerLayout />
-           // </ProtectedRoutes>
+           <ProtectedRoutes role="admin">
+              <AdminLayout/>
+          </ProtectedRoutes>
           ),
         },
       ],
