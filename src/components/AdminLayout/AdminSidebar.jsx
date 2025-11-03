@@ -1,14 +1,9 @@
-import {
-  X,
- 
-} from "lucide-react";
+import { X } from "lucide-react";
+
 export default function Sidebar({
   menuItems = [],
   activeKey,
   onChange = () => {},
-  collapsed,
-  open,
-  setOpen,
 }) {
   return (
     <>
@@ -17,16 +12,12 @@ export default function Sidebar({
         className={`fixed inset-0 z-40 bg-black/40 md:hidden ${
           open ? "block" : "hidden"
         }`}
-        onClick={() => setOpen(false)}
+       
       />
 
       {/* Panel */}
       <aside
-        className={`fixed md:static end-0 top-0 z-50 h-full md:h-auto w-80 md:w-72 ${
-          collapsed ? "md:w-20" : ""
-        } max-w-[85vw] bg-white dark:bg-neutral-950 border-s border-neutral-200 dark:border-neutral-800 shadow-xl md:shadow-none transform transition-transform ${
-          open ? "translate-x-0" : "translate-x-full md:translate-x-0"
-        }`}
+        className={`fixed md:static end-0 top-16 z-50 h-[calc(100%-4rem)] md:h-auto w-80 md:w-72 max-w-[85vw] bg-white dark:bg-neutral-950 border-s border-neutral-200 dark:border-neutral-800 shadow-xl md:shadow-none transform transition-transform`}
       >
         <div className="flex items-center justify-between p-4 border-b border-neutral-200 dark:border-neutral-800 md:hidden">
           <div className="flex items-center gap-2">
@@ -34,17 +25,15 @@ export default function Sidebar({
             <span className="font-extrabold">ArenaAdmin</span>
           </div>
           <button
-            onClick={() => setOpen(false)}
+            
             className="rounded-xl p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
+
         <div className="flex items-center justify-between p-5 border-b border-neutral-200 dark:border-neutral-800">
-         
-            القائمة
-       
-          <button className="hidden md:inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800"></button>
+          القائمة
         </div>
 
         <nav className="p-2">
@@ -60,15 +49,9 @@ export default function Sidebar({
               }`}
             >
               <span className="shrink-0">{item.icon}</span>
-              <span className={`${collapsed ? "md:hidden" : ""}`}>
-                {item.label}
-              </span>
+              <span>{item.label}</span>
               {item.badge && (
-                <span
-                  className={`ms-auto ${
-                    collapsed ? "md:hidden" : ""
-                  } rounded-full text-[10px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800`}
-                >
+                <span className="ms-auto rounded-full text-[10px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800">
                   {item.badge}
                 </span>
               )}
@@ -76,11 +59,7 @@ export default function Sidebar({
           ))}
         </nav>
 
-        <div
-          className={`mt-auto p-3 text-xs text-neutral-500 border-t border-neutral-200 dark:border-neutral-800 ${
-            collapsed ? "md:hidden" : ""
-          }`}
-        >
+        <div className="mt-auto p-3 text-xs text-neutral-500 border-t border-neutral-200 dark:border-neutral-800">
           © {new Date().getFullYear()} ملعبك — كل الحقوق محفوظة
         </div>
       </aside>

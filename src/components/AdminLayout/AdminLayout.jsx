@@ -11,49 +11,47 @@ import {
 
 
 export default function AdminLayout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const [activeKey, setActiveKey] = useState("general");
 
-  const menu = [
-    {
-      key: "dashboard",
-      label: "إحصائيات",
-      icon: <ChartLine className="h-4 w-4" />,
-      href: "#dashboard",
-    },
-    {
-      key: "users",
-      label: "إدارة الفئات",
-      icon: <Box className="h-4 w-4" />,
-      href: "#users",
-    },
-    {
-      key: "arenas",
-      label: " إدارة المستخدمين",
-      icon: <Users className="h-4 w-4" />,
-      href: "#arenas",
-    },
-    {
-      key: "security",
-      label: "عرض جميع الحجوزات",
-      icon: <Calendar className="h-4 w-4" />,
-      href: "#security",
-    },
-    {
-      key: "help",
-      label: " طلبات الساحه المعلقة",
-      icon: <FileCog className="h-4 w-4" />,
-      href: "#help",
-    },
-    {
-      key: "feedback",
-      label: "الاعدادت العامه",
-      icon: <MessageSquareText className="h-4 w-4" />,
-      href: "#feedback",
-      badge: "جديد",
-    },
-  ];
+  const [activeKey, setActiveKey] = useState("general");
+const menu = [
+  {
+    key: "dashboard",
+    label: "إحصائيات",
+    icon: <ChartLine className="h-4 w-4" />,
+    href: "#dashboard", 
+  },
+  {
+    key: "categories",
+    label: "إدارة الفئات",
+    icon: <Box className="h-4 w-4" />,
+    href: "#categories", 
+  },
+  {
+    key: "users",
+    label: "إدارة المستخدمين",
+    icon: <Users className="h-4 w-4" />,
+    href: "#users",
+  },
+  {
+    key: "reservations",
+    label: "عرض جميع الحجوزات",
+    icon: <Calendar className="h-4 w-4" />,
+    href: "#reservations", 
+  },
+  {
+    key: "pendingRequests",
+    label: "طلبات الساحة المعلقة",
+    icon: <FileCog className="h-4 w-4" />,
+    href: "#pending-requests", 
+  },
+  {
+    key: "settings",
+    label: "الإعدادات العامة",
+    icon: <MessageSquareText className="h-4 w-4" />,
+    href: "#settings", 
+    badge: "جديد",
+  },
+];
 
   return (
     <div className="min-h-screen flex bg-neutral-50 text-neutral-900 ">
@@ -62,10 +60,6 @@ export default function AdminLayout({ children }) {
         menuItems={menu}
         activeKey={activeKey}
         onChange={setActiveKey}
-        collapsed={collapsed}
-        onToggleCollapse={() => setCollapsed((s) => !s)}
-        open={sidebarOpen}
-        setOpen={setSidebarOpen}
       />
 
       {/* Main Content + Header */}
