@@ -35,12 +35,12 @@ export default function UserReservationsCard({ reservation }) {
                 {/* Date and Time */}
                 <div className="flex flex-col items-start justify-end text-gray-600 text-sm mb-4 gap-4">
                     <div className="flex items-center gap-1.5">
-                        <span>{date}</span>
                         <CalendarDays size={16} className="text-gray-500" />
+                        <span>{date}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                        <span>{timeSlot}</span>
                         <Clock size={16} className="text-gray-500" />
+                        <span>{timeSlot}</span>
                     </div>
                 </div>
 

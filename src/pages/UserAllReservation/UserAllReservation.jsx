@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import UserAllReservationsList from '../../components/UserAllReservationsList/UserAllReservationsList'
 import Pagination from '../../components/Pagination/Pagination'
 import { reservationService } from '../../services/reservationService'
@@ -7,11 +7,21 @@ import { getTimeRanges, formatTime } from '../../utils/timeRange'
 export default function UserAllReservation() {
     const [loading, setLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('current'); // 'current' or 'past'
-    const [reservations, setReservations] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
     const [error, setError] = useState(null);
     const itemsPerPage = 12;
+
+    // Separate state for current and past reservations
+    const [currentReservations, setCurrentReservations] = useState({
+        data: [],
+        currentPage: 1,
+        totalPages: 1,
+    });
+
+    const [pastReservations, setPastReservations] = useState({
+        data: [],
+        currentPage: 1,
+        totalPages: 1,
+    });
 
     // Format slots to time string
     const formatSlots = (slots) => {
@@ -25,63 +35,120 @@ export default function UserAllReservation() {
         }).join(', ');
     };
 
-    // Fetch reservations based on active tab
-    const fetchReservations = useCallback(async () => {
-        setLoading(true);
-        setError(null);
+    // Transform API data to match component props
+    const transformReservation = (reservation, status) => ({
+        id: reservation.id,
+        arenaName: reservation.arenaName,
+        arenaImage: reservation.arenaThumbnail,
+        date: reservation.dateOfReservation,
+        timeSlot: formatSlots(reservation.slots),
+        price: parseFloat(reservation.totalAmount),
+        status: status
+    });
+
+    // Fetch reservations for a specific type
+    const fetchReservationsData = async (type, page) => {
         try {
             const params = {
-                page: currentPage,
+                page: page,
                 limit: itemsPerPage
             };
 
-            console.log('Fetching reservations for tab:', activeTab, 'params:', params);
+            console.log(`Fetching ${type} reservations, page:`, page);
 
-            const result = activeTab === 'current'
+            const result = type === 'current'
                 ? await reservationService.getCurrentReservations(params)
                 : await reservationService.getPastReservations(params);
 
-            console.log('API Result:', result);
-            console.log('Result data:', result.data);
+            console.log(`${type} API Result:`, result);
 
             // Transform API data to match component props
-            const transformedData = result.data.map(reservation => ({
-                id: reservation.id,
-                arenaName: reservation.arenaName,
-                arenaImage: reservation.arenaThumbnail,
-                date: reservation.dateOfReservation,
-                timeSlot: formatSlots(reservation.slots),
-                price: parseFloat(reservation.totalAmount),
-                status: activeTab === 'current' ? 'قادمة' : 'منتهية'
-            }));
+            const transformedData = result.data.map(reservation =>
+                transformReservation(reservation, type === 'current' ? 'قادمة' : 'منتهية')
+            );
 
-            console.log('Transformed data:', transformedData);
+            return {
+                data: transformedData,
+                totalPages: result.totalPages
+            };
+        } catch (error) {
+            console.error(`Error fetching ${type} reservations:`, error);
+            throw error;
+        }
+    };
 
-            setReservations(transformedData);
-            setTotalPages(result.totalPages);
+    // Fetch both current and past reservations on initial load
+    useEffect(() => {
+        const fetchAllReservations = async () => {
+            setLoading(true);
+            setError(null);
+
+            try {
+                // Fetch both current and past reservations in parallel
+                const [currentResult, pastResult] = await Promise.all([
+                    fetchReservationsData('current', 1),
+                    fetchReservationsData('past', 1)
+                ]);
+
+                setCurrentReservations({
+                    data: currentResult.data,
+                    currentPage: 1,
+                    totalPages: currentResult.totalPages
+                });
+
+                setPastReservations({
+                    data: pastResult.data,
+                    currentPage: 1,
+                    totalPages: pastResult.totalPages
+                });
+            } catch (error) {
+                console.error('Error fetching reservations:', error);
+                setError(error.message || 'حدث خطأ أثناء تحميل الحجوزات');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAllReservations();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // Only run once on mount
+
+    // Handle tab change
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+    };
+
+    // Handle page change for the active tab
+    const handlePageChange = async (page) => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const result = await fetchReservationsData(activeTab, page);
+
+            if (activeTab === 'current') {
+                setCurrentReservations({
+                    data: result.data,
+                    currentPage: page,
+                    totalPages: result.totalPages
+                });
+            } else {
+                setPastReservations({
+                    data: result.data,
+                    currentPage: page,
+                    totalPages: result.totalPages
+                });
+            }
         } catch (error) {
             console.error('Error fetching reservations:', error);
             setError(error.message || 'حدث خطأ أثناء تحميل الحجوزات');
-            setReservations([]);
         } finally {
             setLoading(false);
         }
-    }, [activeTab, currentPage]);
-
-    // Fetch reservations when tab or page changes
-    useEffect(() => {
-        fetchReservations();
-    }, [fetchReservations]);
-
-    // Reset to page 1 when switching tabs
-    const handleTabChange = (tab) => {
-        setActiveTab(tab);
-        setCurrentPage(1);
     };
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
+    // Get current active data based on selected tab
+    const activeData = activeTab === 'current' ? currentReservations : pastReservations;
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -125,15 +192,15 @@ export default function UserAllReservation() {
 
             {/* Reservations List */}
             <UserAllReservationsList
-                reservations={reservations}
+                reservations={activeData.data}
                 loading={loading}
             />
 
             {/* Pagination */}
-            {!loading && reservations.length > 0 && (
+            {!loading && activeData.data.length > 0 && (
                 <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
+                    currentPage={activeData.currentPage}
+                    totalPages={activeData.totalPages}
                     onPageChange={handlePageChange}
                 />
             )}
