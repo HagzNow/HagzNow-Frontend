@@ -28,7 +28,7 @@ const AddArena = () => {
       // ✅ الحقول الأساسية
       formData.append("name", values.name);
       // مدخل ال id static دلوقتي بتاع الكاتوجري
-      formData.append("categoryId", "a1d6e75d-82ab-4346-b49e-e948393a6497");
+      formData.append("categoryId", values.categoryId);
       formData.append("pricePerHour", values.price || 150);
       formData.append("description", values.description || "");
       formData.append("status", values.status || "pending");
@@ -124,7 +124,7 @@ const AddArena = () => {
               initialValues={{
                 policy: "",
                 name: "",
-                sportType: "",
+                
                 price: "",
                 description: "",
                 extras: [],
@@ -133,6 +133,7 @@ const AddArena = () => {
                 latitude: "",
                 longitude: "",
                 governorate: "",
+                categoryId:'',
                 city: "",
                 minPeriod: "",
                 openingHour: "",
