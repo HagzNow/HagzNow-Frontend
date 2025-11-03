@@ -3,18 +3,17 @@ import { Formik, Form } from "formik";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/OwnerComponents/Header";
-import Sidebar from "../../components/OwnerComponents/Sidebar";
+
 import LocationPriceSection from "../../components/OwnerComponents/AddArenaComponents/LocationPriceSection";
 import FeaturesSection from "../../components/OwnerComponents/AddArenaComponents/FeaturesSection";
 import DescriptionSection from "../../components/OwnerComponents/AddArenaComponents/DescriptionSection";
 import MediaSection from "../../components/OwnerComponents/AddArenaComponents/MediaSection";
 import BasicInfoSection from "../../components/OwnerComponents/AddArenaComponents/BasicInfoSection";
 import ArenaSchema from "../../components/OwnerComponents/AddArenaComponents/ArenaSchema";
+import Sidebar from "../../components/OwnerComponents/SideBar";
 
 const AddArena = () => {
   const { t, i18n } = useTranslation();
-  const [mainImage, setMainImage] = useState(null);
-  const [galleryImages, setGalleryImages] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -23,14 +22,15 @@ const AddArena = () => {
   const handleSubmit = async (values, { resetForm }) => {
     try {
       setLoading(true);
-
+      console.log("Submitting...", values);
       const formData = new FormData();
 
       // ✅ الحقول الأساسية
       formData.append("name", values.name);
+      // مدخل ال id static دلوقتي بتاع الكاتوجري
       formData.append("categoryId", "a1d6e75d-82ab-4346-b49e-e948393a6497");
-      formData.append("pricePerHour", values.price);
-      formData.append("description", values.description);
+      formData.append("pricePerHour", values.price || 150);
+      formData.append("description", values.description || "");
       formData.append("status", values.status || "pending");
       formData.append("minPeriod", values.minPeriod || 60);
       formData.append("openingHour", values.openingHour || 8);
@@ -44,33 +44,39 @@ const AddArena = () => {
       formData.append("location[governorate]", values.governorate || "Cairo");
       formData.append("location[city]", values.city || "Zamalek");
 
-      // ✅ المميزات
-      values.features.forEach((feature, i) => {
-        formData.append(`features[${i}]`, feature);
-      });
+      // ✅ الصور
+      if (values.thumbnail instanceof File) {
+        formData.append("thumbnail", values.thumbnail);
+      }
 
-      // ✅ صور مؤقتة
-      formData.append("thumbnail", "/uploads/arenas/thumbnail.jpg");
-      formData.append("images[0][path]", "/uploads/arenas/sample1.jpg");
-      formData.append("images[1][path]", "/uploads/arenas/sample2.jpg");
+      if (Array.isArray(values.images)) {
+        values.images.forEach((img) => {
+          if (img instanceof File) {
+            formData.append("images", img);
+          }
+        });
+      }
 
       const res = await axios.post("http://localhost:3000/arenas", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          // Authorization: `Bearer ${token}`,
         },
       });
 
-      if (res.data.isSuccess) {
-        alert("✅ تمت إضافة الساحة بنجاح!");
+      console.log("Response:", res.data);
+
+      if (res.data?.isSuccess) {
+        alert("✅ Arena added successfully!");
         resetForm();
-        setMainImage(null);
-        setGalleryImages([]);
       } else {
-        alert("⚠️ حدث خطأ أثناء الإضافة: " + res.data.message);
+        alert(
+          "⚠️ Error adding arena: " + (res.data?.message || "Unknown error")
+        );
       }
     } catch (err) {
-      console.error("Error adding arena:", err.response?.data || err);
-      alert("❌ فشل الاتصال بالسيرفر!");
+      console.error("Error adding arena:", err.response?.data || err.message);
+      alert("❌ حدث خطأ أثناء الإضافة. راجع الكونسول لمعرفة التفاصيل.");
     } finally {
       setLoading(false);
     }
@@ -116,11 +122,12 @@ const AddArena = () => {
           <div className="bg-white shadow-md rounded-2xl p-4 sm:p-8">
             <Formik
               initialValues={{
+                policy: "",
                 name: "",
                 sportType: "",
                 price: "",
                 description: "",
-                features: [],
+                extras: [],
                 notes: "",
                 status: "",
                 latitude: "",
@@ -131,6 +138,8 @@ const AddArena = () => {
                 openingHour: "",
                 closingHour: "",
                 depositPercent: "",
+                mainImage: null,
+                galleryImages: [],
               }}
               validationSchema={ArenaSchema}
               onSubmit={handleSubmit}
@@ -138,12 +147,7 @@ const AddArena = () => {
               {({ setFieldValue }) => (
                 <Form className="space-y-6 sm:space-y-8">
                   <BasicInfoSection />
-                  <MediaSection
-                    mainImage={mainImage}
-                    setMainImage={setMainImage}
-                    galleryImages={galleryImages}
-                    setGalleryImages={setGalleryImages}
-                  />
+                  <MediaSection />
                   <LocationPriceSection setFieldValue={setFieldValue} />
                   <FeaturesSection />
                   <DescriptionSection />
@@ -166,28 +170,29 @@ const AddArena = () => {
 
       {/* ✅ Sidebar Mobile Overlay */}
       {sidebarOpen && (
-  <div
-    className="fixed inset-0 z-50 md:hidden transition-opacity duration-300"
-    style={{
-      backgroundColor: "#00000030", // أسود شفاف بنسبة 18-20%
-      backdropFilter: "blur(3px)", // ضباب خفيف
-      WebkitBackdropFilter: "blur(3px)", // دعم سفاري
-    }}
-    onClick={() => setSidebarOpen(false)}
-  >
-    <div
-      className={`absolute top-0 h-full w-64 bg-white shadow-xl rounded-l-2xl transition-transform duration-300 ${
-        isRTL ? "right-0 translate-x-0" : "left-0 translate-x-0"
-      }`}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-    </div>
-  </div>
-)}
-
+        <div
+          className="fixed inset-0 z-50 md:hidden transition-opacity duration-300"
+          style={{
+            backgroundColor: "#00000030",
+            backdropFilter: "blur(3px)",
+            WebkitBackdropFilter: "blur(3px)",
+          }}
+          onClick={() => setSidebarOpen(false)}
+        >
+          <div
+            className={`absolute top-0 h-full w-64 bg-white shadow-xl rounded-l-2xl transition-transform duration-300 ${
+              isRTL ? "right-0 translate-x-0" : "left-0 translate-x-0"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default AddArena;
+
+

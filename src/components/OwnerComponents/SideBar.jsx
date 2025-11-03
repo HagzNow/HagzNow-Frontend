@@ -50,11 +50,11 @@ export default function Sidebar({ open, onClose, isRTL }) {
   const Section = ({ section }) => {
     const isOpen = expanded[section.title];
     return (
-      <div className="rounded-xl border border-gray-100 bg-white">
+      <div className="rounded-xl border border-gray-100 bg-white ">
         {/* عنوان القسم */}
         <button
           onClick={() => setExpanded((s) => ({ ...s, [section.title]: !s[section.title] }))}
-          className="w-full px-3 py-2 flex items-center justify-between text-lg font-medium text-gray-700 hover:bg-gray-50 rounded-xl"
+          className="w-full px-3 py-2 flex items-center justify-between text-lg font-medium text-gray-700 hover:bg-gray-50 rounded-xl  "
         >
           <span>{section.title}</span>
           {isOpen ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
@@ -62,7 +62,7 @@ export default function Sidebar({ open, onClose, isRTL }) {
 
         {/* العناصر */}
         {isOpen && (
-          <ul className="px-1 pb-2">
+          <ul className="px-1 pb-2 ">
             {section.items.map((item) => {
               const Icon = item.icon;
               const isActive = active === item.id;
@@ -106,7 +106,7 @@ export default function Sidebar({ open, onClose, isRTL }) {
         md:translate-x-0 md:static md:shadow-none md:w-64 lg:w-72`}
       >
         {/* ✅ Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 pb-[24px]">
           <h2 className="text-lg font-bold text-gray-800">لوحة التحكم</h2>
           {/* زر الإغلاق يظهر فقط في الموبايل */}
           <button

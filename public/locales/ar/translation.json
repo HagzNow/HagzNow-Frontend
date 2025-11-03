@@ -102,7 +102,7 @@
   "cancellationPolicy": "سياسة الإلغاء",
   "enterPolicy": "اكتب سياسة الإلغاء لو فيه",
   "status": "الحالة",
-  "active": "شغال",
+  
   "inactive": "مش شغال",
   "notes": "ملاحظات",
   "enterNotes": "اكتب لو فيه أي ملاحظات إضافية",

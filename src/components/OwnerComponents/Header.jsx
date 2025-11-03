@@ -1,6 +1,10 @@
-import { Menu, Search, Bell, Plus } from "lucide-react";
+import { Menu, Search, Bell, Plus, User as UserIcon } from "lucide-react";
+import { useContext } from "react";
+import { authContext } from "../../Contexts/AuthContext";
 
 export default function Header({ onMenuClick, isRTL }) {
+  const { user } = useContext(authContext);
+
   return (
     <header
       className={`sticky top-0 z-30 bg-white border-b shadow-sm transition-all duration-300 
@@ -27,21 +31,25 @@ export default function Header({ onMenuClick, isRTL }) {
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm"
             >
               <Plus className="size-4" />
               <span className="hidden sm:inline text-sm">إضافة ساحة جديدة</span>
             </button>
+
             <button className="p-2 rounded-xl hover:bg-gray-100">
               <Bell className="size-5" />
             </button>
-            <img
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=128&auto=format&fit=crop"
-              alt="avatar"
-              className="w-9 h-9 rounded-full object-cover border"
-            />
+
+            {/* بدل الصورة هنا هنحط الاسم + أيقونة */}
+            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 border hover:bg-gray-100">
+              <UserIcon className="size-5 text-gray-600" />
+              <span className="text-sm font-medium text-gray-700">
+                {user?.name || user?.username || "User"}
+              </span>
+            </div>
           </div>
         </div>
       </div>
