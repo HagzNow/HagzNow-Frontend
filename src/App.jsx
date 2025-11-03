@@ -22,6 +22,7 @@ import AddArena from "./pages/Owner/AddArenas";
 import BookingArena from "./pages/BookingArena/BookingArena";
 import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
 import Wallet from "./pages/Wallet/Wallet";
+import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
 
 function App() {
   const { i18n } = useTranslation();
@@ -122,6 +123,14 @@ function App() {
           path: "/wallet",
           element: <Wallet />,
         },
+        {
+          path: "/all-reservations",
+          element: (
+            <ProtectedRoutes role="user">
+              <UserAllReservation />
+            </ProtectedRoutes>
+          ),
+        }
       ],
     },
   ]);
