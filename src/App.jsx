@@ -24,6 +24,7 @@ import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
 import Wallet from "./pages/Wallet/Wallet";
 import OwnerLayout from "./components/AdminLayout/AdminLayout";
 import AdminLayout from "./components/AdminLayout/AdminLayout";
+import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
 
 function App() {
   const { i18n } = useTranslation();
@@ -133,6 +134,14 @@ function App() {
             </ProtectedRoutes>
           ),
         },
+        {
+          path: "/all-reservations",
+          element: (
+            <ProtectedRoutes role="user">
+              <UserAllReservation />
+            </ProtectedRoutes>
+          ),
+        }
       ],
     },
   ]);
