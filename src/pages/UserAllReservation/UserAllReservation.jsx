@@ -3,6 +3,7 @@ import UserAllReservationsList from '../../components/UserAllReservationsList/Us
 
 export default function UserAllReservation() {
     const [loading] = useState(false);
+    const [activeTab, setActiveTab] = useState('current'); // 'current' or 'past'
 
     // Sample data - replace with API call later
     const sampleReservations = [
@@ -53,6 +54,12 @@ export default function UserAllReservation() {
         }
     ];
 
+    // Filter reservations based on active tab
+    const currentReservations = sampleReservations.filter(res => res.status === "قادمة");
+    const pastReservations = sampleReservations.filter(res => res.status === "منتهية" || res.status === "ملغاة");
+
+    const displayedReservations = activeTab === 'current' ? currentReservations : pastReservations;
+
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Page Title */}
@@ -62,9 +69,31 @@ export default function UserAllReservation() {
                 </h1>
             </div>
 
+            {/* Tabs */}
+            <div className="flex justify-center gap-2 sm:gap-4 px-4 mb-6">
+                <button
+                    onClick={() => setActiveTab('current')}
+                    className={`px-4 sm:px-8 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-colors ${activeTab === 'current'
+                        ? 'bg-green-600 text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                >
+                    القادمة
+                </button>
+                <button
+                    onClick={() => setActiveTab('past')}
+                    className={`px-4 sm:px-8 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-colors ${activeTab === 'past'
+                        ? 'bg-green-600 text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                >
+                    السابقة
+                </button>
+            </div>
+
             {/* Reservations List */}
             <UserAllReservationsList
-                reservations={sampleReservations}
+                reservations={displayedReservations}
                 loading={loading}
             />
         </div>
