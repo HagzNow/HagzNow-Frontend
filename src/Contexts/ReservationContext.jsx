@@ -17,6 +17,7 @@ export default function ReservationContextProvider({ children }) {
   let [extras, setExtras] = useState([]);
   const [selectedExtras, setSelectedExtras] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
+
   const steps = [
     t("reservation.step1"),
     t("reservation.step2"),
@@ -47,7 +48,7 @@ export default function ReservationContextProvider({ children }) {
       arenaId,
       date: date.format("YYYY-MM-DD"),
       slots,
-      selectedExtras,
+      extras: selectedExtras.map((extra) => extra.id),
     };
     try {
       let { data } = await baseUrl.post("/reservations/", payload);
@@ -61,7 +62,6 @@ export default function ReservationContextProvider({ children }) {
         })
       );
       resetReservation();
-      console.log(data);
       return data;
     } catch (error) {
       console.log(error);

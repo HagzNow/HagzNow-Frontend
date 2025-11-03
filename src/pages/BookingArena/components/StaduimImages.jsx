@@ -9,8 +9,8 @@ const StadiumImage = ({ images = [], name }) => {
         <img
           key={img.id}
           //src={`src/assets/${img.path}`}
-           // src={new URL(`../../assets/uploads/arenas/${img.path.split('/').pop()}`, import.meta.url).href}
-             src={`/uploads/arenas/${img.path.split('/').pop()}`}
+          // src={new URL(`../../assets/uploads/arenas/${img.path.split('/').pop()}`, import.meta.url).href}
+          src={img.path}
           alt={name}
           className="w-full h-64 object-cover rounded-lg shadow"
         />

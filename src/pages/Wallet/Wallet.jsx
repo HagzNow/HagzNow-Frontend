@@ -4,14 +4,21 @@ import { useSearchParams } from "react-router-dom";
 import PaymentResultModal from "../../components/Wallet/PaymentResultModal";
 import baseUrl from "../../apis/config";
 import TransactionItem from "../../components/Wallet/TransactionItem";
+import { useTranslation } from "react-i18next";
+import Pagination from "../../components/Pagination/Pagination";
 
 export default function Wallet() {
+  const { t } = useTranslation();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const [showModal, setShowModal] = useState(false);
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState(false);
   const [amount, setAmount] = useState(0);
   const [showResultModal, setShowResultModal] = useState(false);
   const [transactions, setTransactions] = useState([]);
+  const [balance, setBalance] = useState();
 
   useEffect(() => {
     const success = searchParams.get("success");
@@ -30,44 +37,67 @@ export default function Wallet() {
     }
   }, [searchParams]);
 
-  async function getAllTransaction() {
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  async function getBalance() {
     try {
-      let { data } = await baseUrl.get(`/transactions?limit=${2}&page=${2}`);
-      console.log(data);
-
-      setTransactions(data?.data?.data);
+      let { data } = await baseUrl.get("/wallet/balance");
+      setBalance(data?.data.avaibaleBalance);
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-    getAllTransaction();
+    getBalance();
   }, []);
+
+  async function getAllTransaction(page = 1) {
+    try {
+      let { data } = await baseUrl.get(
+        `/transactions?limit=${15}&page=${page}`
+      );
+      setTransactions(data?.data?.data);
+      setTotalPages(data?.data.totalPages);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getAllTransaction(currentPage);
+  }, [currentPage]);
 
   return (
     <>
       <div className="container w-3/4 ">
         <div className="balance p-3 text-center space-y-3 bg-secondColor rounded-2xl">
-          <p>رصيدك الحالي</p>
-          <h2 className="font-bold text-3xl">٥,٢٠٠.٠٠ ج.م</h2>
+          <p>{t("wallet.current_balance")}</p>
+          <h2 className="font-bold text-3xl">
+            {balance ? Number(balance).toLocaleString("ar-EG") : 0} ج.م
+          </h2>
           <button
             onClick={() => setShowModal(true)}
             className="btn mt-2 bg-mainColor text-white rounded-xl px-5 py-2"
           >
-            إضافة رصيد
+            {t("wallet.add_balance")}
           </button>
         </div>
 
         <div className="transaction py-5">
-          <h2 className="text-center mb-3.5 font-bold">سجل المعاملات</h2>
+          <h2 className="text-center mb-3.5 font-bold">
+            {t("wallet.transaction_history")}
+          </h2>
+
           <div className="header flex p-3 bg-secondColor justify-around rounded-2xl items-center">
-            <p>الحاله</p>
-            <p>المبلغ</p>
-            <p>المرجع</p>
-            <p>النوع</p>
-            <p>التاريخ</p>
+            <p>{t("wallet.status")}</p>
+            <p>{t("wallet.amount")}</p>
+            <p>{t("wallet.type")}</p>
+            <p>{t("wallet.date")}</p>
           </div>
+
           <div className="p-3 bg-secondColor mt-2 space-y-3">
             {transactions?.map((transaction) => (
               <TransactionItem key={transaction.id} transaction={transaction} />
@@ -75,6 +105,12 @@ export default function Wallet() {
           </div>
         </div>
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
 
       <AddFundsModal isOpen={showModal} onClose={() => setShowModal(false)} />
 
