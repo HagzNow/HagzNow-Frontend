@@ -6,7 +6,7 @@ import { getTimeRanges, formatTime } from '../../utils/timeRange'
 
 export default function UserAllReservation() {
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState('past'); // 'current' or 'past'
+    const [activeTab, setActiveTab] = useState('current'); // 'current' or 'past'
     const [reservations, setReservations] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);

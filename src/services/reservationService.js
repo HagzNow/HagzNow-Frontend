@@ -2,7 +2,7 @@ import { API_BASE_URL } from '../config/api';
 
 export const reservationService = {
     /**
-     * Fetch current (upcoming) reservations with pagination
+     * Fetch upcoming (future) reservations with pagination
      * @param {Object} params - Query parameters
      * @param {number} params.page - Page number
      * @param {number} params.limit - Items per page
@@ -29,7 +29,7 @@ export const reservationService = {
             }
 
             const response = await fetch(
-                `${API_BASE_URL}/reservations/current?${queryParams.toString()}`,
+                `${API_BASE_URL}/reservations/upcoming?${queryParams.toString()}`,
                 {
                     method: 'GET',
                     headers: headers,
@@ -43,7 +43,7 @@ export const reservationService = {
             const result = await response.json();
 
             if (!result.isSuccess) {
-                throw new Error(result.message || 'Failed to fetch current reservations');
+                throw new Error(result.message || 'Failed to fetch upcoming reservations');
             }
 
             // Return the nested data structure with proper mapping
@@ -55,12 +55,10 @@ export const reservationService = {
                 totalPages: result.data.totalPages
             };
         } catch (error) {
-            console.error('Error fetching current reservations:', error);
+            console.error('Error fetching upcoming reservations:', error);
             throw error;
         }
-    },
-
-    /**
+    },    /**
      * Fetch past reservations with pagination
      * @param {Object} params - Query parameters
      * @param {number} params.page - Page number
