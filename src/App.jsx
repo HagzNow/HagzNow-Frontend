@@ -338,9 +338,9 @@ function App() {
     {
       path: "/owner",
       element: (
-        // <ProtectedRoutes role="owner">
+      //  <ProtectedRoutes role="owner">
         <OwnerLayout />
-        // </ProtectedRoutes>
+      // </ProtectedRoutes>
       ),
       children: [
         { path: "add-arena", element: <AddArena /> },
@@ -361,6 +361,26 @@ function App() {
         { path: "settings", element: <SettingsPage /> },
       ],
     },
+     {
+          path: "/confirm",
+          element: (
+            // <ProtectedRoutes role="user">
+            <ConfirmReservation />
+            // </ProtectedRoutes>
+          ),
+        },
+         {
+          path: "/user-arena",
+          element: <UserArenas />,
+        },
+         {
+          path: "/arenacard",
+          element: (
+            // <ProtectedRoutes role="user">
+            <ArenaCardPremium />
+            // </ProtectedRoutes>
+          ),
+        },
   ]);
   return (
     <>

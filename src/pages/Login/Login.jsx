@@ -22,7 +22,7 @@ export default function Login() {
       .required(t("password_required"))
       .matches(passwordRegx, t("password_invalid")),
   });
-
+/*
   async function sendDataToLogin(values) {
     const loadingToast = toast.loading("loading.....");
     setLoadButtom(true);
@@ -39,7 +39,15 @@ export default function Login() {
       setToken(data.data.token);
       toast.success("Login successfuly");
       setTimeout(() => {
-        navigate("/home");
+        if (user.role === "admin") {
+          navigate("/admin/settings")
+        }else if(user.role === "owner"){
+            navigate("/owner/add-arena")
+        }else{
+           navigate("/home");
+          
+        }
+       
       }, 2000);
     } catch (error) {
       const msg = error.response?.data?.error?.code || "Unknown error";
@@ -50,6 +58,42 @@ export default function Login() {
       setLoadButtom(false);
     }
   }
+*/
+
+async function sendDataToLogin(values) {
+  const loadingToast = toast.loading("loading.....");
+  setLoadButtom(true);
+  try {
+    const option = {
+      url: "http://localhost:3000/auth/login",
+      method: "POST",
+      data: values,
+    };
+
+    const { data } = await axios.request(option);
+
+    localStorage.setItem("token", data.data.token);
+    setToken(data.data.token);
+
+    const role = data.data.user?.role; // ✅ خُد الدور من الريسبونس مباشرة
+
+    toast.success("Login successfuly");
+
+     setTimeout(() => {
+      if (role === "admin") navigate("/admin/settings");
+      else if (role === "owner") navigate("/owner/add-arena");
+      else navigate("/home");
+    }, 1000);
+    
+  } catch (error) {
+    const msg = error.response?.data?.error?.code || "Unknown error";
+    const translated = t(`errors.${msg}`, { defaultValue: msg });
+    toast.error(translated);
+  } finally {
+    toast.dismiss(loadingToast);
+    setLoadButtom(false);
+  }
+}
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },

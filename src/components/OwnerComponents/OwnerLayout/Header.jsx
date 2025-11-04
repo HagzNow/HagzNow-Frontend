@@ -32,7 +32,7 @@ export default function Header({ onMenuClick, isRTL }) {
 
   return (
     <header
-      className={`sticky top-0 z-30 bg-white border-b shadow-sm transition-all duration-300 
+      className={`sticky top-0  z-30 bg-white border-b shadow-sm transition-all duration-300 
         ${isRTL ? "md:mr-8" : "md:ml-8"}`}
     >
       <div className="max-w-7xl mx-auto px-4">
