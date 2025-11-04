@@ -199,13 +199,30 @@ function App() {
         </ProtectedRoutes>
       ),
       children: [
-               
-       
-      
-        { path: "settings", element: <SettingsPage/> },
+                
+         { path: "settings", element: <SettingsPage/> },
          { path: "pending-requests", element: <PendingRequests/> },
+        // { path: "all-reservations", element:  <UserAllReservation /> },
+         { path: "admin-arena-requests", element:  <AdminArenaRequests /> },
+         
       ],
     },
+
+
+// {
+  //         path: "/admin-arena-requests",
+  //         element: (
+  //           <ProtectedRoutes role="admin">
+  //             
+  //           </ProtectedRoutes>
+  //         ),
+  //       },
+
+
+
+
+
+
     {
       path: "/confirm",
       element: (
@@ -244,14 +261,14 @@ function App() {
         </ProtectedRoutes>
       ),
     },
-    {
-      path: "/all-reservations",
-      element: (
-        <ProtectedRoutes role="user">
-          <UserAllReservation />
-        </ProtectedRoutes>
-      ),
-    },
+    // {
+    //   path: "/all-reservations",
+    //   element: (
+    //     <ProtectedRoutes role="user">
+    //       <UserAllReservation />
+    //     </ProtectedRoutes>
+    //   ),
+    // },
     {
       path: "/categoriesmanagment",
       element: (

@@ -159,7 +159,7 @@ export default function AdminLayout() {
     { key: "categories", label: "إدارة الفئات", icon: <Box />, to: "categories" },
     { key: "users", label: "إدارة المستخدمين", icon: <Users />, to: "users" },
     { key: "reservations", label: "عرض جميع الحجوزات", icon: <Calendar />, to: "reservations" },
-    { key: "pending-requests", label: "طلبات الساحة المعلقة", icon: <FileCog />, to: "pending-requests" },
+    { key: "admin-arena-requests", label: "طلبات الساحة المعلقة", icon: <FileCog />, to: "admin-arena-requests" },
     { key: "settings", label: "الإعدادات العامة", icon: <MessageSquareText />, badge: "جديد", to: "settings" },
   ];
 
@@ -175,7 +175,7 @@ export default function AdminLayout() {
 
   {/* Main Content */}
   <div className="flex-1 mr-64 mt-16 p-4 md:p-6">
-    <main className="rounded-2xl border border-neutral-200 bg-white p-4 md:p-6 shadow-sm min-h-[80vh] mr-[38px]">
+    <main className="rounded-2xl border border-neutral-200 bg-white p-4 md:p-6 shadow-sm min-h-[80vh] mr-[38px] mt-[-50px]">
       <Outlet />
     </main>
   </div>

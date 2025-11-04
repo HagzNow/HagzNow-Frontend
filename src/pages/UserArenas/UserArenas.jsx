@@ -3,6 +3,8 @@ import UserArenaFilter from '../../components/UserArenaFilter/UserArenaFilter'
 import ArenasList from '../../components/UserArenasList/ArenasList'
 import Pagination from '../../components/Pagination/Pagination'
 import { arenaService } from '../../services/arenaService'
+import UserNavbar from '@/components/NavbarUser'
+import Footer from '@/components/Footer'
 
 export default function UserArenas() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -55,6 +57,10 @@ export default function UserArenas() {
     }, []);
 
     return (
+        <>
+
+      <UserNavbar/>
+        
         <div className="min-h-screen bg-gray-50">
             <UserArenaFilter onFilterChange={handleFilterChange} />
 
@@ -84,5 +90,8 @@ export default function UserArenas() {
                 />
             )}
         </div>
+        <Footer/>
+        
+        </>
     )
 }

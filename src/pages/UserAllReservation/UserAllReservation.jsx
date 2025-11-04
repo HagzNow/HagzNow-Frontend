@@ -63,9 +63,15 @@ export default function UserAllReservation() {
             console.log(`${type} API Result:`, result);
 
             // Transform API data to match component props
-            const transformedData = result.data.map(reservation =>
-                transformReservation(reservation, type === 'current' ? 'قادمة' : 'منتهية')
-            );
+            // const transformedData = result.data.map(reservation =>
+            //     transformReservation(reservation, type === 'current' ? 'قادمة' : 'منتهية')
+            // );
+
+            const transformedData = Array.isArray(result.data)
+                ? result.data.map(reservation =>
+                    transformReservation(reservation, type === 'current' ? 'قادمة' : 'منتهية')
+                    )
+                : [];
 
             return {
                 data: transformedData,

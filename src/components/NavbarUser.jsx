@@ -1,12 +1,33 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { User } from "lucide-react"; // أيقونة المستخدم
 import { authContext } from "../Contexts/AuthContext";
 
+
+
 const UserNavbar = () => {
-  const { user, logout } = useContext(authContext);
+  const {  user, setToken, setUser  } = useContext(authContext);
   const isLoggedIn = localStorage.getItem("token");
+    const navigate = useNavigate();
+
+
+
+
+  const handleLogout = () => {
+      localStorage.removeItem("token"); // فقط احذف التوكن بدل clear الكلي
+      setUser(null);
+      setToken(null);
+      console.log("✅ Logged out successfully!");
+    };
+  
+    // ✅ useEffect لمراقبة تغيّر حالة المستخدم/التوكن
+    useEffect(() => {
+      // لو المستخدم اتصفر أو التوكن اتحذف
+      if (!user) {
+        navigate("/login", { replace: true });
+      }
+    }, [user, navigate]);
 
   return (
     <nav className="bg-white text-green-700 py-3 px-6 shadow-md">
@@ -19,14 +40,14 @@ const UserNavbar = () => {
           </Link>
 
           {/* Search box */}
-          <div className="relative w-full sm:w-[240px] md:w-[280px] lg:w-[300px]">
+          {/* <div className="relative w-full sm:w-[240px] md:w-[280px] lg:w-[300px]">
             <CiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-green-700 w-5 h-5 pointer-events-none" />
             <input
               type="text"
               placeholder="ابحث عن ملعب..."
               className="w-full py-2 pr-10 pl-3 rounded-md focus:outline-none text-green-700 bg-transparent border border-green-300 focus:border-green-700 placeholder-green-400 transition"
             />
-          </div>
+          </div> */}
         </div>
 
         {/* ✅ Links */}
@@ -41,10 +62,16 @@ const UserNavbar = () => {
             <Link to="/wallet" className="hover:underline whitespace-nowrap">
               المحفظة
             </Link>
-            <Link to="/my-bookings" className="hover:underline whitespace-nowrap">
+            <Link
+              to="/my-bookings"
+              className="hover:underline whitespace-nowrap"
+            >
               حجوزاتي
             </Link>
-            <Link to="/arenas" className="hover:underline whitespace-nowrap">
+            <Link
+              to="/user-arena"
+              className="hover:underline whitespace-nowrap"
+            >
               الملاعب
             </Link>
           </div>
@@ -63,7 +90,7 @@ const UserNavbar = () => {
 
             {/* logout button */}
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 text-sm font-medium"
             >
               تسجيل خروج

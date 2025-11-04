@@ -360,7 +360,7 @@ export default function Login() {
   // ✅ بعد ما الـ user يتحدث، نعمل التوجيه حسب الدور
   useEffect(() => {
     if (!user) return; // لسه مفيش يوزر بعد
-    if (user.role === "admin") navigate("/admin/settings");
+    if (user.role === "admin") navigate("/admin/admin-arena-requests");
     else if (user.role === "owner") navigate("/owner/add-arena");
     else navigate("/home");
   }, [user, navigate]); // هيشتغل أول ما الـ user يتحدث

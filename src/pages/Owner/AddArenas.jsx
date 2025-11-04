@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
@@ -10,19 +10,28 @@ import MediaSection from "../../components/OwnerComponents/AddArenaComponents/Me
 import BasicInfoSection from "../../components/OwnerComponents/AddArenaComponents/BasicInfoSection";
 import ArenaSchema from "../../components/OwnerComponents/AddArenaComponents/ArenaSchema";
 
-
-
 const AddArena = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
- 
- 
+
+  //          if (Array.isArray(values.extras)) {
+  // formData.append("extras", JSON.stringify(values.extras));
+  //          }
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
       setLoading(true);
       console.log("Submitting...", values);
       const formData = new FormData();
+      if (Array.isArray(values.extras)) {
+        values.extras.forEach((extra, index) => {
+          formData.append(`extras[${index}][name]`, extra.name);
+          formData.append(`extras[${index}][price]`, extra.price);
+        });
+      }
+
+      console.log(typeof Array.isArray(values.extras));
+      console.log(values.extras);
 
       formData.append("name", values.name);
       formData.append("categoryId", values.categoryId);
@@ -59,7 +68,9 @@ const AddArena = () => {
         alert("✅ Arena added successfully!");
         resetForm();
       } else {
-        alert("⚠️ Error adding arena: " + (res.data?.message || "Unknown error"));
+        alert(
+          "⚠️ Error adding arena: " + (res.data?.message || "Unknown error")
+        );
       }
     } catch (err) {
       console.error("Error adding arena:", err.response?.data || err.message);
@@ -70,9 +81,7 @@ const AddArena = () => {
   };
 
   return (
-    
-       <>
-
+    <>
       <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 text-gray-800">
         {t("addArenaTitle")}
       </h2>
@@ -123,8 +132,7 @@ const AddArena = () => {
           )}
         </Formik>
       </div>
-      </>
- 
+    </>
   );
 };
 
