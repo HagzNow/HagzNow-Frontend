@@ -12,16 +12,18 @@ export default function Extras() {
     getExtras(id);
   }, [id]);
 
-  const toggleSelect = (extraName) => {
+  const toggleSelect = (extra) => {
     setSelectedExtras((prev) => {
-      const isSelected = prev.includes(extraName);
+      const isSelected = prev.some((item) => item.id === extra.id);
       if (isSelected) {
-        return prev.filter((name) => name !== extraName);
+        return prev.filter((item) => item.id !== extra.id);
       } else {
-        return [...prev, extraName];
+        return [
+          ...prev,
+          { id: extra.id, name: extra.name, price: extra.price },
+        ];
       }
     });
-    console.log(selectedExtras);
   };
 
   return (
@@ -46,8 +48,8 @@ export default function Extras() {
             <div className="flex items-center gap-4">
               <input
                 type="checkbox"
-                checked={selectedExtras.includes(extra.name)}
-                onChange={() => toggleSelect(extra.name)}
+                checked={selectedExtras.some((item) => item.id === extra.id)}
+                onChange={() => toggleSelect(extra)}
                 className="w-5 h-5 accent-green-600 cursor-pointer rounded"
                 disabled={!extra.isActive}
               />

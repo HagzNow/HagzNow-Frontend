@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import baseUrl from "../../apis/config";
 import { formatTime, getTimeRanges } from "../../utils/timeRange";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,9 @@ import { useTranslation } from "react-i18next";
 export default function ConfirmReservation() {
   const navigate = useNavigate();
   const { i18n } = useTranslation();
+  const location = useLocation();
+  const reservationData = location.state;
+  console.log(reservationData);
 
   const [reservation, setReservation] = useState(null);
   const [arenaDetails, setArenaDetails] = useState(null);
@@ -50,10 +53,10 @@ export default function ConfirmReservation() {
     const pricePerHour = Number(arenaDetails.pricePerHour) || 0;
     const hoursPrice = pricePerHour * slots.length;
 
-    const extrasPrice =
-      arenaDetails?.extras
-        ?.filter((extra) => selectedExtras.includes(extra.name))
-        ?.reduce((sum, extra) => sum + Number(extra.price), 0) || 0;
+    const extrasPrice = selectedExtras.reduce(
+      (sum, extra) => sum + Number(extra.price || 0),
+      0
+    );
 
     return { hoursPrice, extrasPrice, totalPrice: hoursPrice + extrasPrice };
   }, [arenaDetails, reservation]);
@@ -66,7 +69,7 @@ export default function ConfirmReservation() {
     );
   }
 
-  const { date, slots = [], selectedExtras = [] } = reservation;
+  const { slots = [] } = reservation;
   const ranges = getTimeRanges(slots);
 
   return (
@@ -87,8 +90,17 @@ export default function ConfirmReservation() {
         </h2>
 
         <div className="grid grid-cols-2 gap-y-3 text-sm text-gray-700">
+          <p className="font-medium">الملعب</p>
+          <p className="text-right">{reservationData?.data.arena.name}</p>
           <p className="font-medium">التاريخ</p>
-          <p className="text-right">{date || "غير محدد"}</p>
+          <p className="text-right">
+            {reservationData?.data.dateOfReservation}
+          </p>
+
+          <p className="font-medium">الموقع</p>
+          <p className="text-right">
+            {reservationData?.data.arena.locationSummary}
+          </p>
 
           <p className="font-medium">الوقت</p>
           <div className="text-right flex flex-wrap gap-2 justify-start">
@@ -108,39 +120,42 @@ export default function ConfirmReservation() {
           </div>
 
           <p className="font-medium">الإضافات</p>
-          <p className="text-right">
-            {selectedExtras.length > 0
-              ? selectedExtras.join("، ")
-              : "لا توجد إضافات"}
-          </p>
-
-          <p className="font-medium">الملعب</p>
-          <p className="text-right">
-            {loadingArena
-              ? "جارِ التحميل..."
-              : arenaDetails?.name || "غير متاح"}
-          </p>
-
-          <p className="font-medium">الموقع</p>
-          <p className="text-right">
-            {arenaDetails?.location
-              ? `${arenaDetails.location.city} - ${arenaDetails.location.governorate}`
-              : "غير متاح"}
-          </p>
+          <div className="text-right">
+            {reservationData?.data.extras.length > 0 ? (
+              <ul className="flex flex-col gap-2">
+                {reservationData?.data.extras.map((extra) => (
+                  <li
+                    key={extra.id}
+                    className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg border border-gray-100 shadow-sm"
+                  >
+                    <span className="text-gray-800 font-medium">
+                      {extra.name}
+                    </span>
+                    <span className="text-mainColor font-semibold">
+                      {extra.price}{" "}
+                      <span className="text-sm text-gray-500">ج.م</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500">لا توجد إضافات</p>
+            )}
+          </div>
         </div>
 
         <div className="border-t border-t-gray-300 mt-4 pt-3 text-sm">
           <div className="flex justify-between">
             <span>سعر الساعات</span>
-            <span>{hoursPrice} جنيه</span>
+            <span>{reservationData?.data.playTotalAmount}جنيه</span>
           </div>
           <div className="flex justify-between">
             <span>سعر الإضافات</span>
-            <span>{extrasPrice} جنيه</span>
+            <span>{reservationData?.data.extrasTotalAmount} جنيه</span>
           </div>
           <div className="flex justify-between font-bold text-green-600 mt-2">
             <span>الإجمالي المستحق</span>
-            <span>{totalPrice} جنيه</span>
+            <span>{reservationData?.data.totalAmount} جنيه</span>
           </div>
         </div>
       </div>
