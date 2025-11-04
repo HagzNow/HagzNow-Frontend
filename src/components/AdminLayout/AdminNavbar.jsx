@@ -1,18 +1,14 @@
 import { useState } from "react";
 import { Menu, Bell, User, LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom"; // لو بتستخدم react-router
+import { useNavigate } from "react-router-dom";
 
 export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const navigate = useNavigate(); // لاستخدام إعادة التوجيه بعد تسجيل الخروج
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    // مثال: مسح بيانات المستخدم من التخزين المحلي
     localStorage.clear();
-
     console.log("Logged out successfully!");
-
-    // إعادة التوجيه للصفحة الرئيسية أو صفحة تسجيل الدخول
     navigate("/login");
   };
 
@@ -67,7 +63,7 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
 
               {/* Dropdown */}
               {dropdownOpen && (
-                <div className="absolute top-full mt-2 w-40 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl shadow-lg z-50 flex flex-col">
+                <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl shadow-lg z-50 flex flex-col">
                   <button
                     onClick={handleLogout}
                     className="w-full flex items-center gap-2 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-t-xl"
