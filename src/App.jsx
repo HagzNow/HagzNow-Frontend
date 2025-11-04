@@ -25,6 +25,8 @@ import Wallet from "./pages/Wallet/Wallet";
 import OwnerLayout from "./components/AdminLayout/AdminLayout";
 import AdminLayout from "./components/AdminLayout/AdminLayout";
 import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
+import UserManagement from "./pages/AdminPages/UserManagement";
+import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
 
 function App() {
   const { i18n } = useTranslation();
@@ -142,6 +144,22 @@ function App() {
             </ProtectedRoutes>
           ),
         }
+         {
+          path: "/categoriesmanagment",
+          element: (
+            <ProtectedRoutes role="admin">
+              <ArenaMangmentCategories />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "/usermanagment",
+          element: (
+            <ProtectedRoutes role="admin">
+              <UserManagement />
+            </ProtectedRoutes>
+          ),
+        },
       ],
     },
   ]);
