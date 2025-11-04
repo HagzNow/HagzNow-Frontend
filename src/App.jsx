@@ -28,6 +28,9 @@ import SettingsPage from "./pages/SettingPage/SettingsPage";
 import OwnerLayout from "./components/OwnerComponents/OwnerLayout/OwnerLayout";
 import ReservationStep from "./components/Steps/ReservationStep";
 import PendingRequests from "./pages/SettingPage/PendingRequests";
+import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
+import UserManagement from "./pages/AdminPages/UserManagement";
+import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
 
 function App() {
   const { i18n } = useTranslation();
@@ -170,7 +173,6 @@ function App() {
           path: "/booking/:id",
           element: <BookingArena />,
         },
-        { path: "/wallet", element: <Wallet /> },
       ],
     },
 
@@ -178,9 +180,9 @@ function App() {
     {
       path: "/owner",
       element: (
-      //  <ProtectedRoutes role="owner">
+        //  <ProtectedRoutes role="owner">
         <OwnerLayout />
-      // </ProtectedRoutes>
+        // </ProtectedRoutes>
       ),
       children: [
         { path: "add-arena", element: <AddArena /> },
@@ -204,26 +206,68 @@ function App() {
          { path: "pending-requests", element: <PendingRequests/> },
       ],
     },
-     {
-          path: "/confirm",
-          element: (
-            // <ProtectedRoutes role="user">
-            <ConfirmReservation />
-            // </ProtectedRoutes>
-          ),
-        },
-         {
-          path: "/user-arena",
-          element: <UserArenas />,
-        },
-         {
-          path: "/arenacard",
-          element: (
-            // <ProtectedRoutes role="user">
-            <ArenaCardPremium />
-            // </ProtectedRoutes>
-          ),
-        },
+    {
+      path: "/confirm",
+      element: (
+        // <ProtectedRoutes role="user">
+        <ConfirmReservation />
+        // </ProtectedRoutes>
+      ),
+    },
+    {
+      path: "/user-arena",
+      element: <UserArenas />,
+    },
+    {
+      path: "/arenacard",
+      element: (
+        // <ProtectedRoutes role="user">
+        <ArenaCardPremium />
+        // </ProtectedRoutes>
+      ),
+    },
+    {
+      path: "/wallet",
+
+      element: (
+        <ProtectedRoutes role="user">
+          <Wallet />
+        </ProtectedRoutes>
+      ),
+    },
+
+    {
+      path: "/SettingsPage",
+      element: (
+        <ProtectedRoutes role="admin">
+          <AdminLayout />
+        </ProtectedRoutes>
+      ),
+    },
+    {
+      path: "/all-reservations",
+      element: (
+        <ProtectedRoutes role="user">
+          <UserAllReservation />
+        </ProtectedRoutes>
+      ),
+    },
+    {
+      path: "/categoriesmanagment",
+      element: (
+        <ProtectedRoutes role="admin">
+          <ArenaMangmentCategories />
+        </ProtectedRoutes>
+      ),
+    },
+    {
+      path: "/usermanagment",
+      element: (
+        <ProtectedRoutes role="admin">
+          <UserManagement />
+        </ProtectedRoutes>
+      ),
+    },
   ]);
   return (
     <>
