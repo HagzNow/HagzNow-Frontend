@@ -143,7 +143,7 @@ function App() {
               <UserAllReservation />
             </ProtectedRoutes>
           ),
-        }
+        },
          {
           path: "/categoriesmanagment",
           element: (
