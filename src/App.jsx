@@ -31,6 +31,8 @@ import PendingRequests from "./pages/SettingPage/PendingRequests";
 import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
 import UserManagement from "./pages/AdminPages/UserManagement";
 import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
+import UserProfile from "./pages/UserProfile/UserProfile";
+
 
 function App() {
   const { i18n } = useTranslation();
@@ -153,6 +155,8 @@ function App() {
         { path: "/home", element: <Home /> },
         { path: "/login", element: <Login /> },
         { path: "/register", element: <Register /> },
+       { path: "/userProfile", element: <UserProfile/>},
+
         {
           path: "/reservation/:id",
           element: (

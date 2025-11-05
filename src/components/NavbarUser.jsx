@@ -56,7 +56,7 @@ const UserNavbar = () => {
             <Link to="/book" className="hover:underline whitespace-nowrap">
               أحجز معنا
             </Link>
-            <Link to="/settings" className="hover:underline whitespace-nowrap">
+            <Link to="/userProfile" className="hover:underline whitespace-nowrap">
               إعدادات الحساب
             </Link>
             <Link to="/wallet" className="hover:underline whitespace-nowrap">
