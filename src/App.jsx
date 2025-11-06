@@ -33,7 +33,6 @@ import UserManagement from "./pages/AdminPages/UserManagement";
 import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
 import UserProfile from "./pages/UserProfile/UserProfile";
 
-
 function App() {
   const { i18n } = useTranslation();
 
@@ -155,7 +154,14 @@ function App() {
         { path: "/home", element: <Home /> },
         { path: "/login", element: <Login /> },
         { path: "/register", element: <Register /> },
-       { path: "/userProfile", element: <UserProfile/>},
+        {
+          path: "/userProfile",
+          element: (
+            <ProtectedRoutes role="user">
+              <UserProfile />
+            </ProtectedRoutes>
+          ),
+        },
 
         {
           path: "/reservation/:id",
@@ -203,29 +209,21 @@ function App() {
         </ProtectedRoutes>
       ),
       children: [
-                
-         { path: "settings", element: <SettingsPage/> },
-         { path: "pending-requests", element: <PendingRequests/> },
+        { path: "settings", element: <SettingsPage /> },
+        { path: "pending-requests", element: <PendingRequests /> },
         // { path: "all-reservations", element:  <UserAllReservation /> },
-         { path: "admin-arena-requests", element:  <AdminArenaRequests /> },
-         
+        { path: "admin-arena-requests", element: <AdminArenaRequests /> },
       ],
     },
 
-
-// {
-  //         path: "/admin-arena-requests",
-  //         element: (
-  //           <ProtectedRoutes role="admin">
-  //             
-  //           </ProtectedRoutes>
-  //         ),
-  //       },
-
-
-
-
-
+    // {
+    //         path: "/admin-arena-requests",
+    //         element: (
+    //           <ProtectedRoutes role="admin">
+    //
+    //           </ProtectedRoutes>
+    //         ),
+    //       },
 
     {
       path: "/confirm",

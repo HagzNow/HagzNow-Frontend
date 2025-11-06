@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
-import { CiSearch } from "react-icons/ci";
+
 import { Link, useNavigate } from "react-router-dom";
-import { User } from "lucide-react"; // أيقونة المستخدم
+import { User } from "lucide-react"; 
 import { authContext } from "../Contexts/AuthContext";
 
 
@@ -19,11 +19,12 @@ const UserNavbar = () => {
       setUser(null);
       setToken(null);
       console.log("✅ Logged out successfully!");
+      
     };
   
-    // ✅ useEffect لمراقبة تغيّر حالة المستخدم/التوكن
+    
     useEffect(() => {
-      // لو المستخدم اتصفر أو التوكن اتحذف
+      
       if (!user) {
         navigate("/login", { replace: true });
       }
@@ -84,7 +85,7 @@ const UserNavbar = () => {
             <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 border hover:bg-gray-100">
               <User className="size-5 text-gray-600" />
               <span className="text-sm font-medium text-gray-700">
-                {user?.name || user?.username || "User"}
+                  {`${user?.fName || "User"} ${user?.lName || ""}`}
               </span>
             </div>
 
