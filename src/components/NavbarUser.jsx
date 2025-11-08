@@ -9,7 +9,9 @@ import { authContext } from "../Contexts/AuthContext";
 const UserNavbar = () => {
   const {  user, setToken, setUser  } = useContext(authContext);
   const isLoggedIn = localStorage.getItem("token");
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  
 
 
 
