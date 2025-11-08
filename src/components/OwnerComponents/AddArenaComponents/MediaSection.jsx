@@ -1,50 +1,193 @@
+// import React from "react";
+// import { useFormikContext } from "formik";
+// import { useTranslation } from "react-i18next";
+
+// export default function MediaSection() {
+//   const { values, setFieldValue } = useFormikContext();
+//   const { t } = useTranslation();
+
+//   return (
+//     <div className="border rounded-xl p-6">
+//       {/* ✅ Flex container for both sections */}
+//       <div className="flex flex-wrap gap-8">
+//         {/* ✅ Main Image */}
+//         <div className="flex-1 min-w-[250px]">
+//           <label className="block text-sm font-medium text-gray-700 mb-2">
+//             {t("Main Image")}
+//           </label>
+
+//           <div className="flex items-center gap-3 mb-2">
+//             <label
+//               htmlFor="thumbnail"
+//               className="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+//             >
+//               {t("Choose File")}
+//             </label>
+//             <span className="text-gray-500 text-sm">
+//               {values.thumbnail ? values.thumbnail.name : t("No file chosen")}
+//             </span>
+//           </div>
+
+//           <input
+//             id="thumbnail"
+//             type="file"
+//             name="thumbnail"
+//             accept="image/*"
+//             onChange={(e) => setFieldValue("thumbnail", e.target.files[0])}
+//             className="hidden"
+//           />
+
+//           {values.thumbnail && (
+//             <img
+//               src={URL.createObjectURL(values.thumbnail)}
+//               alt="Preview"
+//               className="w-40 h-40 object-cover rounded-md border"
+//             />
+//           )}
+          
+//         </div>
+
+//         {/* ✅ Gallery Images */}
+//         <div className="flex-1 min-w-[250px]">
+//           <label className="block text-sm font-medium text-gray-700 mb-2">
+//             {t("Gallery Images")}
+//           </label>
+
+//           <div className="flex items-center gap-3 mb-2">
+//             <label
+//               htmlFor="gallery"
+//               className="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+//             >
+//               {t("Choose Files")}
+//             </label>
+//             <span className="text-gray-500 text-sm">
+//               {values.images?.length
+//                 ? `${values.images.length} ${t("files selected")}`
+//                 : t("No files chosen")}
+//             </span>
+//           </div>
+
+//           <input
+//             id="gallery"
+//             type="file"
+//             name="images"
+//             accept="image/*"
+//             multiple
+//             onChange={(e) => setFieldValue("images", Array.from(e.target.files))}
+//             className="hidden"
+//           />
+
+//           <div className="flex flex-wrap gap-2 mt-2">
+//             {values.images?.map((file, i) => (
+//               <img
+//                 key={i}
+//                 src={URL.createObjectURL(file)}
+//                 alt={`Gallery ${i}`}
+//                 className="w-40 h-40 object-cover rounded-md border"
+//               />
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
 import React from "react";
 import { useFormikContext } from "formik";
+import { useTranslation } from "react-i18next";
 
 export default function MediaSection() {
   const { values, setFieldValue } = useFormikContext();
+  const { t } = useTranslation();
 
   return (
-    <div className="space-y-4">
-      {/* ✅ Main Image */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Main Image</label>
-        <input
-          type="file"
-          name="thumbnail"
-          accept="image/*"
-          onChange={(e) => setFieldValue("thumbnail", e.target.files[0])}
-          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-        />
-        {values.thumbnail && (
-          <img
-            src={URL.createObjectURL(values.thumbnail)}
-            alt="Preview"
-            className="mt-2 w-40 h-40 object-cover rounded-md"
-          />
-        )}
-      </div>
+    <div className="border rounded-xl p-6">
+      {/* ✅ Flex container for both sections */}
+      <div className="flex flex-wrap gap-8">
+        {/* ✅ Main Image */}
+        <div className="flex-1 min-w-[250px]">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {t("Main Image")}
+          </label>
 
-      {/* ✅ Gallery Images */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Gallery Images</label>
-        <input
-          type="file"
-          name="images"
-          accept="image/*"
-          multiple
-          onChange={(e) => setFieldValue("images", Array.from(e.target.files))}
-          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-        />
-        <div className="flex flex-wrap gap-2 mt-2">
-          {values.images?.map((file, i) => (
+          <div className="flex items-center gap-3 mb-2">
+            <label
+              htmlFor="thumbnail"
+              className="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+            >
+              {t("Choose File")}
+            </label>
+            <span className="text-gray-500 text-sm">
+              {values.thumbnail ? values.thumbnail.name : t("No file chosen")}
+            </span>
+          </div>
+
+          <input
+            id="thumbnail"
+            type="file"
+            name="thumbnail"
+            accept="image/*"
+            onChange={(e) => setFieldValue("thumbnail", e.target.files[0])}
+            className="hidden"
+          />
+
+          {values.thumbnail && (
             <img
-              key={i}
-              src={URL.createObjectURL(file)}
-              alt={`Gallery ${i}`}
-              className="w-24 h-24 object-cover rounded-md"
+              src={URL.createObjectURL(values.thumbnail)}
+              alt="Preview"
+              className="w-40 h-40 object-cover rounded-md border"
             />
-          ))}
+          )}
+
+       
+        </div>
+
+        {/* ✅ Gallery Images */}
+        <div className="flex-1 min-w-[250px]">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {t("Gallery Images")}
+          </label>
+
+          <div className="flex items-center gap-3 mb-2">
+            <label
+              htmlFor="gallery"
+              className="cursor-pointer bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+            >
+              {t("Choose Files")}
+            </label>
+            <span className="text-gray-500 text-sm">
+              {values.images?.length
+                ? `${values.images.length} ${t("files selected")}`
+                : t("No files chosen")}
+            </span>
+          </div>
+
+          <input
+            id="gallery"
+            type="file"
+            name="images"
+            accept="image/*"
+            multiple
+            onChange={(e) =>
+              setFieldValue("images", Array.from(e.target.files))
+            }
+            className="hidden"
+          />
+
+          <div className="flex flex-wrap gap-2 mt-2">
+            {values.images?.map((file, i) => (
+              <img
+                key={i}
+                src={URL.createObjectURL(file)}
+                alt={`Gallery ${i}`}
+                className="w-40 h-40 object-cover rounded-md border"
+              />
+            ))}
+          </div>
+
+         
         </div>
       </div>
     </div>

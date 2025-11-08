@@ -14,9 +14,6 @@ const AddArena = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
-  //          if (Array.isArray(values.extras)) {
-  // formData.append("extras", JSON.stringify(values.extras));
-  //          }
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
@@ -106,7 +103,10 @@ const AddArena = () => {
             closingHour: "",
             depositPercent: "",
             mainImage: null,
-            galleryImages: [],
+             galleryImages: [],
+
+            // thumbnail: null,     
+            // images: [],  
           }}
           validationSchema={ArenaSchema}
           onSubmit={handleSubmit}

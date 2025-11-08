@@ -11,7 +11,7 @@ export default function UserProfile() {
   const [language, setLanguage] = useState("arabic");
   const [selectedImage, setSelectedImage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false); // ⬅️ جديد
+  const [isSubmitting, setIsSubmitting] = useState(false); 
   const [userData, setUserData] = useState(null);
   const [serverError, setServerError] = useState("");
   const { token } = useContext(authContext);

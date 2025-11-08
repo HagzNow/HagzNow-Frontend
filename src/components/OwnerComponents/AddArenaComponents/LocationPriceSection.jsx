@@ -1,4 +1,4 @@
-import { Field } from "formik";
+import { ErrorMessage, Field } from "formik";
 import { MapContainer, TileLayer } from "react-leaflet";
 import { useTranslation } from "react-i18next";
 import LocationPicker from "./LocationPicker";
@@ -40,6 +40,11 @@ const LocationPriceSection = ({ setFieldValue }) => {
             placeholder={t("enterGovernorate")}
             className="w-full border rounded-lg p-3 focus:ring focus:ring-green-200 outline-none"
           />
+          <ErrorMessage
+            name="governorate"
+            component="div"
+            className="text-red-500 text-sm mt-1"
+          />
         </div>
         <div>
           <label className="block mb-2 text-gray-600">{t("city")}</label>
@@ -47,6 +52,11 @@ const LocationPriceSection = ({ setFieldValue }) => {
             name="city"
             placeholder={t("enterCity")}
             className="w-full border rounded-lg p-3 focus:ring focus:ring-green-200 outline-none"
+          />
+          <ErrorMessage
+            name="city"
+            component="div"
+            className="text-red-500 text-sm mt-1"
           />
         </div>
       </div>
@@ -78,6 +88,11 @@ const LocationPriceSection = ({ setFieldValue }) => {
         placeholder={t("enterPrice")}
         className="w-full border rounded-lg p-3 focus:ring focus:ring-green-200 outline-none"
       />
+       <ErrorMessage
+                  name="price"
+                  component="div"
+                  className="text-red-500 text-sm mt-1"
+                />
     </div>
   );
 };
