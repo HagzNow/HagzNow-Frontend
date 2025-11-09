@@ -4,4 +4,5 @@ export const API_ENDPOINTS = {
   ARENAS: "/arenas",
   CATEGORIES: "/categories",
   USERS: "/users",
+  STATUS: "/status",
 };
