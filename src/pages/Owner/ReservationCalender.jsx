@@ -1,11 +1,11 @@
+import Sidebar from "@/components/AdminLayout/AdminSidebar";
+import Header from "@/components/OwnerComponents/OwnerLayout/Header";
+import Filters from "@/components/OwnerComponents/ReservationCalender/Filters";
+import ReservationCard from "@/components/OwnerComponents/ReservationCalender/ReservationCard";
 import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import ReservationCard from "../../components/OwnerComponents/ReservationCalender/ReservationCard";
-import Filters from "../../components/OwnerComponents/ReservationCalender/filters";
-import arenas from "../../../public/cardtatic/arena.json";
-import Header from "../../components/OwnerComponents/Header";
-import Sidebar from "../../components/OwnerComponents/Sidebar";
+
 
 function ReservationCalender() {
   const [filters, setFilters] = useState({
