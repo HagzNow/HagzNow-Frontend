@@ -154,7 +154,29 @@
     "features": "Features",
     "notes": "Notes"
   },
-  "noResults": "No matching reservations found."
+  "noResults": "No matching reservations found.",
 
 
+   "transaction_status": {
+    "hold": "Hold",
+    "released": "Canceled",
+    "failed": "Failed",
+    "settled": "Completed",
+    "pending": "Pending"
+  },
+   "transaction_type": {
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "payment": "Payment",
+    "refund": "Refund"
+  },
+  "wallet": {
+    "current_balance": "Your current balance",
+    "add_balance": "Add Funds",
+    "transaction_history": "Transaction History",
+    "status": "Status",
+    "amount": "Amount",
+    "type": "Type",
+    "date": "Date"
+  }
 }

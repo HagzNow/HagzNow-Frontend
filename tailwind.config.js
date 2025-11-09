@@ -1,6 +1,9 @@
+import animate from "tailwindcss-animate";
+import twAnimateCss from "tw-animate-css";
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   darkMode: "class",
   theme: {
     container: {
@@ -32,5 +35,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [animate, twAnimateCss],
 };

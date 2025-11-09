@@ -1,63 +1,52 @@
-import { useTranslation } from "react-i18next";
+import React from "react";
+import { useFormikContext } from "formik";
 
-const MediaSection = ({ mainImage, setMainImage, galleryImages, setGalleryImages }) => {
-  const { t } = useTranslation();
+export default function MediaSection() {
+  const { values, setFieldValue } = useFormikContext();
 
   return (
-    <div className="grid md:grid-cols-2 gap-6">
-      {/* Gallery */}
-      <div className="border rounded-xl p-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">{t("galleryImages")}</h3>
-        <div className="flex gap-4 mb-4 overflow-x-auto">
-          {galleryImages.length > 0 ? (
-            galleryImages.map((img, i) => (
-              <img key={i} src={URL.createObjectURL(img)} alt="gallery" className="w-32 h-24 object-cover rounded-lg shadow" />
-            ))
-          ) : (
-            <p className="text-gray-400 text-sm">{t("noImages")}</p>
-          )}
-        </div>
-
-        <label className="block bg-gray-100 hover:bg-gray-200 text-center py-2 rounded-lg cursor-pointer">
-          {t("uploadGallery")}
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => setGalleryImages(Array.from(e.target.files || []))}
+    <div className="space-y-4">
+      {/* ✅ Main Image */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Main Image</label>
+        <input
+          type="file"
+          name="thumbnail"
+          accept="image/*"
+          onChange={(e) => setFieldValue("thumbnail", e.target.files[0])}
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+        />
+        {values.thumbnail && (
+          <img
+            src={URL.createObjectURL(values.thumbnail)}
+            alt="Preview"
+            className="mt-2 w-40 h-40 object-cover rounded-md"
           />
-        </label>
+        )}
       </div>
 
-      {/* Main Image */}
-      <div className="border rounded-xl p-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">{t("mainImage")}</h3>
-        <div className="flex flex-col items-center">
-          {mainImage ? (
+      {/* ✅ Gallery Images */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Gallery Images</label>
+        <input
+          type="file"
+          name="images"
+          accept="image/*"
+          multiple
+          onChange={(e) => setFieldValue("images", Array.from(e.target.files))}
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+        />
+        <div className="flex flex-wrap gap-2 mt-2">
+          {values.images?.map((file, i) => (
             <img
-              src={URL.createObjectURL(mainImage)}
-              alt="main"
-              className="w-64 h-40 object-cover rounded-lg shadow mb-4"
+              key={i}
+              src={URL.createObjectURL(file)}
+              alt={`Gallery ${i}`}
+              className="w-24 h-24 object-cover rounded-md"
             />
-          ) : (
-            <div className="w-64 h-40 bg-gray-100 rounded-lg mb-4 flex items-center justify-center text-gray-400">
-              {t("noMainImage")}
-            </div>
-          )}
-          <label className="bg-gray-100 hover:bg-gray-200 text-center py-2 w-full rounded-lg cursor-pointer">
-            {t("uploadMainImage")}
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => setMainImage(e.target.files[0] || null)}
-            />
-          </label>
+          ))}
         </div>
       </div>
     </div>
   );
-};
-
-export default MediaSection;
+}

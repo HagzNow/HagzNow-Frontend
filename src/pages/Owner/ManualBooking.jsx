@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Calendar, User, CreditCard } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import Header from "../../components/OwnerComponents/Header";
-import Sidebar from "../../components/OwnerComponents/Sidebar";
-import FieldSelect from "../../components/OwnerComponents/ManualBookingComponents.jsx/FieldSelect";
-import FieldInput from "../../components/OwnerComponents/ManualBookingComponents.jsx/FieldInput";
-import FieldTextarea from "../../components/OwnerComponents/ManualBookingComponents.jsx/FieldTextarea";
-import Section from "../../components/OwnerComponents/ManualBookingComponents.jsx/Section";
+
+
+import FieldSelect from "../../components/OwnerComponents/ManualBookingComponents/FieldSelect";
+import FieldInput from "../../components/OwnerComponents/ManualBookingComponents/FieldInput";
+import FieldTextarea from "../../components/OwnerComponents/ManualBookingComponents/FieldTextarea";
+import Section from "../../components/OwnerComponents/ManualBookingComponents/Section";
 
 const ManualBookingForm = () => {
   const { t, i18n } = useTranslation();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
 
   const validationSchema = Yup.object({
     venue: Yup.string().required(t("venue") + " مطلوب"),
@@ -36,14 +36,8 @@ const ManualBookingForm = () => {
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
-      {/* Header */}
-      <Header onMenuClick={() => setSidebarOpen(true)} />
-
+     
       <div className="flex">
-        {/* Sidebar */}
-        <div className="md:col-span-3 hidden md:block">
-          <Sidebar open={true} onClose={() => setSidebarOpen(false)} />
-        </div>
 
         {/* Main Content */}
         <main className="flex-1 max-w-7xl mx-auto px-4 py-6">

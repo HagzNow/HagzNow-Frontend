@@ -1,9 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
+import axios from "axios";
 import { useTranslation } from "react-i18next";
 
-import Header from "../../components/OwnerComponents/Header";
-import Sidebar from "../../components/OwnerComponents/Sidebar";
 import LocationPriceSection from "../../components/OwnerComponents/AddArenaComponents/LocationPriceSection";
 import FeaturesSection from "../../components/OwnerComponents/AddArenaComponents/FeaturesSection";
 import DescriptionSection from "../../components/OwnerComponents/AddArenaComponents/DescriptionSection";
@@ -11,98 +10,129 @@ import MediaSection from "../../components/OwnerComponents/AddArenaComponents/Me
 import BasicInfoSection from "../../components/OwnerComponents/AddArenaComponents/BasicInfoSection";
 import ArenaSchema from "../../components/OwnerComponents/AddArenaComponents/ArenaSchema";
 
-
-
 const AddArena = () => {
-  const { t, i18n } = useTranslation();
-  const [mainImage, setMainImage] = useState(null);
-  const [galleryImages, setGalleryImages] = useState([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
+
+  //          if (Array.isArray(values.extras)) {
+  // formData.append("extras", JSON.stringify(values.extras));
+  //          }
+
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      setLoading(true);
+      console.log("Submitting...", values);
+      const formData = new FormData();
+      if (Array.isArray(values.extras)) {
+        values.extras.forEach((extra, index) => {
+          formData.append(`extras[${index}][name]`, extra.name);
+          formData.append(`extras[${index}][price]`, extra.price);
+        });
+      }
+
+      console.log(typeof Array.isArray(values.extras));
+      console.log(values.extras);
+
+      formData.append("name", values.name);
+      formData.append("categoryId", values.categoryId);
+      formData.append("pricePerHour", values.price || 150);
+      formData.append("description", values.description || "");
+      formData.append("status", values.status || "pending");
+      formData.append("minPeriod", values.minPeriod || 60);
+      formData.append("openingHour", values.openingHour || 8);
+      formData.append("closingHour", values.closingHour || 22);
+      formData.append("depositPercent", values.depositPercent || 20);
+      formData.append("policy", values.notes || "");
+
+      formData.append("location[lat]", values.latitude);
+      formData.append("location[lng]", values.longitude);
+      formData.append("location[governorate]", values.governorate || "Cairo");
+      formData.append("location[city]", values.city || "Zamalek");
+
+      if (values.thumbnail instanceof File) {
+        formData.append("thumbnail", values.thumbnail);
+      }
+      if (Array.isArray(values.images)) {
+        values.images.forEach((img) => {
+          if (img instanceof File) formData.append("images", img);
+        });
+      }
+
+      const res = await axios.post("http://localhost:3000/arenas", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      console.log("Response:", res.data);
+
+      if (res.data?.isSuccess) {
+        alert("✅ Arena added successfully!");
+        resetForm();
+      } else {
+        alert(
+          "⚠️ Error adding arena: " + (res.data?.message || "Unknown error")
+        );
+      }
+    } catch (err) {
+      console.error("Error adding arena:", err.response?.data || err.message);
+      alert("❌ حدث خطأ أثناء الإضافة. راجع الكونسول لمعرفة التفاصيل.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
-      {/* Header */}
-      <Header onMenuClick={() => setSidebarOpen(true)} />
+    <>
+      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 text-gray-800">
+        {t("addArenaTitle")}
+      </h2>
 
-      {/* Main Layout */}
-      <div className="max-w-7xl mx-auto px-4 py-6 grid md:grid-cols-12 gap-6">
-        {/* Sidebar */}
-        <div className="md:col-span-3 hidden md:block">
-          <Sidebar open={true} onClose={() => setSidebarOpen(false)} />
-        </div>
+      <div className="bg-white shadow-md rounded-2xl p-4 sm:p-8">
+        <Formik
+          initialValues={{
+            policy: "",
+            name: "",
+            price: "",
+            description: "",
+            extras: [],
+            notes: "",
+            status: "",
+            latitude: "",
+            longitude: "",
+            governorate: "",
+            categoryId: "",
+            city: "",
+            minPeriod: "",
+            openingHour: "",
+            closingHour: "",
+            depositPercent: "",
+            mainImage: null,
+            galleryImages: [],
+          }}
+          validationSchema={ArenaSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ setFieldValue }) => (
+            <Form className="space-y-6 sm:space-y-8">
+              <BasicInfoSection />
+              <MediaSection />
+              <LocationPriceSection setFieldValue={setFieldValue} />
+              <FeaturesSection />
+              <DescriptionSection />
 
-        {/* Form Section */}
-        <div className="md:col-span-9">
-          <div className="bg-white shadow-md rounded-2xl p-8">
-            <div className="flex justify-end mb-4">
-              <button
-                className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 transition"
-                onClick={() =>
-                  i18n.changeLanguage(i18n.language === "en" ? "ar" : "en")
-                }
-              >
-                {i18n.language === "en" ? "العربية" : "English"}
-              </button>
-            </div>
-
-            <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">
-              {t("addArenaTitle")}
-            </h2>
-
-            <Formik
-              initialValues={{
-                name: "",
-                sportType: "",
-                location: "",
-                addressDescription: "",
-                price: "",
-                description: "",
-                features: [],
-                notes: "",
-                status: "",
-                latitude: "",
-                longitude: "",
-              }}
-              validationSchema={ArenaSchema}
-              onSubmit={(values) => {
-                const data = { ...values, mainImage, galleryImages };
-                console.log("Form Data Submitted:", data);
-                alert(t("successMessage"));
-              }}
-            >
-              {({ setFieldValue }) => (
-                <Form className="space-y-8">
-                  <BasicInfoSection />
-                  <MediaSection
-                    mainImage={mainImage}
-                    setMainImage={setMainImage}
-                    galleryImages={galleryImages}
-                    setGalleryImages={setGalleryImages}
-                  />
-                  <LocationPriceSection setFieldValue={setFieldValue} />
-                  <FeaturesSection />
-                  <DescriptionSection />
-
-                  <div className="text-center">
-                    <button
-                      type="submit"
-                      className="bg-green-600 text-white px-10 py-3 rounded-lg shadow hover:bg-green-700 transition"
-                    >
-                      {t("saveArena")}
-                    </button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </div>
+              <div className="text-center">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-green-600 text-white px-8 py-3 rounded-lg shadow hover:bg-green-700 transition disabled:opacity-50 w-full sm:w-auto"
+                >
+                  {loading ? "جاري الحفظ..." : t("saveArena")}
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
-
-      {/* Sidebar for mobile */}
-      <div className="md:hidden">
-        <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      </div>
-    </div>
+    </>
   );
 };
 

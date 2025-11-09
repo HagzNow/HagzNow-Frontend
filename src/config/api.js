@@ -1,0 +1,9 @@
+export const API_BASE_URL = "http://localhost:3000";
+
+export const API_ENDPOINTS = {
+  ARENAS: '/arenas',
+  CATEGORIES: '/categories',
+  RESERVATIONS: '/reservations',
+  USERS: "/users",
+  STATUS: "/status",
+};

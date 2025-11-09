@@ -102,7 +102,7 @@
   "cancellationPolicy": "سياسة الإلغاء",
   "enterPolicy": "اكتب سياسة الإلغاء لو فيه",
   "status": "الحالة",
-  "active": "شغال",
+  
   "inactive": "مش شغال",
   "notes": "ملاحظات",
   "enterNotes": "اكتب لو فيه أي ملاحظات إضافية",
@@ -153,7 +153,29 @@
     "features": "المميزات",
     "notes": "ملاحظات"
   },
-  "noResults": "لا توجد حجوزات مطابقة للفلاتر الحالية."
+  "noResults": "لا توجد حجوزات مطابقة للفلاتر الحالية.",
+  "transaction_status": {
+    "hold": "معلق",
+    "released": "ملغي",
+    "failed": "فشل",
+    "settled": "مكتمل",
+    "pending": "قيد المعالجة"
+  },
+  "transaction_type": {
+    "deposit": "إيداع",
+    "withdrawal": "سحب",
+    "payment": "دفع",
+    "refund": "استرجاع"
+  },
+   "wallet": {
+    "current_balance": "رصيدك الحالي",
+    "add_balance": "إضافة رصيد",
+    "transaction_history": "سجل المعاملات",
+    "status": "الحالة",
+    "amount": "المبلغ",
+    "type": "النوع",
+    "date": "التاريخ"
+  }
 }
 
 
