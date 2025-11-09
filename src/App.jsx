@@ -294,8 +294,6 @@ function App() {
         </ProtectedRoutes>
       ),
     },
-<<<<<<< Updated upstream
-=======
 
     // ✅ Owner routes
     {
@@ -400,7 +398,6 @@ function App() {
     //     </ProtectedRoutes>
     //   ),
     // },
->>>>>>> Stashed changes
   ]);
   return (
     <>
