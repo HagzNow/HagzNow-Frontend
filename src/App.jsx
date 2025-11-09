@@ -263,14 +263,14 @@ function App() {
         </ProtectedRoutes>
       ),
     },
-    // {
-    //   path: "/all-reservations",
-    //   element: (
-    //     <ProtectedRoutes role="user">
-    //       <UserAllReservation />
-    //     </ProtectedRoutes>
-    //   ),
-    // },
+    {
+      path: "/all-reservations",
+      element: (
+        <ProtectedRoutes role="user">
+          <UserAllReservation />
+        </ProtectedRoutes>
+      ),
+    },
     {
       path: "/categoriesmanagment",
       element: (
