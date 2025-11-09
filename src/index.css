@@ -5,54 +5,100 @@
 
 @custom-variant dark (&:is(.dark *));
 
-body{
-    font-family: "Cairo", sans-serif;
+body {
+  font-family: "Cairo", sans-serif;
 }
 
-@theme{
-    --color-mainColor :#0aad0a;
-    --color-secondColor : rgba(243, 244, 246, 1);
-    --color-thirdColor :rgba(86, 93, 109, 1);
+
+
+@theme {
+  --color-mainColor: #0aad0a;
+  --color-secondColor: rgba(243, 244, 246, 1);
+  --color-thirdColor: rgba(86, 93, 109, 1);
 }
 
-@utility container{
-    margin : auto
+
+
+
+@utility container {
+  margin: auto
 }
 
-@layer components{
-    .btn{
-        @apply rounded-md text-white px-10 py-2 border-2 border-thirdColor
-    }
+
+
+@layer components {
+  .btn {
+    @apply rounded-md text-white px-10 py-2 border-2 border-thirdColor
+  }
 }
 
 /* loader */
 .loader {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        position: relative;
-        animation: rotate 1s linear infinite
-      }
-      .loader::before , .loader::after {
-        content: "";
-        box-sizing: border-box;
-        position: absolute;
-        inset: 0px;
-        border-radius: 50%;
-        border: 5px solid #FFF;
-        animation: prixClipFix 2s linear infinite ;
-      }
-      .loader::after{
-        inset: 8px;
-        transform: rotate3d(90, 90, 0, 180deg );
-        border-color: #0aad0a;
-      }
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite
+}
 
-      @keyframes rotate {
-        0%   {transform: rotate(0deg)}
-        100%   {transform: rotate(360deg)}
-      }
+.loader::before,
+.loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid #FFF;
+  animation: prixClipFix 2s linear infinite;
+}
 
+.loader::after {
+  inset: 8px;
+  transform: rotate3d(90, 90, 0, 180deg);
+  border-color: #0aad0a;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(360deg)
+  }
+}
+
+@keyframes prixClipFix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0)
+  }
+
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0)
+  }
+
+  75%,
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%)
+  }
+}
+
+/* Toast animation */
+@keyframes slide-down {
+  from {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
       @keyframes prixClipFix {
           0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
           50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}

@@ -10,7 +10,7 @@ const ArenaSchema = Yup.object().shape({
   extras: Yup.array().required("Required"),
   governorate: Yup.string().required("Required"),
   city: Yup.string().required("Required"),
-  status: Yup.string().required("Required"),
+
   
 });
 

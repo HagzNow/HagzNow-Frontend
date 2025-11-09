@@ -6,6 +6,8 @@ import baseUrl from "../../apis/config";
 import TransactionItem from "../../components/Wallet/TransactionItem";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../components/Pagination/Pagination";
+import UserNavbar from "@/components/NavbarUser";
+import Footer from "@/components/Footer";
 
 export default function Wallet() {
   const { t } = useTranslation();
@@ -72,7 +74,8 @@ export default function Wallet() {
 
   return (
     <>
-      <div className="container w-3/4 ">
+    <UserNavbar/>
+      <div className="container w-3/4 mt-[20px]">
         <div className="balance p-3 text-center space-y-3 bg-secondColor rounded-2xl">
           <p>{t("wallet.current_balance")}</p>
           <h2 className="font-bold text-3xl">
@@ -120,6 +123,7 @@ export default function Wallet() {
         isOpen={showResultModal}
         onClose={() => setShowResultModal(false)}
       />
+      <Footer/>
     </>
   );
 }

@@ -1,20 +1,28 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Menu, Bell, User, LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom"; // لو بتستخدم react-router
+import { Link, useNavigate } from "react-router-dom";
+import { authContext } from "../../Contexts/AuthContext";
 
 export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const navigate = useNavigate(); // لاستخدام إعادة التوجيه بعد تسجيل الخروج
+  const navigate = useNavigate();
+  const { token, setToken, setUser} = useContext(authContext);
+
+
 
   const handleLogout = () => {
-    // مثال: مسح بيانات المستخدم من التخزين المحلي
-    localStorage.clear();
-
-    console.log("Logged out successfully!");
-
-    // إعادة التوجيه للصفحة الرئيسية أو صفحة تسجيل الدخول
-    navigate("/login");
+    
+    localStorage.removeItem("token");
+    setUser?.(null);
+    setToken?.(null);
+    setDropdownOpen(false);
+    navigate("/login", { replace: true });
   };
+
+  // شبكة أمان: لو التوكن اتشال في أي مكان، نوجّه على طول
+  useEffect(() => {
+    if (!token) navigate("/login", { replace: true });
+  }, [token, navigate]);
 
   return (
     <header className="sticky top-0 z-50 shadow-sm bg-white/80 backdrop-blur-md dark:bg-neutral-900/70 border-b border-neutral-200 dark:border-neutral-800">
@@ -26,23 +34,27 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
               onClick={onMenuClick}
               className="inline-flex md:hidden items-center justify-center rounded-xl p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
               aria-label="فتح القائمة"
+              type="button"
             >
               <Menu className="h-5 w-5" />
             </button>
-            <a
-              href="#"
+
+            {/* استخدم Link بدل a */}
+            <Link
+              to="/"
               className="flex items-center gap-2 rounded-xl px-2 py-1"
             >
               <span className="font-extrabold tracking-tight text-neutral-900 dark:text-white">
                 ArenaAdmin
               </span>
-            </a>
+            </Link>
           </div>
 
           {/* اليمين */}
           <div className="flex items-center gap-1 sm:gap-2">
             {/* إشعارات */}
             <button
+              type="button"
               className="relative inline-flex items-center justify-center rounded-xl p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
               aria-label="الإشعارات"
             >
@@ -57,6 +69,7 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
             {/* أيقونة المستخدم */}
             <div className="relative">
               <button
+                type="button"
                 onClick={() => setDropdownOpen((prev) => !prev)}
                 className="inline-flex items-center gap-2 rounded-2xl ps-2 pe-3 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                 aria-label="الملف الشخصي"
@@ -67,8 +80,9 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
 
               {/* Dropdown */}
               {dropdownOpen && (
-                <div className="absolute top-full mt-2 w-40 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl shadow-lg z-50 flex flex-col">
+                <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl shadow-lg z-50 flex flex-col">
                   <button
+                    type="button"
                     onClick={handleLogout}
                     className="w-full flex items-center gap-2 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-t-xl"
                   >

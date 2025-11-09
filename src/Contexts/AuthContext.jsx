@@ -33,9 +33,10 @@ export default function AuthContextProvider({ children }) {
 
   return (
     <authContext.Provider
-      value={{ user, token, setToken, decodeToken, logout }}
+      value={{ user,setUser, token, setToken, decodeToken, logout }}
     >
       {children}
     </authContext.Provider>
   );
 }
+
