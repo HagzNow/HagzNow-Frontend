@@ -11,7 +11,7 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
 
     // Handle both array and object with data property
     const arenas = Array.isArray(arenaRequests) ? arenaRequests : (arenaRequests?.data || []);
-    
+
     console.log('AdminArenasReqsList received arenaRequests:', arenaRequests);
     console.log('Processed arenas:', arenas);
     console.log('arenas is array?:', Array.isArray(arenas));

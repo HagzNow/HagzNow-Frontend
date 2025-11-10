@@ -33,7 +33,7 @@ export default function AdminArenaRequests() {
             setCurrentPage(response.page);
             setTotalPages(response.totalPages);
             setTotal(response.total);
-            
+
             console.log('State should now be - arenaRequests:', response.data, 'currentPage:', response.page, 'totalPages:', response.totalPages);
         } catch (err) {
             setError(err.message || 'فشل في تحميل طلبات الملاعب');
