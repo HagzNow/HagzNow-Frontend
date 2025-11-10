@@ -152,6 +152,7 @@ function App() {
       element: <Layout />, // فقط user وguest
       children: [
         { path: "/home", element: <Home /> },
+        { path: "/", element: <Home /> },
         { path: "/login", element: <Login /> },
         { path: "/register", element: <Register /> },
         {
@@ -183,6 +184,14 @@ function App() {
           path: "/booking/:id",
           element: <BookingArena />,
         },
+        {
+          path: "/all-reservations",
+          element: (
+            <ProtectedRoutes role="user">
+              <UserAllReservation />
+            </ProtectedRoutes>
+          ),
+        },
       ],
     },
 
@@ -209,21 +218,29 @@ function App() {
         </ProtectedRoutes>
       ),
       children: [
+
         { path: "settings", element: <SettingsPage /> },
         { path: "pending-requests", element: <PendingRequests /> },
         // { path: "all-reservations", element:  <UserAllReservation /> },
         { path: "admin-arena-requests", element: <AdminArenaRequests /> },
+
       ],
     },
+
 
     // {
     //         path: "/admin-arena-requests",
     //         element: (
     //           <ProtectedRoutes role="admin">
-    //
+    //             
     //           </ProtectedRoutes>
     //         ),
     //       },
+
+
+
+
+
 
     {
       path: "/confirm",
