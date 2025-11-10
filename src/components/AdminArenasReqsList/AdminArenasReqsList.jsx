@@ -3,6 +3,7 @@ import AdminArenaCard from "../AdminArenaCard/AdminArenaCard";
 import { arenaService } from "../../services/arenaService";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import Toast from "../Toast/Toast";
+import noImage from "../../assets/imgs/no-img.jpg";
 
 export default function AdminArenasReqsList({ arenaRequests = [], loading, onRefresh }) {
     const [processingId, setProcessingId] = useState(null);
@@ -96,20 +97,25 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
                 </div>
             ) : (
                 <div dir="ltr" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6 my-6 sm:my-8 md:my-10 mx-4 sm:mx-6 md:mx-8 lg:mx-10">
-                    {arenas.map((arena) => (
-                        <AdminArenaCard
-                            key={arena.id}
-                            id={arena.id}
-                            title={arena.name}
-                            location={arena.locationSummary}
-                            sport={arena.categoryName}
-                            price={arena.pricePerHour}
-                            image={arena.thumbnail || 'src/assets/imgs/arena-img.png'}
-                            onApprove={() => handleApprove(arena.id)}
-                            onReject={() => handleReject(arena.id)}
-                            isProcessing={processingId === arena.id}
-                        />
-                    ))}
+                    {arenas.map((arena) => {
+                        const imageToUse = arena.thumbnail && arena.thumbnail.trim() !== '' ? arena.thumbnail : noImage;
+                        console.log('Arena:', arena.name, 'Thumbnail:', arena.thumbnail, 'Using image:', imageToUse);
+
+                        return (
+                            <AdminArenaCard
+                                key={arena.id}
+                                id={arena.id}
+                                title={arena.name}
+                                location={arena.locationSummary}
+                                sport={arena.categoryName}
+                                price={arena.pricePerHour}
+                                image={imageToUse}
+                                onApprove={() => handleApprove(arena.id)}
+                                onReject={() => handleReject(arena.id)}
+                                isProcessing={processingId === arena.id}
+                            />
+                        );
+                    })}
                 </div>
             )}
         </>
