@@ -2,13 +2,55 @@ import { IoLocationOutline } from "react-icons/io5";
 import { PiSoccerBall } from "react-icons/pi";
 import { BiDollar } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-export default function AdminArenaCard({ id, title, location, sport, price, image, onApprove, onReject, isProcessing = false }) {
+export default function AdminArenaCard({ id, title, location, sport, price, image, onApprove, onReject, isProcessing = false, isLoading = false }) {
     const navigate = useNavigate();
 
     const handleViewMore = () => {
         navigate(`/booking/${id}`);
     };
+
+    // Loading skeleton
+    if (isLoading) {
+        return (
+            <div dir="rtl" className="w-full bg-white rounded-xl sm:rounded-2xl shadow-md overflow-hidden">
+                {/* Image Skeleton */}
+                <Skeleton height={150} className="sm:h-40 md:h-44 lg:h-40" />
+
+                <div className="p-3 sm:p-4">
+                    {/* Title Skeleton */}
+                    <Skeleton height={24} className="mb-2 sm:mb-3" />
+
+                    {/* Location Skeleton */}
+                    <div className="flex items-center mb-1.5 sm:mb-2">
+                        <Skeleton circle width={20} height={20} className="ml-1.5 sm:ml-2" />
+                        <Skeleton width="80%" height={16} />
+                    </div>
+
+                    {/* Sport Type Skeleton */}
+                    <div className="flex items-center mb-1.5 sm:mb-2">
+                        <Skeleton circle width={20} height={20} className="ml-1.5 sm:ml-2" />
+                        <Skeleton width="60%" height={16} />
+                    </div>
+
+                    {/* Price Skeleton */}
+                    <div className="flex items-center mb-3 sm:mb-4">
+                        <Skeleton circle width={20} height={20} className="ml-1.5 sm:ml-2" />
+                        <Skeleton width="40%" height={16} />
+                    </div>
+
+                    {/* Action Buttons Skeleton */}
+                    <div className="flex flex-col sm:flex-row gap-2">
+                        <Skeleton height={40} className="flex-1" />
+                        <Skeleton height={40} className="flex-1" />
+                        <Skeleton height={40} className="flex-1" />
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div dir="rtl" className="w-full bg-white rounded-xl sm:rounded-2xl shadow-md overflow-hidden hover:shadow-2xl hover:-translate-y-1 hover:bg-green-600 transition-all duration-300 ease-in-out group">
