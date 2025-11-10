@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import AdminArenaFilter from '../../components/AdminArenaFilter/AdminArenaFilter'
 import AdminArenasReqsList from '../../components/AdminArenasReqsList/AdminArenasReqsList'
 import Pagination from '../../components/Pagination/Pagination'
@@ -11,9 +11,11 @@ export default function AdminArenaRequests() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [total, setTotal] = useState(0);
+    const [categoryId, setCategoryId] = useState('');
+    const [searchName, setSearchName] = useState('');
     const itemsPerPage = 12;
 
-    const fetchArenaRequests = async (page = 1) => {
+    const fetchArenaRequests = useCallback(async (page, categoryFilter, nameFilter) => {
         setLoading(true);
         setError(null);
 
@@ -21,6 +23,8 @@ export default function AdminArenaRequests() {
             const response = await arenaService.getArenaRequests({
                 page: page,
                 limit: itemsPerPage,
+                categoryId: categoryFilter,
+                name: nameFilter,
             });
 
             console.log('Full response:', response);
@@ -41,11 +45,17 @@ export default function AdminArenaRequests() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []); // No dependencies - function doesn't change
 
     useEffect(() => {
-        fetchArenaRequests(currentPage);
-    }, [currentPage]); // Remove fetchArenaRequests from dependencies
+        fetchArenaRequests(currentPage, categoryId, searchName);
+    }, [currentPage, categoryId, searchName, fetchArenaRequests]); // Fetch when page or filters change
+
+    const handleFilterChange = (newFilters) => {
+        setCategoryId(newFilters.categoryId);
+        setSearchName(newFilters.name);
+        setCurrentPage(1); // Reset to first page when filters change
+    };
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -68,7 +78,7 @@ export default function AdminArenaRequests() {
             <hr />
 
             {/* Filter */}
-            {/* <AdminArenaFilter /> */}
+            <AdminArenaFilter onFilterChange={handleFilterChange} />
 
             {/* Error State */}
             {error && !loading && (
@@ -76,7 +86,7 @@ export default function AdminArenaRequests() {
                     <p className="font-semibold text-sm sm:text-base md:text-lg">حدث خطأ</p>
                     <p className="text-sm sm:text-base mt-1">{error}</p>
                     <button
-                        onClick={() => fetchArenaRequests(currentPage)}
+                        onClick={() => fetchArenaRequests(currentPage, categoryId, searchName)}
                         className="mt-3 sm:mt-4 px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm sm:text-base"
                     >
                         إعادة المحاولة
@@ -88,7 +98,7 @@ export default function AdminArenaRequests() {
             <AdminArenasReqsList
                 arenaRequests={arenaRequests}
                 loading={loading}
-                onRefresh={() => fetchArenaRequests(currentPage)}
+                onRefresh={() => fetchArenaRequests(currentPage, categoryId, searchName)}
             />
 
             {/* Pagination */}

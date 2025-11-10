@@ -87,6 +87,8 @@ export const arenaService = {
    * @param {Object} params - Query parameters
    * @param {number} params.page - Page number
    * @param {number} params.limit - Items per page
+   * @param {string} params.name - Filter by name (optional)
+   * @param {string} params.categoryId - Filter by category (optional)
    * @returns {Promise} API response
    */
   async getArenaRequests(params = {}) {
@@ -96,6 +98,10 @@ export const arenaService = {
       // Add pagination parameters
       queryParams.append('page', params.page || 1);
       queryParams.append('limit', params.limit || 100);
+
+      // Add optional filters
+      if (params.name) queryParams.append('name', params.name);
+      if (params.categoryId) queryParams.append('categoryId', params.categoryId);
 
       // Add status filter to only get pending arenas
       // Temporarily comment out to see all arenas
