@@ -1,11 +1,16 @@
 import { useNavigate } from "react-router-dom";
-export default function StadiumHeader({ name, id }) {
+export default function StadiumHeader({ name, id ,status}) {
   const navigate = useNavigate();
   function handleBookingClick() {
     console.log("esafs");
 
     navigate(`/reservation/${id}`);
+
   }
+  console.log(status)
+  
+    const isDisabled = status !== "active";
+
   return (
     <div className="flex justify-between m-4 text-white text-center py-3 rounded-t-md">
       <div>
@@ -14,8 +19,9 @@ export default function StadiumHeader({ name, id }) {
       </div>
       <div>
         <button
-          className="bg-green-700 text-white mt-2 px-4 py-1 rounded-md font-semibold transition"
+          className="bg-green-700 text-white mt-2 px-4 py-1 rounded-md font-semibold transition cursor-pointer"
           onClick={handleBookingClick}
+             disabled={isDisabled}
         >
           احجز الملعب
         </button>
