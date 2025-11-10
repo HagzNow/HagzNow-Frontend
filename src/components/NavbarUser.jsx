@@ -3,18 +3,12 @@ import { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User } from "lucide-react"; 
 import { authContext } from "../Contexts/AuthContext";
-
-
+import baseUrl from "@/apis/config";
 
 const UserNavbar = () => {
   const {  user, setToken, setUser  } = useContext(authContext);
   const isLoggedIn = localStorage.getItem("token");
   const navigate = useNavigate();
-
-  
-
-
-
 
   const handleLogout = () => {
       localStorage.removeItem("token"); // فقط احذف التوكن بدل clear الكلي
@@ -23,14 +17,32 @@ const UserNavbar = () => {
       console.log("✅ Logged out successfully!");
       
     };
+    console.log(user)
   
     
-    useEffect(() => {
-      
-      if (!user) {
+
+     useEffect(() => {
+    const fetchUser = async () => {
+      if (isLoggedIn && !user) {
+        try {
+          const res = await baseUrl.get("/users/profile", {
+            headers: { Authorization: `Bearer ${isLoggedIn}` },
+          });
+          setUser(res.data.data);
+        } catch (err) {
+          console.error("Failed to fetch user:", err);
+          setUser(null);
+          setToken(null);
+          localStorage.removeItem("token");
+          navigate("/login", { replace: true });
+        }
+      } else if (!isLoggedIn) {
         navigate("/login", { replace: true });
       }
-    }, [user, navigate]);
+    };
+       fetchUser();
+  }, [isLoggedIn, user, setUser, setToken, navigate]);
+
 
   return (
     <nav className="bg-white text-green-700 py-3 px-6 shadow-md">
@@ -81,26 +93,36 @@ const UserNavbar = () => {
         </div>
 
         {/* ✅ User Info + Logout */}
-        {isLoggedIn && (
-          <div className="flex items-center gap-3">
-            {/* user info */}
-            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 border hover:bg-gray-100">
-              <User className="size-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">
-                  {`${user?.fName || "User"} ${user?.lName || ""}`}
-              </span>
-            </div>
+       {isLoggedIn && (
+  <div className="flex items-center gap-3">
+    {/* user info */}
+    <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 border hover:bg-gray-100">
+      {user?.avatar ? (
+        <img
+          src={user.avatar} // رابط الصورة من بيانات اليوزر
+          alt="User Avatar"
+          className="w-8 h-8 rounded-full object-cover"
+        />
+      ) : (
+        <User className="w-8 h-8 text-gray-600" />
+      )}
+      <span className="text-sm font-medium text-gray-700">
+        {`${user?.fName || "User"} ${user?.lName || ""}`}
+      </span>
+    </div>
 
-            {/* logout button */}
-            <button
-              onClick={handleLogout}
-              className="px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 text-sm font-medium"
-            >
-              تسجيل خروج
-            </button>
-          </div>
-        )}
+  
+    <button
+      onClick={handleLogout}
+      className="px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 text-sm font-medium"
+    >
+      تسجيل خروج
+    </button>
+  </div>
+)}
       </div>
+
+      
     </nav>
   );
 };

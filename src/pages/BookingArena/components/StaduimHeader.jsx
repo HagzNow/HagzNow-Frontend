@@ -18,10 +18,11 @@ export default function StadiumHeader({ name, id ,status}) {
         <p className="text-sm text-black opacity-90">تقييم: 4.5 ⭐⭐⭐⭐⭐</p>
       </div>
       <div>
-        <button
-          className="bg-green-700 text-white mt-2 px-4 py-1 rounded-md font-semibold transition cursor-pointer"
+           <button
+          className={`mt-2 px-4 py-1 rounded-md font-semibold transition 
+            ${isDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-700 text-white cursor-pointer'}`}
           onClick={handleBookingClick}
-             disabled={isDisabled}
+          disabled={isDisabled}
         >
           احجز الملعب
         </button>
