@@ -11,14 +11,15 @@
   "role_user": "لاعب",
   "role_required": "يجب اختيار الدور (مالك أو لاعب)",
 
-  "first_name": "الاسم الأول",
+  "first_name": "الاسم ",
   "first_name_placeholder": "أدخل اسمك الأول",
-  "first_name_required": "الاسم الأول مطلوب",
-
+  "first_name_required": "الاسم مطلوب",
+  "Fullname":"الأسم",
   "last_name": "الاسم الأخير",
   "last_name_placeholder": "أدخل اسمك الأخير",
   "last_name_required": "الاسم الأخير مطلوب",
 
+ 
   "email": "البريد الإلكتروني",
   "email_placeholder": "أدخل بريدك الإلكتروني",
   "email_required": "البريد الإلكتروني مطلوب",
@@ -60,7 +61,8 @@
   },
   "errors" :{
   "EMAIL_IN_USE": "البريد الإلكتروني موجود بالفعل",
-  "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+  "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+  "USER_NOT_FOUND":"المستخدم غير موجود"
 },
  "addArenaTitle": "ضيف ملعب جديد",
   "basicInfo": "معلومات أساسية عن الملعب",
@@ -125,7 +127,8 @@
   "enterNotes": "اكتب لو فيه أي ملاحظات إضافية",
   "saveArena": "احفظ الملعب",
   "successMessage": "تم حفظ بيانات الملعب بنجاح ✅",
-  "successMessageProfile":"",
+  "successMessageProfile":"تم تعديل البيانات بنجاح",
+  "successMessagePassword":"تم تحديث كلمة المرور بنجاح",
 
   "manualBookingTitle": "إنشاء حجز يدوي",
   "bookingDetails": "تفاصيل الحجز",
@@ -178,10 +181,12 @@
     "UserProfile":{
     "password_invalid": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل، وحرف صغير واحد، ورقم واحد. يجب أن تكون كلمة المرور بين 8 و20 حرفًا.",
     "password_incomplete": " يجب إدخال كل حقول كلمة المرور لتحديثها",
-    "old_password_incorrect": "كلمة المرور القديمة غير صحيحة"
+    "old_password_incorrect": "كلمة المرور القديمة غير صحيحة",
+    "no_changes":"لا يوجد تغيرات",
+    "INVALID_TOKEN":"جلسة المستخدم غير صالحة"
   },
   "buttons": {
-  "saveChanges": "حفظ التغييرات",
+  "changePassword": " تغير كلمة السر",
   "saving": "جارٍ الحفظ..."
 },
 "labels": {

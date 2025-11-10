@@ -13,7 +13,7 @@ export default function ProfileHeader({ isEditing, isSubmitting, onClick }) {
           isSubmitting ? "text-gray-400 cursor-not-allowed" : "text-green-600 hover:text-green-700"
         }`}
       >
-        <span>{label}</span>
+        <span className="cursor-pointer">{label}</span>
         {isEditing ? <Save /> : <Pencil />}
       </button>
     </div>
