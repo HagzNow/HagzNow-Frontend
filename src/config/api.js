@@ -5,4 +5,5 @@ export const API_ENDPOINTS = {
   CATEGORIES: '/categories',
   RESERVATIONS: '/reservations',
   USERS: "/users",
+  STATUS: "/status",
 };
