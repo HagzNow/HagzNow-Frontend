@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import AdminArenaFilter from '../../components/AdminArenaFilter/AdminArenaFilter'
 import AdminArenasReqsList from '../../components/AdminArenasReqsList/AdminArenasReqsList'
 import Pagination from '../../components/Pagination/Pagination'
@@ -13,7 +13,7 @@ export default function AdminArenaRequests() {
     const [total, setTotal] = useState(0);
     const itemsPerPage = 12;
 
-    const fetchArenaRequests = useCallback(async (page = 1) => {
+    const fetchArenaRequests = async (page = 1) => {
         setLoading(true);
         setError(null);
 
@@ -23,21 +23,29 @@ export default function AdminArenaRequests() {
                 limit: itemsPerPage,
             });
 
+            console.log('Full response:', response);
+            console.log('Response data:', response.data);
+            console.log('Is array?', Array.isArray(response.data));
+            console.log('Setting states - page:', response.page, 'totalPages:', response.totalPages, 'total:', response.total);
+
             setArenaRequests(response.data);
+            console.log('After setting arenaRequests:', response.data);
             setCurrentPage(response.page);
             setTotalPages(response.totalPages);
             setTotal(response.total);
+            
+            console.log('State should now be - arenaRequests:', response.data, 'currentPage:', response.page, 'totalPages:', response.totalPages);
         } catch (err) {
             setError(err.message || 'فشل في تحميل طلبات الملاعب');
             console.error('Error fetching arena requests:', err);
         } finally {
             setLoading(false);
         }
-    }, []);
+    };
 
     useEffect(() => {
         fetchArenaRequests(currentPage);
-    }, [fetchArenaRequests, currentPage]);
+    }, [currentPage]); // Remove fetchArenaRequests from dependencies
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -84,6 +92,7 @@ export default function AdminArenaRequests() {
             />
 
             {/* Pagination */}
+            {console.log('Pagination check - loading:', loading, 'error:', error, 'totalPages:', totalPages, 'Show pagination?', !loading && !error && totalPages > 1)}
             {!loading && !error && totalPages > 1 && (
                 <Pagination
                     currentPage={currentPage}
