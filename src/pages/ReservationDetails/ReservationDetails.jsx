@@ -12,6 +12,7 @@ import { formatTime, getTimeRanges } from "../../utils/timeRange";
 export default function ReservationDetails() {
   let [arena, setArena] = useState();
   let [loadbuttom, setLoadButtom] = useState(false);
+  const navigate = useNavigate();
 
   let {
     selectedExtras,
@@ -33,14 +34,21 @@ export default function ReservationDetails() {
   );
   const totalPrice = hoursPrice + extrasPrice;
 
-  const navigate = useNavigate();
-
   async function handelSubmit() {
     setLoadButtom(true);
-    let response = await submitReservation();
-    setLoadButtom(false);
-    if (response.isSuccess) {
-      navigate("/confirm", { state: response });
+    try {
+      const response = await submitReservation();
+      console.log(response);
+      if (response?.isSuccess) {
+        const reservationId = response.data.id;
+        navigate(`/confirm/${reservationId}`);
+      } else {
+        console.error("فشل في إنشاء الحجز");
+      }
+    } catch (err) {
+      console.error("Error in handelSubmit:", err);
+    } finally {
+      setLoadButtom(false);
     }
   }
 

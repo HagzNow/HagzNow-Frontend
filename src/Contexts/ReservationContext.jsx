@@ -43,6 +43,31 @@ export default function ReservationContextProvider({ children }) {
     }
   }
 
+  // async function submitReservation() {
+  //   const payload = {
+  //     arenaId,
+  //     date: date.format("YYYY-MM-DD"),
+  //     slots,
+  //     extras: selectedExtras.map((extra) => extra.id),
+  //   };
+  //   try {
+  //     let { data } = await baseUrl.post("/reservations/", payload);
+  //     localStorage.setItem(
+  //       "lastReservation",
+  //       JSON.stringify({
+  //         arenaId,
+  //         date: date.format("YYYY-MM-DD"),
+  //         slots,
+  //         selectedExtras,
+  //       })
+  //     );
+  //     resetReservation();
+  //     return data;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
   async function submitReservation() {
     const payload = {
       arenaId,
@@ -50,21 +75,14 @@ export default function ReservationContextProvider({ children }) {
       slots,
       extras: selectedExtras.map((extra) => extra.id),
     };
+
     try {
-      let { data } = await baseUrl.post("/reservations/", payload);
-      localStorage.setItem(
-        "lastReservation",
-        JSON.stringify({
-          arenaId,
-          date: date.format("YYYY-MM-DD"),
-          slots,
-          selectedExtras,
-        })
-      );
+      const { data } = await baseUrl.post("/reservations/", payload);
       resetReservation();
       return data;
     } catch (error) {
-      console.log(error);
+      console.error("Error submitting reservation:", error);
+      return { isSuccess: false };
     }
   }
 

@@ -46,7 +46,7 @@ export default function Wallet() {
   async function getBalance() {
     try {
       let { data } = await baseUrl.get("/wallet/balance");
-      setBalance(data?.data.avaibaleBalance);
+      setBalance(data?.data.availableBalance);
     } catch (error) {
       console.log(error);
     }
@@ -74,7 +74,7 @@ export default function Wallet() {
 
   return (
     <>
-    <UserNavbar/>
+      <UserNavbar />
       <div className="container w-3/4 mt-[20px]">
         <div className="balance p-3 text-center space-y-3 bg-secondColor rounded-2xl">
           <p>{t("wallet.current_balance")}</p>
@@ -123,7 +123,7 @@ export default function Wallet() {
         isOpen={showResultModal}
         onClose={() => setShowResultModal(false)}
       />
-      <Footer/>
+      <Footer />
     </>
   );
 }

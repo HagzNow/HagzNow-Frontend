@@ -1,76 +1,49 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
 import baseUrl from "../../apis/config";
 import { formatTime, getTimeRanges } from "../../utils/timeRange";
 import { useTranslation } from "react-i18next";
 
 export default function ConfirmReservation() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const { i18n } = useTranslation();
-  const location = useLocation();
-  const reservationData = location.state;
-  console.log(reservationData);
-
   const [reservation, setReservation] = useState(null);
-  const [arenaDetails, setArenaDetails] = useState(null);
-  const [loadingArena, setLoadingArena] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("lastReservation");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        setReservation(parsed);
-        if (parsed?.arenaId) {
-          getArenaDetails(parsed.arenaId);
-        }
+    async function fetchReservation() {
+      try {
+        setLoading(true);
+        const { data } = await baseUrl.get(`/reservations/${id}`);
+        setReservation(data.data);
+      } catch (err) {
+        console.error(err);
+        setError("حدث خطأ أثناء جلب بيانات الحجز");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error parsing reservation from localStorage:", error);
     }
-  }, []);
 
-  async function getArenaDetails(arenaId) {
-    try {
-      setLoadingArena(true);
-      const { data } = await baseUrl.get(`/arenas/${arenaId}`);
-      setArenaDetails(data.data);
-    } catch (err) {
-      console.error("Error fetching arena details:", err);
-    } finally {
-      setLoadingArena(false);
-    }
+    fetchReservation();
+  }, [id]);
+
+  if (loading) {
+    return <p className="text-center mt-10">جاري تحميل بيانات الحجز...</p>;
   }
 
-  const { hoursPrice, extrasPrice, totalPrice } = useMemo(() => {
-    if (!arenaDetails || !reservation)
-      return { hoursPrice: 0, extrasPrice: 0, totalPrice: 0 };
-
-    const slots = reservation?.slots || [];
-    const selectedExtras = reservation?.selectedExtras || [];
-
-    const pricePerHour = Number(arenaDetails.pricePerHour) || 0;
-    const hoursPrice = pricePerHour * slots.length;
-
-    const extrasPrice = selectedExtras.reduce(
-      (sum, extra) => sum + Number(extra.price || 0),
-      0
-    );
-
-    return { hoursPrice, extrasPrice, totalPrice: hoursPrice + extrasPrice };
-  }, [arenaDetails, reservation]);
+  if (error) {
+    return <p className="text-center mt-10 text-red-500">{error}</p>;
+  }
 
   if (!reservation) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-gray-600 text-lg">
-        لا توجد بيانات حجز متاحة
-      </div>
-    );
+    return <p className="text-center mt-10">لا توجد بيانات حجز</p>;
   }
 
-  const { slots = [] } = reservation;
-  const ranges = getTimeRanges(slots);
+  const arena = reservation.arena;
+  const ranges = getTimeRanges(reservation.slots || []);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10">
@@ -80,7 +53,7 @@ export default function ConfirmReservation() {
           تم تأكيد حجزك!
         </h1>
         <p className="text-gray-600">
-          لقد تم تأكيد حجزك بنجاح. نتطلع لرؤيتك قريبًا.
+          تم تأكيد الحجز بنجاح. نتطلع لرؤيتك قريبًا.
         </p>
       </div>
 
@@ -91,23 +64,20 @@ export default function ConfirmReservation() {
 
         <div className="grid grid-cols-2 gap-y-3 text-sm text-gray-700">
           <p className="font-medium">الملعب</p>
-          <p className="text-right">{reservationData?.data.arena.name}</p>
+          <p className="text-right">{arena?.name}</p>
+
           <p className="font-medium">التاريخ</p>
-          <p className="text-right">
-            {reservationData?.data.dateOfReservation}
-          </p>
+          <p className="text-right">{reservation.date}</p>
 
           <p className="font-medium">الموقع</p>
-          <p className="text-right">
-            {reservationData?.data.arena.locationSummary}
-          </p>
+          <p className="text-right">{arena?.locationSummary}</p>
 
           <p className="font-medium">الوقت</p>
           <div className="text-right flex flex-wrap gap-2 justify-start">
             {ranges.length > 0 ? (
-              ranges.map((range, index) => (
+              ranges.map((range, i) => (
                 <span
-                  key={index}
+                  key={i}
                   className="bg-gray-100 text-gray-800 px-3 py-1 rounded-lg shadow-sm text-sm"
                 >
                   من {formatTime(range.start, i18n.language)} إلى{" "}
@@ -121,9 +91,9 @@ export default function ConfirmReservation() {
 
           <p className="font-medium">الإضافات</p>
           <div className="text-right">
-            {reservationData?.data.extras.length > 0 ? (
+            {reservation.selectedExtras?.length > 0 ? (
               <ul className="flex flex-col gap-2">
-                {reservationData?.data.extras.map((extra) => (
+                {reservation.selectedExtras.map((extra) => (
                   <li
                     key={extra.id}
                     className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg border border-gray-100 shadow-sm"
@@ -132,8 +102,7 @@ export default function ConfirmReservation() {
                       {extra.name}
                     </span>
                     <span className="text-mainColor font-semibold">
-                      {extra.price}{" "}
-                      <span className="text-sm text-gray-500">ج.م</span>
+                      {extra.price} ج.م
                     </span>
                   </li>
                 ))}
@@ -147,27 +116,17 @@ export default function ConfirmReservation() {
         <div className="border-t border-t-gray-300 mt-4 pt-3 text-sm">
           <div className="flex justify-between">
             <span>سعر الساعات</span>
-            <span>{reservationData?.data.playTotalAmount}جنيه</span>
+            <span>{reservation.playTotalAmount} جنيه</span>
           </div>
           <div className="flex justify-between">
             <span>سعر الإضافات</span>
-            <span>{reservationData?.data.extrasTotalAmount} جنيه</span>
+            <span>{reservation.extrasTotalAmount} جنيه</span>
           </div>
           <div className="flex justify-between font-bold text-green-600 mt-2">
             <span>الإجمالي المستحق</span>
-            <span>{reservationData?.data.totalAmount} جنيه</span>
+            <span>{reservation.totalAmount} جنيه</span>
           </div>
         </div>
-      </div>
-
-      <div className="bg-white rounded-2xl shadow-md w-full max-w-2xl p-6 mb-6 text-right">
-        <h3 className="text-lg font-semibold mb-2 border-b pb-2 border-b-gray-300">
-          سياسة الإلغاء
-        </h3>
-        <p className="text-sm text-gray-600 leading-relaxed">
-          يمكن الإلغاء مجانًا حتى 24 ساعة قبل الموعد. بعد ذلك، سيتم خصم 50% من
-          سعر الخدمة. في حال عدم الحضور سيتم خصم 100% من سعر الخدمة.
-        </p>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl justify-center">
