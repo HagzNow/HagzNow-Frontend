@@ -1,4 +1,5 @@
 import React from "react";
+import toast from "react-hot-toast";
 
 export default function ReservationActions({
   isPreview,
@@ -6,9 +7,19 @@ export default function ReservationActions({
   onConfirm,
   onCancel,
   onEdit,
+  cancelRservation,
+  status,
 }) {
+  const handleCancel = () => {
+    if (status === "hold") {
+      cancelRservation();
+    } else {
+      toast.error("لا يمكن إلغاء هذا الحجز لأن حالته ليست قيد الانتظار.");
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-4 p-5 border border-gray-200 rounded-2xl shadow-sm w-fit">
+    <div className="flex flex-col gap-4 p-5 border border-gray-200 rounded-2xl shadow-sm ">
       {isPreview ? (
         <>
           <button
@@ -31,7 +42,22 @@ export default function ReservationActions({
         </>
       ) : (
         <>
-          <button className="btn bg-red-600 w-full">إلغاء الحجز</button>
+          <>
+            <button
+              className={`btn w-full ${
+                status === "hold"
+                  ? "bg-red-600 hover:bg-red-700"
+                  : "bg-gray-400 cursor-not-allowed"
+              }`}
+              onClick={handleCancel}
+            >
+              {loading ? (
+                <i className="fa-solid fa-spinner fa-spin"></i>
+              ) : (
+                "الغاء الحجز"
+              )}
+            </button>
+          </>
         </>
       )}
     </div>

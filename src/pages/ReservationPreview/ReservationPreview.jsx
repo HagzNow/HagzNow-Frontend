@@ -6,6 +6,7 @@ import baseUrl from "../../apis/config";
 import ReservationInfoCard from "../../components/Reservation/ReservationInfoCard";
 import ReservationActions from "../../components/Reservation/ReservationActions";
 import toast from "react-hot-toast";
+import ReservationHeader from "@/components/Reservation/reservationHeader";
 
 export default function ReservationPreview() {
   const [arena, setArena] = useState(null);
@@ -82,15 +83,26 @@ export default function ReservationPreview() {
   };
   console.log(slots);
   return (
-    <div className="grid lg:grid-cols-2 gap-8">
-      <ReservationInfoCard data={data} i18n={i18n} />
-      <ReservationActions
-        isPreview={true}
-        loading={loadbuttom}
-        onConfirm={handelSubmit}
-        onCancel={handleCancel}
-        onEdit={handleBack}
-      />
+    <div className="container w-3/4 py-16 flex flex-col gap-8">
+      <div className="w-full">
+        <ReservationHeader data={data} />
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
+        <div className="lg:w-2/3 w-full">
+          <ReservationInfoCard data={data} i18n={i18n} />
+        </div>
+
+        <div className="lg:w-1/3 w-full">
+          <ReservationActions
+            isPreview={true}
+            loading={loadbuttom}
+            onConfirm={handelSubmit}
+            onCancel={handleCancel}
+            onEdit={handleBack}
+          />
+        </div>
+      </div>
     </div>
   );
 }

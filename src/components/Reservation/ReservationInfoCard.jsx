@@ -9,7 +9,7 @@ import "dayjs/locale/ar";
 import "dayjs/locale/en";
 
 export default function ReservationInfoCard({ data, i18n }) {
-  const { date, arena, slots, selectedExtras, totalAmount, extrasTotalAmount } =
+  const { date, slots, selectedExtras, totalAmount, extrasTotalAmount } =
     data;
   const ranges = getTimeRanges(slots);
 
@@ -22,18 +22,6 @@ export default function ReservationInfoCard({ data, i18n }) {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-xl overflow-hidden shadow-md relative">
-        <img
-          src={arena?.thumbnail}
-          alt="stadium"
-          className="w-full h-90 object-cover"
-        />
-        <div className="absolute bottom-4 right-6 text-white">
-          <h2 className="text-2xl font-bold">{arena?.name}</h2>
-          <p className="text-sm">{arena?.locationSummary}</p>
-        </div>
-      </div>
-
       <div className="p-6 border-2 border-secondColor rounded-2xl grid sm:grid-cols-2 grid-cols-1 gap-6">
         <div>
           <p className="text-sm text-gray-500 mb-2">التاريخ :</p>
