@@ -86,8 +86,12 @@ export default function ReservationContextProvider({ children }) {
     }
   }
 
-  const handleBack = () => {
-    setActiveStep((prev) => Math.max(prev - 1, 0));
+  const handleBack = (navigate, id) => {
+    if (activeStep === 0) {
+      navigate(`/booking/${id}`);
+    } else {
+      setActiveStep((prev) => Math.max(prev - 1, 0));
+    }
   };
 
   const handleNext = () => {

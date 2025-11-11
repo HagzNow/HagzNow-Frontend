@@ -7,7 +7,7 @@ import Register from "./pages/Register/Register";
 import UserArenas from "./pages/UserArenas/UserArenas";
 import AdminArenaRequests from "./pages/AdminArenaRequests/AdminArenaRequests";
 import Reservation from "./pages/Reservation/Reservation";
-import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
+// import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
 import AuthContextProvider from "./Contexts/AuthContext";
 import ProtectedLoginAndRegister from "./Routes/protectedLoginAndRegister";
 import ProtectedRoutes from "./Routes/ProtectedRoute";
@@ -25,7 +25,7 @@ import Wallet from "./pages/Wallet/Wallet";
 import AdminLayout from "./components/AdminLayout/AdminLayout";
 import SettingsPage from "./pages/SettingPage/SettingsPage";
 import OwnerLayout from "./components/OwnerComponents/OwnerLayout/OwnerLayout";
-import ReservationStep from "./components/Steps/ReservationStep";
+// import ReservationStep from "./components/Steps/ReservationStep";
 import PendingRequests from "./pages/SettingPage/PendingRequests";
 import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
 import UserManagement from "./pages/AdminPages/UserManagement";
@@ -148,7 +148,7 @@ function App() {
   const routes = createBrowserRouter([
     {
       path: "",
-      element: <Layout />, // فقط user وguest
+      element: <Layout />,
       children: [
         { path: "/home", element: <Home /> },
         { path: "/", element: <Home /> },
@@ -218,15 +218,6 @@ function App() {
         { path: "admin-arena-requests", element: <AdminArenaRequests /> },
       ],
     },
-
-    // {
-    //         path: "/admin-arena-requests",
-    //         element: (
-    //           <ProtectedRoutes role="admin">
-    //
-    //           </ProtectedRoutes>
-    //         ),
-    //       },
 
     {
       path: "/confirm/:id",
@@ -315,15 +306,6 @@ function App() {
       ],
     },
 
-    // {
-    //         path: "/admin-arena-requests",
-    //         element: (
-    //           <ProtectedRoutes role="admin">
-    //
-    //           </ProtectedRoutes>
-    //         ),
-    //       },
-
     {
       path: "/confirm",
       element: (
@@ -362,14 +344,6 @@ function App() {
         </ProtectedRoutes>
       ),
     },
-    // {
-    //   path: "/all-reservations",
-    //   element: (
-    //     <ProtectedRoutes role="user">
-    //       <UserAllReservation />
-    //     </ProtectedRoutes>
-    //   ),
-    // },
     {
       path: "/categoriesmanagment",
       element: (
