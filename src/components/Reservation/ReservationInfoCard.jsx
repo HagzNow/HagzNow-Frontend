@@ -11,8 +11,7 @@ import "dayjs/locale/en";
 export default function ReservationInfoCard({ data, i18n }) {
   const { date, arena, slots, selectedExtras, totalAmount, extrasTotalAmount } =
     data;
-  const hours = slots.map((slot) => slot?.hour);
-  const ranges = getTimeRanges(hours);
+  const ranges = getTimeRanges(slots);
 
   const dayName =
     i18n.language === "ar"

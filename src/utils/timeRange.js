@@ -11,8 +11,20 @@ export const formatTime = (hour, lang = "ar") => {
 export const getTimeRanges = (slots = []) => {
   if (!slots || slots.length === 0) return [];
 
-  const sorted = [...slots].sort((a, b) => a - b);
+  const hours = slots.map((slot) => {
+    if (typeof slot === "number") return slot;
+    if (slot?.start?.hour) return slot.start.hour;
+    if (slot?.hour) return slot.hour;
+    return null;
+  });
+
+  const validHours = hours.filter((h) => typeof h === "number");
+
+  if (validHours.length === 0) return [];
+
+  const sorted = [...validHours].sort((a, b) => a - b);
   const ranges = [];
+
   let start = sorted[0];
   let end = sorted[0];
 
@@ -25,6 +37,7 @@ export const getTimeRanges = (slots = []) => {
       end = sorted[i];
     }
   }
+
   ranges.push({ start, end });
   return ranges;
 };

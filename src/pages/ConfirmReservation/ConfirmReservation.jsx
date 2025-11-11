@@ -18,6 +18,8 @@ export default function ConfirmReservation() {
       try {
         setLoading(true);
         const { data } = await baseUrl.get(`/reservations/${id}`);
+        console.log(data);
+
         setReservation(data.data);
       } catch (err) {
         console.error(err);
@@ -67,7 +69,7 @@ export default function ConfirmReservation() {
           <p className="text-right">{arena?.name}</p>
 
           <p className="font-medium">التاريخ</p>
-          <p className="text-right">{reservation.date}</p>
+          <p className="text-right">{reservation.dateOfReservation}</p>
 
           <p className="font-medium">الموقع</p>
           <p className="text-right">{arena?.locationSummary}</p>
@@ -91,9 +93,9 @@ export default function ConfirmReservation() {
 
           <p className="font-medium">الإضافات</p>
           <div className="text-right">
-            {reservation.selectedExtras?.length > 0 ? (
+            {reservation.extras?.length > 0 ? (
               <ul className="flex flex-col gap-2">
-                {reservation.selectedExtras.map((extra) => (
+                {reservation.extras.map((extra) => (
                   <li
                     key={extra.id}
                     className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg border border-gray-100 shadow-sm"
@@ -136,7 +138,10 @@ export default function ConfirmReservation() {
         >
           العودة للرئيسية
         </button>
-        <button className="bg-gray-200 text-gray-700 py-2 px-6 rounded-full hover:bg-gray-300 transition">
+        <button
+          onClick={() => navigate("/my-bookings")}
+          className="bg-gray-200 text-gray-700 py-2 px-6 rounded-full hover:bg-gray-300 transition"
+        >
           عرض حجوزاتي
         </button>
       </div>

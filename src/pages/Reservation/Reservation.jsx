@@ -6,6 +6,7 @@ import ReservationStep from "../../components/Steps/ReservationStep";
 import ReservationDetails from "../ReservationDetails/ReservationDetails";
 import Extras from "../Extras/Extras";
 import { useTranslation } from "react-i18next";
+import ReservationPreview from "../ReservationPreview/ReservationPreview";
 
 export default function Reservation() {
   const {
@@ -29,9 +30,9 @@ export default function Reservation() {
       case 0:
         return <ReservationStep />;
       case 1:
-        return extras?.length > 0 ? <Extras /> : <ReservationDetails />;
+        return extras?.length > 0 ? <Extras /> : <ReservationPreview />;
       case 2:
-        return <ReservationDetails />;
+        return <ReservationPreview />;
       default:
         return <ReservationStep />;
     }
