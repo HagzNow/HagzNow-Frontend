@@ -27,18 +27,10 @@ export default function AdminArenaRequests() {
                 name: nameFilter,
             });
 
-            console.log('Full response:', response);
-            console.log('Response data:', response.data);
-            console.log('Is array?', Array.isArray(response.data));
-            console.log('Setting states - page:', response.page, 'totalPages:', response.totalPages, 'total:', response.total);
-
             setArenaRequests(response.data);
-            console.log('After setting arenaRequests:', response.data);
-            setCurrentPage(response.page);
+            // Do NOT reset currentPage from API to avoid pagination jumpiness
             setTotalPages(response.totalPages);
             setTotal(response.total);
-
-            console.log('State should now be - arenaRequests:', response.data, 'currentPage:', response.page, 'totalPages:', response.totalPages);
         } catch (err) {
             setError(err.message || 'فشل في تحميل طلبات الملاعب');
             console.error('Error fetching arena requests:', err);
@@ -58,58 +50,81 @@ export default function AdminArenaRequests() {
     };
 
     const handlePageChange = (page) => {
-        setCurrentPage(page);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Clamp page within range
+        const nextPage = Math.max(1, Math.min(page, totalPages));
+        if (nextPage !== currentPage) {
+            setCurrentPage(nextPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            {/* Page Title */}
-            <div className="text-center py-4 sm:py-6 px-4">
-                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800">
-                    مراجعة وإدارة طلبات الساحة الجديدة المقدمة من الملاكين
-                </h1>
-                {total > 0 && (
-                    <p className="text-sm sm:text-base text-gray-600 mt-2">
-                        إجمالي الطلبات: {total} | الصفحة {currentPage} من {totalPages}
-                    </p>
-                )}
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+            {/* Hero */}
+            <div className="relative bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white py-10 sm:py-14 md:py-16">
+                <div className="absolute inset-0 bg-black/10"></div>
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold drop-shadow-md text-center">
+                        مراجعة طلبات الملاعب
+                    </h1>
+                    {total > 0 && (
+                        <p className="text-white/90 text-center mt-3">
+                            إجمالي الطلبات: <span className="font-semibold">{total}</span> | الصفحة <span className="font-semibold">{currentPage}</span> من <span className="font-semibold">{totalPages}</span>
+                        </p>
+                    )}
+                </div>
             </div>
-            <hr />
 
             {/* Filter */}
-            <AdminArenaFilter onFilterChange={handleFilterChange} />
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+                <AdminArenaFilter onFilterChange={handleFilterChange} />
+            </div>
 
-            {/* Error State */}
-            {error && !loading && (
-                <div className="mx-4 sm:mx-6 md:mx-8 lg:mx-10 my-6 sm:my-8 md:my-10 p-4 sm:p-5 md:p-6 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center">
-                    <p className="font-semibold text-sm sm:text-base md:text-lg">حدث خطأ</p>
-                    <p className="text-sm sm:text-base mt-1">{error}</p>
-                    <button
-                        onClick={() => fetchArenaRequests(currentPage, categoryId, searchName)}
-                        className="mt-3 sm:mt-4 px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm sm:text-base"
-                    >
-                        إعادة المحاولة
-                    </button>
-                </div>
-            )}
+            {/* Content */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                {/* Error State */}
+                {error && !loading && (
+                    <div className="max-w-2xl mx-auto my-8">
+                        <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-6 shadow-md">
+                            <div className="flex items-start">
+                                <div className="flex-shrink-0">
+                                    <svg className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div className="mr-3 flex-1">
+                                    <h3 className="text-red-800 font-bold text-lg mb-2">حدث خطأ</h3>
+                                    <p className="text-red-700">{error}</p>
+                                    <button
+                                        onClick={() => fetchArenaRequests(currentPage, categoryId, searchName)}
+                                        className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium shadow-md hover:shadow-lg"
+                                    >
+                                        إعادة المحاولة
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
-            {/* Arenas List */}
-            <AdminArenasReqsList
-                arenaRequests={arenaRequests}
-                loading={loading}
-                onRefresh={() => fetchArenaRequests(currentPage, categoryId, searchName)}
-            />
-
-            {/* Pagination */}
-            {console.log('Pagination check - loading:', loading, 'error:', error, 'totalPages:', totalPages, 'Show pagination?', !loading && !error && totalPages > 1)}
-            {!loading && !error && totalPages > 1 && (
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
+                {/* List */}
+                <AdminArenasReqsList
+                    arenaRequests={arenaRequests}
+                    loading={loading}
+                    onRefresh={() => fetchArenaRequests(currentPage, categoryId, searchName)}
                 />
-            )}
+
+                {/* Pagination */}
+                {!loading && !error && totalPages > 1 && (
+                    <div className="mt-12">
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
+                )}
+            </div>
         </div>
     )
 }
