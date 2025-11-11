@@ -31,6 +31,7 @@ import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
 import UserManagement from "./pages/AdminPages/UserManagement";
 import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
 import ReservationView from "./pages/ReservationView/ReservationView";
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 function App() {
   const { i18n } = useTranslation();
@@ -155,6 +156,15 @@ function App() {
         { path: "/login", element: <Login /> },
         { path: "/register", element: <Register /> },
         {
+          path: "/userProfile",
+          element: (
+            <ProtectedRoutes role="user">
+              <UserProfile />
+            </ProtectedRoutes>
+          ),
+        },
+
+        {
           path: "/reservation/:id",
           element: (
             <ProtectedRoutes role="user">
@@ -254,6 +264,14 @@ function App() {
       element: (
         <ProtectedRoutes role="admin">
           <AdminLayout />
+        </ProtectedRoutes>
+      ),
+    },
+    {
+      path: "/all-reservations",
+      element: (
+        <ProtectedRoutes role="user">
+          <UserAllReservation />
         </ProtectedRoutes>
       ),
     },

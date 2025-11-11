@@ -1,4 +1,4 @@
-import { Field, FieldArray } from "formik";
+import { Field, FieldArray, ErrorMessage } from "formik";
 import { useTranslation } from "react-i18next";
 import { Plus, Trash2 } from "lucide-react";
 
@@ -56,7 +56,12 @@ const FeaturesSection = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500">{t("noExtrasAdded")}</p>
+              // لو مفيش أي إضافات، نعرض رسالة الخطأ بدل النص الرمادي
+              <ErrorMessage
+                name="extras"
+                component="div"
+                className="text-red-500 text-sm mt-1"
+              />
             )}
 
             <button

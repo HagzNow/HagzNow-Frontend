@@ -40,7 +40,7 @@ const BookingArena = () => {
         <div className="container mx-auto px-4">
           <StadiumImage images={arena.images} name={arena.name} />
           {console.log(arena.images)}
-          <StadiumHeader name={arena.name} id={arena.id} />
+          <StadiumHeader name={arena.name} id={arena.id} status={arena.status} />
           <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2 space-y-4">
               <StadiumInfo

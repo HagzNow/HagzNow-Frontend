@@ -1,17 +1,40 @@
+// import * as Yup from "yup";
+
+// const ArenaSchema = Yup.object().shape({
+//   name: Yup.string().required("Required"),
+//   //sportType: Yup.string().required("Required"),
+//   categoryId: Yup.string().required("Required"),
+
+//   price: Yup.number().required("Required").positive("Must be positive"),
+//   description: Yup.string().required("Required"),
+//   extras: Yup.array().required("Required"),
+//   governorate: Yup.string().required("Required"),
+//   city: Yup.string().required("Required"),
+
+  
+// });
+
+// export default ArenaSchema;
+
+
 import * as Yup from "yup";
 
 const ArenaSchema = Yup.object().shape({
-  name: Yup.string().required("Required"),
-  //sportType: Yup.string().required("Required"),
-  categoryId: Yup.string().required("Required"),
+  name: Yup.string().required("اسم الملعب مطلوب"),
+  categoryId: Yup.string().required("نوع الرياضة مطلوب"),
 
-  price: Yup.number().required("Required").positive("Must be positive"),
-  description: Yup.string().required("Required"),
-  extras: Yup.array().required("Required"),
-  governorate: Yup.string().required("Required"),
-  city: Yup.string().required("Required"),
-
-  
+  price: Yup.number()
+    .required("سعر الساعة مطلوب")
+    .positive("يجب أن يكون السعر رقم إيجابي"),
+  description: Yup.string().required("وصف الملعب مطلوب"),
+  extras: Yup.array()
+    .min(1, "يجب إضافة خدمة واحدة على الأقل")
+    .required("يجب إضافة خدمات الملعب"),
+  governorate: Yup.string().required("المحافظة مطلوبة"),
+  city: Yup.string().required("المدينة مطلوبة"),
+  latitude: Yup.number().required("يجب اختيار الموقع على الخريطة"),
+  longitude: Yup.number().required("يجب اختيار الموقع على الخريطة"),
 });
 
 export default ArenaSchema;
+

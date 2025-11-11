@@ -5,8 +5,9 @@ import { authContext } from "../../Contexts/AuthContext";
 
 export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+ 
   const navigate = useNavigate();
-  const { token, setToken, setUser} = useContext(authContext);
+  const { token, setToken, user,setUser} = useContext(authContext);
 
 
 
@@ -75,11 +76,11 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
                 aria-label="الملف الشخصي"
               >
                 <User className="h-5 w-5 text-neutral-900 dark:text-white" />
-                <span className="hidden sm:inline">Admin</span>
+                <span className="hidden sm:inline"> {`${user?.fName || "User"} ${user?.lName || ""}`}</span>
               </button>
 
               {/* Dropdown */}
-              {dropdownOpen && (
+              {/* {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl shadow-lg z-50 flex flex-col">
                   <button
                     type="button"
@@ -88,6 +89,21 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
                   >
                     <LogOut className="h-4 w-4" />
                     تسجيل الخروج
+                  </button>
+                </div>
+              )} */}
+
+                 {dropdownOpen && (
+                <div
+                  className={`absolute  mt-2 w-44 bg-white border rounded-xl shadow-lg z-50`}
+                >
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+                  >
+                    <LogOut className="size-4" />
+                    تسجيل خروج
                   </button>
                 </div>
               )}
