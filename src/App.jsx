@@ -32,6 +32,7 @@ import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
 import UserManagement from "./pages/AdminPages/UserManagement";
 import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
 import UserProfile from "./pages/UserProfile/UserProfile";
+import OwnerArenas from "./pages/Owner/OwnerArenas";
 
 function App() {
   const { i18n } = useTranslation();
@@ -199,13 +200,14 @@ function App() {
     {
       path: "/owner",
       element: (
-        //  <ProtectedRoutes role="owner">
-        <OwnerLayout />
-        // </ProtectedRoutes>
+        <ProtectedRoutes role="owner">
+          <OwnerLayout />
+        </ProtectedRoutes>
       ),
       children: [
         { path: "add-arena", element: <AddArena /> },
         { path: "manual-booking", element: <ManualBookingForm /> },
+        { path: "my-arenas", element: <OwnerArenas /> },
       ],
     },
 
