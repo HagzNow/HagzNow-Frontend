@@ -28,7 +28,6 @@ export default function AdminArenaRequests() {
             });
 
             setArenaRequests(response.data);
-            // Do NOT reset currentPage from API to avoid pagination jumpiness
             setTotalPages(response.totalPages);
             setTotal(response.total);
         } catch (err) {
@@ -43,15 +42,16 @@ export default function AdminArenaRequests() {
         fetchArenaRequests(currentPage, categoryId, searchName);
     }, [currentPage, categoryId, searchName, fetchArenaRequests]); // Fetch when page or filters change
 
-    const handleFilterChange = (newFilters) => {
+    const handleFilterChange = useCallback((newFilters) => {
         setCategoryId(newFilters.categoryId);
         setSearchName(newFilters.name);
         setCurrentPage(1); // Reset to first page when filters change
-    };
+    }, []);
 
     const handlePageChange = (page) => {
         // Clamp page within range
         const nextPage = Math.max(1, Math.min(page, totalPages));
+
         if (nextPage !== currentPage) {
             setCurrentPage(nextPage);
             window.scrollTo({ top: 0, behavior: 'smooth' });
