@@ -1,13 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import BookingStepper from "../../components/BookingStepper/BookingStepper";
 import { reservationContext } from "../../Contexts/ReservationContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReservationStep from "../../components/Steps/ReservationStep";
-import ReservationDetails from "../ReservationDetails/ReservationDetails";
 import Extras from "../Extras/Extras";
 import { useTranslation } from "react-i18next";
+import ReservationPreview from "../ReservationPreview/ReservationPreview";
 
 export default function Reservation() {
+  const navigate = useNavigate();
   const {
     getExtras,
     extras,
@@ -16,6 +17,7 @@ export default function Reservation() {
     handleNext,
     handleBack,
     slots,
+    resetReservation,
   } = useContext(reservationContext);
   let { t } = useTranslation();
   const { id } = useParams();
@@ -24,14 +26,20 @@ export default function Reservation() {
     getExtras(id);
   }, [id]);
 
+  useEffect(() => {
+    return () => {
+      resetReservation();
+    };
+  }, []);
+
   const renderStepContent = () => {
     switch (activeStep) {
       case 0:
         return <ReservationStep />;
       case 1:
-        return extras?.length > 0 ? <Extras /> : <ReservationDetails />;
+        return extras?.length > 0 ? <Extras /> : <ReservationPreview />;
       case 2:
-        return <ReservationDetails />;
+        return <ReservationPreview />;
       default:
         return <ReservationStep />;
     }
@@ -46,8 +54,9 @@ export default function Reservation() {
       {activeStep !== steps.length - 1 && (
         <div className="w-3/4 flex justify-between items-center">
           <button
-            onClick={handleBack}
-            disabled={activeStep === 0}
+            onClick={() => {
+              handleBack(navigate, id);
+            }}
             className="btn text-black"
           >
             {t("reservation.previous")}

@@ -4,11 +4,10 @@ import Login from "./pages/Login/Login";
 import Layout from "./components/Layout/Layout";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
-
 import UserArenas from "./pages/UserArenas/UserArenas";
 import AdminArenaRequests from "./pages/AdminArenaRequests/AdminArenaRequests";
 import Reservation from "./pages/Reservation/Reservation";
-import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
+// import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
 import AuthContextProvider from "./Contexts/AuthContext";
 import ProtectedLoginAndRegister from "./Routes/protectedLoginAndRegister";
 import ProtectedRoutes from "./Routes/ProtectedRoute";
@@ -26,11 +25,12 @@ import Wallet from "./pages/Wallet/Wallet";
 import AdminLayout from "./components/AdminLayout/AdminLayout";
 import SettingsPage from "./pages/SettingPage/SettingsPage";
 import OwnerLayout from "./components/OwnerComponents/OwnerLayout/OwnerLayout";
-import ReservationStep from "./components/Steps/ReservationStep";
+// import ReservationStep from "./components/Steps/ReservationStep";
 import PendingRequests from "./pages/SettingPage/PendingRequests";
 import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
 import UserManagement from "./pages/AdminPages/UserManagement";
 import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
+import ReservationView from "./pages/ReservationView/ReservationView";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import OwnerArenas from "./pages/Owner/OwnerArenas";
 
@@ -150,7 +150,7 @@ function App() {
   const routes = createBrowserRouter([
     {
       path: "",
-      element: <Layout />, // فقط user وguest
+      element: <Layout />,
       children: [
         { path: "/home", element: <Home /> },
         { path: "/", element: <Home /> },
@@ -174,6 +174,10 @@ function App() {
           ),
         },
         {
+          path: "/reservations/:id",
+          element: <ReservationView />,
+        },
+        {
           path: "/extras/:id",
           element: (
             <ProtectedRoutes role="user">
@@ -186,7 +190,7 @@ function App() {
           element: <BookingArena />,
         },
         {
-          path: "/all-reservations",
+          path: "/my-bookings",
           element: (
             <ProtectedRoutes role="user">
               <UserAllReservation />
@@ -220,32 +224,15 @@ function App() {
         </ProtectedRoutes>
       ),
       children: [
-
         { path: "settings", element: <SettingsPage /> },
         { path: "pending-requests", element: <PendingRequests /> },
         // { path: "all-reservations", element:  <UserAllReservation /> },
         { path: "admin-arena-requests", element: <AdminArenaRequests /> },
-
       ],
     },
 
-
-    // {
-    //         path: "/admin-arena-requests",
-    //         element: (
-    //           <ProtectedRoutes role="admin">
-    //             
-    //           </ProtectedRoutes>
-    //         ),
-    //       },
-
-
-
-
-
-
     {
-      path: "/confirm",
+      path: "/confirm/:id",
       element: (
         // <ProtectedRoutes role="user">
         <ConfirmReservation />
@@ -339,15 +326,6 @@ function App() {
       ],
     },
 
-    // {
-    //         path: "/admin-arena-requests",
-    //         element: (
-    //           <ProtectedRoutes role="admin">
-    //
-    //           </ProtectedRoutes>
-    //         ),
-    //       },
-
     {
       path: "/confirm",
       element: (
@@ -386,14 +364,6 @@ function App() {
         </ProtectedRoutes>
       ),
     },
-    // {
-    //   path: "/all-reservations",
-    //   element: (
-    //     <ProtectedRoutes role="user">
-    //       <UserAllReservation />
-    //     </ProtectedRoutes>
-    //   ),
-    // },
     {
       path: "/categoriesmanagment",
       element: (
