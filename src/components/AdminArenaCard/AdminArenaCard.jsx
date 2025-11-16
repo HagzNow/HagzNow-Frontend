@@ -15,7 +15,7 @@ export default function AdminArenaCard({ id, title, location, sport, price, imag
     // Loading skeleton
     if (isLoading) {
         return (
-            <div dir="rtl" className="w-full max-w-sm bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse">
+            <div dir="rtl" className="w-full max-w-sm bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 animate-pulse">
                 {/* Image Skeleton */}
                 <div className="h-48 sm:h-52 bg-gray-200"></div>
 
@@ -54,9 +54,9 @@ export default function AdminArenaCard({ id, title, location, sport, price, imag
     }
 
     return (
-        <div 
-            dir="rtl" 
-            className="w-full max-w-sm bg-white rounded-2xl shadow-lg hover:shadow-2xl hover:ring-2 hover:ring-green-500 hover:ring-opacity-50 overflow-hidden cursor-pointer hover:-translate-y-3 transition-all duration-500 ease-out group border border-gray-200 relative"
+        <div
+            dir="rtl"
+            className="w-full max-w-sm bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden cursor-pointer group border border-gray-200 relative"
         >
             {/* Image Container with Enhanced Overlay */}
             <div className="relative overflow-hidden h-52 sm:h-56 md:h-60 lg:h-52">
@@ -73,39 +73,8 @@ export default function AdminArenaCard({ id, title, location, sport, price, imag
 
             {/* Content Container with Gradient Background on Hover */}
             <div className="relative p-6 bg-white group-hover:bg-gradient-to-br group-hover:from-green-600 group-hover:via-emerald-600 group-hover:to-teal-600 transition-all duration-500 ease-in-out">
-                <style>{`
-                    .group:hover .btn-approve {
-                        background: white !important;
-                        color: #16a34a !important;
-                        border: 2px solid #16a34a !important;
-                    }
-                    .group:hover .btn-approve:hover {
-                        background: linear-gradient(to right, #16a34a, #10b981) !important;
-                        color: white !important;
-                        border: none !important;
-                    }
-                    .group:hover .btn-reject {
-                        background: white !important;
-                        color: #ef4444 !important;
-                        border: 2px solid #ef4444 !important;
-                    }
-                    .group:hover .btn-reject:hover {
-                        background: linear-gradient(to right, #ef4444, #dc2626) !important;
-                        color: white !important;
-                        border: none !important;
-                    }
-                    .group:hover .btn-view {
-                        background: rgba(255, 255, 255, 0.2) !important;
-                        color: white !important;
-                        border: 2px solid rgba(255, 255, 255, 0.6) !important;
-                    }
-                    .group:hover .btn-view:hover {
-                        background: white !important;
-                        color: #374151 !important;
-                        border: 2px solid #d1d5db !important;
-                    }
-                `}</style>
-                
+
+
                 {/* Title */}
                 <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 truncate group-hover:text-white transition-colors duration-300 mb-3 leading-tight">
                     {title}
