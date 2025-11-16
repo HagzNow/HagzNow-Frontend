@@ -233,7 +233,7 @@ export default function Sidebar({
       <aside
         dir={isRTL ? "rtl" : "ltr"}
         className={[
-          "fixed top-0 bottom-0 z-50 w-72 bg-white border-s border-neutral-200 shadow-xl transform transition-transform duration-300 ease-in-out",
+          "fixed top-0 bottom-0 w-[288px] z-50 bg-white  shadow-xl transform transition-transform duration-300 ease-in-out",
           isRTL ? "right-0" : "left-0",
           open ? "translate-x-0" : isRTL ? "translate-x-full" : "-translate-x-full",
           "md:translate-x-0 md:static md:shadow-none md:w-72",

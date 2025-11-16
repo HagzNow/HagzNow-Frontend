@@ -78,7 +78,7 @@ export default function OwnerDashboard() {
           <span className="font-medium mb-4 text-gray-700">عرض جميع الساحات</span>
           <button
             onClick={() => navigate("/all-grounds")}
-            className="bg-blue-100 hover:bg-blue-200 text-grey-700 px-5 py-2 rounded-md text-sm font-medium transition cursor-pointer"
+            className="bg-blue-100 hover:bg-blue-200 text-gray-700 px-5 py-2 rounded-md text-sm font-medium transition cursor-pointer"
           >
             الانتقال
           </button>
@@ -101,7 +101,7 @@ export default function OwnerDashboard() {
           <Settings className="w-10 h-10 mb-3 text-blue-600" />
           <span className="font-medium mb-4 text-gray-700">الإعدادات</span>
           <button
-            onClick={() => navigate("/settings")}
+       /**/      onClick={() => navigate("/settings")}
             className="bg-blue-100 hover:bg-blue-200 text-gray-700 px-5 py-2 rounded-md text-sm font-medium transition cursor-pointer"
           >
             الانتقال
