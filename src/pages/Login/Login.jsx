@@ -361,7 +361,7 @@ export default function Login() {
   useEffect(() => {
     if (!user) return; // لسه مفيش يوزر بعد
     if (user.role === "admin") navigate("/admin/admin-arena-requests");
-    else if (user.role === "owner") navigate("/owner/add-arena");
+    else if (user.role === "owner") navigate("/owner/dashboard");
     else navigate("/home");
   }, [user, navigate]); // هيشتغل أول ما الـ user يتحدث
 
