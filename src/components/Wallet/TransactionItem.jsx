@@ -4,29 +4,29 @@ import { useTranslation } from "react-i18next";
 export default function TransactionItem({ transaction }) {
   const { t } = useTranslation();
 
-  const status = (state) => {
-    switch (state) {
-      case "hold":
-        return "bg-blue-500";
-      case "released":
-        return "bg-red-500";
-      case "settled":
-        return "bg-mainColor";
-      case "pending":
-        return "bg-white";
-      case "failed":
-        return "bg-red-900";
-      default:
-        return null;
-    }
+  const colors = {
+    instant: "#3B82F6",
+    hold: "#FBBF24",
+    refund: "#10B981",
+    settled: "#059669",
+    pending: "#6B7280",
+    failed: "#EF4444",
   };
+
+  const status = (state) => ({
+    backgroundColor: colors[state] || "#ccc",
+    color: "white",
+    padding: "4px 12px",
+    borderRadius: "12px",
+    minWidth: "90px",
+    textAlign: "center",
+  });
 
   const type = (type) => {
     switch (type) {
       case "deposit":
         return "+";
       case "withdrawal":
-        return "-";
       case "payment":
         return "-";
       case "refund":
@@ -37,18 +37,26 @@ export default function TransactionItem({ transaction }) {
   };
 
   return (
-    <div className="flex justify-around items-center space-y-2">
-      <p className={`${status(transaction.stage)} px-5 rounded-2xl`}>
-        {t(`transaction_status.${transaction.stage}`)}
-      </p>
+    <div className="flex items-center justify-between w-full py-2">
+      <div className="w-1/4 flex justify-center">
+        <p style={status(transaction.stage)}>
+          {t(`transaction_status.${transaction.stage}`)}
+        </p>
+      </div>
 
-      <p>{transaction.amount}</p>
+      <div className="w-1/4 text-center">
+        <p>{transaction.amount}</p>
+      </div>
 
-      <p>
-        {t(`transaction_type.${transaction.type}`)} {type(transaction.type)}
-      </p>
+      <div className="w-1/4 text-center">
+        <p>
+          {t(`transaction_type.${transaction.type}`)} {type(transaction.type)}
+        </p>
+      </div>
 
-      <p>{new Date(transaction.createdAt).toLocaleDateString()}</p>
+      <div className="w-1/4 text-center">
+        <p>{new Date(transaction.createdAt).toLocaleDateString()}</p>
+      </div>
     </div>
   );
 }

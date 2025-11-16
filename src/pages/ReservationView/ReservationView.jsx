@@ -61,7 +61,7 @@ export default function ReservationView() {
 
       <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
         <div className="lg:w-2/3 w-full">
-          <ReservationInfoCard data={data} i18n={i18n} />
+          <ReservationInfoCard data={data} i18n={i18n} isPreview={false} />
         </div>
 
         <div className="lg:w-1/3 w-full">

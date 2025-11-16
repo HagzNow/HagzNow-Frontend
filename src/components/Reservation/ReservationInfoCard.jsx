@@ -8,9 +8,8 @@ import dayjs from "dayjs";
 import "dayjs/locale/ar";
 import "dayjs/locale/en";
 
-export default function ReservationInfoCard({ data, i18n }) {
-  const { date, slots, selectedExtras, totalAmount, extrasTotalAmount } =
-    data;
+export default function ReservationInfoCard({ data, i18n, isPreview }) {
+  const { date, slots, selectedExtras, totalAmount, extrasTotalAmount } = data;
   const ranges = getTimeRanges(slots);
 
   const dayName =
@@ -95,10 +94,17 @@ export default function ReservationInfoCard({ data, i18n }) {
 
       <p className="font-bold text-thirdColor text-2xl">
         الإجمالي :
-        <span className="text-mainColor font-bold">
-          {" "}
-          {totalPrice} جنيه مصري{" "}
-        </span>
+        {isPreview ? (
+          <span className="text-mainColor font-bold">
+            {" "}
+            {totalPrice} جنيه مصري{" "}
+          </span>
+        ) : (
+          <span className="text-mainColor font-bold">
+            {" "}
+            {totalAmount} جنيه مصري{" "}
+          </span>
+        )}
       </p>
     </div>
   );

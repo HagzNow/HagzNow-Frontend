@@ -1,5 +1,6 @@
 import React from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function ReservationActions({
   isPreview,
@@ -10,9 +11,13 @@ export default function ReservationActions({
   cancelRservation,
   status,
 }) {
+  const nanigate = useNavigate();
   const handleCancel = () => {
     if (status === "hold") {
       cancelRservation();
+      setTimeout(() => {
+        nanigate("/my-bookings");
+      }, 1500);
     } else {
       toast.error("لا يمكن إلغاء هذا الحجز لأن حالته ليست قيد الانتظار.");
     }

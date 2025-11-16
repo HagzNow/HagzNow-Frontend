@@ -62,9 +62,13 @@ export default function ReservationPreview() {
     resetReservation();
     navigate("/user-arena");
   };
-
+  console.log("price per hour : ", arena?.data.pricePerHour);
+  console.log("slots length", slots.length);
+  console.log("deposit percent", arena?.data.depositPercent);
   const totalAmount =
-    (arena?.data.pricePerHour * slots.length * arena?.data.depositPercent) /
+    (Number(arena?.data.pricePerHour) *
+      slots.length *
+      Number(arena?.data.depositPercent)) /
     100;
   const extrasTotalAmount = selectedExtras.reduce(
     (sum, extra) => sum + Number(extra.price || 0),
@@ -90,7 +94,7 @@ export default function ReservationPreview() {
 
       <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
         <div className="lg:w-2/3 w-full">
-          <ReservationInfoCard data={data} i18n={i18n} />
+          <ReservationInfoCard data={data} i18n={i18n} isPreview={true} />
         </div>
 
         <div className="lg:w-1/3 w-full">
@@ -101,6 +105,7 @@ export default function ReservationPreview() {
             onCancel={handleCancel}
             onEdit={handleBack}
           />
+          r
         </div>
       </div>
     </div>
