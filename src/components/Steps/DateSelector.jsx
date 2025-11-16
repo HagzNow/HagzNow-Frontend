@@ -5,13 +5,19 @@ import dayjs from "dayjs";
 import { useContext, useEffect } from "react";
 import { reservationContext } from "../../Contexts/ReservationContext";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function DateSelector() {
-  let { getTimeAvailable, date, setDate, setArenaId } =
+  let { getTimeAvailable, date, setDate, setArenaId, slots } =
     useContext(reservationContext);
   let { id } = useParams();
 
   function handleChange(newDate) {
+    if (slots.length > 0) {
+      toast.error("من فضلك أزل المواعيد المختارة قبل تغيير التاريخ");
+      return;
+    }
+
     setDate(newDate);
     getTimeAvailable(newDate, id);
   }
@@ -27,6 +33,7 @@ export default function DateSelector() {
         <DateCalendar
           value={date}
           onChange={handleChange}
+          disabled={slots.length > 0}
           minDate={dayjs()}
           sx={{
             "& .MuiPickersDay-root.Mui-selected": {

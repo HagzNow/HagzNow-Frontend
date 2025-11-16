@@ -161,7 +161,8 @@
     "released": "ملغي",
     "failed": "فشل",
     "settled": "مكتمل",
-    "pending": "قيد المعالجة"
+    "pending": "قيد المعالجة",
+    "refund" : "استرجاع"
   },
   "transaction_type": {
     "deposit": "إيداع",

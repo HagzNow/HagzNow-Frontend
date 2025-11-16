@@ -289,4 +289,69 @@ export const arenaService = {
       throw error;
     }
   },
+
+  /**
+   * Fetch owner's arenas with pagination and filters
+   * @param {Object} params - Query parameters
+   * @param {number} params.page - Page number
+   * @param {number} params.limit - Items per page
+   * @param {string} params.name - Filter by name (optional)
+   * @param {string} params.categoryId - Filter by category (optional)
+   * @returns {Promise} API response
+   */
+  async getOwnerArenas(params = {}) {
+    try {
+      const queryParams = new URLSearchParams();
+
+      // Add pagination parameters
+      queryParams.append('page', params.page || 1);
+      queryParams.append('limit', params.limit || 12);
+
+      // Add optional filters
+      if (params.name) queryParams.append('name', params.name);
+      if (params.categoryId) queryParams.append('categoryId', params.categoryId);
+
+      // Get token from localStorage
+      const token = localStorage.getItem('token');
+
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      // Add Authorization header if token exists
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const url = `${API_BASE_URL}${API_ENDPOINTS.ARENAS}?${queryParams.toString()}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: headers,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
+
+      const result = await response.json();
+
+      if (!result.isSuccess) {
+        throw new Error(result.message || 'Failed to fetch owner arenas');
+      }
+
+      // Return the nested data structure with proper mapping
+      return {
+        data: result.data.data || [],
+        total: result.data.total || 0,
+        page: result.data.page || 1,
+        limit: result.data.limit || 10,
+        totalPages: result.data.totalPages || 0
+      };
+    } catch (error) {
+      console.error('Error fetching owner arenas:', error);
+      throw error;
+    }
+  },
 };
