@@ -40,7 +40,7 @@ const navSections = [
       { id: "booking-new", label: "حجز جديد", icon: Plus },
     ],
   },
-  { id: "settings", title: "الإعدادات", icon: Settings },
+  { id: "settings", title: "الإعدادات", icon: Settings,path:"/owner/Setting" },
 ];
 export default function OwnerLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -113,3 +113,7 @@ export default function OwnerLayout() {
     </div>
   );
 }
+
+
+
+
