@@ -13,7 +13,6 @@ export default function Wallet() {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
   const [showModal, setShowModal] = useState(false);
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState(false);

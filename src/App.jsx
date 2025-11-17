@@ -1,36 +1,36 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
-import Login from "./pages/Login/Login";
 import Layout from "./components/Layout/Layout";
-import Home from "./pages/Home/Home";
-import Register from "./pages/Register/Register";
-import UserArenas from "./pages/UserArenas/UserArenas";
 import AdminArenaRequests from "./pages/AdminArenaRequests/AdminArenaRequests";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 import Reservation from "./pages/Reservation/Reservation";
+import UserArenas from "./pages/UserArenas/UserArenas";
 // import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
-import AuthContextProvider from "./Contexts/AuthContext";
-import ProtectedLoginAndRegister from "./Routes/protectedLoginAndRegister";
-import ProtectedRoutes from "./Routes/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import ReservationContextProvider from "./Contexts/ReservationContext";
-import Extras from "./pages/Extras/Extras";
-import ManualBookingForm from "./pages/Owner/ManualBooking";
 import ArenaCardPremium from "./components/OwnerComponents/ArenaCardComponent/ArenaCard";
-import AddArena from "./pages/Owner/AddArenas";
+import AuthContextProvider from "./Contexts/AuthContext";
+import ReservationContextProvider from "./Contexts/ReservationContext";
 import BookingArena from "./pages/BookingArena/BookingArena";
 import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
+import Extras from "./pages/Extras/Extras";
+import AddArena from "./pages/Owner/AddArenas";
+import ManualBookingForm from "./pages/Owner/ManualBooking";
 import Wallet from "./pages/Wallet/Wallet";
+import ProtectedRoutes from "./Routes/ProtectedRoute";
 
 import AdminLayout from "./components/AdminLayout/AdminLayout";
-import SettingsPage from "./pages/SettingPage/SettingsPage";
 import OwnerLayout from "./components/OwnerComponents/OwnerLayout/OwnerLayout";
+import SettingsPage from "./pages/SettingPage/SettingsPage";
 // import ReservationStep from "./components/Steps/ReservationStep";
+import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
+import UserManagement from "./pages/AdminPages/UserManagement";
+import OwnerArenas from "./pages/Owner/OwnerArenas";
+import ReservationView from "./pages/ReservationView/ReservationView";
 import PendingRequests from "./pages/SettingPage/PendingRequests";
 import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
-import UserManagement from "./pages/AdminPages/UserManagement";
-import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
-import ReservationView from "./pages/ReservationView/ReservationView";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import OwnerDashboard from "./pages/Owner/OwnerDashboard";
 
@@ -204,15 +204,15 @@ function App() {
     {
       path: "/owner",
       element: (
-        //  <ProtectedRoutes role="owner">
-        <OwnerLayout />
-        // </ProtectedRoutes>
+        <ProtectedRoutes role="owner">
+          <OwnerLayout />
+        </ProtectedRoutes>
       ),
       children: [
         { path: "dashboard", element: <OwnerDashboard /> },
         { path: "add-arena", element: <AddArena /> },
         { path: "manual-booking", element: <ManualBookingForm /> },
-        
+        { path: "my-arenas", element: <OwnerArenas /> },
       ],
     },
 
@@ -256,7 +256,7 @@ function App() {
       path: "/wallet",
 
       element: (
-        <ProtectedRoutes role="user">
+        <ProtectedRoutes>
           <Wallet />
         </ProtectedRoutes>
       ),

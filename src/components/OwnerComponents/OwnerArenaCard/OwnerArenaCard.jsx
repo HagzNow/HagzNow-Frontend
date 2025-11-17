@@ -2,29 +2,85 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { PiSoccerBall } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-export default function ArenaCard({
+export default function OwnerArenaCard({
     title,
     location,
     category,
     price,
-    rating,
+    rating = 0,
     image,
     id,
+    status,
+    isLoading = false,
 }) {
     const navigate = useNavigate();
+
     function handleCardClick() {
-        // Navigate to booking page
-        navigate(`/booking/${id}`);
+        // Navigate to arena details or management page
+        navigate(`/owner/arena/${id}`);
     }
+
     const stars = [1, 2, 3, 4, 5];
+
+    // Loading skeleton
+    if (isLoading) {
+        return (
+            <div dir="rtl" className="w-full max-w-sm bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+                {/* Image Skeleton */}
+                <Skeleton height={192} className="w-full" />
+
+                <div className="relative p-5 sm:p-6">
+                    {/* Title Skeleton */}
+                    <Skeleton height={28} className="mb-2" />
+
+                    {/* Location Skeleton */}
+                    <div className="flex items-center mt-3">
+                        <Skeleton circle width={20} height={20} className="ml-2" />
+                        <Skeleton width="80%" height={16} />
+                    </div>
+
+                    {/* Category Skeleton */}
+                    <div className="flex items-center mt-2">
+                        <Skeleton circle width={20} height={20} className="ml-2" />
+                        <Skeleton width="60%" height={16} />
+                    </div>
+
+                    {/* Divider */}
+                    <div className="h-px bg-gray-200 my-4"></div>
+
+                    {/* Rating and Price Skeleton */}
+                    <div className="flex items-center justify-between mt-4">
+                        <Skeleton width={120} height={32} className="rounded-full" />
+                        <Skeleton width={80} height={40} />
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div
             dir="rtl"
-            className="w-full max-w-sm bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-all duration-500 ease-in-out group border border-gray-100"
+            className="w-full max-w-sm bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-all duration-500 ease-in-out group border border-gray-100 relative"
             onClick={handleCardClick}
         >
+            {/* Status Badge */}
+            {status && (
+                <div className="absolute top-4 left-4 z-10">
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow-md ${status === 'active'
+                            ? 'bg-green-500 text-white'
+                            : status === 'pending'
+                                ? 'bg-yellow-500 text-white'
+                                : 'bg-red-500 text-white'
+                        }`}>
+                        {status === 'active' ? 'نشط' : status === 'pending' ? 'قيد المراجعة' : 'معطل'}
+                    </span>
+                </div>
+            )}
+
             {/* Image Container */}
             <div className="relative overflow-hidden h-48 sm:h-52 md:h-56 lg:h-48">
                 <img

@@ -6,7 +6,7 @@ import { getTimeRanges, formatTime } from '../../utils/timeRange'
 
 export default function UserAllReservation() {
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState('current'); // 'current' or 'past'
+    const [activeTab, setActiveTab] = useState('past'); // 'current' or 'past'
     const [error, setError] = useState(null);
     const itemsPerPage = 12;
 
@@ -36,14 +36,14 @@ export default function UserAllReservation() {
     };
 
     // Transform API data to match component props
-    const transformReservation = (reservation, status) => ({
+    const transformReservation = (reservation) => ({
         id: reservation.id,
         arenaName: reservation.arenaName,
         arenaImage: reservation.arenaThumbnail,
         date: reservation.dateOfReservation,
         timeSlot: formatSlots(reservation.slots),
         price: parseFloat(reservation.totalAmount),
-        status: status
+        status: reservation.status // Use status from API response
     });
 
     // Fetch reservations for a specific type
@@ -63,14 +63,8 @@ export default function UserAllReservation() {
             console.log(`${type} API Result:`, result);
 
             // Transform API data to match component props
-            // const transformedData = result.data.map(reservation =>
-            //     transformReservation(reservation, type === 'current' ? 'قادمة' : 'منتهية')
-            // );
-
             const transformedData = Array.isArray(result.data)
-                ? result.data.map(reservation =>
-                    transformReservation(reservation, type === 'current' ? 'قادمة' : 'منتهية')
-                    )
+                ? result.data.map(reservation => transformReservation(reservation))
                 : [];
 
             return {
@@ -154,7 +148,7 @@ export default function UserAllReservation() {
     };
 
     // Get current active data based on selected tab
-    const activeData = activeTab === 'current' ? currentReservations : pastReservations;
+    const activeData = activeTab === 'past' ? pastReservations : currentReservations;
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -168,15 +162,6 @@ export default function UserAllReservation() {
             {/* Tabs */}
             <div className="flex justify-center gap-2 sm:gap-4 px-4 mb-6">
                 <button
-                    onClick={() => handleTabChange('current')}
-                    className={`px-4 sm:px-8 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-colors ${activeTab === 'current'
-                        ? 'bg-green-600 text-white'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                        }`}
-                >
-                    القادمة
-                </button>
-                <button
                     onClick={() => handleTabChange('past')}
                     className={`px-4 sm:px-8 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-colors ${activeTab === 'past'
                         ? 'bg-green-600 text-white'
@@ -184,6 +169,15 @@ export default function UserAllReservation() {
                         }`}
                 >
                     السابقة
+                </button>
+                <button
+                    onClick={() => handleTabChange('current')}
+                    className={`px-4 sm:px-8 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-colors ${activeTab === 'current'
+                        ? 'bg-green-600 text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                >
+                    القادمة
                 </button>
             </div>
 

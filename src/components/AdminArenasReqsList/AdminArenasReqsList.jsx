@@ -3,11 +3,20 @@ import AdminArenaCard from "../AdminArenaCard/AdminArenaCard";
 import { arenaService } from "../../services/arenaService";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import Toast from "../Toast/Toast";
+import noImage from "../../assets/imgs/no-img.jpg";
 
 export default function AdminArenasReqsList({ arenaRequests = [], loading, onRefresh }) {
     const [processingId, setProcessingId] = useState(null);
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, type: "", arenaId: null });
     const [toast, setToast] = useState({ isVisible: false, message: "", type: "success" });
+
+    // Handle both array and object with data property
+    const arenas = Array.isArray(arenaRequests) ? arenaRequests : (arenaRequests?.data || []);
+
+    console.log('AdminArenasReqsList received arenaRequests:', arenaRequests);
+    console.log('Processed arenas:', arenas);
+    console.log('arenas is array?:', Array.isArray(arenas));
+    console.log('arenas length:', arenas?.length);
 
     const showToast = (message, type = "success") => {
         setToast({ isVisible: true, message, type });
@@ -24,19 +33,20 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
     const handleConfirmAction = async () => {
         const { type, arenaId } = confirmDialog;
         setProcessingId(arenaId);
+        setConfirmDialog({ isOpen: false, type: "", arenaId: null });
 
         try {
             if (type === "approve") {
-                await arenaService.updateArenaStatus(arenaId, "active");
+                await arenaService.approveArena(arenaId);
                 showToast("تم الموافقة على الملعب بنجاح", "success");
             } else if (type === "reject") {
-                await arenaService.updateArenaStatus(arenaId, "disabled");
+                await arenaService.rejectArena(arenaId);
                 showToast("تم رفض الملعب بنجاح", "success");
             }
 
             // Refresh the list after action
             if (onRefresh) {
-                onRefresh();
+                await onRefresh();
             }
         } catch (error) {
             showToast(
@@ -78,29 +88,37 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
             />
 
             {loading ? (
-                <div className="flex justify-center items-center py-12 sm:py-16 md:py-20">
-                    <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-green-600"></div>
+                <div dir="ltr" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6 my-6 sm:my-8 md:my-10 mx-4 sm:mx-6 md:mx-8 lg:mx-10">
+                    {/* Show 6 skeleton cards while loading */}
+                    {[...Array(6)].map((_, index) => (
+                        <AdminArenaCard key={index} isLoading={true} />
+                    ))}
                 </div>
-            ) : !arenaRequests || arenaRequests.length === 0 ? (
+            ) : !arenas || !Array.isArray(arenas) || arenas.length === 0 ? (
                 <div className="text-center py-12 sm:py-16 md:py-20 px-4">
                     <p className="text-gray-500 text-base sm:text-lg md:text-xl">لا توجد طلبات ملاعب متاحة</p>
                 </div>
             ) : (
                 <div dir="ltr" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-5 md:gap-6 my-6 sm:my-8 md:my-10 mx-4 sm:mx-6 md:mx-8 lg:mx-10">
-                    {arenaRequests.map((arena) => (
-                        <AdminArenaCard
-                            key={arena.id}
-                            id={arena.id}
-                            title={arena.name}
-                            location={arena.locationSummary}
-                            sport={arena.categoryName}
-                            price={arena.pricePerHour}
-                            image={arena.thumbnail || 'src/assets/imgs/arena-img.png'}
-                            onApprove={() => handleApprove(arena.id)}
-                            onReject={() => handleReject(arena.id)}
-                            isProcessing={processingId === arena.id}
-                        />
-                    ))}
+                    {arenas.map((arena) => {
+                        const imageToUse = arena.thumbnail && arena.thumbnail.trim() !== '' ? arena.thumbnail : noImage;
+                        console.log('Arena:', arena.name, 'Thumbnail:', arena.thumbnail, 'Using image:', imageToUse);
+
+                        return (
+                            <AdminArenaCard
+                                key={arena.id}
+                                id={arena.id}
+                                title={arena.name}
+                                location={arena.locationSummary}
+                                sport={arena.categoryName}
+                                price={arena.pricePerHour}
+                                image={imageToUse}
+                                onApprove={() => handleApprove(arena.id)}
+                                onReject={() => handleReject(arena.id)}
+                                isProcessing={processingId === arena.id}
+                            />
+                        );
+                    })}
                 </div>
             )}
         </>

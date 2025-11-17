@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import AdminArenaFilter from '../../components/AdminArenaFilter/AdminArenaFilter'
-import AdminArenasReqsList from '../../components/AdminArenasReqsList/AdminArenasReqsList'
+import OwnerArenaFilter from '../../components/OwnerComponents/OwnerArenaFilter/OwnerArenaFilter'
+import OwnerArenasList from '../../components/OwnerComponents/OwnerArenasList/OwnerArenasList'
 import Pagination from '../../components/Pagination/Pagination'
 import { arenaService } from '../../services/arenaService'
 
-export default function AdminArenaRequests() {
-    const [arenaRequests, setArenaRequests] = useState([]);
+export default function OwnerArenas() {
+    const [arenas, setArenas] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -15,43 +15,41 @@ export default function AdminArenaRequests() {
     const [searchName, setSearchName] = useState('');
     const itemsPerPage = 12;
 
-    const fetchArenaRequests = useCallback(async (page, categoryFilter, nameFilter) => {
+    const fetchOwnerArenas = useCallback(async (page, categoryFilter, nameFilter) => {
         setLoading(true);
         setError(null);
 
         try {
-            const response = await arenaService.getArenaRequests({
+            const response = await arenaService.getOwnerArenas({
                 page: page,
                 limit: itemsPerPage,
                 categoryId: categoryFilter,
                 name: nameFilter,
             });
 
-            setArenaRequests(response.data);
+            setArenas(response.data);
             setTotalPages(response.totalPages);
             setTotal(response.total);
         } catch (err) {
-            setError(err.message || 'فشل في تحميل طلبات الملاعب');
-            console.error('Error fetching arena requests:', err);
+            setError(err.message || 'فشل في تحميل الملاعب');
+            console.error('Error fetching owner arenas:', err);
         } finally {
             setLoading(false);
         }
-    }, []); // No dependencies - function doesn't change
+    }, []);
 
     useEffect(() => {
-        fetchArenaRequests(currentPage, categoryId, searchName);
-    }, [currentPage, categoryId, searchName, fetchArenaRequests]); // Fetch when page or filters change
+        fetchOwnerArenas(currentPage, categoryId, searchName);
+    }, [currentPage, categoryId, searchName, fetchOwnerArenas]);
 
     const handleFilterChange = useCallback((newFilters) => {
         setCategoryId(newFilters.categoryId);
         setSearchName(newFilters.name);
-        setCurrentPage(1); // Reset to first page when filters change
+        setCurrentPage(1);
     }, []);
 
     const handlePageChange = (page) => {
-        // Clamp page within range
         const nextPage = Math.max(1, Math.min(page, totalPages));
-
         if (nextPage !== currentPage) {
             setCurrentPage(nextPage);
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -60,16 +58,16 @@ export default function AdminArenaRequests() {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-            {/* Hero */}
+            {/* Hero Section */}
             <div className="relative bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white py-10 sm:py-14 md:py-16">
                 <div className="absolute inset-0 bg-black/10"></div>
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold drop-shadow-md text-center">
-                        مراجعة طلبات الملاعب
+                        ملاعبي
                     </h1>
                     {total > 0 && (
                         <p className="text-white/90 text-center mt-3">
-                            إجمالي الطلبات: <span className="font-semibold">{total}</span> | الصفحة <span className="font-semibold">{currentPage}</span> من <span className="font-semibold">{totalPages}</span>
+                            إجمالي الملاعب: <span className="font-semibold">{total}</span> | الصفحة <span className="font-semibold">{currentPage}</span> من <span className="font-semibold">{totalPages}</span>
                         </p>
                     )}
                 </div>
@@ -77,7 +75,7 @@ export default function AdminArenaRequests() {
 
             {/* Filter */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
-                <AdminArenaFilter onFilterChange={handleFilterChange} />
+                <OwnerArenaFilter onFilterChange={handleFilterChange} />
             </div>
 
             {/* Content */}
@@ -96,7 +94,7 @@ export default function AdminArenaRequests() {
                                     <h3 className="text-red-800 font-bold text-lg mb-2">حدث خطأ</h3>
                                     <p className="text-red-700">{error}</p>
                                     <button
-                                        onClick={() => fetchArenaRequests(currentPage, categoryId, searchName)}
+                                        onClick={() => fetchOwnerArenas(currentPage, categoryId, searchName)}
                                         className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium shadow-md hover:shadow-lg"
                                     >
                                         إعادة المحاولة
@@ -107,12 +105,8 @@ export default function AdminArenaRequests() {
                     </div>
                 )}
 
-                {/* List */}
-                <AdminArenasReqsList
-                    arenaRequests={arenaRequests}
-                    loading={loading}
-                    onRefresh={() => fetchArenaRequests(currentPage, categoryId, searchName)}
-                />
+                {/* Arenas List */}
+                <OwnerArenasList arenas={arenas} loading={loading} />
 
                 {/* Pagination */}
                 {!loading && !error && totalPages > 1 && (

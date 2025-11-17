@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { categoryService } from "../../services/categoryService";
+import { categoryService } from "../../../services/categoryService";
 import { CiSearch } from "react-icons/ci";
 
-export default function AdminArenaFilter({ onFilterChange }) {
+export default function OwnerArenaFilter({ onFilterChange }) {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [searchName, setSearchName] = useState('');
@@ -49,14 +49,14 @@ export default function AdminArenaFilter({ onFilterChange }) {
     };
 
     return (
-        <div dir="rtl" className="w-full bg-white shadow-sm rounded-xl p-4 my-6 mx-4 sm:mx-6 md:mx-8 lg:mx-10 flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
+        <div dir="rtl" className="w-full bg-white shadow-sm rounded-xl p-4 flex items-center justify-center gap-6 flex-wrap">
             {/* Sport Type Dropdown */}
-            <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap w-full sm:w-auto">
+            <div className="flex items-center gap-2">
                 <select
                     value={selectedCategory}
                     onChange={handleCategoryChange}
                     disabled={loading}
-                    className="border border-green-600 text-green-600 px-3 sm:px-4 py-2 rounded-lg hover:bg-green-50 transition focus:outline-none focus:ring-2 focus:ring-green-500 min-w-[150px] w-full sm:w-auto"
+                    className="border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition focus:outline-none focus:ring-2 focus:ring-green-500 min-w-[150px]"
                 >
                     <option value="">نوع الرياضة - الكل</option>
                     {categories.map((category) => (
