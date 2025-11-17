@@ -158,7 +158,9 @@
     "status": "Status",
     "amount": "Amount",
     "type": "Type",
-    "date": "Date"
+    "date": "Date",
+    "available_balance": "Available Balance",
+    "held_amount": "Held Amount"
   },
   "UserProfile": {
     "password_invalid": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل، وحرف صغير واحد، ورقم واحد. يجب أن تكون كلمة المرور بين 8 و20 حرفًا."

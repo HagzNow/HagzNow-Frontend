@@ -47,7 +47,7 @@ export default function Wallet() {
   async function getBalance() {
     try {
       let { data } = await baseUrl.get('/wallet/balance');
-      setBalance(data?.data.availableBalance);
+      setBalance(data?.data);
     } catch (error) {
       console.log(error);
     }
@@ -87,12 +87,28 @@ export default function Wallet() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <p className="text-gray-600 text-lg font-medium">{t('wallet.current_balance')}</p>
-                <h2 className="font-bold text-4xl bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                  {balance ? Number(balance).toLocaleString('ar-EG') : 0}
-                  <span className="text-2xl text-gray-700 mr-2">ج.م</span>
-                </h2>
+              {/* Side by side balances */}
+              <div className="flex items-center justify-center gap-8">
+                {/* Available Balance */}
+                <div className="space-y-2">
+                  <p className="text-gray-600 text-sm font-medium">{t('wallet.available_balance')}</p>
+                  <h2 className="font-bold text-3xl bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                    {balance?.availableBalance ? Number(balance?.availableBalance).toLocaleString('ar-EG') : 0}
+                    <span className="text-xl text-gray-700 mr-2">ج.م</span>
+                  </h2>
+                </div>
+
+                {/* Divider */}
+                <div className="h-16 w-px bg-gray-300"></div>
+
+                {/* Held Amount */}
+                <div className="space-y-2">
+                  <p className="text-gray-600 text-sm font-medium">{t('wallet.held_amount')}</p>
+                  <h2 className="font-bold text-3xl bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                    {balance?.heldAmount ? Number(balance?.heldAmount).toLocaleString('ar-EG') : 0}
+                    <span className="text-xl text-gray-700 mr-2">ج.م</span>
+                  </h2>
+                </div>
               </div>
 
               <button
