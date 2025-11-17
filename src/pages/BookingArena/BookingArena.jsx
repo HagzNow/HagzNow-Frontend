@@ -177,10 +177,10 @@ const BookingArena = () => {
             <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out border border-gray-100 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">معلومات سريعة</h3>
               <div className="space-y-3">
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                {/* <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <span className="text-gray-600">السعر لكل ساعة</span>
                   <span className="font-bold text-green-600">{arena.pricePerHour} ج.م</span>
-                </div>
+                </div> */}
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <span className="text-gray-600">أقل مدة حجز</span>
                   <span className="font-bold text-gray-900">{arena.minPeriod} دقيقة</span>
