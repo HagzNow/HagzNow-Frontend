@@ -44,7 +44,7 @@ export default function Sidebar({
     <>
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-40 w-[288px] bg-black/40 md:hidden transition-opacity duration-200 ${
+        className={`fixed inset-0 z-40  bg-black/40 md:hidden transition-opacity duration-200 ${
           open ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={onClose}
@@ -54,7 +54,7 @@ export default function Sidebar({
       <aside
         dir={isRTL ? "rtl" : "ltr"}
         className={[
-          "fixed top-0 bottom-0 z-50 w-[288px] bg-white shadow-xl transform transition-transform duration-300 ease-in-out",
+          "fixed top-0 bottom-0 z-50  bg-white shadow-xl transform transition-transform duration-300 ease-in-out",
           isRTL ? "right-0" : "left-0",
           open ? "translate-x-0" : isRTL ? "translate-x-full" : "-translate-x-full",
           "md:translate-x-0 md:static md:shadow-none md:w-72",

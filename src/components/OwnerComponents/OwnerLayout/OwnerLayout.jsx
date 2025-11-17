@@ -7,20 +7,14 @@ import AdminFooter from "../../AdminLayout/AdminFooter";
 
 import {
  ChartLine,
-  LayoutDashboard,
-  CalendarDays,
   Settings,
-  SquarePlus,
-  Rows3,
   Plus,
-  Building2,
-  ShieldCheck,
   ListChecks,
   LibraryBig,
   Calendar,
   WalletCards
 } from "lucide-react";
-//import Home from "@/pages/Home/Home";
+
 
 const navSections = [
   { id: "dashboard", title: "لوحة التحكم", icon: ChartLine, path: "/owner/dashboard"  },
@@ -57,7 +51,7 @@ export default function OwnerLayout() {
     >
       {/* ✅ Sidebar Desktop */}
       <div
-        className={`hidden md:block fixed top-0 ${
+        className={`hidden md:block fixed top-0 w-[288px] ${
           isRTL ? "right-0" : "left-0"
         } h-screen w-64 bg-white shadow-lg z-40`}
       >
