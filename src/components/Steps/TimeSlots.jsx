@@ -1,17 +1,15 @@
-import { useContext } from "react";
-import { reservationContext } from "../../Contexts/ReservationContext";
-import Loader from "../Loader/Loader";
-import { useTranslation } from "react-i18next";
-import { formatTime } from "../../utils/timeRange";
+import { useContext } from 'react';
+import { reservationContext } from '../../Contexts/ReservationContext';
+import Loader from '../Loader/Loader';
+import { useTranslation } from 'react-i18next';
+import { formatTime } from '../../utils/timeRange';
 
 export default function TimeSlots() {
   const { times, loading, slots, setSlots } = useContext(reservationContext);
   const { i18n } = useTranslation();
 
   const toggleTime = (time) => {
-    setSlots((prev) =>
-      prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]
-    );
+    setSlots((prev) => (prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]));
   };
 
   if (loading) return <Loader />;
@@ -21,9 +19,9 @@ export default function TimeSlots() {
       {times?.map((time, i) => {
         const nextHour = time + 1;
         const formattedRange =
-          i18n.language === "ar"
-            ? `من ${formatTime(time, "ar")} إلى ${formatTime(nextHour, "ar")}`
-            : `${formatTime(time, "en")} - ${formatTime(nextHour, "en")}`;
+          i18n.language === 'ar'
+            ? `من ${formatTime(time, 'ar')} إلى ${formatTime(nextHour, 'ar')}`
+            : `${formatTime(time, 'en')} - ${formatTime(nextHour, 'en')}`;
 
         const isSelected = slots.includes(time);
 
@@ -32,9 +30,7 @@ export default function TimeSlots() {
             key={i}
             onClick={() => toggleTime(time)}
             className={`px-4 py-2 rounded-lg transition-all duration-200 ${
-              isSelected
-                ? "bg-green-500 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              isSelected ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             {formattedRange}

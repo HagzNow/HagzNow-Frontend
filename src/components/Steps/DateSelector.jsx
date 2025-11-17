@@ -1,20 +1,19 @@
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import dayjs from "dayjs";
-import { useContext, useEffect } from "react";
-import { reservationContext } from "../../Contexts/ReservationContext";
-import { useParams } from "react-router-dom";
-import toast from "react-hot-toast";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import dayjs from 'dayjs';
+import { useContext, useEffect } from 'react';
+import { reservationContext } from '../../Contexts/ReservationContext';
+import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function DateSelector() {
-  let { getTimeAvailable, date, setDate, setArenaId, slots } =
-    useContext(reservationContext);
+  let { getTimeAvailable, date, setDate, setArenaId, slots } = useContext(reservationContext);
   let { id } = useParams();
 
   function handleChange(newDate) {
     if (slots.length > 0) {
-      toast.error("من فضلك أزل المواعيد المختارة قبل تغيير التاريخ");
+      toast.error('من فضلك أزل المواعيد المختارة قبل تغيير التاريخ');
       return;
     }
 
@@ -36,16 +35,16 @@ export default function DateSelector() {
           disabled={slots.length > 0}
           minDate={dayjs()}
           sx={{
-            "& .MuiPickersDay-root.Mui-selected": {
-              backgroundColor: "green",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "darkgreen",
+            '& .MuiPickersDay-root.Mui-selected': {
+              backgroundColor: 'green',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: 'darkgreen',
               },
             },
-            "& .MuiPickersDay-root": {
-              "&:hover": {
-                backgroundColor: "rgba(0,128,0,0.2)",
+            '& .MuiPickersDay-root': {
+              '&:hover': {
+                backgroundColor: 'rgba(0,128,0,0.2)',
               },
             },
           }}

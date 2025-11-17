@@ -1,6 +1,7 @@
-import React from "react";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { CheckCircle, XCircle, Edit, Loader, AlertCircle } from 'lucide-react';
 
 export default function ReservationActions({
   isPreview,
@@ -11,60 +12,133 @@ export default function ReservationActions({
   cancelRservation,
   status,
 }) {
-  const nanigate = useNavigate();
+  const navigate = useNavigate();
+
   const handleCancel = () => {
-    if (status === "hold") {
+    if (status === 'hold') {
       cancelRservation();
       setTimeout(() => {
-        nanigate("/my-bookings");
+        navigate('/my-bookings');
       }, 1500);
     } else {
-      toast.error("لا يمكن إلغاء هذا الحجز لأن حالته ليست قيد الانتظار.");
+      toast.error('لا يمكن إلغاء هذا الحجز لأن حالته ليست قيد الانتظار.');
     }
   };
 
   return (
-    <div className="flex flex-col gap-4 p-5 border border-gray-200 rounded-2xl shadow-sm ">
-      {isPreview ? (
-        <>
-          <button
-            disabled={loading}
-            className="btn bg-mainColor w-full"
-            onClick={onConfirm}
-          >
-            {loading ? (
-              <i className="fa-solid fa-spinner fa-spin"></i>
+    <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out border border-gray-100 overflow-hidden">
+      {/* Header */}
+      <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-green-50 to-emerald-50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center">
+            {isPreview ? (
+              <CheckCircle className="w-5 h-5 text-white" />
             ) : (
-              "تأكيد الحجز"
+              <AlertCircle className="w-5 h-5 text-white" />
             )}
-          </button>
-          <button className="btn bg-red-600 w-full" onClick={onCancel}>
-            إلغاء الحجز
-          </button>
-          <button className="btn bg-thirdColor w-full" onClick={onEdit}>
-            تعديل الحجز
-          </button>
-        </>
-      ) : (
-        <>
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-900">{isPreview ? 'إجراءات الحجز' : 'إدارة الحجز'}</h3>
+            <p className="text-gray-600 text-sm">{isPreview ? 'أكمل عملية الحجز' : 'تحكم في حجزك الحالي'}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="p-6 space-y-4">
+        {isPreview ? (
           <>
+            {/* Confirm Button */}
             <button
-              className={`btn w-full ${
-                status === "hold"
-                  ? "bg-red-600 hover:bg-red-700"
-                  : "bg-gray-400 cursor-not-allowed"
-              }`}
-              onClick={handleCancel}
+              disabled={loading}
+              onClick={onConfirm}
+              className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl font-semibold hover:from-green-600 hover:to-emerald-600 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {loading ? (
-                <i className="fa-solid fa-spinner fa-spin"></i>
+                <>
+                  <Loader className="w-5 h-5 animate-spin" />
+                  جاري التأكيد...
+                </>
               ) : (
-                "الغاء الحجز"
+                <>
+                  <CheckCircle className="w-5 h-5" />
+                  تأكيد الحجز
+                </>
               )}
             </button>
+
+            {/* Edit Button */}
+            <button
+              onClick={onEdit}
+              className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-2xl font-semibold hover:from-blue-600 hover:to-cyan-600 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
+            >
+              <Edit className="w-5 h-5" />
+              تعديل الحجز
+            </button>
+
+            {/* Cancel Button */}
+            <button
+              onClick={onCancel}
+              className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-2xl font-semibold hover:from-red-600 hover:to-orange-600 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
+            >
+              <XCircle className="w-5 h-5" />
+              إلغاء الحجز
+            </button>
           </>
-        </>
-      )}
+        ) : (
+          <>
+            {/* Cancel Reservation Button */}
+            <button
+              onClick={handleCancel}
+              disabled={status !== 'hold' || loading}
+              className={`
+                w-full flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-semibold
+                transform transition-all duration-300 ease-in-out
+                ${
+                  status === 'hold' && !loading
+                    ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white hover:from-red-600 hover:to-orange-600 hover:shadow-lg hover:-translate-y-0.5'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }
+              `}
+            >
+              {loading ? (
+                <>
+                  <Loader className="w-5 h-5 animate-spin" />
+                  جاري الإلغاء...
+                </>
+              ) : (
+                <>
+                  <XCircle className="w-5 h-5" />
+                  إلغاء الحجز
+                </>
+              )}
+            </button>
+
+            {/* Status Info */}
+            <div className="p-4 bg-gray-50 rounded-2xl border border-gray-200">
+              <div className="flex items-center gap-2 text-sm">
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    status === 'hold' ? 'bg-amber-500' : status === 'confirmed' ? 'bg-green-500' : 'bg-gray-500'
+                  }`}
+                ></div>
+                <span className="text-gray-700 font-medium">الحالة:</span>
+                <span
+                  className={`
+                  font-semibold
+                  ${status === 'hold' ? 'text-amber-600' : status === 'confirmed' ? 'text-green-600' : 'text-gray-600'}
+                `}
+                >
+                  {status === 'hold' ? 'قيد الانتظار' : status === 'confirmed' ? 'مؤكد' : 'غير معروف'}
+                </span>
+              </div>
+              {status !== 'hold' && (
+                <p className="text-gray-500 text-xs mt-2 text-right">⚠️ يمكن إلغاء الحجز فقط عندما يكون قيد الانتظار</p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,20 +1,56 @@
-import React from "react";
+import React from 'react';
+import { MapPin, Star, Clock, Users, Shield } from 'lucide-react';
 
 export default function ReservationHeader({ data }) {
   const { arena } = data;
+
+  const locationSummary = `${arena?.location?.city}, ${arena?.location?.governorate}`;
+
   return (
-    <>
-      <div className="rounded-xl overflow-hidden shadow-md relative">
+    <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out border border-gray-100 overflow-hidden group">
+      {/* Main Image with Overlay */}
+      <div className="relative h-80 overflow-hidden">
         <img
           src={arena?.thumbnail}
-          alt="stadium"
-          className="w-full h-90 object-cover"
+          alt={arena?.name}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute bottom-4 right-6 text-white">
-          <h2 className="text-2xl font-bold">{arena?.name}</h2>
-          <p className="text-sm">{arena?.locationSummary}</p>
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+
+        {/* Content Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+            {/* Arena Info */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center shadow-lg">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold mb-1">{arena?.name}</h2>
+                  <div className="flex items-center gap-4 flex-wrap">
+                    {/* Location */}
+                    <div className="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-2xl">
+                      <MapPin className="w-4 h-4" />
+                      <span className="text-sm font-medium">{locationSummary}</span>
+                    </div>
+
+                    {/* Category */}
+                    <div className="flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-2xl">
+                      <Users className="w-4 h-4" />
+                      <span className="text-sm font-medium">{arena?.category?.name}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

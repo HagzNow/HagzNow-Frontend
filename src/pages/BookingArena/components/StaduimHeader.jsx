@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Star, Calendar, Shield, Clock } from 'lucide-react';
 
-export default function StadiumHeader({ name, id, status, pricePerHour, owner }) {
+export default function StadiumHeader({ name, id, status, pricePerHour }) {
   const navigate = useNavigate();
 
   function handleBookingClick() {
