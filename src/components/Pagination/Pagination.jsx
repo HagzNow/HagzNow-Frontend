@@ -7,10 +7,10 @@ export default function Pagination({ currentPage = 1, totalPages = 4, onPageChan
   const reversedPages = pages;
 
   // Utility: convert Latin digits to Arabic-Indic digits (٠١٢٣٤٥٦٧٨٩)
-  const toArabicNumerals = (value) => {
-    const map = ['\u0660', '\u0661', '\u0662', '\u0663', '\u0664', '\u0665', '\u0666', '\u0667', '\u0668', '\u0669'];
-    return String(value).replace(/\d/g, (d) => String.fromCharCode(parseInt(map[d].slice(2), 10) + 0));
-  };
+  //   const toArabicNumerals = (value) => {
+  //     const map = ['\u0660', '\u0661', '\u0662', '\u0663', '\u0664', '\u0665', '\u0666', '\u0667', '\u0668', '\u0669'];
+  //     return String(value).replace(/\d/g, (d) => String.fromCharCode(parseInt(map[d].slice(2), 10) + 0));
+  //   };
 
   // Simpler and safer implementation of mapping digits
   // (fallback if above method becomes confusing):
