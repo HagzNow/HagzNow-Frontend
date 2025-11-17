@@ -1,38 +1,38 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './App.css';
-import Login from './pages/Login/Login';
-import Layout from './components/Layout/Layout';
-import Home from './pages/Home/Home';
-import Register from './pages/Register/Register';
-import UserArenas from './pages/UserArenas/UserArenas';
-import AdminArenaRequests from './pages/AdminArenaRequests/AdminArenaRequests';
-import Reservation from './pages/Reservation/Reservation';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./App.css";
+import Layout from "./components/Layout/Layout";
+import AdminArenaRequests from "./pages/AdminArenaRequests/AdminArenaRequests";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import Reservation from "./pages/Reservation/Reservation";
+import UserArenas from "./pages/UserArenas/UserArenas";
 // import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
-import AuthContextProvider from './Contexts/AuthContext';
-import ProtectedLoginAndRegister from './Routes/protectedLoginAndRegister';
-import ProtectedRoutes from './Routes/ProtectedRoute';
-import { Toaster } from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
-import ReservationContextProvider from './Contexts/ReservationContext';
-import Extras from './pages/Extras/Extras';
-import ManualBookingForm from './pages/Owner/ManualBooking';
-import ArenaCardPremium from './components/OwnerComponents/ArenaCardComponent/ArenaCard';
-import AddArena from './pages/Owner/AddArenas';
-import BookingArena from './pages/BookingArena/BookingArena';
-import ConfirmReservation from './pages/ConfirmReservation/ConfirmReservation';
-import Wallet from './pages/Wallet/Wallet';
+import { Toaster } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import ArenaCardPremium from "./components/OwnerComponents/ArenaCardComponent/ArenaCard";
+import AuthContextProvider from "./Contexts/AuthContext";
+import ReservationContextProvider from "./Contexts/ReservationContext";
+import BookingArena from "./pages/BookingArena/BookingArena";
+import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
+import Extras from "./pages/Extras/Extras";
+import AddArena from "./pages/Owner/AddArenas";
+import ManualBookingForm from "./pages/Owner/ManualBooking";
+import Wallet from "./pages/Wallet/Wallet";
+import ProtectedRoutes from "./Routes/ProtectedRoute";
 
-import AdminLayout from './components/AdminLayout/AdminLayout';
-import SettingsPage from './pages/SettingPage/SettingsPage';
-import OwnerLayout from './components/OwnerComponents/OwnerLayout/OwnerLayout';
+import AdminLayout from "./components/AdminLayout/AdminLayout";
+import OwnerLayout from "./components/OwnerComponents/OwnerLayout/OwnerLayout";
+import SettingsPage from "./pages/SettingPage/SettingsPage";
 // import ReservationStep from "./components/Steps/ReservationStep";
-import PendingRequests from './pages/SettingPage/PendingRequests';
-import UserAllReservation from './pages/UserAllReservation/UserAllReservation';
-import UserManagement from './pages/AdminPages/UserManagement';
-import ArenaMangmentCategories from './pages/AdminPages/ArenaMangmentCategories';
-import ReservationView from './pages/ReservationView/ReservationView';
-import UserProfile from './pages/UserProfile/UserProfile';
-import OwnerArenas from './pages/Owner/OwnerArenas';
+import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
+import UserManagement from "./pages/AdminPages/UserManagement";
+import OwnerArenas from "./pages/Owner/OwnerArenas";
+import OwnerDashboard from "./pages/Owner/OwnerDashboard";
+import ReservationView from "./pages/ReservationView/ReservationView";
+import PendingRequests from "./pages/SettingPage/PendingRequests";
+import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 function App() {
   const { i18n } = useTranslation();
@@ -149,15 +149,15 @@ function App() {
 
   const routes = createBrowserRouter([
     {
-      path: '',
+      path: "",
       element: <Layout />,
       children: [
-        { path: '/home', element: <Home /> },
-        { path: '/', element: <Home /> },
-        { path: '/login', element: <Login /> },
-        { path: '/register', element: <Register /> },
+        { path: "/home", element: <Home /> },
+        { path: "/", element: <Home /> },
+        { path: "/login", element: <Login /> },
+        { path: "/register", element: <Register /> },
         {
-          path: '/userProfile',
+          path: "/userProfile",
           element: (
             <ProtectedRoutes role="user">
               <UserProfile />
@@ -166,7 +166,7 @@ function App() {
         },
 
         {
-          path: '/reservation/:id',
+          path: "/reservation/:id",
           element: (
             <ProtectedRoutes role="user">
               <Reservation />
@@ -174,11 +174,11 @@ function App() {
           ),
         },
         {
-          path: '/reservations/:id',
+          path: "/reservations/:id",
           element: <ReservationView />,
         },
         {
-          path: '/extras/:id',
+          path: "/extras/:id",
           element: (
             <ProtectedRoutes role="user">
               <Extras />
@@ -186,14 +186,22 @@ function App() {
           ),
         },
         {
-          path: '/booking/:id',
+          path: "/booking/:id",
           element: <BookingArena />,
         },
         {
-          path: '/my-bookings',
+          path: "/my-bookings",
           element: (
             <ProtectedRoutes role="user">
               <UserAllReservation />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "wallet",
+          element: (
+            <ProtectedRoutes>
+              <Wallet />
             </ProtectedRoutes>
           ),
         },
@@ -202,37 +210,70 @@ function App() {
 
     // ✅ Owner routes
     {
-      path: '/owner',
+      path: "/owner",
       element: (
         <ProtectedRoutes role="owner">
           <OwnerLayout />
         </ProtectedRoutes>
       ),
       children: [
-        { path: 'add-arena', element: <AddArena /> },
-        { path: 'manual-booking', element: <ManualBookingForm /> },
-        { path: 'my-arenas', element: <OwnerArenas /> },
+        { path: "dashboard", element: <OwnerDashboard /> },
+        { path: "add-arena", element: <AddArena /> },
+        { path: "manual-booking", element: <ManualBookingForm /> },
+        { path: "my-arenas", element: <OwnerArenas /> },
+        {
+          path: "wallet",
+          element: (
+            <ProtectedRoutes>
+              <Wallet />
+            </ProtectedRoutes>
+          ),
+        },
       ],
     },
 
     // ✅ Admin routes
     {
-      path: '/admin',
+      path: "/admin",
       element: (
         <ProtectedRoutes role="admin">
           <AdminLayout />
         </ProtectedRoutes>
       ),
       children: [
-        { path: 'settings', element: <SettingsPage /> },
-        { path: 'pending-requests', element: <PendingRequests /> },
+        { path: "settings", element: <SettingsPage /> },
+        { path: "pending-requests", element: <PendingRequests /> },
         // { path: "all-reservations", element:  <UserAllReservation /> },
-        { path: 'admin-arena-requests', element: <AdminArenaRequests /> },
+        { path: "admin-arena-requests", element: <AdminArenaRequests /> },
+        {
+          path: "categoriesmanagment",
+          element: (
+            <ProtectedRoutes role="admin">
+              <ArenaMangmentCategories />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "usermanagment",
+          element: (
+            <ProtectedRoutes role="admin">
+              <UserManagement />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "wallet",
+          element: (
+            <ProtectedRoutes>
+              <Wallet />
+            </ProtectedRoutes>
+          ),
+        },
       ],
     },
 
     {
-      path: '/confirm/:id',
+      path: "/confirm/:id",
       element: (
         // <ProtectedRoutes role="user">
         <ConfirmReservation />
@@ -240,11 +281,11 @@ function App() {
       ),
     },
     {
-      path: '/user-arena',
+      path: "/user-arena",
       element: <UserArenas />,
     },
     {
-      path: '/arenacard',
+      path: "/arenacard",
       element: (
         // <ProtectedRoutes role="user">
         <ArenaCardPremium />
@@ -252,7 +293,7 @@ function App() {
       ),
     },
     {
-      path: '/wallet',
+      path: "/wallet",
 
       element: (
         <ProtectedRoutes>
@@ -262,7 +303,7 @@ function App() {
     },
 
     {
-      path: '/SettingsPage',
+      path: "/SettingsPage",
       element: (
         <ProtectedRoutes role="admin">
           <AdminLayout />
@@ -270,64 +311,64 @@ function App() {
       ),
     },
     {
-      path: '/all-reservations',
+      path: "/all-reservations",
       element: (
         <ProtectedRoutes role="user">
           <UserAllReservation />
         </ProtectedRoutes>
       ),
     },
-    {
-      path: '/categoriesmanagment',
-      element: (
-        <ProtectedRoutes role="admin">
-          <ArenaMangmentCategories />
-        </ProtectedRoutes>
-      ),
-    },
-    {
-      path: '/usermanagment',
-      element: (
-        <ProtectedRoutes role="admin">
-          <UserManagement />
-        </ProtectedRoutes>
-      ),
-    },
+    // {
+    //   path: "/categoriesmanagment",
+    //   element: (
+    //     <ProtectedRoutes role="admin">
+    //       <ArenaMangmentCategories />
+    //     </ProtectedRoutes>
+    //   ),
+    // },
+    // {
+    //   path: "/usermanagment",
+    //   element: (
+    //     <ProtectedRoutes role="admin">
+    //       <UserManagement />
+    //     </ProtectedRoutes>
+    //   ),
+    // },
 
     // ✅ Owner routes
     {
-      path: '/owner',
+      path: "/owner",
       element: (
         //  <ProtectedRoutes role="owner">
         <OwnerLayout />
         // </ProtectedRoutes>
       ),
       children: [
-        { path: 'add-arena', element: <AddArena /> },
-        { path: 'manual-booking', element: <ManualBookingForm /> },
+        { path: "add-arena", element: <AddArena /> },
+        { path: "manual-booking", element: <ManualBookingForm /> },
       ],
     },
 
     // ✅ Admin routes
     {
-      path: '/admin',
+      path: "/admin",
       element: (
         <ProtectedRoutes role="admin">
           <AdminLayout />
         </ProtectedRoutes>
       ),
       children: [
-        { path: 'settings', element: <SettingsPage /> },
-        { path: 'pending-requests', element: <PendingRequests /> },
+        { path: "settings", element: <SettingsPage /> },
+        { path: "pending-requests", element: <PendingRequests /> },
         // { path: "all-reservations", element:  <UserAllReservation /> },
-        { path: 'admin-arena-requests', element: <AdminArenaRequests /> },
-        { path: 'users-management', element: <UserManagement /> },
-        { path: 'categories-management', element: <ArenaMangmentCategories /> },
+        { path: "admin-arena-requests", element: <AdminArenaRequests /> },
+        { path: "users-management", element: <UserManagement /> },
+        { path: "categories-management", element: <ArenaMangmentCategories /> },
       ],
     },
 
     {
-      path: '/confirm',
+      path: "/confirm",
       element: (
         // <ProtectedRoutes role="user">
         <ConfirmReservation />
@@ -335,11 +376,11 @@ function App() {
       ),
     },
     {
-      path: '/user-arena',
+      path: "/user-arena",
       element: <UserArenas />,
     },
     {
-      path: '/arenacard',
+      path: "/arenacard",
       element: (
         // <ProtectedRoutes role="user">
         <ArenaCardPremium />
@@ -347,7 +388,7 @@ function App() {
       ),
     },
     {
-      path: '/wallet',
+      path: "/wallet",
 
       element: (
         <ProtectedRoutes role="user">
@@ -357,7 +398,7 @@ function App() {
     },
 
     {
-      path: '/SettingsPage',
+      path: "/SettingsPage",
       element: (
         <ProtectedRoutes role="admin">
           <AdminLayout />
@@ -365,7 +406,7 @@ function App() {
       ),
     },
     {
-      path: '/categoriesmanagment',
+      path: "/categoriesmanagment",
       element: (
         <ProtectedRoutes role="admin">
           <ArenaMangmentCategories />
@@ -390,7 +431,7 @@ function App() {
             position="bottom-left"
             toastOptions={{
               style: {
-                direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
               },
             }}
           />

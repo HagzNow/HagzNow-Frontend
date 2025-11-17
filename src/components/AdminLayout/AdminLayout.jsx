@@ -7,6 +7,7 @@ import {
   Calendar,
   FileCog,
   MessageSquareText,
+  WalletCards
 } from "lucide-react";
 
 import Sidebar from "../Sidebar";
@@ -23,12 +24,18 @@ export default function AdminLayout() {
       to: "/dashboard",
     },
     {
-      key: "categories",
+      key: "wallet",
+      label: "محفظة",
+      icon: <WalletCards />,
+      to: "/admin/wallet",
+    },
+    {
+      key: "categoriesmanagment",
       label: "إدارة الفئات",
       icon: <Box />,
-      to: "/categories",
+      to: "/admin/categoriesmanagment",
     },
-    { key: "users", label: "إدارة المستخدمين", icon: <Users />, to: "/users" },
+    { key: "users", label: "إدارة المستخدمين", icon: <Users />, to: "/admin/usermanagment" },
     {
       key: "reservations",
       label: "عرض جميع الحجوزات",
