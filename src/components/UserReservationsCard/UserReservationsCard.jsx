@@ -1,6 +1,7 @@
 import React from "react";
 import { CalendarDays, Clock } from "lucide-react"; // icons from lucide-react
 import { useNavigate } from "react-router-dom";
+import { ReservationStatusMap } from "../../constants/reservationStatus";
 
 export default function UserReservationsCard({ reservation }) {
   const {
@@ -9,9 +10,12 @@ export default function UserReservationsCard({ reservation }) {
     date = "2024-07-25",
     timeSlot = "18:00 - 19:00",
     price = 150,
-    status = "قادمة",
-    id, // قادمة, ملغاة, منتهية
+    status = "confirmed",
+    id,
   } = reservation || {};
+
+  // Get status details from the map
+  const statusInfo = ReservationStatusMap[status] || ReservationStatusMap.confirmed;
 
   const navigate = useNavigate();
   const handleViewMore = () => {
@@ -27,8 +31,11 @@ export default function UserReservationsCard({ reservation }) {
           alt={arenaName}
           className="w-full h-48 object-cover"
         />
-        <span className="absolute top-3 right-3 bg-white text-gray-800 text-sm px-3 py-1 rounded-full font-medium">
-          {status}
+        <span
+          className="absolute top-3 right-3 text-white text-sm px-3 py-1 rounded-full font-medium"
+          style={{ backgroundColor: statusInfo.color }}
+        >
+          {statusInfo.label}
         </span>
       </div>
 
@@ -54,7 +61,7 @@ export default function UserReservationsCard({ reservation }) {
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
           <button
             onClick={handleViewMore}
-            
+
             className="text-blue-600 text-sm font-medium hover:underline flex items-center gap-1"
           >
             عرض التفاصيل
