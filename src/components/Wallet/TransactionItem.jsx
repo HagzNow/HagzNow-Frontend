@@ -17,40 +17,40 @@ import {
 export default function TransactionItem({ transaction }) {
   const { t } = useTranslation();
 
-  // Status configuration with icons and colors
+  // Status configuration with icons and custom colors
   const statusConfig = {
     instant: {
-      bgColor: 'bg-blue-500',
+      bgColor: 'bg-[#3B82F6]', // Blue
       textColor: 'text-white',
       icon: Zap,
       label: t(`transaction_status.instant`),
     },
     hold: {
-      bgColor: 'bg-amber-500',
+      bgColor: 'bg-[#FBBF24]', // Amber
       textColor: 'text-white',
       icon: Lock,
       label: t(`transaction_status.hold`),
     },
     refund: {
-      bgColor: 'bg-emerald-500',
+      bgColor: 'bg-[#10B981]', // Emerald
       textColor: 'text-white',
       icon: RotateCcw,
       label: t(`transaction_status.refund`),
     },
     settled: {
-      bgColor: 'bg-green-600',
+      bgColor: 'bg-[#059669]', // Green
       textColor: 'text-white',
       icon: CheckCircle,
       label: t(`transaction_status.settled`),
     },
     pending: {
-      bgColor: 'bg-gray-500',
+      bgColor: 'bg-[#6B7280]', // Gray
       textColor: 'text-white',
       icon: Clock,
       label: t(`transaction_status.pending`),
     },
     failed: {
-      bgColor: 'bg-red-500',
+      bgColor: 'bg-[#EF4444]', // Red
       textColor: 'text-white',
       icon: AlertCircle,
       label: t(`transaction_status.failed`),

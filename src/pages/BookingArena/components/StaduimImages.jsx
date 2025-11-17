@@ -1,495 +1,268 @@
-// // import React from "react";
-
-// // const StadiumImage = ({ images = [], name }) => {
-// //   if (!images.length) return <p className="text-center">لا توجد صور متاحة</p>;
-
-// //   return (
-// //     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-// //       {images.map((img) => (
-// //         <img
-// //           key={img.id}
-// //           src={img.path}
-// //           alt={name}
-// //           className="w-full h-64 object-cover rounded-lg shadow"
-// //         />
-// //       ))}
-// //     </div>
-// //   );
-// // };
-
-// // export default StadiumImage;
-
-
-// // import React from "react";
-// // import { Swiper, SwiperSlide } from "swiper/react";
-// // import { Navigation, Pagination } from "swiper/modules";
-// // import "swiper/css";
-// // import "swiper/css/navigation";
-// // import "swiper/css/pagination";
-
-// // const StadiumImage = ({ images = [], name }) => {
-// //   if (!images.length) return <p className="text-center">لا توجد صور متاحة</p>;
-
-// //   return (
-// //     <div className="relative mb-6">
-// //       <Swiper
-// //         modules={[Navigation, Pagination]}
-// //         spaceBetween={10}
-// //         slidesPerView={1}
-// //         navigation={{
-// //           nextEl: ".swiper-button-next-custom",
-// //           prevEl: ".swiper-button-prev-custom",
-// //         }}
-// //         pagination={{ clickable: true }}
-// //         className="rounded-lg shadow-lg"
-// //       >
-// //         {images.map((img) => (
-// //           <SwiperSlide key={img.id}>
-// //             <img
-// //               src={img.path}
-// //               alt={name}
-// //               className="w-full h-80 object-cover rounded-lg"
-// //             />
-// //           </SwiperSlide>
-// //         ))}
-// //       </Swiper>
-
-// //       {/* أزرار التنقل */}
-// //       <button
-// //         className="swiper-button-prev-custom absolute top-1/2 left-2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-700 p-2 rounded-full shadow-md transition"
-// //         aria-label="السابق"
-// //       >
-// //         ‹
-// //       </button>
-// //       <button
-// //         className="swiper-button-next-custom absolute top-1/2 right-2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-700 p-2 rounded-full shadow-md transition"
-// //         aria-label="التالي"
-// //       >
-// //         ›
-// //       </button>
-// //     </div>
-// //   );
-// // };
-
-// // export default StadiumImage;
-
-
-// // import React from "react";
-// // import { Swiper, SwiperSlide } from "swiper/react";
-// // import { Navigation } from "swiper/modules";
-// // import "swiper/css";
-// // import "swiper/css/navigation";
-
-// // // ملاحظة: لا تحتاج لِـ h-100 (مش كلاس في Tailwind)
-// // // استخدم ارتفاعات مناسبة ومتجاوبة + overflow-hidden لقص الحواف مع التقويس
-
-// // const StadiumImage = ({ images = [], name }) => {
-// //   if (!images.length) return <p className="text-center">لا توجد صور متاحة</p>;
-
-// //   return (
-// //     <div className="relative mb-6">
-// //       <div className="rounded-3xl overflow-hidden shadow-lg">
-// //         <Swiper
-// //           modules={[Navigation]}
-// //           spaceBetween={0}
-// //           slidesPerView={1}
-// //           loop
-// //           speed={500}
-// //           navigation={{
-// //             nextEl: ".swiper-button-next-custom",
-// //             prevEl: ".swiper-button-prev-custom",
-// //           }}
-// //           className="w-full"
-// //         >
-// //           {images.map((img) => (
-// //             <SwiperSlide key={img.id}>
-// //               <img
-// //                 src={img.path}
-// //                 alt={name}
-// //                 className="
-// //                   w-full
-// //                   h-64 sm:h-72 md:h-[420px]
-// //                   object-cover
-// //                 "
-// //                 loading="lazy"
-// //               />
-// //             </SwiperSlide>
-// //           ))}
-// //         </Swiper>
-// //       </div>
-
-// //       {/* أزرار الأسهم بنفس شكل الصورة */}
-// //       <button
-// //         className="
-// //           swiper-button-prev-custom
-// //           absolute top-1/2 left-4 -translate-y-1/2
-// //           bg-white/90 hover:bg-white
-// //           w-9 h-9 flex items-center justify-center
-// //           rounded-full shadow-md
-// //           ring-1 ring-black/5
-// //           transition
-// //         "
-// //         aria-label="السابق"
-// //       >
-// //         {/* سهم يسار */}
-// //         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-// //              className="w-5 h-5">
-// //           <path d="M15 6l-6 6 6 6" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-// //         </svg>
-// //       </button>
-
-// //       <button
-// //         className="
-// //           swiper-button-next-custom
-// //           absolute top-1/2 right-4 -translate-y-1/2
-// //           bg-white/90 hover:bg-white
-// //           w-9 h-9 flex items-center justify-center
-// //           rounded-full shadow-md
-// //           ring-1 ring-black/5
-// //           transition
-// //         "
-// //         aria-label="التالي"
-// //       >
-// //         {/* سهم يمين */}
-// //         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-// //              className="w-5 h-5">
-// //           <path d="M9 6l6 6-6 6" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-// //         </svg>
-// //       </button>
-// //     </div>
-// //   );
-// // };
-
-// // export default StadiumImage;
-
-
-// // import React from "react";
-// // import { Swiper, SwiperSlide } from "swiper/react";
-// // import { Navigation, Pagination } from "swiper/modules";
-// // import { ChevronLeft, ChevronRight } from "lucide-react";
-// // import "swiper/css";
-// // import "swiper/css/navigation";
-// // import "swiper/css/pagination";
-
-// // const StadiumImage = ({ images = [], name }) => {
-// //   if (!images.length) return <p className="text-center">لا توجد صور متاحة</p>;
-
-// //   return (
-// //     <div className="relative mb-6">
-// //       <div className="rounded-3xl overflow-hidden shadow-lg">
-// //         <Swiper
-// //           modules={[Navigation, Pagination]}
-// //           spaceBetween={0}
-// //           slidesPerView={1}
-// //           loop
-// //           speed={600}
-// //           navigation={{
-// //             nextEl: ".swiper-button-next-custom",
-// //             prevEl: ".swiper-button-prev-custom",
-// //           }}
-// //           pagination={{
-// //             clickable: true,
-// //             bulletClass: "swiper-pagination-bullet !bg-gray-300",
-// //             bulletActiveClass: "!bg-green-500",
-// //           }}
-// //           className="w-full"
-// //         >
-// //           {images.map((img) => (
-// //             <SwiperSlide key={img.id}>
-// //               <img
-// //                 src={img.path}
-// //                 alt={name}
-// //                 className="w-full h-64 sm:h-72 md:h-[420px] object-cover"
-// //                 loading="lazy"
-// //               />
-// //             </SwiperSlide>
-// //           ))}
-// //         </Swiper>
-// //       </div>
-
-// //       {/* زر اليسار */}
-// //       <button
-// //         className="
-// //           swiper-button-prev-custom
-// //           absolute top-1/2 left-4 -translate-y-1/2
-// //           bg-white/90 hover:bg-white
-// //           w-9 h-9 flex items-center justify-center
-// //           rounded-full shadow-md
-// //           ring-1 ring-black/5
-// //           transition
-// //         "
-// //         aria-label="السابق"
-// //       >
-// //         <ChevronLeft className="w-5 h-5 text-gray-700" />
-// //       </button>
-
-// //       {/* زر اليمين */}
-// //       <button
-// //         className="
-// //           swiper-button-next-custom
-// //           absolute top-1/2 right-4 -translate-y-1/2
-// //           bg-white/90 hover:bg-white
-// //           w-9 h-9 flex items-center justify-center
-// //           rounded-full shadow-md
-// //           ring-1 ring-black/5
-// //           transition
-// //         "
-// //         aria-label="التالي"
-// //       >
-// //         <ChevronRight className="w-5 h-5 text-gray-700" />
-// //       </button>
-// //     </div>
-// //   );
-// // };
-
-// // export default StadiumImage;
-
-
-// // import React from "react";
-// // import { Swiper, SwiperSlide } from "swiper/react";
-// // import { Navigation, Pagination } from "swiper/modules";
-// // import { ChevronLeft, ChevronRight } from "lucide-react";
-// // import "swiper/css";
-// // import "swiper/css/navigation";
-// // import "swiper/css/pagination";
-
-// // const StadiumImage = ({ images = [], name }) => {
-// //   if (!images.length) return <p className="text-center">لا توجد صور متاحة</p>;
-
-// //   return (
-// //     <div className="relative mb-6">
-// //       <div className="rounded-3xl overflow-hidden shadow-lg relative">
-// //         <Swiper
-// //           modules={[Navigation, Pagination]}
-// //           spaceBetween={0}
-// //           slidesPerView={1}
-// //           loop
-// //           speed={600}
-// //           onInit={(swiper) => {
-// //             swiper.params.navigation.prevEl = ".swiper-button-prev-custom";
-// //             swiper.params.navigation.nextEl = ".swiper-button-next-custom";
-// //             swiper.navigation.init();
-// //             swiper.navigation.update();
-// //           }}
-// //           pagination={{
-// //             clickable: true,
-// //             bulletClass:
-// //               "swiper-pagination-bullet !bg-gray-400 opacity-80 transition",
-// //             bulletActiveClass: "!bg-green-700 !opacity-100",
-// //           }}
-// //           className="w-full"
-// //         >
-// //           {images.map((img) => (
-// //             <SwiperSlide key={img.id}>
-// //               <img
-// //                 src={img.path}
-// //                 alt={name}
-// //                 className="w-full h-64 sm:h-72 md:h-[420px] object-cover"
-// //                 loading="lazy"
-// //               />
-// //             </SwiperSlide>
-// //           ))}
-// //         </Swiper>
-
-// //         {/* الأزرار */}
-// //         <button
-// //           className="
-// //             swiper-button-prev-custom
-// //             absolute top-1/2 left-4 -translate-y-1/2 z-10
-// //             bg-white/90 hover:bg-white
-// //             w-9 h-9 flex items-center justify-center
-// //             rounded-full shadow-md
-// //             ring-1 ring-black/5
-// //             transition
-// //           "
-// //           aria-label="السابق"
-// //         >
-// //           <ChevronLeft className="w-5 h-5 text-gray-700" />
-// //         </button>
-
-// //         <button
-// //           className="
-// //             swiper-button-next-custom
-// //             absolute top-1/2 right-4 -translate-y-1/2 z-10
-// //             bg-white/90 hover:bg-white
-// //             w-9 h-9 flex items-center justify-center
-// //             rounded-full shadow-md
-// //             ring-1 ring-black/5
-// //             transition
-// //           "
-// //           aria-label="التالي"
-// //         >
-// //           <ChevronRight className="w-5 h-5 text-gray-700" />
-// //         </button>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default StadiumImage;
-
-
-// import React from "react";
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import { Navigation, Pagination } from "swiper/modules";
-// import { ChevronLeft, ChevronRight } from "lucide-react";
-// import "swiper/css";
-// import "swiper/css/navigation";
-// import "swiper/css/pagination";
-
-// const StadiumImage = ({ images = [], name }) => {
-//   if (!images.length) return <p className="text-center">لا توجد صور متاحة</p>;
-
-//   return (
-//     <div className="relative mb-6">
-//       <div className="rounded-3xl overflow-hidden shadow-lg relative">
-//         <Swiper
-//           modules={[Navigation, Pagination]}
-//           spaceBetween={0}
-//           slidesPerView={1}
-//           loop
-//           speed={600}
-//           onInit={(swiper) => {
-//             swiper.params.navigation.prevEl = ".swiper-button-prev-custom";
-//             swiper.params.navigation.nextEl = ".swiper-button-next-custom";
-//             swiper.navigation.init();
-//             swiper.navigation.update();
-//           }}
-//           pagination={{
-//             clickable: true,
-//             renderBullet: (index, className) => {
-//               return `<span class="${className} !bg-gray-400 opacity-80 transition"></span>`;
-//             },
-//           }}
-//           className="w-full custom-pagination"
-//         >
-//           {images.map((img) => (
-//             <SwiperSlide key={img.id}>
-//               <img
-//                 src={img.path}
-//                 alt={name}
-//                 className="w-full h-64 sm:h-72 md:h-[420px] object-cover"
-//                 loading="lazy"
-//               />
-//             </SwiperSlide>
-//           ))}
-//         </Swiper>
-
-//         {/* الأزرار */}
-//         <button
-//           className="swiper-button-prev-custom
-//             absolute top-1/2 left-4 -translate-y-1/2 z-10
-//             bg-white/90 hover:bg-white
-//             w-9 h-9 flex items-center justify-center
-//             rounded-full shadow-md ring-1 ring-black/5 transition"
-//           aria-label="السابق"
-//         >
-//           <ChevronLeft className="w-5 h-5 text-gray-700" />
-//         </button>
-
-//         <button
-//           className="swiper-button-next-custom
-//             absolute top-1/2 right-4 -translate-y-1/2 z-10
-//             bg-white/90 hover:bg-white
-//             w-9 h-9 flex items-center justify-center
-//             rounded-full shadow-md ring-1 ring-black/5 transition"
-//           aria-label="التالي"
-//         >
-//           <ChevronRight className="w-5 h-5 text-gray-700" />
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default StadiumImage;
-
-
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import React, { useState, useRef } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { ChevronLeft, ChevronRight, Expand, X, Image as ImageIcon } from 'lucide-react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 
 const StadiumImage = ({ images = [], name }) => {
-  if (!images.length) return <p className="text-center">لا توجد صور متاحة</p>;
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const swiperRef = useRef(null);
+
+  if (!images.length)
+    return (
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out border border-gray-100 overflow-hidden p-12 text-center">
+        <div className="w-20 h-20 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
+          <ImageIcon className="w-8 h-8 text-gray-400" />
+        </div>
+        <h3 className="text-gray-600 text-lg font-medium mb-2">لا توجد صور متاحة</h3>
+        <p className="text-gray-500 text-sm">سيتم إضافة صور للملعب قريباً</p>
+      </div>
+    );
+
+  const openFullscreen = (index = 0) => {
+    setCurrentImageIndex(index);
+    setIsFullscreen(true);
+  };
+
+  const closeFullscreen = () => {
+    setIsFullscreen(false);
+  };
+
+  const handleThumbnailClick = (index) => {
+    if (swiperRef.current) {
+      swiperRef.current.swiper.slideTo(index);
+    }
+  };
 
   return (
     <>
       <style>{`
-        .custom-pagination .swiper-pagination-bullet {
-          width: 10px !important;
-          height: 10px !important;
-          background: gray !important;
-          opacity: 0.5 !important;
+        .stadium-swiper .swiper-pagination-bullet {
+          width: 12px !important;
+          height: 12px !important;
+          background: rgba(255, 255, 255, 0.6) !important;
+          opacity: 0.8 !important;
+          transition: all 0.3s ease !important;
+          border: 2px solid transparent !important;
         }
 
-        .custom-pagination .swiper-pagination-bullet-active {
-          background: black !important;
+        .stadium-swiper .swiper-pagination-bullet-active {
+          background: #10B981 !important;
           opacity: 1 !important;
+          transform: scale(1.2) !important;
+          border-color: white !important;
+        }
+
+        .stadium-swiper .swiper-pagination {
+          bottom: 20px !important;
+        }
+
+        .image-overlay {
+          background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 50%);
+        }
+
+        .fullscreen-swiper .swiper-button-next,
+        .fullscreen-swiper .swiper-button-prev {
+          color: white !important;
+          background: rgba(0,0,0,0.5);
+          width: 60px !important;
+          height: 60px !important;
+          border-radius: 50%;
+          backdrop-filter: blur(10px);
+        }
+
+        .fullscreen-swiper .swiper-button-next:after,
+        .fullscreen-swiper .swiper-button-prev:after {
+          font-size: 24px !important;
         }
       `}</style>
 
-      <div className="relative mb-6">
-        <div className="rounded-3xl overflow-hidden shadow-lg relative">
+      {/* Main Image Gallery */}
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out border border-gray-100 overflow-hidden group">
+        <div className="relative rounded-2xl overflow-hidden">
           <Swiper
-            modules={[Navigation, Pagination]}
+            ref={swiperRef}
+            modules={[Navigation, Pagination, Autoplay]}
             spaceBetween={0}
             slidesPerView={1}
-            loop
-            speed={600}
-            onInit={(swiper) => {
-              swiper.params.navigation.prevEl = ".swiper-button-prev-custom";
-              swiper.params.navigation.nextEl = ".swiper-button-next-custom";
-              swiper.navigation.init();
-              swiper.navigation.update();
+            loop={images.length > 1}
+            speed={800}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            navigation={{
+              nextEl: '.stadium-swiper-next',
+              prevEl: '.stadium-swiper-prev',
             }}
             pagination={{
               clickable: true,
               renderBullet: (index, className) => {
-                return `<span class="${className} !bg-gray-400 opacity-80 transition"></span>`;
+                return `<span class="${className}"></span>`;
               },
             }}
-            className="w-full custom-pagination"
+            onSlideChange={(swiper) => {
+              setCurrentImageIndex(swiper.realIndex);
+            }}
+            className="w-full stadium-swiper"
           >
-            {images.map((img) => (
+            {images.map((img, index) => (
               <SwiperSlide key={img.id}>
-                <img
-                  src={img.path}
-                  alt={name}
-                  className="w-full h-64 sm:h-72 md:h-[420px] object-cover"
-                  loading="lazy"
-                />
+                <div className="relative cursor-pointer" onClick={() => openFullscreen(index)}>
+                  <img
+                    src={img.path}
+                    alt={`${name} - صورة ${index + 1}`}
+                    className="w-full h-64 sm:h-72 md:h-80 lg:h-96 object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                  {/* Image Counter */}
+                  <div className="absolute top-4 left-4 bg-black/60 text-white px-3 py-1.5 rounded-2xl text-sm font-medium backdrop-blur-sm transition-opacity duration-500">
+                    {index + 1} / {images.length}
+                  </div>
+
+                  {/* Expand Icon */}
+                  <div className="absolute top-4 right-4 bg-black/60 text-white p-2 rounded-2xl backdrop-blur-sm transition-all duration-500 hover:bg-black/80 hover:scale-110 cursor-pointer">
+                    <Expand className="w-4 h-4" />
+                  </div>
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
 
-          {/* أزرار التنقل */}
+          {/* Navigation Buttons - Always Visible */}
+          {images.length > 1 && (
+            <>
+              <button
+                className="stadium-swiper-prev
+                  absolute top-1/2 left-4 -translate-y-1/2 z-10
+                  bg-white/90 hover:bg-white
+                  w-12 h-12 flex items-center justify-center
+                  rounded-2xl shadow-lg
+                  ring-1 ring-black/5
+                  transition-all duration-300 ease-in-out
+                  hover:scale-110 hover:shadow-xl
+                  cursor-pointer"
+                aria-label="الصورة السابقة"
+              >
+                <ChevronLeft className="w-6 h-6 text-gray-700" />
+              </button>
+
+              <button
+                className="stadium-swiper-next
+                  absolute top-1/2 right-4 -translate-y-1/2 z-10
+                  bg-white/90 hover:bg-white
+                  w-12 h-12 flex items-center justify-center
+                  rounded-2xl shadow-lg
+                  ring-1 ring-black/5
+                  transition-all duration-300 ease-in-out
+                  hover:scale-110 hover:shadow-xl
+                  cursor-pointer"
+                aria-label="الصورة التالية"
+              >
+                <ChevronRight className="w-6 h-6 text-gray-700" />
+              </button>
+            </>
+          )}
+
+          {/* Stadium Name Overlay */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent text-white p-6 pt-12 transform transition-all duration-500 ease-in-out">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-lg truncate">{name}</h3>
+              <div className="flex items-center gap-1 bg-white/20 px-2 py-1 rounded-lg text-xs">
+                <ImageIcon className="w-3 h-3" />
+                <span>{images.length} صورة</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Thumbnail Strip */}
+        {images.length > 1 && (
+          <div className="p-4 bg-gray-50 border-t border-gray-100">
+            <div className="flex gap-2 justify-center overflow-x-auto pb-2">
+              {images.map((img, index) => (
+                <div
+                  key={img.id}
+                  className={`flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
+                    currentImageIndex === index
+                      ? 'border-green-500 opacity-100 scale-105'
+                      : 'border-transparent opacity-70 hover:border-green-300 hover:opacity-100'
+                  }`}
+                  onClick={() => handleThumbnailClick(index)}
+                >
+                  <img src={img.path} alt={`${name} - مصغرة ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Fullscreen Modal */}
+      {isFullscreen && (
+        <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+          {/* Close Button */}
           <button
-            className="swiper-button-prev-custom
-              absolute top-1/2 left-4 -translate-y-1/2 z-10
-              bg-white/90 hover:bg-white
-              w-9 h-9 flex items-center justify-center
-              rounded-full shadow-md ring-1 ring-black/5 transition cursor-pointer"
-            aria-label="السابق"
+            onClick={closeFullscreen}
+            className="absolute top-6 right-6 z-50 bg-black/50 text-white p-3 rounded-2xl hover:bg-black/70 transition-all duration-300 hover:scale-110 backdrop-blur-sm"
           >
-            <ChevronLeft className="w-5 h-5 text-gray-700" />
+            <X className="w-6 h-6" />
           </button>
 
-          <button
-            className="swiper-button-next-custom
-              absolute top-1/2 right-4 -translate-y-1/2 z-10
-              bg-white/90 hover:bg-white
-              w-9 h-9 flex items-center justify-center
-              rounded-full shadow-md ring-1 ring-black/5 transition cursor-pointer"
-            aria-label="التالي"
-          >
-            <ChevronRight className="w-5 h-5 text-gray-700" />
-          </button>
+          {/* Image Counter */}
+          <div className="absolute top-6 left-6 z-50 bg-black/50 text-white px-4 py-2 rounded-2xl backdrop-blur-sm">
+            {currentImageIndex + 1} / {images.length}
+          </div>
+
+          {/* Fullscreen Swiper */}
+          <div className="w-full h-full">
+            <Swiper
+              modules={[Navigation, Pagination]}
+              spaceBetween={0}
+              slidesPerView={1}
+              initialSlide={currentImageIndex}
+              speed={500}
+              navigation={true}
+              pagination={{
+                clickable: true,
+                renderBullet: (index, className) => {
+                  return `<span class="${className} !bg-white/60"></span>`;
+                },
+              }}
+              onSlideChange={(swiper) => {
+                setCurrentImageIndex(swiper.activeIndex);
+              }}
+              className="w-full h-full fullscreen-swiper"
+            >
+              {images.map((img, index) => (
+                <SwiperSlide key={img.id}>
+                  <div className="w-full h-full flex items-center justify-center">
+                    <img
+                      src={img.path}
+                      alt={`${name} - صورة ${index + 1}`}
+                      className="max-w-full max-h-full object-contain"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
+          {/* Image Name */}
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-50 bg-black/50 text-white px-6 py-3 rounded-2xl backdrop-blur-sm text-center">
+            <h3 className="font-bold text-lg">{name}</h3>
+            <p className="text-white/80 text-sm">
+              الصورة {currentImageIndex + 1} من {images.length}
+            </p>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
