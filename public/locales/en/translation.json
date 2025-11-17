@@ -56,13 +56,13 @@
     "previous": "Previous",
     "next": "Next",
     "available_times": "Available Times",
-  "select_preferred_time": "Select your preferred field time"
+    "select_preferred_time": "Select your preferred field time"
   },
-  "errors" :{
-  "EMAIL_IN_USE": "Email already exists",
-  "INVALID_CREDENTIALS": "Invalid email or password"
-},
-"addArenaTitle": "Add New Arena",
+  "errors": {
+    "EMAIL_IN_USE": "Email already exists",
+    "INVALID_CREDENTIALS": "Invalid email or password"
+  },
+  "addArenaTitle": "Add New Arena",
   "basicInfo": "Arena Basic Information",
   "arenaName": "Arena Name",
   "enterArenaName": "Enter arena name",
@@ -135,18 +135,21 @@
   "unpaid": "Unpaid",
   "saveBooking": "Save Booking",
 
-   "transaction_status": {
+  "transaction_status": {
     "hold": "Hold",
     "released": "Canceled",
     "failed": "Failed",
     "settled": "Completed",
-    "pending": "Pending"
+    "pending": "Pending",
+    "refund": "Refund",
+    "instant": "instant"
   },
-   "transaction_type": {
+  "transaction_type": {
     "deposit": "Deposit",
     "withdrawal": "Withdrawal",
     "payment": "Payment",
-    "refund": "Refund"
+    "refund": "Refund",
+    "fee": "Fee"
   },
   "wallet": {
     "current_balance": "Your current balance",
@@ -156,8 +159,8 @@
     "amount": "Amount",
     "type": "Type",
     "date": "Date"
-  },"UserProfile":{
+  },
+  "UserProfile": {
     "password_invalid": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل، وحرف صغير واحد، ورقم واحد. يجب أن تكون كلمة المرور بين 8 و20 حرفًا."
   }
-  
 }

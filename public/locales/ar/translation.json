@@ -14,12 +14,11 @@
   "first_name": "الاسم ",
   "first_name_placeholder": "أدخل اسمك الأول",
   "first_name_required": "الاسم مطلوب",
-  "Fullname":"الأسم",
+  "Fullname": "الأسم",
   "last_name": "الاسم الأخير",
   "last_name_placeholder": "أدخل اسمك الأخير",
   "last_name_required": "الاسم الأخير مطلوب",
 
- 
   "email": "البريد الإلكتروني",
   "email_placeholder": "أدخل بريدك الإلكتروني",
   "email_required": "البريد الإلكتروني مطلوب",
@@ -56,15 +55,15 @@
     "step3": "تأكيد الحجز",
     "previous": "السابق",
     "next": "التالي",
-     "available_times": "أوقات متاحة",
-  "select_preferred_time": "حدد الوقت المفضل لحجز الملعب"
+    "available_times": "أوقات متاحة",
+    "select_preferred_time": "حدد الوقت المفضل لحجز الملعب"
   },
-  "errors" :{
-  "EMAIL_IN_USE": "البريد الإلكتروني موجود بالفعل",
-  "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
-  "USER_NOT_FOUND":"المستخدم غير موجود"
-},
- "addArenaTitle": "ضيف ملعب جديد",
+  "errors": {
+    "EMAIL_IN_USE": "البريد الإلكتروني موجود بالفعل",
+    "INVALID_CREDENTIALS": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "USER_NOT_FOUND": "المستخدم غير موجود"
+  },
+  "addArenaTitle": "ضيف ملعب جديد",
   "basicInfo": "معلومات أساسية عن الملعب",
   "arenaName": "اسم الملعب",
   "enterArenaName": "اكتب اسم الملعب هنا",
@@ -101,34 +100,34 @@
   "descriptionNotes": "وصف الملعب والملاحظات",
   "arenaDescription": "وصف الملعب",
   "enterDescription": "اكتب وصف مناسب للملعب",
-  "enterGovernorate":"اكتب المحافظة",
-  "enterCity":"اكتب المدينة",
+  "enterGovernorate": "اكتب المحافظة",
+  "enterCity": "اكتب المدينة",
   "cancellationPolicy": "سياسة الإلغاء",
   "enterPolicy": "اكتب سياسة الإلغاء لو فيه",
-  "Main Image":"الصورة الرئيسية",
-  "Gallery Images":"الصور الإضافية",
-  "Choose File":"أرفع الصورة",
-  "Choose Files":"أرفع الصور",
-  "No file chosen":"لم يتم رفع الصورة",
-  "No files chosen":"لم يتم رفع الصور",
-  "noExtrasAdded":"لا توجد إضافات حتى الآن",
+  "Main Image": "الصورة الرئيسية",
+  "Gallery Images": "الصور الإضافية",
+  "Choose File": "أرفع الصورة",
+  "Choose Files": "أرفع الصور",
+  "No file chosen": "لم يتم رفع الصورة",
+  "No files chosen": "لم يتم رفع الصور",
+  "noExtrasAdded": "لا توجد إضافات حتى الآن",
   "addExtra": "أضف ميزة جديدة",
-  "serviceName":"اسم الخدمة",
-  "enterServiceName":"أضف أسم الخدمة",
- 
+  "serviceName": "اسم الخدمة",
+  "enterServiceName": "أضف أسم الخدمة",
+
   "status": "الحالة",
 
-  "policy":"السياسة",
-  "governorate":"المحافظة",
-  "city":"المدينة",
-  
+  "policy": "السياسة",
+  "governorate": "المحافظة",
+  "city": "المدينة",
+
   "inactive": "مش شغال",
   "notes": "ملاحظات",
   "enterNotes": "اكتب لو فيه أي ملاحظات إضافية",
   "saveArena": "احفظ الملعب",
   "successMessage": "تم حفظ بيانات الملعب بنجاح ✅",
-  "successMessageProfile":"تم تعديل البيانات بنجاح",
-  "successMessagePassword":"تم تحديث كلمة المرور بنجاح",
+  "successMessageProfile": "تم تعديل البيانات بنجاح",
+  "successMessagePassword": "تم تحديث كلمة المرور بنجاح",
 
   "manualBookingTitle": "إنشاء حجز يدوي",
   "bookingDetails": "تفاصيل الحجز",
@@ -162,15 +161,17 @@
     "failed": "فشل",
     "settled": "مكتمل",
     "pending": "قيد المعالجة",
-    "refund" : "استرجاع"
+    "refund": "استرجاع",
+    "instant": "فوري"
   },
   "transaction_type": {
     "deposit": "إيداع",
     "withdrawal": "سحب",
     "payment": "دفع",
-    "refund": "استرجاع"
+    "refund": "استرجاع",
+    "fee": "رسوم"
   },
-   "wallet": {
+  "wallet": {
     "current_balance": "رصيدك الحالي",
     "add_balance": "إضافة رصيد",
     "transaction_history": "سجل المعاملات",
@@ -179,20 +180,19 @@
     "type": "النوع",
     "date": "التاريخ"
   },
-    "UserProfile":{
+  "UserProfile": {
     "password_invalid": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل، وحرف صغير واحد، ورقم واحد. يجب أن تكون كلمة المرور بين 8 و20 حرفًا.",
     "password_incomplete": " يجب إدخال كل حقول كلمة المرور لتحديثها",
     "old_password_incorrect": "كلمة المرور القديمة غير صحيحة",
-    "no_changes":"لا يوجد تغيرات",
-    "INVALID_TOKEN":"جلسة المستخدم غير صالحة"
+    "no_changes": "لا يوجد تغيرات",
+    "INVALID_TOKEN": "جلسة المستخدم غير صالحة"
   },
   "buttons": {
-  "changePassword": " تغير كلمة السر",
-  "saving": "جارٍ الحفظ..."
-},
-"labels": {
-  "security": "الأمان",
-  "updatePassword": "تحديث كلمة المرور الخاصة بك"
+    "changePassword": " تغير كلمة السر",
+    "saving": "جارٍ الحفظ..."
+  },
+  "labels": {
+    "security": "الأمان",
+    "updatePassword": "تحديث كلمة المرور الخاصة بك"
+  }
 }
-}
-
