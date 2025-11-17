@@ -1,5 +1,5 @@
 import React from "react";
-import { CalendarDays, Clock } from "lucide-react"; // icons from lucide-react
+import { CalendarDays, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ReservationStatusMap } from "../../constants/reservationStatus";
 
@@ -23,55 +23,66 @@ export default function UserReservationsCard({ reservation }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
-      {/* Image section */}
-      <div className="relative">
+    <div
+      dir="rtl"
+      className="w-full max-w-sm bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-all duration-500 ease-in-out group border border-gray-100"
+      onClick={handleViewMore}
+    >
+      {/* Image Container */}
+      <div className="relative overflow-hidden h-48 sm:h-52 md:h-56 lg:h-48">
         <img
           src={arenaImage}
           alt={arenaName}
-          className="w-full h-48 object-cover"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+        {/* Status Badge */}
         <span
-          className="absolute top-3 right-3 text-white text-sm px-3 py-1 rounded-full font-medium"
+          className="absolute top-3 right-3 text-white text-sm px-3 py-1.5 rounded-full font-medium shadow-lg group-hover:scale-105 transition-transform duration-300"
           style={{ backgroundColor: statusInfo.color }}
         >
           {statusInfo.label}
         </span>
       </div>
 
-      {/* Content section */}
-      <div className="p-4 text-right">
-        <h3 className="font-semibold text-gray-800 text-lg mb-3 truncate">
+      {/* Content Container with Gradient Background on Hover */}
+      <div className="relative p-5 sm:p-6 bg-white group-hover:bg-gradient-to-br group-hover:from-green-600 group-hover:via-emerald-600 group-hover:to-teal-600 transition-all duration-500 ease-in-out">
+        {/* Title */}
+        <h3 className="text-lg sm:text-xl font-bold text-gray-900 truncate group-hover:text-white transition-colors duration-300 mb-3">
           {arenaName}
         </h3>
 
         {/* Date and Time */}
-        <div className="flex flex-col items-start justify-end text-gray-600 text-sm mb-4 gap-4">
-          <div className="flex items-center gap-1.5">
-            <CalendarDays size={16} className="text-gray-500" />
-            <span>{date}</span>
+        <div className="space-y-3 mb-4">
+          <div className="flex items-center text-gray-600 text-sm group-hover:text-white/95 transition-colors duration-300">
+            <CalendarDays size={16} className="ml-2 flex-shrink-0 text-base group-hover:text-white/90" />
+            <span className="truncate font-medium">{date}</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Clock size={16} className="text-gray-500" />
-            <span>{timeSlot}</span>
+          <div className="flex items-center text-gray-600 text-sm group-hover:text-white/95 transition-colors duration-300">
+            <Clock size={16} className="ml-2 flex-shrink-0 text-base group-hover:text-white/90" />
+            <span className="truncate font-medium">{timeSlot}</span>
           </div>
         </div>
 
+        {/* Divider */}
+        <div className="h-px bg-gray-200 my-4 group-hover:bg-white/30 transition-colors duration-300"></div>
+
         {/* Price and Details */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+        <div className="flex items-center justify-between mt-4">
+          {/* View Details Button */}
           <button
             onClick={handleViewMore}
-
-            className="text-blue-600 text-sm font-medium hover:underline flex items-center gap-1"
+            className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-full group-hover:bg-white/20 transition-colors duration-300 text-blue-600 hover:text-blue-700 group-hover:text-white font-medium text-sm"
           >
             عرض التفاصيل
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={1.5}
+              strokeWidth={2}
               stroke="currentColor"
-              className="w-4 h-4"
+              className="w-4 h-4 transform rotate-180 group-hover:translate-x-0.5 transition-transform duration-300"
             >
               <path
                 strokeLinecap="round"
@@ -80,9 +91,21 @@ export default function UserReservationsCard({ reservation }) {
               />
             </svg>
           </button>
-          <span dir="rtl" className="text-green-600 font-semibold text-xl">
-            {price} ج.م
-          </span>
+
+          {/* Price */}
+          <div className="flex flex-col items-end">
+            <div className="flex items-baseline">
+              <span className="text-green-600 font-extrabold text-xl sm:text-2xl group-hover:text-white transition-colors duration-300">
+                {price}
+              </span>
+              <span className="text-gray-500 text-sm mr-1 group-hover:text-white/90 transition-colors duration-300 font-medium">
+                ج.م
+              </span>
+            </div>
+            <span className="text-gray-400 text-xs mt-0.5 group-hover:text-white/80 transition-colors duration-300">
+              /ساعة
+            </span>
+          </div>
         </div>
       </div>
     </div>
