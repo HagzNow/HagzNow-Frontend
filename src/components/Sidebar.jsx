@@ -149,13 +149,17 @@ export default function Sidebar({
                       } else if (section.path) navigate(section.path);
                     }}
                     className={[
-                      "w-full px-3 py-2 flex items-center justify-between text-sm font-medium rounded-t-xl",
+                      "w-full px-3  py-2 flex items-center justify-between text-sm font-medium rounded-t-xl",
                       sectionActive
                         ? "bg-emerald-50 text-emerald-700 font-semibold"
                         : "text-neutral-700 hover:bg-neutral-50",
                     ].join(" ")}
                   >
-                    <span>{section.title}</span>
+                       <span className="flex items-center gap-2">
+                        {section.icon && <section.icon className="h-4 w-4" />}
+                        <span>{section.title}</span>
+                      </span>
+          
                     {section.items && section.items.length > 0 &&
                       (isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />)}
                   </button>

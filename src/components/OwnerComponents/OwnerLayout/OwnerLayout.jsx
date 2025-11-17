@@ -6,6 +6,7 @@ import Header from "./Header";
 import AdminFooter from "../../AdminLayout/AdminFooter";
 
 import {
+ ChartLine,
   LayoutDashboard,
   CalendarDays,
   Settings,
@@ -17,11 +18,13 @@ import {
   ListChecks,
   LibraryBig,
   Calendar,
+  WalletCards
 } from "lucide-react";
-import Home from "@/pages/Home/Home";
+//import Home from "@/pages/Home/Home";
 
 const navSections = [
-  { id: "dashboard", title: "لوحة التحكم", icon: Home, path: "/owner/dashboard"  },
+  { id: "dashboard", title: "لوحة التحكم", icon: ChartLine, path: "/owner/dashboard"  },
+  { id: "wallet", title: "المحفظة", icon: WalletCards , path: "/owner/wallet"  },
   {
     id: "arenas",
     title: "الملاعب",

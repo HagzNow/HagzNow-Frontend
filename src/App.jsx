@@ -196,7 +196,13 @@ function App() {
               <UserAllReservation />
             </ProtectedRoutes>
           ),
+        }, { path: "wallet", element: (
+            <ProtectedRoutes>
+              <Wallet />
+            </ProtectedRoutes>
+          ),
         },
+        
       ],
     },
 
@@ -213,6 +219,12 @@ function App() {
         { path: "add-arena", element: <AddArena /> },
         { path: "manual-booking", element: <ManualBookingForm /> },
         { path: "my-arenas", element: <OwnerArenas /> },
+        { path: "wallet", element: (
+            <ProtectedRoutes>
+              <Wallet />
+            </ProtectedRoutes>
+          ),
+        },
       ],
     },
 
@@ -229,6 +241,30 @@ function App() {
         { path: "pending-requests", element: <PendingRequests /> },
         // { path: "all-reservations", element:  <UserAllReservation /> },
         { path: "admin-arena-requests", element: <AdminArenaRequests /> },
+        {
+          path: "categoriesmanagment",
+          element: (
+            <ProtectedRoutes role="admin">
+              <ArenaMangmentCategories />
+            </ProtectedRoutes>
+          ),
+        },
+        {
+          path: "usermanagment",
+          element: (
+            <ProtectedRoutes role="admin">
+              <UserManagement />
+            </ProtectedRoutes>
+          ),
+        },
+         {
+      path: "wallet",
+      element: (
+        <ProtectedRoutes>
+          <Wallet />
+        </ProtectedRoutes>
+      ),
+    },
       ],
     },
 
@@ -278,22 +314,22 @@ function App() {
         </ProtectedRoutes>
       ),
     },
-    {
-      path: "/categoriesmanagment",
-      element: (
-        <ProtectedRoutes role="admin">
-          <ArenaMangmentCategories />
-        </ProtectedRoutes>
-      ),
-    },
-    {
-      path: "/usermanagment",
-      element: (
-        <ProtectedRoutes role="admin">
-          <UserManagement />
-        </ProtectedRoutes>
-      ),
-    },
+    // {
+    //   path: "/categoriesmanagment",
+    //   element: (
+    //     <ProtectedRoutes role="admin">
+    //       <ArenaMangmentCategories />
+    //     </ProtectedRoutes>
+    //   ),
+    // },
+    // {
+    //   path: "/usermanagment",
+    //   element: (
+    //     <ProtectedRoutes role="admin">
+    //       <UserManagement />
+    //     </ProtectedRoutes>
+    //   ),
+    // },
 
     // ✅ Owner routes
     {
