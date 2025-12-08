@@ -1,59 +1,51 @@
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
-import {
-  ChartLine,
-  Box,
-  Users,
-  Calendar,
-  FileCog,
-  MessageSquareText,
-  WalletCards
-} from "lucide-react";
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { ChartLine, Box, Users, Calendar, FileCog, MessageSquareText, WalletCards } from 'lucide-react';
 
-import Sidebar from "../Sidebar";
-import AdminNavbar from "./AdminNavbar";
+import Sidebar from '../Sidebar';
+import AdminNavbar from './AdminNavbar';
 
 export default function AdminLayout() {
-  const [activeKey, setActiveKey] = useState("dashboard");
+  const [activeKey, setActiveKey] = useState('dashboard');
 
   const menu = [
     {
-      key: "dashboard",
-      label: "إحصائيات",
+      key: 'dashboard',
+      label: 'إحصائيات',
       icon: <ChartLine />,
-      to: "/dashboard",
+      to: '/dashboard',
     },
     {
-      key: "wallet",
-      label: "محفظة",
+      key: 'wallet',
+      label: 'محفظة',
       icon: <WalletCards />,
-      to: "/admin/wallet",
+      to: '/admin/wallet',
     },
     {
-      key: "categoriesmanagment",
-      label: "إدارة الفئات",
+      key: 'categoriesmanagment',
+      label: 'إدارة الفئات',
       icon: <Box />,
-      to: "/admin/categoriesmanagment",
+      to: '/admin/categoriesmanagment',
     },
-    { key: "users", label: "إدارة المستخدمين", icon: <Users />, to: "/admin/usermanagment" },
+    { key: 'users', label: 'إدارة المستخدمين', icon: <Users />, to: '/admin/usermanagment' },
     {
-      key: "reservations",
-      label: "عرض جميع الحجوزات",
+      key: 'reservations',
+      label: 'عرض جميع الحجوزات',
       icon: <Calendar />,
-      to: "/reservations",
+      to: '/reservations',
     },
     {
-      key: "admin-arena-requests",
-      label: "طلبات الساحة المعلقة",
+      key: 'admin-arena-requests',
+      label: 'طلبات الساحة المعلقة',
       icon: <FileCog />,
-      to: "/admin/admin-arena-requests",
+      to: '/admin/admin-arena-requests',
     },
     {
-      key: "settings",
-      label: "الإعدادات العامة",
+      key: 'settings',
+      label: 'الإعدادات العامة',
       icon: <MessageSquareText />,
-      badge: "جديد",
-      to: "/settings",
+      badge: 'جديد',
+      to: '/settings',
     },
   ];
 
