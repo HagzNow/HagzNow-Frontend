@@ -57,10 +57,10 @@ export default function OwnerArenas() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
             {/* Hero Section */}
-            <div className="relative bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white py-10 sm:py-14 md:py-16">
-                <div className="absolute inset-0 bg-black/10"></div>
+            <div className="relative bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 dark:from-green-700 dark:via-emerald-700 dark:to-teal-700 text-white py-10 sm:py-14 md:py-16">
+                <div className="absolute inset-0 bg-black/10 dark:bg-black/20"></div>
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold drop-shadow-md text-center">
                         ملاعبي
@@ -83,19 +83,19 @@ export default function OwnerArenas() {
                 {/* Error State */}
                 {error && !loading && (
                     <div className="max-w-2xl mx-auto my-8">
-                        <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-6 shadow-md">
+                        <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-400 rounded-lg p-6 shadow-md dark:shadow-gray-900/50">
                             <div className="flex items-start">
                                 <div className="flex-shrink-0">
-                                    <svg className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg className="h-6 w-6 text-red-500 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
                                 <div className="mr-3 flex-1">
-                                    <h3 className="text-red-800 font-bold text-lg mb-2">حدث خطأ</h3>
-                                    <p className="text-red-700">{error}</p>
+                                    <h3 className="text-red-800 dark:text-red-300 font-bold text-lg mb-2">حدث خطأ</h3>
+                                    <p className="text-red-700 dark:text-red-300">{error}</p>
                                     <button
                                         onClick={() => fetchOwnerArenas(currentPage, categoryId, searchName)}
-                                        className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium shadow-md hover:shadow-lg"
+                                        className="mt-4 px-6 py-2 bg-red-600 dark:bg-red-700 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-colors duration-200 font-medium shadow-md hover:shadow-lg"
                                     >
                                         إعادة المحاولة
                                     </button>

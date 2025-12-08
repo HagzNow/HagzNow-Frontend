@@ -131,11 +131,11 @@ const AddArena = () => {
 
   return (
     <>
-      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 text-gray-800">
+      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white transition-colors">
         {t("addArenaTitle")}
       </h2>
 
-      <div className="bg-white shadow-md rounded-2xl p-4 sm:p-8">
+      <div className="bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-900/50 rounded-2xl p-4 sm:p-8 border border-gray-100 dark:border-gray-700 transition-colors">
         <Formik
           initialValues={{
             policy: "",
@@ -173,7 +173,7 @@ const AddArena = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-green-600 text-white px-8 py-3 rounded-lg shadow hover:bg-green-700 transition disabled:opacity-50 w-full sm:w-auto"
+                  className="bg-green-600 dark:bg-green-700 text-white px-8 py-3 rounded-lg shadow dark:shadow-gray-900/50 hover:bg-green-700 dark:hover:bg-green-600 transition disabled:opacity-50 w-full sm:w-auto"
                 >
                   {loading ? "جاري الحفظ..." : t("saveArena")}
                 </button>

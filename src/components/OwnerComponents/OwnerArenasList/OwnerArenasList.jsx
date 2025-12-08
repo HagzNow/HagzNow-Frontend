@@ -15,7 +15,7 @@ export default function OwnerArenasList({ arenas, loading }) {
     if (!arenas || arenas.length === 0) {
         return (
             <div className="text-center py-20">
-                <p className="text-gray-500 text-lg">لا توجد ملاعب متاحة</p>
+                <p className="text-gray-500 dark:text-gray-400 text-lg">لا توجد ملاعب متاحة</p>
             </div>
         );
     }

@@ -6,8 +6,8 @@ const FeaturesSection = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="border rounded-xl p-6">
-      <h3 className="text-lg font-semibold mb-4 text-gray-700">
+    <div className="border dark:border-gray-700 rounded-xl p-6 bg-white dark:bg-gray-800 transition-colors">
+      <h3 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">
         {t("features")}
       </h3>
 
@@ -19,21 +19,21 @@ const FeaturesSection = () => {
                 {form.values.extras.map((extra, index) => (
                   <div
                     key={index}
-                    className="flex flex-col md:flex-row md:items-center gap-3 border rounded-lg p-3"
+                    className="flex flex-col md:flex-row md:items-center gap-3 border dark:border-gray-600 rounded-lg p-3 bg-white dark:bg-gray-700 transition-colors"
                   >
                     <div className="flex-1">
-                      <label className="block text-gray-600 text-sm mb-1">
+                      <label className="block text-gray-600 dark:text-gray-400 text-sm mb-1">
                         {t("serviceName")}
                       </label>
                       <Field
                         name={`extras[${index}].name`}
                         placeholder={t("enterServiceName")}
-                        className="w-full border rounded-lg p-2 outline-none focus:ring focus:ring-green-200"
+                        className="w-full border dark:border-gray-600 rounded-lg p-2 bg-white dark:bg-gray-600 text-gray-900 dark:text-white outline-none focus:ring focus:ring-green-200 dark:focus:ring-green-500 transition-colors"
                       />
                     </div>
 
                     <div className="w-full md:w-24">
-                      <label className="block text-gray-600 text-sm mb-1">
+                      <label className="block text-gray-600 dark:text-gray-400 text-sm mb-1">
                         {t("price")}
                       </label>
                       <Field
@@ -41,14 +41,14 @@ const FeaturesSection = () => {
                         name={`extras[${index}].price`}
                         placeholder="0"
                         step="10"
-                        className="w-full border rounded-lg p-2 outline-none focus:ring focus:ring-green-200"
+                        className="w-full border dark:border-gray-600 rounded-lg p-2 bg-white dark:bg-gray-600 text-gray-900 dark:text-white outline-none focus:ring focus:ring-green-200 dark:focus:ring-green-500 transition-colors"
                       />
                     </div>
 
                     <button
                       type="button"
                       onClick={() => remove(index)}
-                      className="text-red-500 hover:text-red-700 mt-2 md:mt-6"
+                      className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 mt-2 md:mt-6 transition-colors"
                     >
                       <Trash2 size={20} />
                     </button>
@@ -60,14 +60,14 @@ const FeaturesSection = () => {
               <ErrorMessage
                 name="extras"
                 component="div"
-                className="text-red-500 text-sm mt-1"
+                className="text-red-500 dark:text-red-400 text-sm mt-1"
               />
             )}
 
             <button
               type="button"
               onClick={() => push({ name: "", price: "" })}
-              className="flex items-center gap-2 text-green-600 hover:text-green-700 font-medium"
+              className="flex items-center gap-2 text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium transition-colors"
             >
               <Plus size={18} /> {t("addExtra")}
             </button>

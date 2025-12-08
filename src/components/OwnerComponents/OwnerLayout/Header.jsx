@@ -38,7 +38,7 @@ export default function Header({ onMenuClick, isRTL }) {
 
   return (
     <header
-      className={`sticky top-0 z-30 bg-white border-b shadow-sm transition-all duration-300 
+      className={`sticky top-0 z-30 bg-white dark:bg-gray-800 border-b dark:border-gray-700 shadow-sm dark:shadow-gray-900/50 transition-all duration-300 
         ${isRTL ? "md:mr-8" : "md:ml-8"}`}
     >
       <div className="max-w-7xl mx-auto px-4">
@@ -46,52 +46,52 @@ export default function Header({ onMenuClick, isRTL }) {
           {/* Left Section */}
           <div className="flex items-center gap-2">
             <button
-              className="md:hidden p-2 rounded-xl hover:bg-gray-100"
+              className="md:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               onClick={onMenuClick}
             >
-              <Menu className="size-5" />
+              <Menu className="size-5 text-gray-700 dark:text-gray-300" />
             </button>
 
             <div className="relative">
-              <Search className="size-4 absolute top-1/2 -translate-y-1/2 end-3 text-gray-400" />
+              <Search className="size-4 absolute top-1/2 -translate-y-1/2 end-3 text-gray-400 dark:text-gray-500" />
               <input
                 placeholder="ابحث عن ساحات أو حجوزات..."
-                className="w-72 ps-3 pe-9 py-2 rounded-xl border bg-gray-50 focus:bg-white focus:outline-none"
+                className="w-72 ps-3 pe-9 py-2 rounded-xl border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors"
               />
             </div>
           </div>
 
           {/* Right Section */}
           <div className="flex items-center gap-3 relative" ref={menuRef}>
-            <button className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm">
+            <button className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-600 dark:bg-indigo-700 text-white hover:bg-indigo-700 dark:hover:bg-indigo-600 shadow-sm transition-colors">
               <Plus className="size-4" />
               <span className="hidden sm:inline text-sm">إضافة ساحة جديدة</span>
             </button>
 
-            <button className="p-2 rounded-xl hover:bg-gray-100">
-              <Bell className="size-5" />
+            <button className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <Bell className="size-5 text-gray-700 dark:text-gray-300" />
             </button>
 
             {/* ✅ User Menu */}
             <div className="relative">
               <button
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 border hover:bg-gray-100"
+                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                 onClick={() => setMenuOpen(!menuOpen)}
               >
-                <UserIcon className="size-5 text-gray-600" />
-                <span className="text-sm font-medium text-gray-700">
+                <UserIcon className="size-5 text-gray-600 dark:text-gray-300" />
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {`${user?.fName || "User"} ${user?.lName || ""}`}
                 </span>
               </button>
 
               {menuOpen && (
                 <div
-                  className={`absolute ${isRTL ? "right-0" : "left-0"} mt-2 w-44 bg-white border rounded-xl shadow-lg z-50`}
+                  className={`absolute ${isRTL ? "right-0" : "left-0"} mt-2 w-44 bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-xl shadow-lg dark:shadow-gray-900/50 z-50 transition-colors`}
                 >
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+                    className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
                   >
                     <LogOut className="size-4" />
                     تسجيل خروج

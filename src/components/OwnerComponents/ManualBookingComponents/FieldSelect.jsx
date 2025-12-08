@@ -2,11 +2,11 @@ import { Field, ErrorMessage } from "formik";
 
 const FieldSelect = ({ name, label, options }) => (
   <div>
-    <label className="block mb-2 text-gray-600">{label}</label>
+    <label className="block mb-2 text-gray-600 dark:text-gray-400">{label}</label>
     <Field
       as="select"
       name={name}
-      className="w-full border rounded-xl p-3 focus:ring-2 focus:ring-green-300 focus:outline-none"
+      className="w-full border dark:border-gray-600 rounded-xl p-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-300 dark:focus:ring-green-500 focus:outline-none transition-colors"
     >
       {options.map((opt, idx) => (
         <option key={idx} value={opt.value}>
@@ -14,7 +14,7 @@ const FieldSelect = ({ name, label, options }) => (
         </option>
       ))}
     </Field>
-    <ErrorMessage name={name} component="div" className="text-red-500 text-sm" />
+    <ErrorMessage name={name} component="div" className="text-red-500 dark:text-red-400 text-sm" />
   </div>
 );
 
