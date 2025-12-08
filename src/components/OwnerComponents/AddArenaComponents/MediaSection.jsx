@@ -63,8 +63,8 @@ export default function MediaSection() {
             </label>
             <span className="text-gray-500 dark:text-gray-400 text-sm">
               {values.images?.length
-                ? `${values.images.length} ${t("files selected")}`
-                : t("No files chosen")}
+                ? `${values.images.length} ${values.images.length === 1 ? t('files selected') : t('files_selected')}`
+                : t('No files chosen')}
             </span>
           </div>
 
