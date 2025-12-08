@@ -61,36 +61,36 @@ export default function TransactionItem({ transaction }) {
   const typeConfig = {
     deposit: {
       icon: ArrowDownCircle,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
+      color: 'text-green-600 dark:text-green-400',
+      bgColor: 'bg-green-50 dark:bg-green-900/20',
       sign: '+',
       label: t(`transaction_type.deposit`),
     },
     withdrawal: {
       icon: ArrowUpCircle,
-      color: 'text-red-600',
-      bgColor: 'bg-red-50',
+      color: 'text-red-600 dark:text-red-400',
+      bgColor: 'bg-red-50 dark:bg-red-900/20',
       sign: '-',
       label: t(`transaction_type.withdrawal`),
     },
     payment: {
       icon: CreditCard,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
+      color: 'text-blue-600 dark:text-blue-400',
+      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
       sign: '-',
       label: t(`transaction_type.payment`),
     },
     refund: {
       icon: RefreshCw,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
+      color: 'text-emerald-600 dark:text-emerald-400',
+      bgColor: 'bg-emerald-50 dark:bg-emerald-900/20',
       sign: '+',
       label: t(`transaction_type.refund`),
     },
     fee: {
       icon: DollarSign,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      color: 'text-orange-600 dark:text-orange-400',
+      bgColor: 'bg-orange-50 dark:bg-orange-900/20',
       sign: '-',
       label: t(`transaction_type.fee`),
     },
@@ -99,8 +99,8 @@ export default function TransactionItem({ transaction }) {
   const currentStatus = statusConfig[transaction.stage] || statusConfig.pending;
   const currentType = typeConfig[transaction.type] || {
     icon: DollarSign,
-    color: 'text-gray-600',
-    bgColor: 'bg-gray-50',
+    color: 'text-gray-600 dark:text-gray-400',
+    bgColor: 'bg-gray-50 dark:bg-gray-700/50',
     sign: '',
     label: transaction.type,
   };
@@ -109,11 +109,11 @@ export default function TransactionItem({ transaction }) {
   const TypeIcon = currentType.icon;
 
   return (
-    <div className="grid grid-cols-12 gap-4 items-center py-4 px-6 hover:bg-gradient-to-r hover:from-green-50/80 hover:to-emerald-50/80 transition-all duration-300 ease-in-out group">
+    <div className="grid grid-cols-12 gap-4 items-center py-4 px-6 hover:bg-gradient-to-r hover:from-green-50/80 hover:to-emerald-50/80 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 transition-all duration-300 ease-in-out group">
       {/* Status */}
       <div className="col-span-3 flex justify-center">
         <div
-          className={`flex items-center gap-2 px-4 py-2 rounded-2xl ${currentStatus.bgColor} ${currentStatus.textColor} transition-all duration-300 group-hover:shadow-lg`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-2xl ${currentStatus.bgColor} ${currentStatus.textColor} transition-all duration-300 group-hover:shadow-lg dark:group-hover:shadow-gray-900/50`}
         >
           <StatusIcon className="w-4 h-4" />
           <span className="text-sm font-medium whitespace-nowrap">{currentStatus.label}</span>
@@ -123,7 +123,7 @@ export default function TransactionItem({ transaction }) {
       {/* Amount */}
       <div className="col-span-3 flex justify-center">
         <div
-          className={`flex items-center gap-2 px-4 py-2 rounded-2xl ${currentType.bgColor} transition-all duration-300 group-hover:shadow-md`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-2xl ${currentType.bgColor} transition-all duration-300 group-hover:shadow-md dark:group-hover:shadow-gray-900/50`}
         >
           <TypeIcon className={`w-4 h-4 ${currentType.color}`} />
           <span className={`text-lg font-bold ${currentType.color}`}>
@@ -136,16 +136,16 @@ export default function TransactionItem({ transaction }) {
 
       {/* Type */}
       <div className="col-span-3 flex justify-center">
-        <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-gray-50 text-gray-700 transition-all duration-300 group-hover:bg-white group-hover:shadow-md">
-          <TypeIcon className="w-4 h-4 text-gray-500" />
+        <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 transition-all duration-300 group-hover:bg-white dark:group-hover:bg-gray-700 group-hover:shadow-md dark:group-hover:shadow-gray-900/50">
+          <TypeIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
           <span className="text-sm font-medium">{currentType.label}</span>
         </div>
       </div>
 
       {/* Date */}
       <div className="col-span-3 flex justify-end">
-        <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-gray-50 text-gray-600 transition-all duration-300 group-hover:bg-white group-hover:shadow-md">
-          <Clock className="w-4 h-4 text-gray-400" />
+        <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300 transition-all duration-300 group-hover:bg-white dark:group-hover:bg-gray-700 group-hover:shadow-md dark:group-hover:shadow-gray-900/50">
+          <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500" />
           <span className="text-sm font-medium">{new Date(transaction.createdAt).toLocaleDateString('ar-EG')}</span>
         </div>
       </div>
