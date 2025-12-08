@@ -1,9 +1,12 @@
 import { useContext, useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { User, LogOut, Settings, Wallet, Calendar, MapPin, ChevronDown, UserCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { User, LogOut, Wallet, Calendar, MapPin, ChevronDown, UserCircle } from 'lucide-react';
 import { authContext } from '../Contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 const UserNavbar = () => {
+  const { t } = useTranslation();
   const { user, setToken, setUser } = useContext(authContext);
   const isLoggedIn = localStorage.getItem('token');
   const navigate = useNavigate();
@@ -16,7 +19,8 @@ const UserNavbar = () => {
     setUser(null);
     setToken(null);
     setIsDropdownOpen(false);
-    console.log('✅ Logged out successfully!');
+    toast.success(t('logout_success') || 'تم تسجيل الخروج بنجاح');
+    navigate('/home');
   };
 
   // Close dropdown when clicking outside
@@ -39,142 +43,148 @@ const UserNavbar = () => {
   }, [isLoggedIn, location.pathname, navigate]);
 
   return (
-    <nav className="bg-white border-b border-gray-100 py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out relative">
-      <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
-        {/* Logo/Brand */}
-        <div className="flex items-center justify-center lg:justify-start gap-8 w-full lg:w-auto">
-          <Link
-            to="/home"
-            className="text-2xl font-bold whitespace-nowrap bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent hover:from-green-700 hover:to-emerald-700 transition-all duration-300"
-          >
-            ArenaBook
+    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-green-100 shadow-sm">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          {/* Logo */}
+          <Link to="/home" className="flex items-center gap-2 group">
+            <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent group-hover:from-green-700 group-hover:to-emerald-700 transition-all">
+              ArenaBook
+            </span>
           </Link>
-        </div>
 
-        {/* Navigation Links */}
-        <div className="flex flex-col lg:flex-row items-center gap-4 w-full lg:w-auto justify-center lg:justify-start">
-          <div className="flex flex-wrap justify-center sm:flex-row items-center gap-3 sm:gap-4 lg:ml-14">
-            <Link
-              to="/book"
-              className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all duration-300 ease-in-out group font-medium"
-            >
-              <Calendar className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
-              <span className="whitespace-nowrap">أحجز معنا</span>
-            </Link>
-
-            <Link
-              to="/my-bookings"
-              className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all duration-300 ease-in-out group font-medium"
-            >
-              <Calendar className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
-              <span className="whitespace-nowrap">حجوزاتي</span>
-            </Link>
-
+          {/* Navigation Links - Desktop */}
+          <div className="hidden lg:flex items-center gap-6">
             <Link
               to="/user-arena"
-              className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all duration-300 ease-in-out group font-medium"
+              className="flex items-center gap-2 text-gray-700 hover:text-green-600 font-medium text-sm transition-colors duration-200 relative group"
             >
-              <MapPin className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
-              <span className="whitespace-nowrap">الملاعب</span>
+              <MapPin className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <span>{t('navbar_arenas') || 'الملاعب'}</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <Link
+              to="/my-bookings"
+              className="flex items-center gap-2 text-gray-700 hover:text-green-600 font-medium text-sm transition-colors duration-200 relative group"
+            >
+              <Calendar className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <span>{t('my_reservations') || 'حجوزاتي'}</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
           </div>
-        </div>
 
-        {/* User Section with Dropdown */}
-        {isLoggedIn && (
-          <div className="relative" ref={dropdownRef}>
-            {/* User Dropdown Trigger */}
-            <div
-              className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-gray-50 border border-gray-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:border-green-200 transition-all duration-500 ease-in-out group cursor-pointer"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              {user?.avatar ? (
-                <img
-                  src={`${user.avatar}?v=${user.avatarVersion || Date.now()}`}
-                  alt="User Avatar"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-white group-hover:border-green-200 transition-all duration-300 shadow-sm"
-                />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center group-hover:from-green-600 group-hover:to-emerald-600 transition-all duration-300">
-                  <User className="w-5 h-5 text-white" />
+          {/* User Dropdown */}
+          {isLoggedIn && (
+            <div className="relative" ref={dropdownRef}>
+              {/* User Dropdown Trigger */}
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center gap-3 px-3 py-2 rounded-xl bg-green-50 border border-green-200 hover:bg-green-100 hover:border-green-300 transition-all duration-300 group"
+              >
+                {user?.avatar ? (
+                  <img
+                    src={`${user.avatar}?v=${user.avatarVersion || Date.now()}`}
+                    alt="User Avatar"
+                    className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-sm"
+                  />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-sm">
+                    <User className="w-5 h-5 text-white" />
+                  </div>
+                )}
+                <div className="hidden sm:flex items-center gap-2">
+                  <span className="text-sm font-semibold text-gray-800 group-hover:text-green-700 transition-colors">
+                    {`${user?.fName || 'User'} ${user?.lName || ''}`}
+                  </span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${
+                      isDropdownOpen ? 'rotate-180' : ''
+                    }`}
+                  />
                 </div>
-              )}
+              </button>
 
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-gray-800 group-hover:text-green-700 transition-colors duration-300">
-                  {`${user?.fName || 'User'} ${user?.lName || ''}`}
-                </span>
-                <ChevronDown
-                  className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${
-                    isDropdownOpen ? 'rotate-180' : ''
-                  }`}
-                />
-              </div>
-            </div>
-
-            {/* Dropdown Menu - Now properly positioned relative to the trigger */}
-            {isDropdownOpen && (
-              <div className="absolute top-full mt-2 right-0 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50 animate-in fade-in-0 zoom-in-95">
-                {/* User Info Header */}
-                <div className="p-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white">
-                  <div className="flex items-center gap-3">
-                    {user?.avatar ? (
-                      <img
-                        src={`${user.avatar}?v=${user.avatarVersion || Date.now()}`}
-                        alt="User Avatar"
-                        className="w-12 h-12 rounded-full object-cover border-2 border-white"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                        <User className="w-6 h-6 text-white" />
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute top-full mt-2 right-0 w-64 bg-white rounded-2xl shadow-xl border border-green-100 overflow-hidden z-50 animate-in fade-in-0 zoom-in-95">
+                  {/* User Info Header */}
+                  <div className="p-4 bg-gradient-to-br from-green-500 to-emerald-500 text-white">
+                    <div className="flex items-center gap-3">
+                      {user?.avatar ? (
+                        <img
+                          src={`${user.avatar}?v=${user.avatarVersion || Date.now()}`}
+                          alt="User Avatar"
+                          className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
+                          <User className="w-6 h-6 text-white" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm truncate">
+                          {`${user?.fName || 'User'} ${user?.lName || ''}`}
+                        </p>
+                        <p className="text-white/90 text-xs mt-0.5 truncate">{user?.email || 'user@example.com'}</p>
                       </div>
-                    )}
-                    <div>
-                      <p className="font-semibold text-sm">{`${user?.fName || 'User'} ${user?.lName || ''}`}</p>
-                      <p className="text-white/80 text-xs mt-1">{user?.email || 'user@example.com'}</p>
                     </div>
                   </div>
+
+                  {/* Dropdown Items */}
+                  <div className="p-2">
+                    <Link
+                      to="/userProfile"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-600 rounded-xl transition-all duration-200 group"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      <UserCircle className="w-5 h-5 text-gray-400 group-hover:text-green-500 transition-colors" />
+                      <span className="font-medium">{t('navbar_profile') || 'تعديل الملف الشخصي'}</span>
+                    </Link>
+
+                    <Link
+                      to="/wallet"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-600 rounded-xl transition-all duration-200 group"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      <Wallet className="w-5 h-5 text-gray-400 group-hover:text-green-500 transition-colors" />
+                      <span className="font-medium">{t('navbar_wallet') || 'محفظتي'}</span>
+                    </Link>
+
+                    {/* Divider */}
+                    <div className="h-px bg-gray-200 my-2"></div>
+
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 group w-full text-right"
+                    >
+                      <LogOut className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                      <span className="font-medium">{t('navbar_logout') || 'تسجيل خروج'}</span>
+                    </button>
+                  </div>
                 </div>
+              )}
+            </div>
+          )}
+        </div>
 
-                {/* Dropdown Items */}
-                <div className="p-2">
-                  <Link
-                    to="/userProfile"
-                    className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-green-50 hover:text-green-600 rounded-xl transition-all duration-300 ease-in-out group"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    <UserCircle className="w-5 h-5 text-gray-400 group-hover:text-green-500 transition-colors duration-300" />
-                    <span className="font-medium">تعديل الملف الشخصي</span>
-                  </Link>
-
-                  <Link
-                    to="/wallet"
-                    className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-green-50 hover:text-green-600 rounded-xl transition-all duration-300 ease-in-out group"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    <Wallet className="w-5 h-5 text-gray-400 group-hover:text-green-500 transition-colors duration-300" />
-                    <span className="font-medium">محفظتي</span>
-                  </Link>
-
-                  {/* Divider */}
-                  <div className="h-px bg-gray-200 my-2"></div>
-
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-3 px-3 py-3 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-300 ease-in-out group w-full text-right"
-                  >
-                    <LogOut className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
-                    <span className="font-medium">تسجيل خروج</span>
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Mobile Navigation Links */}
+        <div className="lg:hidden border-t border-green-100 py-3 flex items-center justify-center gap-4">
+          <Link
+            to="/user-arena"
+            className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all duration-200 font-medium text-sm"
+          >
+            <MapPin className="w-4 h-4" />
+            <span>{t('navbar_arenas') || 'الملاعب'}</span>
+          </Link>
+          <Link
+            to="/my-bookings"
+            className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all duration-200 font-medium text-sm"
+          >
+            <Calendar className="w-4 h-4" />
+            <span>{t('my_reservations') || 'حجوزاتي'}</span>
+          </Link>
+        </div>
       </div>
-
-      {/* Bottom Border Gradient Effect */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
     </nav>
   );
 };

@@ -274,5 +274,9 @@
   "my_reservations": "My Reservations",
   "reservations_current": "Upcoming",
   "reservations_past": "Past",
-  "reservations_error_load": "An error occurred while loading reservations"
+  "reservations_error_load": "An error occurred while loading reservations",
+
+  "navbar_profile": "Edit Profile",
+  "navbar_wallet": "My Wallet",
+  "logout_success": "Logged out successfully"
 }

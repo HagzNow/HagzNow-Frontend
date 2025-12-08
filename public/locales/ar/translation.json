@@ -305,5 +305,9 @@
   "my_reservations": "حجوزاتي",
   "reservations_current": "القادمة",
   "reservations_past": "السابقة",
-  "reservations_error_load": "حدث خطأ أثناء تحميل الحجوزات"
+  "reservations_error_load": "حدث خطأ أثناء تحميل الحجوزات",
+
+  "navbar_profile": "تعديل الملف الشخصي",
+  "navbar_wallet": "محفظتي",
+  "logout_success": "تم تسجيل الخروج بنجاح"
 }
