@@ -34,17 +34,18 @@ const CategoryModal = ({ open, setOpen, editMode, selectedCategory, onSave }) =>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div>
-            <label className="block mb-1 text-gray-700">اسم الفئة</label>
+            <label className="block mb-1 text-gray-700 dark:text-gray-300">اسم الفئة</label>
             <Input
               name="name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="أدخل اسم الفئة"
               required
+              className="dark:bg-gray-700 dark:text-white dark:border-gray-600"
             />
           </div>
           <DialogFooter>
-            <Button type="submit" className="bg-green-600 hover:bg-green-700">
+            <Button type="submit" className="bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-600 text-white">
               {editMode ? "حفظ التعديل" : "إضافة"}
             </Button>
           </DialogFooter>

@@ -16,13 +16,13 @@ export default function Toast({ message, type = "success", isVisible, onClose, d
     const getTypeStyles = () => {
         switch (type) {
             case "success":
-                return "bg-green-600 border-green-700";
+                return "bg-green-600 dark:bg-green-700 border-green-700 dark:border-green-600";
             case "error":
-                return "bg-red-600 border-red-700";
+                return "bg-red-600 dark:bg-red-700 border-red-700 dark:border-red-600";
             case "warning":
-                return "bg-yellow-600 border-yellow-700";
+                return "bg-yellow-600 dark:bg-yellow-700 border-yellow-700 dark:border-yellow-600";
             default:
-                return "bg-blue-600 border-blue-700";
+                return "bg-blue-600 dark:bg-blue-700 border-blue-700 dark:border-blue-600";
         }
     };
 

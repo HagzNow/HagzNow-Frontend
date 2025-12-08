@@ -95,12 +95,12 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
 
                  {dropdownOpen && (
                 <div
-                  className={`absolute  mt-2 w-44 bg-white border rounded-xl shadow-lg z-50`}
+                  className={`absolute right-0 mt-2 w-44 bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-xl shadow-lg dark:shadow-gray-900/50 z-50 transition-colors`}
                 >
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg"
+                    className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
                   >
                     <LogOut className="size-4" />
                     تسجيل خروج

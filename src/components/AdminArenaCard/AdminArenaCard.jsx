@@ -15,9 +15,9 @@ export default function AdminArenaCard({ id, title, location, sport, price, imag
     // Loading skeleton
     if (isLoading) {
         return (
-            <div dir="rtl" className="w-full max-w-sm bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 animate-pulse">
+            <div dir="rtl" className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-gray-900/50 overflow-hidden border border-gray-100 dark:border-gray-700 animate-pulse transition-colors">
                 {/* Image Skeleton */}
-                <div className="h-48 sm:h-52 bg-gray-200"></div>
+                <div className="h-48 sm:h-52 bg-gray-200 dark:bg-gray-700"></div>
 
                 <div className="p-6">
                     {/* Title Skeleton */}
@@ -40,7 +40,7 @@ export default function AdminArenaCard({ id, title, location, sport, price, imag
                     </div>
 
                     {/* Divider */}
-                    <div className="h-px bg-gray-200 my-5"></div>
+                    <div className="h-px bg-gray-200 dark:bg-gray-700 my-5"></div>
 
                     {/* Action Buttons Skeleton */}
                     <div className="flex flex-col gap-3">
@@ -56,7 +56,7 @@ export default function AdminArenaCard({ id, title, location, sport, price, imag
     return (
         <div
             dir="rtl"
-            className="w-full max-w-sm bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden cursor-pointer group border border-gray-200 relative"
+            className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-2xl dark:hover:shadow-gray-900 overflow-hidden cursor-pointer group border border-gray-200 dark:border-gray-700 relative transition-colors"
         >
             {/* Image Container with Enhanced Overlay */}
             <div className="relative overflow-hidden h-52 sm:h-56 md:h-60 lg:h-52">
@@ -72,43 +72,43 @@ export default function AdminArenaCard({ id, title, location, sport, price, imag
             </div>
 
             {/* Content Container with Gradient Background on Hover */}
-            <div className="relative p-6 bg-white group-hover:bg-gradient-to-br group-hover:from-green-600 group-hover:via-emerald-600 group-hover:to-teal-600 transition-all duration-500 ease-in-out">
+            <div className="relative p-6 bg-white dark:bg-gray-800 group-hover:bg-gradient-to-br group-hover:from-green-600 group-hover:via-emerald-600 group-hover:to-teal-600 dark:group-hover:from-green-700 dark:group-hover:via-emerald-700 dark:group-hover:to-teal-700 transition-all duration-500 ease-in-out">
 
 
                 {/* Title */}
-                <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 truncate group-hover:text-white transition-colors duration-300 mb-3 leading-tight">
+                <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white truncate group-hover:text-white dark:group-hover:text-white transition-colors duration-300 mb-3 leading-tight">
                     {title}
                 </h3>
 
                 {/* Info Items */}
                 <div className="space-y-3 mb-4">
                     {/* Location */}
-                    <div className="flex items-center text-gray-700 text-sm group-hover:text-white/95 transition-colors duration-300">
-                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 group-hover:bg-white/20 flex items-center justify-center ml-2 transition-colors duration-300">
-                            <IoLocationOutline className="text-gray-600 group-hover:text-white text-base" />
+                    <div className="flex items-center text-gray-700 dark:text-gray-300 text-sm group-hover:text-white/95 dark:group-hover:text-white/95 transition-colors duration-300">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-white/20 dark:group-hover:bg-white/20 flex items-center justify-center ml-2 transition-colors duration-300">
+                            <IoLocationOutline className="text-gray-600 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white text-base" />
                         </div>
                         <span className="truncate font-medium">{location || "غير محدد"}</span>
                     </div>
 
                     {/* Sport Type */}
-                    <div className="flex items-center text-gray-700 text-sm group-hover:text-white/95 transition-colors duration-300">
-                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 group-hover:bg-white/20 flex items-center justify-center ml-2 transition-colors duration-300">
-                            <PiSoccerBall className="text-gray-600 group-hover:text-white text-base" />
+                    <div className="flex items-center text-gray-700 dark:text-gray-300 text-sm group-hover:text-white/95 dark:group-hover:text-white/95 transition-colors duration-300">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 group-hover:bg-white/20 dark:group-hover:bg-white/20 flex items-center justify-center ml-2 transition-colors duration-300">
+                            <PiSoccerBall className="text-gray-600 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white text-base" />
                         </div>
                         <span className="truncate font-medium">{sport || "غير محدد"}</span>
                     </div>
 
                     {/* Price */}
-                    <div className="flex items-center text-gray-700 text-sm group-hover:text-white/95 transition-colors duration-300">
-                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 group-hover:bg-white/20 flex items-center justify-center ml-2 transition-colors duration-300">
-                            <BiDollar className="text-green-600 group-hover:text-white text-base" />
+                    <div className="flex items-center text-gray-700 dark:text-gray-300 text-sm group-hover:text-white/95 dark:group-hover:text-white/95 transition-colors duration-300">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 group-hover:bg-white/20 dark:group-hover:bg-white/20 flex items-center justify-center ml-2 transition-colors duration-300">
+                            <BiDollar className="text-green-600 dark:text-green-400 group-hover:text-white dark:group-hover:text-white text-base" />
                         </div>
-                        <span className="font-bold text-green-600 group-hover:text-white">{price} <span className="font-medium text-gray-500 group-hover:text-white/80">جنيه/ساعة</span></span>
+                        <span className="font-bold text-green-600 dark:text-green-400 group-hover:text-white dark:group-hover:text-white">{price} <span className="font-medium text-gray-500 dark:text-gray-400 group-hover:text-white/80 dark:group-hover:text-white/80">جنيه/ساعة</span></span>
                     </div>
                 </div>
 
                 {/* Divider */}
-                <div className="h-px bg-gray-200 my-5 group-hover:bg-white/40 transition-colors duration-300"></div>
+                <div className="h-px bg-gray-200 dark:bg-gray-700 my-5 group-hover:bg-white/40 dark:group-hover:bg-white/40 transition-colors duration-300"></div>
 
                 {/* Action Buttons */}
                 <div className="flex flex-col gap-3">
@@ -163,7 +163,7 @@ export default function AdminArenaCard({ id, title, location, sport, price, imag
                             handleViewMore();
                         }}
                         disabled={isProcessing}
-                        className="btn-view w-full py-3 px-4 rounded-xl font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed shadow-sm flex items-center justify-center gap-2 transition-all duration-300 active:scale-[0.98] border-2 border-gray-300 text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 hover:shadow-md hover:scale-[1.02]"
+                        className="btn-view w-full py-3 px-4 rounded-xl font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed shadow-sm flex items-center justify-center gap-2 transition-all duration-300 active:scale-[0.98] border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-md hover:scale-[1.02]"
                     >
                         <span>عرض المزيد</span>
                         <svg className="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
