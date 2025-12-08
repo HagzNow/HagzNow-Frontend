@@ -1,6 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 import baseUrl from "@/apis/config";
 import { useState, useContext, useMemo } from "react";
@@ -16,15 +17,9 @@ export default function ProfileForm({
   setSubmitRef,
   onSaved,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { setUser } = useContext(authContext);
-  const [toast, setToast] = useState({ message: "", type: "success", visible: false });
   const [selectedImage, setSelectedImage] = useState(null);
-
-  const showToast = (message, type = "success", duration = 3000) => {
-    setToast({ message, type, visible: true });
-    setTimeout(() => setToast(prev => ({ ...prev, visible: false })), duration);
-  };
 
   const infoValidationSchema = Yup.object({
     name: Yup.string().required(t("first_name_required")),
@@ -78,7 +73,12 @@ export default function ProfileForm({
         values.phone !== userData.phone;
 
       if (!wantsToChangeInfo && !wantsToChangeImage) {
-        showToast(t("UserProfile.no_changes"), "info");
+        toast.info(t("UserProfile.no_changes") || "لا توجد تغييرات", {
+          duration: 3000,
+          style: {
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
+          },
+        });
         onSaved?.();
         return;
       }
@@ -110,7 +110,12 @@ export default function ProfileForm({
 
       setUser(prev => ({ ...prev, ...updatedUser }));
       onSaved?.(updatedUser);
-      showToast(t("successMessageProfile"), "success");
+      toast.success(t("successMessageProfile") || "تم تحديث الملف الشخصي بنجاح", {
+        duration: 3000,
+        style: {
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
+        },
+      });
       setSelectedImage(null);
     } catch (err) {
       console.error(err);
@@ -123,7 +128,12 @@ export default function ProfileForm({
       };
       const msg = errorMap[raw] || t("UserProfile.password_invalid") || "حدث خطأ أثناء تحديث البيانات";
       setServerError(msg);
-      showToast(msg, "error");
+      toast.error(msg, {
+        duration: 4000,
+        style: {
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
+        },
+      });
     } finally {
       setSubmitting(false);
       setFormikSubmitting(false);
@@ -138,21 +148,36 @@ export default function ProfileForm({
 
       const wantsToChangePassword = (values.newPassword || "").trim() !== "";
       if (!wantsToChangePassword) {
-        showToast(t("UserProfile.no_changes"), "info");
+        toast.info(t("UserProfile.no_changes") || "لا توجد تغييرات", {
+          duration: 3000,
+          style: {
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
+          },
+        });
         return;
       }
 
       if (!values.oldPassword || !values.confirmPassword || !values.newPassword) {
-        const msg = t("UserProfile.password_incomplete");
+        const msg = t("UserProfile.password_incomplete") || "يرجى ملء جميع حقول كلمة المرور";
         setServerError(msg);
-        showToast(msg, "error");
+        toast.error(msg, {
+          duration: 4000,
+          style: {
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
+          },
+        });
         return;
       }
 
       if ((values.newPassword || "").trim() !== (values.confirmPassword || "").trim()) {
-        const msg = t("password_not_match");
+        const msg = t("password_not_match") || "كلمات المرور غير متطابقة";
         setServerError(msg);
-        showToast(msg, "error");
+        toast.error(msg, {
+          duration: 4000,
+          style: {
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
+          },
+        });
         return;
       }
 
@@ -168,7 +193,12 @@ export default function ProfileForm({
 
       resetForm();
       onSaved?.();
-      showToast(t("successMessagePassword"), "success");
+      toast.success(t("successMessagePassword") || "تم تغيير كلمة المرور بنجاح", {
+        duration: 3000,
+        style: {
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
+        },
+      });
     } catch (err) {
       console.error(err);
       const raw = err?.response?.data?.message;
@@ -181,7 +211,12 @@ export default function ProfileForm({
       };
       const msg = errorMap[raw] || t("UserProfile.password_invalid") || "حدث خطأ أثناء تحديث البيانات";
       setServerError(msg);
-      showToast(msg, "error");
+      toast.error(msg, {
+        duration: 4000,
+        style: {
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
+        },
+      });
     } finally {
       setSubmitting(false);
       setFormikSubmitting(false);
@@ -189,25 +224,6 @@ export default function ProfileForm({
   };
 
   const isInfoLocked = () => !isEditing || isSubmitting;
-
-  const Toast = ({ message, type }) => {
-    if (!toast.visible) return null;
-    const typeStyles = {
-      success: "bg-emerald-600 dark:bg-emerald-700 border-emerald-700 dark:border-emerald-800",
-      error: "bg-red-600 dark:bg-red-700 border-red-700 dark:border-red-800",
-      warning: "bg-amber-600 dark:bg-amber-700 border-amber-700 dark:border-amber-800",
-      info: "bg-blue-600 dark:bg-blue-700 border-blue-700 dark:border-blue-800",
-    };
-    return (
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
-        <div
-          className={`${typeStyles[type] || typeStyles.info} text-white px-4 py-3 rounded-xl border shadow-2xl dark:shadow-gray-900/50 w-fit max-w-[92vw] transition-transform animate-[slideDown_.25s_ease-out]`}
-        >
-          {message}
-        </div>
-      </div>
-    );
-  };
 
   return (
     <>
@@ -350,8 +366,6 @@ export default function ProfileForm({
           );
         }}
       </Formik>
-
-      <Toast message={toast.message} type={toast.type} />
     </>
   );
 }
