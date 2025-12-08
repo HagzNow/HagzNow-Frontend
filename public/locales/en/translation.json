@@ -43,6 +43,8 @@
   "already_have_account": "Already have an account? Log in",
 
   "login_button": "Log in",
+  "login_success": "Login successful!",
+  "login_loading": "Logging in...",
   "forgot_password": "Forgot your password?",
   "or": "or",
 
@@ -60,8 +62,22 @@
   },
   "errors": {
     "EMAIL_IN_USE": "Email already exists",
-    "INVALID_CREDENTIALS": "Invalid email or password"
+    "INVALID_CREDENTIALS": "Invalid email or password",
+    "USER_NOT_FOUND": "User not found",
+    "BadRequestException": "Invalid request. Please check your input.",
+    "SERVER_ERROR": "Server error occurred",
+    "NETWORK_ERROR": "Network error occurred",
+    "UNKNOWN_ERROR": "An unknown error occurred"
   },
+  "login_error_generic": "An error occurred during login. Please try again.",
+  "login_error_bad_request": "Invalid request. Please check your credentials.",
+  "login_error_unauthorized": "Invalid email or password. Please try again.",
+  "login_error_forbidden": "Access forbidden. Please contact support.",
+  "login_error_not_found": "Service not found. Please try again later.",
+  "login_error_too_many_requests": "Too many requests. Please try again later.",
+  "login_error_server": "Server error. Please try again later.",
+  "login_error_service_unavailable": "Service temporarily unavailable. Please try again later.",
+  "login_error_network": "Network error. Please check your internet connection.",
   "addArenaTitle": "Add New Arena",
   "basicInfo": "Arena Basic Information",
   "arenaName": "Arena Name",
