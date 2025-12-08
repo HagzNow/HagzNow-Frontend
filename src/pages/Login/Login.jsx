@@ -179,31 +179,31 @@ export default function Login() {
   });
 
   return (
-    <section className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+    <section className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-12 px-4 transition-colors duration-300">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 text-white mb-4 shadow-lg">
             <FaEnvelope className="w-8 h-8" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-2">
             {t('login_title') || 'Log in to Arena Book'}
           </h1>
-          <p className="text-gray-600 text-sm sm:text-base">
+          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
             {t('login_subtitle') || 'Sign in to continue your sports journey'}
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-green-100 p-6 sm:p-8 space-y-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-green-100 dark:border-gray-700 p-6 sm:p-8 space-y-6 transition-colors duration-300">
           <form onSubmit={formik.handleSubmit} className="space-y-5">
             {/* Email Field */}
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                 {t('email') || 'Email'}
               </label>
               <div className="relative">
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
                   <FaEnvelope className="w-5 h-5" />
                 </div>
                 <input
@@ -216,9 +216,9 @@ export default function Login() {
                   onBlur={formik.handleBlur}
                   className={`w-full py-3 pr-11 pl-4 rounded-xl border ${
                     formik.errors.email && formik.touched.email
-                      ? 'border-red-300 bg-red-50 focus:ring-red-500'
-                      : 'border-green-200 bg-green-50/50 focus:ring-green-500 focus:border-green-500'
-                  } focus:outline-none focus:ring-2 transition-all text-gray-700 placeholder-gray-400`}
+                      ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20 focus:ring-red-500 dark:focus:ring-red-400'
+                      : 'border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-700/50 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400'
+                  } focus:outline-none focus:ring-2 transition-all text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500`}
                 />
               </div>
               {formik.errors.email && formik.touched.email && (
@@ -230,11 +230,11 @@ export default function Login() {
 
             {/* Password Field */}
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                 {t('password') || 'Password'}
               </label>
               <div className="relative">
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
                   <FaLock className="w-5 h-5" />
                 </div>
                 <input
@@ -247,14 +247,14 @@ export default function Login() {
                   onBlur={formik.handleBlur}
                   className={`w-full py-3 pr-11 pl-10 rounded-xl border ${
                     formik.errors.password && formik.touched.password
-                      ? 'border-red-300 bg-red-50 focus:ring-red-500'
-                      : 'border-green-200 bg-green-50/50 focus:ring-green-500 focus:border-green-500'
-                  } focus:outline-none focus:ring-2 transition-all text-gray-700 placeholder-gray-400`}
+                      ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20 focus:ring-red-500 dark:focus:ring-red-400'
+                      : 'border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-700/50 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400'
+                  } focus:outline-none focus:ring-2 transition-all text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                 >
                   {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
                 </button>
@@ -303,10 +303,13 @@ export default function Login() {
           </form>
 
           {/* Sign Up Link */}
-          <div className="text-center pt-4 border-t border-gray-100">
-            <p className="text-sm text-gray-600">
+          <div className="text-center pt-4 border-t border-gray-100 dark:border-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               {t('already_have_account') || "Don't have an account?"}{' '}
-              <Link to="/register" className="text-green-600 hover:text-green-700 font-semibold transition-colors">
+              <Link
+                to="/register"
+                className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold transition-colors"
+              >
                 {t('create_account') || 'Create Account'}
               </Link>
             </p>

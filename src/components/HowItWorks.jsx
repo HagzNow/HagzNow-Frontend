@@ -37,14 +37,14 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-white to-green-50">
+    <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-white to-green-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
-            {t("how_it_works_title") || "كيف"} <span className="text-green-600">{t("how_it_works_title_works") || "تعمل"}</span> {t("how_it_works_title_platform") || "المنصة"}؟
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
+            {t("how_it_works_title") || "كيف"} <span className="text-green-600 dark:text-green-400">{t("how_it_works_title_works") || "تعمل"}</span> {t("how_it_works_title_platform") || "المنصة"}؟
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {t("how_it_works_subtitle") || "خطوات بسيطة لحجز ملعبك المفضل في دقائق"}
           </p>
         </div>
@@ -57,9 +57,9 @@ export default function HowItWorks() {
               className="relative group"
             >
               {/* Step Card */}
-              <div className="bg-white rounded-2xl border border-green-100 p-8 hover:border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 h-full">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl border border-green-100 dark:border-gray-700 p-8 hover:border-green-300 dark:hover:border-green-600 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 h-full">
                 {/* Step Number */}
-                <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-green-600 to-emerald-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">
+                <div className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-green-600 to-emerald-600 dark:from-green-500 dark:to-emerald-500 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">
                   {step.number}
                 </div>
 
@@ -69,18 +69,18 @@ export default function HowItWorks() {
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                   {step.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {step.description}
                 </p>
               </div>
 
               {/* Connector Line (hidden on mobile, visible on desktop) */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-green-300 to-emerald-300 transform -translate-y-1/2 z-0">
-                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-green-400 rounded-full"></div>
+                <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-green-300 to-emerald-300 dark:from-green-600 dark:to-emerald-600 transform -translate-y-1/2 z-0">
+                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-green-400 dark:bg-green-500 rounded-full"></div>
                 </div>
               )}
             </div>
@@ -91,7 +91,7 @@ export default function HowItWorks() {
         <div className="text-center">
           <Link
             to="/user-arena"
-            className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            className="inline-flex items-center gap-2 bg-green-600 dark:bg-green-500 hover:bg-green-700 dark:hover:bg-green-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             {t("how_it_works_cta") || "ابدأ الحجز الآن"}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

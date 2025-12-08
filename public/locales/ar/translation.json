@@ -309,5 +309,7 @@
 
   "navbar_profile": "تعديل الملف الشخصي",
   "navbar_wallet": "محفظتي",
-  "logout_success": "تم تسجيل الخروج بنجاح"
+  "logout_success": "تم تسجيل الخروج بنجاح",
+  "theme_dark": "التبديل إلى الوضع الداكن",
+  "theme_light": "التبديل إلى الوضع الفاتح"
 }

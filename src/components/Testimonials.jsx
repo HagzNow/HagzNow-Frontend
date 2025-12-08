@@ -36,15 +36,15 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+    <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
             {t('testimonials_title') || 'ماذا يقول'}{' '}
-            <span className="text-green-600">{t('testimonials_title_clients') || 'عملاؤنا'}</span>؟
+            <span className="text-green-600 dark:text-green-400">{t('testimonials_title_clients') || 'عملاؤنا'}</span>؟
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {t('testimonials_subtitle') || 'آلاف المستخدمين يثقون بنا لحجز ملاعبهم المفضلة'}
           </p>
         </div>
@@ -54,36 +54,38 @@ export default function Testimonials() {
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="group bg-white rounded-2xl border border-green-100 p-8 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+              className="group relative bg-white dark:bg-gray-800 rounded-2xl border border-green-100 dark:border-gray-700 p-8 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
               {/* Rating Stars */}
               <div className="flex items-center gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <FaStar key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                  <FaStar key={i} className="w-4 h-4 text-yellow-400 dark:text-yellow-500 fill-current" />
                 ))}
               </div>
 
               {/* Testimonial Text */}
-              <p className="text-gray-700 mb-6 leading-relaxed italic relative">
-                <span className="text-4xl text-green-200 absolute -top-2 -right-2 font-serif">"</span>
+              <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed italic relative">
+                <span className="text-4xl text-green-200 dark:text-green-800 absolute -top-2 -right-2 font-serif">
+                  "
+                </span>
                 <span className="relative z-10">{testimonial.text}</span>
               </p>
 
               {/* User Info */}
-              <div className="flex items-center gap-4 pt-4 border-t border-green-100">
+              <div className="flex items-center gap-4 pt-4 border-t border-green-100 dark:border-gray-700">
                 <img
                   src={testimonial.img}
                   alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover ring-2 ring-green-200"
+                  className="w-12 h-12 rounded-full object-cover ring-2 ring-green-200 dark:ring-green-800"
                 />
                 <div>
-                  <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                  <div className="text-sm text-gray-500">{testimonial.role}</div>
+                  <div className="font-semibold text-gray-900 dark:text-white">{testimonial.name}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</div>
                 </div>
               </div>
 
               {/* Hover decoration */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 opacity-0 group-hover:opacity-5 transition-opacity duration-300 -z-10"></div>
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 opacity-0 group-hover:opacity-5 dark:group-hover:opacity-10 transition-opacity duration-300 -z-10"></div>
             </div>
           ))}
         </div>

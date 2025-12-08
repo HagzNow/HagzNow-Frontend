@@ -278,5 +278,7 @@
 
   "navbar_profile": "Edit Profile",
   "navbar_wallet": "My Wallet",
-  "logout_success": "Logged out successfully"
+  "logout_success": "Logged out successfully",
+  "theme_dark": "Switch to dark mode",
+  "theme_light": "Switch to light mode"
 }

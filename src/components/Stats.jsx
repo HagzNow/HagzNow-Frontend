@@ -32,7 +32,7 @@ export default function Stats() {
   ];
 
   return (
-    <section className="py-12 sm:py-16 bg-white border-y border-green-100">
+    <section className="py-12 sm:py-16 bg-white dark:bg-gray-900 border-y border-green-100 dark:border-gray-800 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {stats.map((stat, index) => (
@@ -42,8 +42,8 @@ export default function Stats() {
               >
                 {stat.icon}
               </div>
-              <div className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">{stat.value}</div>
-              <div className="text-sm sm:text-base text-gray-600 font-medium">{stat.label}</div>
+              <div className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2">{stat.value}</div>
+              <div className="text-sm sm:text-base text-gray-600 dark:text-gray-400 font-medium">{stat.label}</div>
             </div>
           ))}
         </div>

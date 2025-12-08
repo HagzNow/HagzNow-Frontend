@@ -45,15 +45,15 @@ export default function Features() {
   ];
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-white">
+    <section className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
             {t('features_title') || 'لماذا تختار'}{' '}
-            <span className="text-green-600">{t('features_title_brand') || 'ArenaBook'}</span>؟
+            <span className="text-green-600 dark:text-green-400">{t('features_title_brand') || 'ArenaBook'}</span>؟
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {t('features_subtitle') || 'نوفر لك أفضل تجربة حجز للملاعب الرياضية مع ميزات متقدمة وخدمة عملاء متميزة'}
           </p>
         </div>
@@ -63,7 +63,7 @@ export default function Features() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group relative bg-white rounded-2xl border border-green-100 p-8 hover:border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+              className="group relative bg-white dark:bg-gray-800 rounded-2xl border border-green-100 dark:border-gray-700 p-8 hover:border-green-300 dark:hover:border-green-600 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
             >
               {/* Icon with gradient background */}
               <div
@@ -72,15 +72,15 @@ export default function Features() {
                 {feature.icon}
               </div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                 {feature.title}
               </h3>
 
-              <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{feature.desc}</p>
 
               {/* Hover effect decoration */}
               <div
-                className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300 -z-10`}
+                className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 dark:group-hover:opacity-10 transition-opacity duration-300 -z-10`}
               ></div>
             </div>
           ))}

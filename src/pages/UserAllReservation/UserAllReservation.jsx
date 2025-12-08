@@ -191,14 +191,14 @@ export default function UserAllReservation() {
   const activeData = activeTab === 'past' ? pastReservations : currentReservations;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-green-50/30">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Page Title */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-2">
             {t('my_reservations') || 'حجوزاتي'}
           </h1>
-          <div className="w-20 h-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mx-auto"></div>
+          <div className="w-20 h-1 bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-400 dark:to-emerald-400 rounded-full mx-auto"></div>
         </div>
 
         {/* Tabs */}
@@ -207,8 +207,8 @@ export default function UserAllReservation() {
             onClick={() => handleTabChange('current')}
             className={`relative px-6 sm:px-10 py-3 sm:py-3.5 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 ${
               activeTab === 'current'
-                ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg shadow-green-200 scale-105'
-                : 'bg-white text-gray-700 hover:bg-green-50 border-2 border-gray-200 hover:border-green-300'
+                ? 'bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-500 dark:to-emerald-500 text-white shadow-lg shadow-green-200 dark:shadow-green-900/50 scale-105'
+                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 border-2 border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600'
             }`}
           >
             {t('reservations_current') || 'القادمة'}
@@ -220,8 +220,8 @@ export default function UserAllReservation() {
             onClick={() => handleTabChange('past')}
             className={`relative px-6 sm:px-10 py-3 sm:py-3.5 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 ${
               activeTab === 'past'
-                ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg shadow-green-200 scale-105'
-                : 'bg-white text-gray-700 hover:bg-green-50 border-2 border-gray-200 hover:border-green-300'
+                ? 'bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-500 dark:to-emerald-500 text-white shadow-lg shadow-green-200 dark:shadow-green-900/50 scale-105'
+                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 border-2 border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600'
             }`}
           >
             {t('reservations_past') || 'السابقة'}
@@ -234,7 +234,7 @@ export default function UserAllReservation() {
         {/* Error Message */}
         {error && (
           <div className="mx-auto max-w-2xl mb-6">
-            <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-xl text-center font-medium shadow-sm">
+            <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl text-center font-medium shadow-sm">
               {error}
             </div>
           </div>
