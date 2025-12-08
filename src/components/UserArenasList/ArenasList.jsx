@@ -6,12 +6,12 @@ export default function ArenasList({ arenas, loading }) {
     return (
       <div className="flex flex-col justify-center items-center py-20 min-h-[400px]">
         <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-green-200 border-t-green-600"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-green-200 dark:border-green-800 border-t-green-600 dark:border-t-green-400"></div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <PiSoccerBall className="text-green-600 text-xl animate-pulse" />
+            <PiSoccerBall className="text-green-600 dark:text-green-400 text-xl animate-pulse" />
           </div>
         </div>
-        <p className="mt-6 text-gray-600 text-lg font-medium">جاري تحميل الملاعب...</p>
+        <p className="mt-6 text-gray-600 dark:text-gray-300 text-lg font-medium">جاري تحميل الملاعب...</p>
       </div>
     );
   }
@@ -19,11 +19,11 @@ export default function ArenasList({ arenas, loading }) {
   if (!arenas || arenas.length === 0) {
     return (
       <div className="text-center py-20 min-h-[400px] flex flex-col items-center justify-center">
-        <div className="bg-gray-100 rounded-full p-6 mb-6">
-          <PiSoccerBall className="text-6xl text-gray-400" />
+        <div className="bg-gray-100 dark:bg-gray-800 rounded-full p-6 mb-6">
+          <PiSoccerBall className="text-6xl text-gray-400 dark:text-gray-500" />
         </div>
-        <h3 className="text-2xl font-bold text-gray-800 mb-2">لا توجد ملاعب متاحة</h3>
-        <p className="text-gray-500 text-lg max-w-md">
+        <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">لا توجد ملاعب متاحة</h3>
+        <p className="text-gray-500 dark:text-gray-400 text-lg max-w-md">
           لم يتم العثور على ملاعب تطابق معايير البحث الخاصة بك. جرب تغيير الفلاتر أو البحث مرة أخرى.
         </p>
       </div>
