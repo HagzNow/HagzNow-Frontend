@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
-import { X, ChevronDown, ChevronUp } from "lucide-react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useState, useMemo } from 'react';
+import { X, ChevronDown, ChevronUp } from 'lucide-react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 
 export default function Sidebar({
   mode,
@@ -11,13 +11,13 @@ export default function Sidebar({
   open = true,
   onClose = () => {},
   isRTL = true,
-  className = "",
+  className = '',
 }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   // determine mode if not explicitly provided
-  const inferredMode = mode || (navSections && navSections.length ? "owner" : "admin");
+  const inferredMode = mode || (navSections && navSections.length ? 'owner' : 'admin');
 
   // expanded sections state
   const initialOpen = useMemo(() => {
@@ -27,9 +27,7 @@ export default function Sidebar({
   const [expanded, setExpanded] = useState(initialOpen);
 
   // active item state
-  const [localActive, setLocalActive] = useState(
-    activeKey || (menuItems[0]?.key || navSections[0]?.items?.[0]?.id)
-  );
+  const [localActive, setLocalActive] = useState(activeKey || menuItems[0]?.key || navSections[0]?.items?.[0]?.id);
   const active = activeKey ?? localActive;
 
   const handleSelect = (keyOrId, to) => {
@@ -45,46 +43,46 @@ export default function Sidebar({
       {/* Mobile overlay */}
       <div
         className={`fixed inset-0 z-40  bg-black/40 md:hidden transition-opacity duration-200 ${
-          open ? "opacity-100 visible" : "opacity-0 invisible"
+          open ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
         onClick={onClose}
       />
 
       {/* Sidebar Panel */}
       <aside
-        dir={isRTL ? "rtl" : "ltr"}
+        dir={isRTL ? 'rtl' : 'ltr'}
         className={[
-          "fixed top-0 bottom-0 z-50  bg-white shadow-xl transform transition-transform duration-300 ease-in-out",
-          isRTL ? "right-0" : "left-0",
-          open ? "translate-x-0" : isRTL ? "translate-x-full" : "-translate-x-full",
-          "md:translate-x-0 md:static md:shadow-none md:w-72",
+          'fixed top-0 bottom-0 z-50 bg-white dark:bg-gray-800 shadow-xl dark:shadow-gray-900/50 transform transition-all duration-300 ease-in-out',
+          isRTL ? 'right-0' : 'left-0',
+          open ? 'translate-x-0' : isRTL ? 'translate-x-full' : '-translate-x-full',
+          'md:translate-x-0 md:static md:shadow-none md:w-72',
           className,
-        ].join(" ")}
+        ].join(' ')}
       >
         {/* Header */}
         <div
           className={`flex items-center justify-between px-4 py-[10px] ${
-            inferredMode !== "admin" ? "border-b border-neutral-200" : ""
+            inferredMode !== 'admin' ? 'border-b border-neutral-200 dark:border-gray-700' : ''
           }`}
         >
-          {inferredMode !== "admin" && (
+          {inferredMode !== 'admin' && (
             <div className="flex flex-1 items-center justify-center py-2">
-              <span className="font-extrabold text-lg">لوحة التحكم</span>
+              <span className="font-extrabold text-lg text-gray-900 dark:text-white">لوحة التحكم</span>
             </div>
           )}
           <button
             onClick={onClose}
-            className="md:hidden p-2 rounded-full hover:bg-neutral-100 transition"
+            className="md:hidden p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-gray-700 transition-colors"
             aria-label="إغلاق القائمة"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 text-gray-700 dark:text-gray-300" />
           </button>
         </div>
 
         {/* Body */}
         <div className="flex flex-col h-full">
           {/* Menu Items (admin mode) */}
-          {inferredMode === "admin" && menuItems.length > 0 && (
+          {inferredMode === 'admin' && menuItems.length > 0 && (
             <ul className="px-3 py-2 space-y-1">
               {menuItems.map((item) => {
                 const isActiveItem = active === item.key;
@@ -95,16 +93,16 @@ export default function Sidebar({
                         to={item.to}
                         onClick={() => handleSelect(item.key, item.to)}
                         className={[
-                          "group flex items-center gap-3 rounded-xl px-3 py-2 transition",
+                          'group flex items-center gap-3 rounded-xl px-3 py-2 transition-colors',
                           isActiveItem
-                            ? "bg-emerald-50 text-emerald-700 font-semibold"
-                            : "text-neutral-700 hover:bg-neutral-50",
-                        ].join(" ")}
+                            ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold'
+                            : 'text-neutral-700 dark:text-gray-300 hover:bg-neutral-50 dark:hover:bg-gray-700',
+                        ].join(' ')}
                       >
                         <span className="shrink-0">{item.icon}</span>
                         <span className="truncate">{item.label}</span>
                         {item.badge && (
-                          <span className="ms-auto rounded-full text-[10px] px-2 py-0.5 bg-neutral-100">
+                          <span className="ms-auto rounded-full text-[10px] px-2 py-0.5 bg-neutral-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
                             {item.badge}
                           </span>
                         )}
@@ -113,16 +111,16 @@ export default function Sidebar({
                       <button
                         onClick={() => handleSelect(item.key)}
                         className={[
-                          "w-full text-left flex items-center gap-3 rounded-xl px-3 py-2 transition",
+                          'w-full text-left flex items-center gap-3 rounded-xl px-3 py-2 transition-colors',
                           isActiveItem
-                            ? "bg-emerald-50 text-emerald-700 font-semibold"
-                            : "text-neutral-700 hover:bg-neutral-50",
-                        ].join(" ")}
+                            ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold'
+                            : 'text-neutral-700 dark:text-gray-300 hover:bg-neutral-50 dark:hover:bg-gray-700',
+                        ].join(' ')}
                       >
                         <span className="shrink-0">{item.icon}</span>
                         <span className="truncate">{item.label}</span>
                         {item.badge && (
-                          <span className="ms-auto rounded-full text-[10px] px-2 py-0.5 bg-neutral-100">
+                          <span className="ms-auto rounded-full text-[10px] px-2 py-0.5 bg-neutral-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
                             {item.badge}
                           </span>
                         )}
@@ -141,7 +139,10 @@ export default function Sidebar({
               const sectionActive = section.path && isActivePath(section.path);
 
               return (
-                <div key={section.title} className="rounded-xl border border-neutral-100 bg-white">
+                <div
+                  key={section.title}
+                  className="rounded-xl border border-neutral-100 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors"
+                >
                   <button
                     onClick={() => {
                       if (section.items && section.items.length > 0) {
@@ -149,19 +150,24 @@ export default function Sidebar({
                       } else if (section.path) navigate(section.path);
                     }}
                     className={[
-                      "w-full px-3  py-2 flex items-center justify-between text-sm font-medium rounded-t-xl",
+                      'w-full px-3 py-2 flex items-center justify-between text-sm font-medium rounded-t-xl transition-colors',
                       sectionActive
-                        ? "bg-emerald-50 text-emerald-700 font-semibold"
-                        : "text-neutral-700 hover:bg-neutral-50",
-                    ].join(" ")}
+                        ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold'
+                        : 'text-neutral-700 dark:text-gray-300 hover:bg-neutral-50 dark:hover:bg-gray-700',
+                    ].join(' ')}
                   >
-                       <span className="flex items-center gap-2">
-                        {section.icon && <section.icon className="h-4 w-4" />}
-                        <span>{section.title}</span>
-                      </span>
-          
-                    {section.items && section.items.length > 0 &&
-                      (isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />)}
+                    <span className="flex items-center gap-2">
+                      {section.icon && <section.icon className="h-4 w-4" />}
+                      <span>{section.title}</span>
+                    </span>
+
+                    {section.items &&
+                      section.items.length > 0 &&
+                      (isOpen ? (
+                        <ChevronUp className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                      ))}
                   </button>
 
                   {isOpen && section.items && (
@@ -169,13 +175,13 @@ export default function Sidebar({
                       {section.items.map((item) => (
                         <li key={item.id}>
                           <button
-                            onClick={() => handleSelect(item.id,item.path)}
+                            onClick={() => handleSelect(item.id, item.path)}
                             className={[
-                              "w-full flex items-center gap-3 px-3 py-2 my-1 rounded-lg text-sm",
+                              'w-full flex items-center gap-3 px-3 py-2 my-1 rounded-lg text-sm transition-colors',
                               isActivePath(item.path)
-                                ? "bg-emerald-50 text-emerald-700 font-semibold"
-                                : "text-neutral-700 hover:bg-neutral-50",
-                            ].join(" ")}
+                                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold'
+                                : 'text-neutral-700 dark:text-gray-300 hover:bg-neutral-50 dark:hover:bg-gray-700',
+                            ].join(' ')}
                           >
                             {item.icon ? <item.icon className="h-4 w-4" /> : <span className="w-4" />}
                             <span className="truncate">{item.label}</span>
@@ -190,7 +196,7 @@ export default function Sidebar({
           </nav>
 
           {/* Footer */}
-          <div className="mt-auto p-3 text-xs text-neutral-500 border-t border-neutral-200">
+          <div className="mt-auto p-3 text-xs text-neutral-500 dark:text-gray-400 border-t border-neutral-200 dark:border-gray-700 transition-colors">
             © {new Date().getFullYear()} ملعبك — كل الحقوق محفوظة
           </div>
         </div>
