@@ -269,5 +269,10 @@
   "navbar_contact": "Contact Us",
   "navbar_help": "Help",
   "navbar_search_placeholder": "Search for an arena...",
-  "navbar_logout": "Logout"
+  "navbar_logout": "Logout",
+
+  "my_reservations": "My Reservations",
+  "reservations_current": "Upcoming",
+  "reservations_past": "Past",
+  "reservations_error_load": "An error occurred while loading reservations"
 }
