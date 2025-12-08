@@ -17,12 +17,13 @@ export default function Reservation() {
 
   useEffect(() => {
     getExtras(id);
-  }, [id]);
+  }, [id, getExtras]);
 
   useEffect(() => {
     return () => {
       resetReservation();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderStepContent = () => {
@@ -41,21 +42,21 @@ export default function Reservation() {
   const isNextDisabled = activeStep === 0 && (!slots || slots.length === 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 py-8 transition-colors duration-300">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">{'حجز الملعب'}</h1>
-          <p className="text-gray-600 text-lg">{'اتبع الخطوات لإكمال حجزك'}</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">{'حجز الملعب'}</h1>
+          <p className="text-gray-600 dark:text-gray-300 text-lg">{'اتبع الخطوات لإكمال حجزك'}</p>
         </div>
 
         {/* Stepper */}
-        <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out border border-gray-100 p-6 mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-500 ease-in-out border border-gray-100 dark:border-gray-700 p-6 mb-8">
           <BookingStepper steps={steps} activeStep={activeStep} />
         </div>
 
         {/* Step Content */}
-        <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out border border-gray-100 overflow-hidden mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-500 ease-in-out border border-gray-100 dark:border-gray-700 overflow-hidden mb-8">
           {renderStepContent()}
         </div>
 
@@ -65,20 +66,20 @@ export default function Reservation() {
             {/* Back Button */}
             <button
               onClick={() => handleBack(navigate, id)}
-              className="flex items-center gap-2 px-8 py-4 bg-white text-gray-700 border-2 border-gray-300 rounded-2xl hover:bg-gray-50 hover:border-gray-400 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out font-semibold min-w-[140px] justify-center"
+              className="flex items-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-600 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-lg dark:hover:shadow-gray-900/50 transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out font-semibold min-w-[140px] justify-center"
             >
               <ArrowRight className="w-5 h-5" />
               {t('reservation.previous') || 'السابق'}
             </button>
 
             {/* Step Indicator */}
-            {/* <div className="flex items-center gap-3 bg-gray-50 px-6 py-3 rounded-2xl">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center text-white font-bold">
+            {/* <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 px-6 py-3 rounded-2xl">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center text-white font-bold">
                 {activeStep + 1}
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-600">الخطوة الحالية</p>
-                <p className="font-semibold text-gray-900">{steps[activeStep]}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">الخطوة الحالية</p>
+                <p className="font-semibold text-gray-900 dark:text-white">{steps[activeStep]}</p>
               </div>
             </div> */}
 
@@ -91,8 +92,8 @@ export default function Reservation() {
                 transform transition-all duration-300 ease-in-out
                 ${
                   isNextDisabled
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed hover:scale-100'
-                    : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white hover:-translate-y-0.5 hover:shadow-xl'
+                    ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed hover:scale-100'
+                    : 'bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 hover:from-green-600 hover:to-emerald-600 dark:hover:from-green-700 dark:hover:to-emerald-700 text-white hover:-translate-y-0.5 hover:shadow-xl'
                 }
               `}
             >
