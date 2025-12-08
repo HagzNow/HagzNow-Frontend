@@ -193,15 +193,15 @@ export default function ProfileForm({
   const Toast = ({ message, type }) => {
     if (!toast.visible) return null;
     const typeStyles = {
-      success: "bg-emerald-600 border-emerald-700",
-      error: "bg-red-600 border-red-700",
-      warning: "bg-amber-600 border-amber-700",
-      info: "bg-blue-600 border-blue-700",
+      success: "bg-emerald-600 dark:bg-emerald-700 border-emerald-700 dark:border-emerald-800",
+      error: "bg-red-600 dark:bg-red-700 border-red-700 dark:border-red-800",
+      warning: "bg-amber-600 dark:bg-amber-700 border-amber-700 dark:border-amber-800",
+      info: "bg-blue-600 dark:bg-blue-700 border-blue-700 dark:border-blue-800",
     };
     return (
       <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
         <div
-          className={`${typeStyles[type] || typeStyles.info} text-white px-4 py-3 rounded-xl border shadow-2xl w-fit max-w-[92vw] transition-transform animate-[slideDown_.25s_ease-out]`}
+          className={`${typeStyles[type] || typeStyles.info} text-white px-4 py-3 rounded-xl border shadow-2xl dark:shadow-gray-900/50 w-fit max-w-[92vw] transition-transform animate-[slideDown_.25s_ease-out]`}
         >
           {message}
         </div>
@@ -225,7 +225,7 @@ export default function ProfileForm({
               <div className="grid grid-cols-2 gap-6 mb-12">
                 {["name", "email"].map((field) => (
                   <div className="text-right" key={field}>
-                    <label className="block text-gray-600 mb-2">
+                    <label className="block text-gray-600 dark:text-gray-300 mb-2">
                       {field === "name" ? t("first_name") : t("email")}
                     </label>
                     {isEditing ? (
@@ -234,16 +234,16 @@ export default function ProfileForm({
                           type={field === "email" ? "email" : "text"}
                           name={field}
                           disabled={isInfoLocked()}
-                          className={`w-full px-3 py-2 border rounded-lg text-right focus:outline-none ${
+                          className={`w-full px-3 py-2 border rounded-lg text-right focus:outline-none transition-colors ${
                             isInfoLocked()
-                              ? "bg-gray-100 cursor-not-allowed"
-                              : "border-gray-300 focus:ring-2 focus:ring-green-500"
+                              ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400"
+                              : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400"
                           }`}
                         />
-                        <ErrorMessage name={field} component="div" className="text-red-500 text-sm mt-1" />
+                        <ErrorMessage name={field} component="div" className="text-red-500 dark:text-red-400 text-sm mt-1" />
                       </>
                     ) : (
-                      <div className="text-gray-900 font-medium">
+                      <div className="text-gray-900 dark:text-white font-medium">
                         {field === "name" ? values.name : values.email}
                       </div>
                     )}
@@ -251,23 +251,23 @@ export default function ProfileForm({
                 ))}
 
                 <div className="text-right col-span-2">
-                  <label className="block text-gray-600 mb-2">{t("phone")}</label>
+                  <label className="block text-gray-600 dark:text-gray-300 mb-2">{t("phone")}</label>
                   {isEditing ? (
                     <>
                       <Field
                         type="tel"
                         name="phone"
                         disabled={isInfoLocked()}
-                        className={`w-full px-3 py-2 border rounded-lg text-right focus:outline-none ${
+                        className={`w-full px-3 py-2 border rounded-lg text-right focus:outline-none transition-colors ${
                           isInfoLocked()
-                            ? "bg-gray-100 cursor-not-allowed"
-                            : "border-gray-300 focus:ring-2 focus:ring-green-500"
+                            ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400"
+                            : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400"
                         }`}
                       />
-                      <ErrorMessage name="phone" component="div" className="text-red-500 text-sm mt-1" />
+                      <ErrorMessage name="phone" component="div" className="text-red-500 dark:text-red-400 text-sm mt-1" />
                     </>
                   ) : (
-                    <div className="text-gray-900">{infoInitialValues.phone}</div>
+                    <div className="text-gray-900 dark:text-white">{infoInitialValues.phone}</div>
                   )}
                 </div>
               </div>
@@ -293,14 +293,14 @@ export default function ProfileForm({
 
           return (
             <Form onSubmit={handleSubmit}>
-              <div className="border-t pt-8 mb-8">
-                <h2 className="text-xl font-bold text-gray-900 mb-2">{t("labels.security")}</h2>
-                <p className="text-gray-600 mb-6">{t("labels.updatePassword")}</p>
+              <div className="border-t dark:border-gray-700 pt-8 mb-8">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t("labels.security")}</h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-6">{t("labels.updatePassword")}</p>
 
                 <div className="space-y-4">
                   {["oldPassword", "newPassword", "confirmPassword"].map((field) => (
                     <div key={field}>
-                      <label className="block text-gray-600 mb-2">
+                      <label className="block text-gray-600 dark:text-gray-300 mb-2">
                         {field === "oldPassword"
                           ? "كلمة المرور القديمة"
                           : field === "newPassword"
@@ -318,28 +318,28 @@ export default function ProfileForm({
                             ? t("password_placeholder")
                             : t("confirm_password_placeholder")
                         }
-                        className={`w-full px-4 py-3 border rounded-lg text-right focus:outline-none ${
+                        className={`w-full px-4 py-3 border rounded-lg text-right focus:outline-none transition-colors ${
                           isSubmitting
-                            ? "bg-gray-100 cursor-not-allowed"
-                            : "border-gray-300 focus:ring-2 focus:ring-green-500"
+                            ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400"
+                            : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400"
                         }`}
                       />
-                      <ErrorMessage name={field} component="div" className="text-red-500 text-sm mt-1" />
+                      <ErrorMessage name={field} component="div" className="text-red-500 dark:text-red-400 text-sm mt-1" />
                       {field === "confirmPassword" && isFormFilled && !passwordsMatch && (
-                        <div className="text-red-500 text-sm mt-1">{t("password_not_match")}</div>
+                        <div className="text-red-500 dark:text-red-400 text-sm mt-1">{t("password_not_match")}</div>
                       )}
                     </div>
                   ))}
 
-                  {serverError && <div className="text-red-500 text-sm mt-2 text-center">{serverError}</div>}
+                  {serverError && <div className="text-red-500 dark:text-red-400 text-sm mt-2 text-center">{serverError}</div>}
 
                   <button
                     type="submit"
                     disabled={!canSubmitPwd}
                     className={`px-8 py-3 rounded-lg font-medium transition-colors ${
                       !canSubmitPwd
-                        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                        : "bg-green-600 hover:bg-green-700 text-white"
+                        ? "bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 cursor-not-allowed"
+                        : "bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-600 text-white"
                     }`}
                   >
                     {isSubmitting ? t("buttons.saving") : t("buttons.changePassword")}

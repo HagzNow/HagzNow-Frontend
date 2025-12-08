@@ -5,12 +5,14 @@ export default function ProfileHeader({ isEditing, isSubmitting, onClick }) {
 
   return (
     <div className="flex items-center justify-between mb-8">
-      <h1 className="text-2xl font-bold text-gray-900">معلومات الملف الشخصي</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white">معلومات الملف الشخصي</h1>
       <button
         onClick={onClick}
         disabled={isSubmitting}
         className={`flex items-center gap-2 transition ${
-          isSubmitting ? "text-gray-400 cursor-not-allowed" : "text-green-600 hover:text-green-700"
+          isSubmitting
+            ? "text-gray-400 dark:text-gray-500 cursor-not-allowed"
+            : "text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-500"
         }`}
       >
         <span className="cursor-pointer">{label}</span>

@@ -1,18 +1,18 @@
-import { useState, useEffect, useContext, useRef } from "react";
-import { authContext } from "@/Contexts/AuthContext";
-import ProfileHeader from "@/components/UserProfile/ProfileHeader";
-import ProfilePicture from "@/components/UserProfile/ProfilePicture";
-import ProfileForm from "@/components/UserProfile/ProfileForm";
-import LanguageSwitcher from "@/components/UserProfile/LanguageSwitcher";
-import baseUrl from "@/apis/config";
+import { useState, useEffect, useContext, useRef } from 'react';
+import { authContext } from '@/Contexts/AuthContext';
+import ProfileHeader from '@/components/UserProfile/ProfileHeader';
+import ProfilePicture from '@/components/UserProfile/ProfilePicture';
+import ProfileForm from '@/components/UserProfile/ProfileForm';
+import LanguageSwitcher from '@/components/UserProfile/LanguageSwitcher';
+import baseUrl from '@/apis/config';
 
 export default function UserProfile() {
-  const [language, setLanguage] = useState("arabic");
+  const [language, setLanguage] = useState('arabic');
   const [selectedImage, setSelectedImage] = useState(null);
   const [isEditingInfo, setIsEditingInfo] = useState(false);
   const [isSubmittingInfo, setIsSubmittingInfo] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [serverError, setServerError] = useState("");
+  const [serverError, setServerError] = useState('');
   const { token } = useContext(authContext);
 
   const submitRef = useRef(null);
@@ -25,7 +25,7 @@ export default function UserProfile() {
         });
         setUserData(res.data.data);
       } catch (err) {
-        console.error("Error fetching user profile:", err);
+        console.error('Error fetching user profile:', err);
       }
     };
     if (token) fetchUserData();
@@ -33,8 +33,8 @@ export default function UserProfile() {
 
   if (!userData)
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-lg text-gray-600">جارٍ تحميل البيانات...</p>
+      <div className="flex justify-center items-center h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+        <p className="text-lg text-gray-600 dark:text-gray-300">جارٍ تحميل البيانات...</p>
       </div>
     );
 
@@ -47,7 +47,7 @@ export default function UserProfile() {
   };
 
   const handleSavedInfo = (updated) => {
-    if (updated) setUserData(prev => ({ ...prev, ...updated }));
+    if (updated) setUserData((prev) => ({ ...prev, ...updated }));
     setSelectedImage(null);
     setIsEditingInfo(false);
     setIsSubmittingInfo(false);
@@ -56,14 +56,10 @@ export default function UserProfile() {
   const handleSubmittingInfoChange = (flag) => setIsSubmittingInfo(flag);
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300" dir="rtl">
       <main className="w-3/4 mt-[20px] mx-auto px-4 py-12">
-        <div className="bg-white rounded-lg shadow-sm p-8">
-          <ProfileHeader
-            isEditing={isEditingInfo}
-            isSubmitting={isSubmittingInfo}
-            onClick={handleHeaderClick}
-          />
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-900/50 p-8 transition-colors duration-300">
+          <ProfileHeader isEditing={isEditingInfo} isSubmitting={isSubmittingInfo} onClick={handleHeaderClick} />
 
           <ProfilePicture
             isEditing={isEditingInfo && !isSubmittingInfo}
