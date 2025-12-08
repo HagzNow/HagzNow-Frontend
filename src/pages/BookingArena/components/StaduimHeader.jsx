@@ -11,33 +11,33 @@ export default function StadiumHeader({ name, id, status, pricePerHour }) {
   const isDisabled = status !== 'active';
 
   return (
-    <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100">
+    <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-b border-green-100 dark:border-gray-700">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
         {/* Left Side - Stadium Info */}
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center shadow-lg">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-lg">
               <Shield className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{name}</h1>
+              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1">{name}</h1>
               <div className="flex items-center gap-4 flex-wrap">
                 {/* Rating */}
-                <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-2xl shadow-sm border border-green-100">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm font-semibold text-gray-700">4.5</span>
-                  <span className="text-gray-500 text-sm">(24 تقييم)</span>
+                <div className="flex items-center gap-1.5 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-2xl shadow-sm border border-green-100 dark:border-gray-700">
+                  <Star className="w-4 h-4 fill-yellow-400 dark:fill-yellow-500 text-yellow-400 dark:text-yellow-500" />
+                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">4.5</span>
+                  <span className="text-gray-500 dark:text-gray-400 text-sm">(24 تقييم)</span>
                 </div>
 
                 {/* Status Badge */}
                 <div
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl font-medium text-sm ${
                     status === 'active'
-                      ? 'bg-green-100 text-green-700 border border-green-200'
-                      : 'bg-red-100 text-red-700 border border-red-200'
+                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-700'
+                      : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-700'
                   }`}
                 >
-                  <div className={`w-2 h-2 rounded-full ${status === 'active' ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                  <div className={`w-2 h-2 rounded-full ${status === 'active' ? 'bg-green-500 dark:bg-green-400' : 'bg-red-500 dark:bg-red-400'}`}></div>
                   {status === 'active' ? 'متاح للحجز' : 'غير متاح'}
                 </div>
               </div>
@@ -45,11 +45,11 @@ export default function StadiumHeader({ name, id, status, pricePerHour }) {
           </div>
 
           {/* Price */}
-          <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-2xl shadow-sm border border-green-100 w-fit">
-            <Clock className="w-4 h-4 text-green-600" />
-            <span className="text-gray-600 text-sm">السعر:</span>
-            <span className="font-bold text-green-600 text-lg">{pricePerHour} ج.م</span>
-            <span className="text-gray-500 text-sm">/ ساعة</span>
+          <div className="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-2xl shadow-sm border border-green-100 dark:border-gray-700 w-fit">
+            <Clock className="w-4 h-4 text-green-600 dark:text-green-400" />
+            <span className="text-gray-600 dark:text-gray-300 text-sm">السعر:</span>
+            <span className="font-bold text-green-600 dark:text-green-400 text-lg">{pricePerHour} ج.م</span>
+            <span className="text-gray-500 dark:text-gray-400 text-sm">/ ساعة</span>
           </div>
         </div>
 
@@ -64,8 +64,8 @@ export default function StadiumHeader({ name, id, status, pricePerHour }) {
               min-w-[180px]
               ${
                 isDisabled
-                  ? 'bg-gray-400 text-gray-700 cursor-not-allowed hover:scale-100'
-                  : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white hover:-translate-y-1 cursor-pointer'
+                  ? 'bg-gray-400 dark:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-not-allowed hover:scale-100'
+                  : 'bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 hover:from-green-600 hover:to-emerald-600 dark:hover:from-green-700 dark:hover:to-emerald-700 text-white hover:-translate-y-1 cursor-pointer'
               }
             `}
           >
@@ -74,7 +74,7 @@ export default function StadiumHeader({ name, id, status, pricePerHour }) {
           </button>
 
           {isDisabled && (
-            <p className="text-red-600 text-sm text-center font-medium">⚠️ الملعب غير متاح للحجز حالياً</p>
+            <p className="text-red-600 dark:text-red-400 text-sm text-center font-medium">⚠️ الملعب غير متاح للحجز حالياً</p>
           )}
         </div>
       </div>
