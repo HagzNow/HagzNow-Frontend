@@ -17,7 +17,7 @@ export default function Reservation() {
 
   useEffect(() => {
     getExtras(id);
-  }, [id, getExtras]);
+  }, [id]);
 
   useEffect(() => {
     return () => {
