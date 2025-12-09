@@ -1,13 +1,17 @@
 export default function AdminFooter() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
-      <div className="mx-auto max-w-7xl px-4 py-6 text-sm text-neutral-500 flex items-center justify-between ">
+    <footer className="border-t border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-neutral-600 dark:text-neutral-400">
         <div className="flex items-center gap-4">
-          <span>الشروط</span>
-          <span>الخصوصية</span>
-          <span>الدعم</span>
+          <span className="hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer">الشروط</span>
+          <span className="h-4 w-px bg-neutral-200 dark:bg-neutral-700" />
+          <span className="hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer">الخصوصية</span>
+          <span className="h-4 w-px bg-neutral-200 dark:bg-neutral-700" />
+          <span className="hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer">الدعم</span>
         </div>
-        <div>نسخة العرض — {new Date().getFullYear()}</div>
+        <div className="text-neutral-500 dark:text-neutral-500">نسخة العرض — {year}</div>
       </div>
     </footer>
   );

@@ -23,8 +23,6 @@ const MENU_PRESETS = (t) => ({
   public: [
     { to: '/user-arena', label: t('navbar_arenas') || 'الملاعب الرئيسية' },
     { to: '/home', label: t('navbar_about') || 'عن المنصة' },
-    { href: '#contact', label: t('navbar_contact') || 'تواصل معنا' },
-    { href: '#help', label: t('navbar_help') || 'المساعدة' },
   ],
   user: [
     { to: '/user-arena', label: t('navbar_arenas') || 'الملاعب', icon: <MapPin className="w-4 h-4" /> },
