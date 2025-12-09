@@ -151,4 +151,35 @@ export const reservationService = {
       throw error;
     }
   },
+
+  /**
+   * Fetch reservation details by id (owner/admin protected).
+   * @param {string} id - reservation id
+   */
+  async getReservationById(id) {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const response = await fetch(`${API_BASE_URL}/reservations/${id}`, {
+        method: 'GET',
+        headers,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (!result.isSuccess) {
+        throw new Error(result.message || 'Failed to fetch reservation');
+      }
+
+      return result.data;
+    } catch (error) {
+      console.error('Error fetching reservation details:', error);
+      throw error;
+    }
+  },
 };
