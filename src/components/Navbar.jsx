@@ -1,4 +1,4 @@
-import { use, useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
