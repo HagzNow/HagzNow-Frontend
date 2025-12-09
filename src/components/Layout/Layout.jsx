@@ -43,45 +43,21 @@ import React, { useContext } from "react";
 import { Outlet } from "react-router-dom";
 import { authContext } from "../../Contexts/AuthContext";
 
-import Navbar from "../Navbar"; // للزائر أو اليوزر
+import Navbar from "../Navbar"; // كل الأدوار - يتم تغيير القوائم فقط
 import Footer from "../Footer";
-
-import AdminNavbar from "../AdminLayout/AdminNavbar";
 import AdminFooter from "../AdminLayout/AdminFooter";
-
-import Header from "../OwnerComponents/OwnerLayout/Header"; // Navbar بتاع الأونر
-import UserNavbar from "../NavbarUser";
 
 export default function Layout() {
   const { user } = useContext(authContext);
 
-  // مبدئياً حط الافتراضي (لو مفيش يوزر)
-  let HeaderComponent = Navbar;
-  let FooterComponent = Footer;
-
-  // ✅ المنطق حسب الرول وحالة الدخول
-  if (!user) {
-    // الحالة 1: زائر (مش عامل login)
-    HeaderComponent = Navbar;
-    FooterComponent = Footer;
-  } else if (user.role === "user") {
-    // الحالة 2: يوزر عامل login
-    HeaderComponent = UserNavbar;
-    FooterComponent = Footer;
-  } else if (user.role === "admin") {
-    // الحالة 3: أدمن
-    HeaderComponent = AdminNavbar;
-    FooterComponent = AdminFooter;
-  } else if (user.role === "owner") {
-    // الحالة 4: أونر
-    HeaderComponent = Header;
-    FooterComponent = AdminFooter;
-  }
+  const variant =
+    !user ? "public" : user.role === "admin" ? "admin" : user.role === "owner" ? "owner" : "user";
+  const FooterComponent = user?.role === "admin" || user?.role === "owner" ? AdminFooter : Footer;
 
   return (
     <div className="app-layout flex flex-col min-h-screen">
       {/* ✅ Navbar */}
-      <HeaderComponent />
+      <Navbar variant={variant} />
 
       {/* ✅ المحتوى */}
       <main className="flex-grow">

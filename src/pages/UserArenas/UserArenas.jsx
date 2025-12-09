@@ -3,7 +3,7 @@ import UserArenaFilter from '../../components/UserArenaFilter/UserArenaFilter';
 import ArenasList from '../../components/UserArenasList/ArenasList';
 import Pagination from '../../components/Pagination/Pagination';
 import { arenaService } from '../../services/arenaService';
-import UserNavbar from '@/components/NavbarUser';
+import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export default function UserArenas() {
@@ -58,7 +58,7 @@ export default function UserArenas() {
 
   return (
     <>
-      <UserNavbar />
+      <Navbar variant="user" />
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
         {/* Hero Section */}

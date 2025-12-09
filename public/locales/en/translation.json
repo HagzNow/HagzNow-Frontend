@@ -297,6 +297,12 @@
   "logout_success": "Logged out successfully",
   "theme_dark": "Switch to dark mode",
   "theme_light": "Switch to light mode",
+  "dashboard": "Dashboard",
+  "requests": "Requests",
+  "users": "Users",
+  "owner_arenas": "My Arenas",
+  "owner_add_arena": "Add Arena",
+  "wallet_label": "Wallet",
   "saving": "Saving...",
   "loading": "Loading"
 }

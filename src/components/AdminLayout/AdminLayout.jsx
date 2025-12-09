@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { ChartLine, Box, Users, Calendar, FileCog, MessageSquareText, WalletCards } from 'lucide-react';
 
 import Sidebar from '../Sidebar';
-import AdminNavbar from './AdminNavbar';
+import Navbar from '../Navbar';
 
 export default function AdminLayout() {
   const [activeKey, setActiveKey] = useState('dashboard');
@@ -52,7 +52,7 @@ export default function AdminLayout() {
   return (
     <>
       {/* ✅ Navbar */}
-      <AdminNavbar />
+      <Navbar variant="admin" />
 
       {/* ✅ Main layout wrapper */}
       <div className="flex flex-row-reverse min-h-screen bg-neutral-50 dark:bg-gray-900 text-neutral-900 dark:text-gray-100 transition-colors duration-300">

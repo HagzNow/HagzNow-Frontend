@@ -321,5 +321,11 @@
   "navbar_wallet": "محفظتي",
   "logout_success": "تم تسجيل الخروج بنجاح",
   "theme_dark": "التبديل إلى الوضع الداكن",
-  "theme_light": "التبديل إلى الوضع الفاتح"
+  "theme_light": "التبديل إلى الوضع الفاتح",
+  "dashboard": "لوحة التحكم",
+  "requests": "الطلبات",
+  "users": "المستخدمون",
+  "owner_arenas": "ساحاتي",
+  "owner_add_arena": "إضافة ساحة",
+  "wallet_label": "المحفظة"
 }
