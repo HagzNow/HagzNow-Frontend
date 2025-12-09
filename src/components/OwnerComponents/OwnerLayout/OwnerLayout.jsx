@@ -7,29 +7,18 @@ import Navbar from '@/components/Navbar';
 import { ChartLine, Plus, LibraryBig, Calendar, WalletCards } from 'lucide-react';
 
 export default function OwnerLayout() {
+  const [activeKey, setActiveKey] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isRTL = true;
 
-  const navSections = useMemo(
+  const menu = useMemo(
     () => [
-      { id: 'dashboard', title: 'لوحة التحكم', icon: ChartLine, path: '/owner/dashboard' },
-      { id: 'wallet', title: 'المحفظة', icon: WalletCards, path: '/owner/wallet' },
-      {
-        id: 'arenas',
-        title: 'الملاعب',
-        icon: LibraryBig,
-        items: [
-          { id: 'add-arena', label: 'إضافة ملعب', icon: Plus, path: '/owner/add-arena' },
-          { id: 'arenas-all', label: 'عرض كل الملاعب', icon: LibraryBig, path: '/owner/arenas' },
-        ],
-      },
-      {
-        id: 'reservations',
-        title: 'الحجوزات',
-        icon: Calendar,
-        items: [{ id: 'calendar', label: 'التقويم', icon: Calendar, path: '/owner/reservations' }],
-      },
+      { key: 'dashboard', label: 'لوحة التحكم', icon: <ChartLine />, to: '/owner/dashboard' },
+      { key: 'wallet', label: 'المحفظة', icon: <WalletCards />, to: '/owner/wallet' },
+      { key: 'add-arena', label: 'إضافة ملعب', icon: <Plus />, to: '/owner/add-arena' },
+      { key: 'arenas-all', label: 'عرض كل الملاعب', icon: <LibraryBig />, to: '/owner/arenas' },
+      { key: 'reservations', label: 'الحجوزات', icon: <Calendar />, to: '/owner/reservations' },
     ],
     []
   );
@@ -57,20 +46,29 @@ export default function OwnerLayout() {
         <aside
           className={`hidden md:block fixed top-16 ${
             isRTL ? 'right-0' : 'left-0'
-          } h-[calc(100vh-4rem)] w-64 border-l border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-300`}
+          } h-[calc(100vh-4rem)] w-74 border-l border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-300`}
         >
-          <Sidebar mode="owner" navSections={navSections} isRTL={isRTL} open={true} />
+          <Sidebar
+            mode="admin"
+            menuItems={menu}
+            activeKey={activeKey}
+            onChange={setActiveKey}
+            isRTL={isRTL}
+            open={true}
+          />
         </aside>
 
         {/* Main Content */}
-        <div className={`flex-1 ${isRTL ? 'md:mr-64' : 'md:ml-64'} mt-16`}>
+        <div className="flex-1 mr-64 mt-16">
           <main className="min-h-[80vh] p-4 sm:p-6">
             <Outlet />
           </main>
-          <div className="mt-4 z-50">
-            <AdminFooter />
-          </div>
         </div>
+      </div>
+
+      {/* Footer - full width */}
+      <div className="w-full mt-4">
+        <AdminFooter />
       </div>
 
       {/* Sidebar Mobile Overlay */}
@@ -91,8 +89,10 @@ export default function OwnerLayout() {
             onClick={(e) => e.stopPropagation()}
           >
             <Sidebar
-              mode="owner"
-              navSections={navSections}
+              mode="admin"
+              menuItems={menu}
+              activeKey={activeKey}
+              onChange={setActiveKey}
               isRTL={isRTL}
               open={sidebarOpen}
               onClose={() => setSidebarOpen(false)}
