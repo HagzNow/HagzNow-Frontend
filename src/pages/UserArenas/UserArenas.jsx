@@ -3,8 +3,6 @@ import UserArenaFilter from '../../components/UserArenaFilter/UserArenaFilter';
 import ArenasList from '../../components/UserArenasList/ArenasList';
 import Pagination from '../../components/Pagination/Pagination';
 import { arenaService } from '../../services/arenaService';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 
 export default function UserArenas() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,8 +56,6 @@ export default function UserArenas() {
 
   return (
     <>
-      <Navbar variant="user" />
-
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
         {/* Hero Section */}
         <div className="relative bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 dark:from-green-700 dark:via-emerald-700 dark:to-teal-700 text-white py-12 sm:py-16 md:py-20">
@@ -138,7 +134,6 @@ export default function UserArenas() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

@@ -180,7 +180,7 @@ export default function Footer() {
                   <FaPhone className="w-4 h-4 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
-                  <span className="text-gray-600 dark:text-gray-300 text-sm block group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                  <span dir="ltr" className="text-gray-600 dark:text-gray-300 text-sm block group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                     +20 123 456 7890
                   </span>
                 </div>
