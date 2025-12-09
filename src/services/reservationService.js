@@ -1,119 +1,114 @@
 import { API_BASE_URL } from '../config/api';
 
 export const reservationService = {
-    /**
-     * Fetch upcoming (future) reservations with pagination
-     * @param {Object} params - Query parameters
-     * @param {number} params.page - Page number
-     * @param {number} params.limit - Items per page
-     * @returns {Promise} API response
-     */
-    async getCurrentReservations(params = {}) {
-        try {
-            const queryParams = new URLSearchParams();
+  /**
+   * Fetch upcoming (future) reservations with pagination
+   * @param {Object} params - Query parameters
+   * @param {number} params.page - Page number
+   * @param {number} params.limit - Items per page
+   * @returns {Promise} API response
+   */
+  async getCurrentReservations(params = {}) {
+    try {
+      const queryParams = new URLSearchParams();
 
-            // Add pagination parameters
-            queryParams.append('page', params.page || 1);
-            queryParams.append('limit', params.limit || 12);
+      // Add pagination parameters
+      queryParams.append('page', params.page || 1);
+      queryParams.append('limit', params.limit || 12);
 
-            // Get token from localStorage
-            const token = localStorage.getItem('token');
+      // Get token from localStorage
+      const token = localStorage.getItem('token');
 
-            const headers = {
-                'Content-Type': 'application/json',
-            };
+      const headers = {
+        'Content-Type': 'application/json',
+      };
 
-            // Add Authorization header if token exists
-            if (token) {
-                headers['Authorization'] = `Bearer ${token}`;
-            }
+      // Add Authorization header if token exists
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
 
-            const response = await fetch(
-                `${API_BASE_URL}/reservations/upcoming?${queryParams.toString()}`,
-                {
-                    method: 'GET',
-                    headers: headers,
-                }
-            );
+      const response = await fetch(`${API_BASE_URL}/reservations/upcoming?${queryParams.toString()}`, {
+        method: 'GET',
+        headers: headers,
+      });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-            const result = await response.json();
+      const result = await response.json();
 
-            if (!result.isSuccess) {
-                throw new Error(result.message || 'Failed to fetch upcoming reservations');
-            }
+      if (!result.isSuccess) {
+        throw new Error(result.message || 'Failed to fetch upcoming reservations');
+      }
 
-            // Return the nested data structure with proper mapping
-            return {
-                data: result.data.data,
-                total: result.data.total,
-                page: result.data.page,
-                limit: result.data.limit,
-                totalPages: result.data.totalPages
-            };
-        } catch (error) {
-            console.error('Error fetching upcoming reservations:', error);
-            throw error;
-        }
-    },    /**
-     * Fetch past reservations with pagination
-     * @param {Object} params - Query parameters
-     * @param {number} params.page - Page number
-     * @param {number} params.limit - Items per page
-     * @returns {Promise} API response
-     */
-    async getPastReservations(params = {}) {
-        try {
-            const queryParams = new URLSearchParams();
+      // Return the nested data structure with proper mapping
+      return {
+        data: result.data.data,
+        total: result.data.total,
+        page: result.data.page,
+        limit: result.data.limit,
+        totalPages: result.data.totalPages,
+      };
+    } catch (error) {
+      console.error('Error fetching upcoming reservations:', error);
+      throw error;
+    }
+  }
+  /**
+   * Fetch past reservations with pagination
+   * @param {Object} params - Query parameters
+   * @param {number} params.page - Page number
+   * @param {number} params.limit - Items per page
+   * @returns {Promise} API response
+   */,
+  async getPastReservations(params = {}) {
+    try {
+      const queryParams = new URLSearchParams();
 
-            // Add pagination parameters
-            queryParams.append('page', params.page || 1);
-            queryParams.append('limit', params.limit || 12);
+      // Add pagination parameters
+      queryParams.append('page', params.page || 1);
+      queryParams.append('limit', params.limit || 12);
 
-            // Get token from localStorage
-            const token = localStorage.getItem('token');
+      // Get token from localStorage
+      const token = localStorage.getItem('token');
 
-            const headers = {
-                'Content-Type': 'application/json',
-            };
+      const headers = {
+        'Content-Type': 'application/json',
+      };
 
-            // Add Authorization header if token exists
-            if (token) {
-                headers['Authorization'] = `Bearer ${token}`;
-            }
+      // Add Authorization header if token exists
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
 
-            const response = await fetch(
-                `${API_BASE_URL}/reservations/past?${queryParams.toString()}`,
-                {
-                    method: 'GET',
-                    headers: headers,
-                }
-            );
+      const response = await fetch(`${API_BASE_URL}/reservations/past?${queryParams.toString()}`, {
+        method: 'GET',
+        headers: headers,
+      });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-            const result = await response.json();
+      const result = await response.json();
 
-            if (!result.isSuccess) {
-                throw new Error(result.message || 'Failed to fetch past reservations');
-            }
+      if (!result.isSuccess) {
+        throw new Error(result.message || 'Failed to fetch past reservations');
+      }
 
-            // Return the nested data structure with proper mapping
-            return {
-                data: result.data.data,
-                total: result.data.total,
-                page: result.data.page,
-                limit: result.data.limit,
-                totalPages: result.data.totalPages
-            };
-        } catch (error) {
-            console.error('Error fetching past reservations:', error);
-            throw error;
-        }
-    },
+      // Return the nested data structure with proper mapping
+      return {
+        data: result.data.data,
+        total: result.data.total,
+        page: result.data.page,
+        limit: result.data.limit,
+        totalPages: result.data.totalPages,
+      };
+    } catch (error) {
+      console.error('Error fetching past reservations:', error);
+      throw error;
+    }
+  },
 };
