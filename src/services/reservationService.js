@@ -55,15 +55,14 @@ export const reservationService = {
       console.error('Error fetching upcoming reservations:', error);
       throw error;
     }
-  }
+  },
   /**
    * Fetch past reservations with pagination
    * @param {Object} params - Query parameters
    * @param {number} params.page - Page number
    * @param {number} params.limit - Items per page
    * @returns {Promise} API response
-   */,
-  async getPastReservations(params = {}) {
+   */ async getPastReservations(params = {}) {
     try {
       const queryParams = new URLSearchParams();
 
@@ -108,6 +107,47 @@ export const reservationService = {
       };
     } catch (error) {
       console.error('Error fetching past reservations:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Fetch owner reservations for a specific arena and date range.
+   * @param {Object} params
+   * @param {string} params.arenaId - Required arena id
+   * @param {string} params.startDate - ISO date (YYYY-MM-DD)
+   * @param {string} params.endDate - ISO date (YYYY-MM-DD)
+   */
+  async getOwnerReservations(params = {}) {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params.arenaId) queryParams.append('arenaId', params.arenaId);
+      if (params.startDate) queryParams.append('startDate', params.startDate);
+      if (params.endDate) queryParams.append('endDate', params.endDate);
+
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const response = await fetch(`${API_BASE_URL}/reservations?${queryParams.toString()}`, {
+        method: 'GET',
+        headers,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (!result.isSuccess) {
+        throw new Error(result.message || 'Failed to fetch reservations');
+      }
+
+      return result.data || [];
+    } catch (error) {
+      console.error('Error fetching owner reservations:', error);
       throw error;
     }
   },

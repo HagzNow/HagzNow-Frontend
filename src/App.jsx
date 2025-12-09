@@ -34,6 +34,7 @@ import ReservationView from './pages/ReservationView/ReservationView';
 import PendingRequests from './pages/SettingPage/PendingRequests';
 import UserAllReservation from './pages/UserAllReservation/UserAllReservation';
 import UserProfile from './pages/UserProfile/UserProfile';
+import OwnerReservations from './pages/Owner/OwnerReservations';
 
 function App() {
   const { i18n } = useTranslation();
@@ -226,6 +227,7 @@ function App() {
         { path: 'add-arena', element: <AddArena /> },
         { path: 'manual-booking', element: <ManualBookingForm /> },
         { path: 'arenas', element: <OwnerArenas /> },
+        { path: 'reservations', element: <OwnerReservations /> },
         { path: 'wallet', element: <Wallet /> },
         { path: 'userProfile', element: <UserProfile /> },
         { path: 'reservations/:id', element: <ReservationView /> },
