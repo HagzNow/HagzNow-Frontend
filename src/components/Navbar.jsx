@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { use, useContext, useEffect, useRef, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -252,7 +252,13 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                       {/* Dropdown Items */}
                       <div className="p-2">
                         <Link
-                          to="/userProfile"
+                          to={
+                            user?.role === 'admin'
+                              ? '/admin/userProfile'
+                              : user?.role === 'owner'
+                              ? '/owner/userProfile'
+                              : '/userProfile'
+                          }
                           className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400 rounded-xl transition-all duration-200 group"
                           onClick={() => setIsDropdownOpen(false)}
                         >
@@ -261,7 +267,13 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                         </Link>
 
                         <Link
-                          to="/wallet"
+                          to={
+                            user?.role === 'admin'
+                              ? '/admin/wallet'
+                              : user?.role === 'owner'
+                              ? '/owner/wallet'
+                              : '/wallet'
+                          }
                           className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400 rounded-xl transition-all duration-200 group"
                           onClick={() => setIsDropdownOpen(false)}
                         >
