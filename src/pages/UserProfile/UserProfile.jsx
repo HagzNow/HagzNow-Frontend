@@ -33,7 +33,7 @@ export default function UserProfile() {
 
   if (!userData)
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
         <p className="text-lg text-gray-600 dark:text-gray-300">جارٍ تحميل البيانات...</p>
       </div>
     );
@@ -56,9 +56,9 @@ export default function UserProfile() {
   const handleSubmittingInfoChange = (flag) => setIsSubmittingInfo(flag);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300" dir="rtl">
-      <main className="w-3/4 mt-[20px] mx-auto px-4 py-12">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-900/50 p-8 transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-gray-900/40 border border-gray-100 dark:border-gray-700 p-6 sm:p-8 transition-colors duration-300">
           <ProfileHeader isEditing={isEditingInfo} isSubmitting={isSubmittingInfo} onClick={handleHeaderClick} />
 
           <ProfilePicture

@@ -55,7 +55,9 @@ export default function OwnerLayout() {
       <div className="flex flex-row-reverse">
         {/* Sidebar Desktop */}
         <aside
-          className={`hidden md:block fixed top-16 ${isRTL ? 'right-0' : 'left-0'} h-[calc(100vh-4rem)] w-64 border-l border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-300`}
+          className={`hidden md:block fixed top-16 ${
+            isRTL ? 'right-0' : 'left-0'
+          } h-[calc(100vh-4rem)] w-64 border-l border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-300`}
         >
           <Sidebar mode="owner" navSections={navSections} isRTL={isRTL} open={true} />
         </aside>

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { CiSearch } from 'react-icons/ci';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Sun,
@@ -45,7 +45,6 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
   const { user, logout, setUser, setToken } = useContext(authContext);
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -68,13 +67,12 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Guard user routes if not logged in
+  // Guard protected variants if not logged in
   useEffect(() => {
-    const publicPaths = ['/home', '/user-arena', '/login', '/register'];
-    if (variant === 'user' && !isLoggedIn && !publicPaths.includes(location.pathname)) {
+    if (['user', 'admin', 'owner'].includes(variant) && !isLoggedIn) {
       navigate('/login', { replace: true });
     }
-  }, [isLoggedIn, location.pathname, navigate, variant]);
+  }, [isLoggedIn, navigate, variant]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -253,29 +251,25 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
 
                       {/* Dropdown Items */}
                       <div className="p-2">
-                        {variant !== 'admin' && variant !== 'owner' && (
-                          <>
-                            <Link
-                              to="/userProfile"
-                              className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400 rounded-xl transition-all duration-200 group"
-                              onClick={() => setIsDropdownOpen(false)}
-                            >
-                              <UserCircle className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors" />
-                              <span className="font-medium">{t('navbar_profile') || 'تعديل الملف الشخصي'}</span>
-                            </Link>
+                        <Link
+                          to="/userProfile"
+                          className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400 rounded-xl transition-all duration-200 group"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          <UserCircle className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors" />
+                          <span className="font-medium">{t('navbar_profile') || 'تعديل الملف الشخصي'}</span>
+                        </Link>
 
-                            <Link
-                              to="/wallet"
-                              className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400 rounded-xl transition-all duration-200 group"
-                              onClick={() => setIsDropdownOpen(false)}
-                            >
-                              <Wallet className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors" />
-                              <span className="font-medium">{t('navbar_wallet') || 'محفظتي'}</span>
-                            </Link>
+                        <Link
+                          to="/wallet"
+                          className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400 rounded-xl transition-all duration-200 group"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          <Wallet className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors" />
+                          <span className="font-medium">{t('navbar_wallet') || 'محفظتي'}</span>
+                        </Link>
 
-                            <div className="h-px bg-gray-200 dark:bg-gray-700 my-2"></div>
-                          </>
-                        )}
+                        <div className="h-px bg-gray-200 dark:bg-gray-700 my-2"></div>
 
                         <button
                           onClick={handleLogout}
