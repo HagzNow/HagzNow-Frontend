@@ -17,6 +17,7 @@ export default function OwnerLayout() {
       { key: 'dashboard', label: 'لوحة التحكم', icon: <ChartLine />, to: '/owner/dashboard' },
       { key: 'wallet', label: 'المحفظة', icon: <WalletCards />, to: '/owner/wallet' },
       { key: 'add-arena', label: 'إضافة ملعب', icon: <Plus />, to: '/owner/add-arena' },
+      { key: 'manual-booking', label: 'حجز يدوي', icon: <Calendar />, to: '/owner/manual-booking' },
       { key: 'arenas-all', label: 'عرض كل الملاعب', icon: <LibraryBig />, to: '/owner/arenas' },
       { key: 'reservations', label: 'الحجوزات', icon: <Calendar />, to: '/owner/reservations' },
     ],
@@ -28,6 +29,7 @@ export default function OwnerLayout() {
       { to: '/owner/dashboard', label: 'لوحة التحكم' },
       { to: '/owner/arenas', label: 'ساحاتي' },
       { to: '/owner/add-arena', label: 'إضافة ساحة' },
+      { to: '/owner/manual-booking', label: 'حجز يدوي' },
       { to: '/owner/wallet', label: 'المحفظة' },
     ],
     []

@@ -182,4 +182,43 @@ export const reservationService = {
       throw error;
     }
   },
+
+  /**
+   * Create a manual reservation by owner
+   * @param {Object} payload
+   * @param {string} payload.arenaId
+   * @param {string} payload.date - YYYY-MM-DD
+   * @param {number[]} payload.slots - array of hours
+   * @param {string[]} payload.extras - optional extras ids
+   */
+  async createOwnerManualReservation(payload) {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const response = await fetch(`${API_BASE_URL}/reservations/owner/manual`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(errText || `HTTP error ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (!result.isSuccess) {
+        throw new Error(result.message || 'Failed to create manual reservation');
+      }
+
+      return result.data;
+    } catch (error) {
+      console.error('Error creating manual reservation:', error);
+      throw error;
+    }
+  },
 };
