@@ -8,9 +8,9 @@ export default function StaduimReviews() {
   const { id } = useParams();
   const [reviews, setReviews] = useState([]);
 
-  const getReviews = async (arenaId) => {
+  const getReviews = async (arenaId, page = 1, limit = 10) => {
     try {
-      const { data } = await baseUrl.get(`reviews/arena/${arenaId}`);
+      const { data } = await baseUrl.get(`reviews/arena/${arenaId}?page=${page}&limit=${limit}`);
       // console.log(data.data.data);
       setReviews(data.data.data);
     } catch (error) {
