@@ -22,7 +22,7 @@ const UserNavbar = () => {
     setToken(null);
     setIsDropdownOpen(false);
     toast.success(t('logout_success') || 'تم تسجيل الخروج بنجاح');
-    navigate('/home');
+    navigate('/');
   };
 
   // Close dropdown when clicking outside
@@ -38,7 +38,7 @@ const UserNavbar = () => {
   }, []);
 
   useEffect(() => {
-    const publicPaths = ['/home', '/user-arena', '/login', '/register'];
+    const publicPaths = ['/', '/user-arena', '/login', '/register'];
     if (!isLoggedIn && !publicPaths.includes(location.pathname)) {
       navigate('/login', { replace: true });
     }
@@ -49,7 +49,7 @@ const UserNavbar = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link to="/home" className="flex items-center gap-2 group">
+          <Link to="/" className="flex items-center gap-2 group">
             <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent group-hover:from-green-700 group-hover:to-emerald-700 dark:group-hover:from-green-300 dark:group-hover:to-emerald-300 transition-all">
               ArenaBook
             </span>

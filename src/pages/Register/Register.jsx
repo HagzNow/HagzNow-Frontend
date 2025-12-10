@@ -54,7 +54,7 @@ export default function Register() {
       });
       setToken(data.data.token);
       setTimeout(() => {
-        naviagte('/home');
+        naviagte('/');
       }, 2000);
     } catch (error) {
       const msg = error.response?.data?.error?.code || 'Unknown error';

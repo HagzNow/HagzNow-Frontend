@@ -1,6 +1,6 @@
-import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { authContext } from '../Contexts/AuthContext';
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { authContext } from "../Contexts/AuthContext";
 
 /**
  * Protect routes by authentication and optional role(s).
@@ -9,7 +9,13 @@ import { authContext } from '../Contexts/AuthContext';
  * - redirectTo: path when not authenticated
  * - fallbackPath: path when role not allowed
  */
-export default function ProtectedRoutes({ role, roles, redirectTo = '/login', fallbackPath = '/home', children }) {
+export default function ProtectedRoutes({
+  role,
+  roles,
+  redirectTo = "/login",
+  fallbackPath = "/",
+  children,
+}) {
   const { user, token } = useContext(authContext);
 
   // Auth loading state: avoid flash while token exists but user not yet loaded
@@ -18,7 +24,8 @@ export default function ProtectedRoutes({ role, roles, redirectTo = '/login', fa
   if (!user || !token) return <Navigate to={redirectTo} />;
 
   const allowedRoles = roles || (role ? [role] : null);
-  if (allowedRoles && !allowedRoles.includes(user.role)) return <Navigate to={fallbackPath} />;
+  if (allowedRoles && !allowedRoles.includes(user.role))
+    return <Navigate to={fallbackPath} />;
 
   return children;
 }

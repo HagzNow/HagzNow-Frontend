@@ -169,7 +169,7 @@ export default function Login() {
     if (!user) return;
     if (user.role === 'admin') navigate('/admin/admin-arena-requests');
     else if (user.role === 'owner') navigate('/owner/dashboard');
-    else navigate('/home');
+    else navigate('/user-arena');
   }, [user, navigate]);
 
   const formik = useFormik({
