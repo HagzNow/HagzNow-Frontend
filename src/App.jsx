@@ -37,11 +37,12 @@ import UserAllReservation from './pages/UserAllReservation/UserAllReservation';
 import UserProfile from './pages/UserProfile/UserProfile';
 import OwnerReservations from './pages/Owner/OwnerReservations';
 import OwnerArenaDetails from './pages/Owner/OwnerArenaDetails';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
   const { i18n } = useTranslation();
 
- 
+
   const routes = createBrowserRouter([
     {
       path: '',
@@ -104,6 +105,7 @@ function App() {
             </ProtectedRoutes>
           ),
         },
+        { path: '*', element: <NotFound /> },
       ],
     },
 

@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import StadiumMap from '@/pages/BookingArena/components/StaduimMap';
 import StadiumImage from '@/pages/BookingArena/components/StaduimImages';
 import StadiumInfo from '@/pages/BookingArena/components/StaduimInfo';
+import NotFound from '../NotFound/NotFound';
 
 const OwnerArenaDetails = () => {
   const { id } = useParams();
@@ -47,26 +48,7 @@ const OwnerArenaDetails = () => {
       </div>
     );
 
-  if (error || !arena)
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center transition-colors duration-300">
-        <div className="text-center">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-red-500 to-orange-500 dark:from-red-600 dark:to-orange-600 flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8 text-white" />
-          </div>
-          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">
-            {error || 'حدث خطأ أثناء تحميل البيانات.'}
-          </p>
-          <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">يرجى المحاولة مرة أخرى</p>
-          <button
-            onClick={() => navigate('/owner/arenas')}
-            className="mt-4 px-6 py-2 bg-green-600 dark:bg-green-700 text-white rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors"
-          >
-            العودة إلى الملاعب
-          </button>
-        </div>
-      </div>
-    );
+  if (error || !arena) return <NotFound />;
 
   return (
     <div dir="rtl" className="w-full overflow-x-hidden">
@@ -153,13 +135,12 @@ const OwnerArenaDetails = () => {
                   <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 break-words">{arena.name}</h1>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                     <span
-                      className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap ${
-                        arena.status === 'active'
+                      className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap ${arena.status === 'active'
                           ? 'bg-green-500 text-white'
                           : arena.status === 'pending'
-                          ? 'bg-yellow-500 text-white'
-                          : 'bg-red-500 text-white'
-                      }`}
+                            ? 'bg-yellow-500 text-white'
+                            : 'bg-red-500 text-white'
+                        }`}
                     >
                       {arena.status === 'active' ? 'نشط' : arena.status === 'pending' ? 'قيد المراجعة' : 'معطل'}
                     </span>
@@ -216,13 +197,12 @@ const OwnerArenaDetails = () => {
                 <div className="flex justify-between items-center py-2">
                   <span className="text-gray-600 dark:text-gray-300">الحالة</span>
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                      arena.status === 'active'
+                    className={`px-3 py-1 rounded-full text-sm font-semibold ${arena.status === 'active'
                         ? 'bg-green-500 text-white'
                         : arena.status === 'pending'
-                        ? 'bg-yellow-500 text-white'
-                        : 'bg-red-500 text-white'
-                    }`}
+                          ? 'bg-yellow-500 text-white'
+                          : 'bg-red-500 text-white'
+                      }`}
                   >
                     {arena.status === 'active' ? 'نشط' : arena.status === 'pending' ? 'قيد المراجعة' : 'معطل'}
                   </span>
