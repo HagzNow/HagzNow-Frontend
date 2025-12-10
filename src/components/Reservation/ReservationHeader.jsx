@@ -3,7 +3,6 @@ import { MapPin, Star, Clock, Users, Shield } from 'lucide-react';
 
 export default function ReservationHeader({ data }) {
   console.log(data);
-  
   const { arena } = data;
 
 

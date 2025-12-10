@@ -225,7 +225,7 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
 
                   {/* Dropdown Menu */}
                   {isDropdownOpen && (
-                    <div className="absolute top-full mt-2 right-0 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-green-100 dark:border-gray-700 overflow-hidden z-50 animate-in fade-in-0 zoom-in-95">
+                    <div className="absolute top-full mt-2 left-0 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-green-100 dark:border-gray-700 overflow-hidden z-50 animate-in fade-in-0 zoom-in-95">
                       {/* User Info Header */}
                       <div className="p-4 bg-gradient-to-br from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 text-white">
                         <div className="flex items-center gap-3">
