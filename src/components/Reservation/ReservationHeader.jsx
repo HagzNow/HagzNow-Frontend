@@ -2,9 +2,10 @@ import React from 'react';
 import { MapPin, Star, Clock, Users, Shield } from 'lucide-react';
 
 export default function ReservationHeader({ data }) {
+  console.log(data);
+  
   const { arena } = data;
 
-  const locationSummary = `${arena?.location?.city}, ${arena?.location?.governorate}`;
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-500 ease-in-out border border-gray-100 dark:border-gray-700 overflow-hidden group">
@@ -34,13 +35,13 @@ export default function ReservationHeader({ data }) {
                     {/* Location */}
                     <div className="flex items-center gap-1.5 bg-white/20 dark:bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-2xl border border-white/20 dark:border-white/10">
                       <MapPin className="w-4 h-4" />
-                      <span className="text-sm font-medium">{locationSummary}</span>
+                      <span className="text-sm font-medium">{arena?.locationSummary}</span>
                     </div>
 
                     {/* Category */}
                     <div className="flex items-center gap-1.5 bg-white/20 dark:bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-2xl border border-white/20 dark:border-white/10">
                       <Users className="w-4 h-4" />
-                      <span className="text-sm font-medium">{arena?.category?.name}</span>
+                      <span className="text-sm font-medium">{arena?.categoryName}</span>
                     </div>
                   </div>
                 </div>
