@@ -23,7 +23,7 @@ import { arenaService } from '../services/arenaService';
 const MENU_PRESETS = (t) => ({
   public: [
     { to: '/user-arena', label: t('navbar_arenas') || 'الملاعب الرئيسية' },
-    { to: '/home', label: t('navbar_about') || 'عن المنصة' },
+    { to: '/', label: t('navbar_about') || 'عن المنصة' },
   ],
   user: [
     { to: '/user-arena', label: t('navbar_arenas') || 'الملاعب', icon: <MapPin className="w-4 h-4" /> },
@@ -188,7 +188,7 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
             )}
 
             {/* Logo */}
-            <Link to="/home" className="flex items-center gap-2 group">
+            <Link to="/" className="flex items-center gap-2 group">
               <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent group-hover:from-green-700 group-hover:to-emerald-700 dark:group-hover:from-green-300 dark:group-hover:to-emerald-300 transition-all">
                 ArenaBook
               </span>
@@ -357,7 +357,7 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
 
                   {/* Dropdown Menu */}
                   {isDropdownOpen && (
-                    <div className="absolute top-full mt-2 right-0 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-green-100 dark:border-gray-700 overflow-hidden z-50 animate-in fade-in-0 zoom-in-95">
+                    <div className="absolute top-full mt-2 left-0 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-green-100 dark:border-gray-700 overflow-hidden z-50 animate-in fade-in-0 zoom-in-95">
                       {/* User Info Header */}
                       <div className="p-4 bg-gradient-to-br from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 text-white">
                         <div className="flex items-center gap-3">

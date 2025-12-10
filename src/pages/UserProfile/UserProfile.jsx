@@ -1,18 +1,17 @@
-import { useState, useEffect, useContext, useRef } from 'react';
-import { authContext } from '@/Contexts/AuthContext';
-import ProfileHeader from '@/components/UserProfile/ProfileHeader';
-import ProfilePicture from '@/components/UserProfile/ProfilePicture';
-import ProfileForm from '@/components/UserProfile/ProfileForm';
-import LanguageSwitcher from '@/components/UserProfile/LanguageSwitcher';
-import baseUrl from '@/apis/config';
+import { useState, useEffect, useContext, useRef } from "react";
+import { authContext } from "@/Contexts/AuthContext";
+import ProfileHeader from "@/components/UserProfile/ProfileHeader";
+import ProfilePicture from "@/components/UserProfile/ProfilePicture";
+import ProfileForm from "@/components/UserProfile/ProfileForm";
+import LanguageSwitcher from "@/components/UserProfile/LanguageSwitcher";
+import baseUrl from "@/apis/config";
 
 export default function UserProfile() {
-  const [language, setLanguage] = useState('arabic');
   const [selectedImage, setSelectedImage] = useState(null);
   const [isEditingInfo, setIsEditingInfo] = useState(false);
   const [isSubmittingInfo, setIsSubmittingInfo] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [serverError, setServerError] = useState('');
+  const [serverError, setServerError] = useState("");
   const { token } = useContext(authContext);
 
   const submitRef = useRef(null);
@@ -25,7 +24,7 @@ export default function UserProfile() {
         });
         setUserData(res.data.data);
       } catch (err) {
-        console.error('Error fetching user profile:', err);
+        console.error("Error fetching user profile:", err);
       }
     };
     if (token) fetchUserData();
@@ -34,7 +33,9 @@ export default function UserProfile() {
   if (!userData)
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <p className="text-lg text-gray-600 dark:text-gray-300">جارٍ تحميل البيانات...</p>
+        <p className="text-lg text-gray-600 dark:text-gray-300">
+          جارٍ تحميل البيانات...
+        </p>
       </div>
     );
 
@@ -59,7 +60,11 @@ export default function UserProfile() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-gray-900/40 border border-gray-100 dark:border-gray-700 p-6 sm:p-8 transition-colors duration-300">
-          <ProfileHeader isEditing={isEditingInfo} isSubmitting={isSubmittingInfo} onClick={handleHeaderClick} />
+          <ProfileHeader
+            isEditing={isEditingInfo}
+            isSubmitting={isSubmittingInfo}
+            onClick={handleHeaderClick}
+          />
 
           <ProfilePicture
             isEditing={isEditingInfo && !isSubmittingInfo}
@@ -80,7 +85,7 @@ export default function UserProfile() {
             onSaved={handleSavedInfo}
           />
 
-          <LanguageSwitcher language={language} setLanguage={setLanguage} />
+          {/* <LanguageSwitcher language={language} setLanguage={setLanguage} /> */}
         </div>
       </main>
     </div>

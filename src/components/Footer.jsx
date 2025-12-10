@@ -81,7 +81,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/home"
+                  to="/"
                   className="group flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-all duration-300 text-sm"
                 >
                   <span className="w-1.5 h-1.5 bg-green-500 dark:bg-green-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
