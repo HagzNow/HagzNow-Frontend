@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState, useCallback } from 'react';
 import { CiSearch } from 'react-icons/ci';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +18,7 @@ import {
 import toast from 'react-hot-toast';
 import { authContext } from '../Contexts/AuthContext';
 import { useTheme } from '../Contexts/ThemeContext';
+import { arenaService } from '../services/arenaService';
 
 const MENU_PRESETS = (t) => ({
   public: [
@@ -48,18 +49,81 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const dropdownRef = useRef(null);
+  const searchRef = useRef(null);
 
   const isLoggedIn = Boolean(localStorage.getItem('token'));
   const menus = menuItems || MENU_PRESETS(t)[variant] || MENU_PRESETS(t).public;
   const enableSearch = showSearch ?? ['public', 'user'].includes(variant);
   const showAuthButtons = !isLoggedIn && variant === 'public';
 
-  // Close dropdown when clicking outside
+  // Search for arenas
+  const searchArenas = useCallback(async (query) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setShowSearchDropdown(false);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const response = await arenaService.getArenas({ name: query, limit: 5 });
+      setSearchResults(response.data || []);
+      setShowSearchDropdown(true);
+    } catch (error) {
+      console.error('Search error:', error);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  }, []);
+
+  // Debounced search
+  useEffect(() => {
+    if (!enableSearch) return;
+    
+    const debounceTimer = setTimeout(() => {
+      searchArenas(searchQuery);
+    }, 300);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery, searchArenas, enableSearch]);
+
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/user-arena?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      setShowSearchDropdown(false);
+    }
+  };
+
+  const handleViewAllResults = () => {
+    if (searchQuery.trim()) {
+      navigate(`/user-arena?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      setShowSearchDropdown(false);
+    }
+  };
+
+  const handleArenaClick = (arenaId) => {
+    navigate(`/booking/${arenaId}`);
+    setSearchQuery('');
+    setShowSearchDropdown(false);
+  };
+
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSearchDropdown(false);
       }
     };
 
@@ -137,13 +201,81 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
           {/* Search Bar - Desktop */}
           {enableSearch && (
             <div className="hidden md:flex items-center gap-4 flex-1 max-w-md mx-8">
-              <div className="relative w-full">
-                <CiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder={t('navbar_search_placeholder') || 'ابحث عن ملعب...'}
-                  className="w-full py-2.5 pr-10 pl-4 rounded-xl border border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500 transition-all"
-                />
+              <div className="relative w-full" ref={searchRef}>
+                <form onSubmit={handleSearch} className="relative w-full">
+                  <CiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onFocus={() => searchQuery.trim() && setShowSearchDropdown(true)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleSearch(e);
+                      }
+                    }}
+                    placeholder={t('navbar_search_placeholder') || 'ابحث عن ملعب...'}
+                    className="w-full py-2.5 pr-10 pl-4 rounded-xl border border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500 transition-all"
+                  />
+                  <button type="submit" className="hidden">Search</button>
+                </form>
+
+                {/* Search Dropdown */}
+                {showSearchDropdown && (
+                  <div className="absolute top-full mt-2 right-0 w-full min-w-[320px] bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 max-h-96 overflow-y-auto">
+                    {isSearching ? (
+                      <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center justify-center gap-2">
+                          <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+                          <span className="text-sm">جاري البحث...</span>
+                        </div>
+                      </div>
+                    ) : searchResults.length > 0 ? (
+                      <div className="py-2">
+                        {searchResults.map((arena) => (
+                          <button
+                            key={arena.id}
+                            onClick={() => handleArenaClick(arena.id)}
+                            className="w-full px-4 py-3 text-right hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 flex items-center gap-3 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                          >
+                            <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-700">
+                              {arena.images && arena.images[0] ? (
+                                <img
+                                  src={arena.images[0]}
+                                  alt={arena.name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <MapPin className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 text-right">
+                              <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                                {arena.name}
+                              </p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                {arena.locationSummary || 'موقع غير محدد'}
+                              </p>
+                            </div>
+                          </button>
+                        ))}
+                        <button
+                          onClick={handleViewAllResults}
+                          className="w-full px-4 py-2 text-center text-sm text-green-600 dark:text-green-400 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium transition-colors duration-150"
+                        >
+                          عرض جميع النتائج
+                        </button>
+                      </div>
+                    ) : searchQuery.trim() ? (
+                      <div className="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">
+                        لا توجد نتائج للبحث "{searchQuery}"
+                      </div>
+                    ) : null}
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -320,12 +452,24 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
             {/* Mobile Search */}
             {enableSearch && (
               <div className="relative mb-4">
-                <CiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5 pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder={t('navbar_search_placeholder') || 'ابحث عن ملعب...'}
-                  className="w-full py-2.5 pr-10 pl-4 rounded-xl border border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500"
-                />
+                <form onSubmit={handleSearch} className="relative">
+                  <CiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleSearch(e);
+                        setIsMenuOpen(false);
+                      }
+                    }}
+                    placeholder={t('navbar_search_placeholder') || 'ابحث عن ملعب...'}
+                    className="w-full py-2.5 pr-10 pl-4 rounded-xl border border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500"
+                  />
+                  <button type="submit" className="hidden">Search</button>
+                </form>
               </div>
             )}
 
