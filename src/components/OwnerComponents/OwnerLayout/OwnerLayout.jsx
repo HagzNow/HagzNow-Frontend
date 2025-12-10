@@ -21,7 +21,7 @@ export default function OwnerLayout() {
       { key: 'arenas-all', label: 'عرض كل الملاعب', icon: <LibraryBig />, to: '/owner/arenas' },
       { key: 'reservations', label: 'الحجوزات', icon: <Calendar />, to: '/owner/reservations' },
     ],
-    []
+    [],
   );
 
   const ownerTopMenu = useMemo(
@@ -32,7 +32,7 @@ export default function OwnerLayout() {
       { to: '/owner/manual-booking', label: 'حجز يدوي' },
       { to: '/owner/wallet', label: 'المحفظة' },
     ],
-    []
+    [],
   );
 
   return (
@@ -61,7 +61,7 @@ export default function OwnerLayout() {
         </aside>
 
         {/* Main Content */}
-        <div className="flex-1 mr-64 mt-16">
+        <div className="flex-1 mr-64 ">
           <main className="min-h-[80vh] p-4 sm:p-6">
             <Outlet />
           </main>
