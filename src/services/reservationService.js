@@ -16,6 +16,16 @@ export const reservationService = {
       queryParams.append('page', params.page || 1);
       queryParams.append('limit', params.limit || 12);
 
+      // Add filter parameters if provided and not empty
+      if (params.arenaName && params.arenaName.trim()) {
+        queryParams.append('arenaName', params.arenaName.trim());
+      }
+      if (params.status && params.status.trim()) {
+        queryParams.append('status', params.status.trim());
+      }
+
+      console.log('getCurrentReservations query params:', queryParams.toString());
+
       // Get token from localStorage
       const token = localStorage.getItem('token');
 
@@ -62,13 +72,24 @@ export const reservationService = {
    * @param {number} params.page - Page number
    * @param {number} params.limit - Items per page
    * @returns {Promise} API response
-   */ async getPastReservations(params = {}) {
+   */
+  async getPastReservations(params = {}) {
     try {
       const queryParams = new URLSearchParams();
 
       // Add pagination parameters
       queryParams.append('page', params.page || 1);
       queryParams.append('limit', params.limit || 12);
+
+      // Add filter parameters if provided and not empty
+      if (params.arenaName && params.arenaName.trim()) {
+        queryParams.append('arenaName', params.arenaName.trim());
+      }
+      if (params.status && params.status.trim()) {
+        queryParams.append('status', params.status.trim());
+      }
+
+      console.log('getPastReservations query params:', queryParams.toString());
 
       // Get token from localStorage
       const token = localStorage.getItem('token');

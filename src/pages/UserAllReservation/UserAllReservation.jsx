@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import UserAllReservationsList from '../../components/UserAllReservationsList/UserAllReservationsList';
+import UserReservationFilter from '../../components/UserReservationFilter/UserReservationFilter';
 import Pagination from '../../components/Pagination/Pagination';
 import { reservationService } from '../../services/reservationService';
 import { getTimeRanges, formatTime } from '../../utils/timeRange';
@@ -12,8 +13,13 @@ export default function UserAllReservation() {
   const [activeTab, setActiveTab] = useState('current'); // 'current' or 'past'
   const [error, setError] = useState(null);
   const itemsPerPage = 12;
+  const [filters, setFilters] = useState({
+    arenaName: '',
+    status: '',
+    category: '',
+  });
 
-  // Separate state for current and past reservations
+  // Separate state for current and past reservations (unfiltered data from API)
   const [currentReservations, setCurrentReservations] = useState({
     data: [],
     currentPage: 1,
@@ -25,6 +31,24 @@ export default function UserAllReservation() {
     currentPage: 1,
     totalPages: 1,
   });
+
+  // Client-side filtering function
+  const applyFilters = (reservations) => {
+    return reservations.filter((reservation) => {
+      // Filter by arena name
+      const matchesName = !filters.arenaName.trim() || 
+        reservation.arenaName.toLowerCase().includes(filters.arenaName.toLowerCase().trim());
+      
+      // Filter by status
+      const matchesStatus = !filters.status || reservation.status === filters.status;
+      
+      // Filter by category (using arenaCategory from API response)
+      const matchesCategory = !filters.category || 
+        (reservation.arenaCategory && reservation.arenaCategory.toLowerCase() === filters.category.toLowerCase());
+      
+      return matchesName && matchesStatus && matchesCategory;
+    });
+  };
 
   // Format slots to time string
   const formatSlots = (slots) => {
@@ -45,6 +69,7 @@ export default function UserAllReservation() {
     id: reservation.id,
     arenaName: reservation.arenaName,
     arenaImage: reservation.arenaThumbnail,
+    arenaCategory: reservation.arenaCategory, // Add category from API response
     date: reservation.dateOfReservation,
     timeSlot: formatSlots(reservation.slots),
     price: parseFloat(reservation.totalAmount),
@@ -134,7 +159,7 @@ export default function UserAllReservation() {
 
     fetchAllReservations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run once on mount
+  }, []); // Only fetch once on mount
 
   // Handle tab change
   const handleTabChange = (tab) => {
@@ -187,8 +212,15 @@ export default function UserAllReservation() {
     }
   };
 
-  // Get current active data based on selected tab
+  // Handle filter change
+  const handleFilterChange = useCallback((newFilters) => {
+    console.log('Filter changed:', newFilters);
+    setFilters(newFilters);
+  }, []);
+
+  // Get current active data based on selected tab and apply client-side filters
   const activeData = activeTab === 'past' ? pastReservations : currentReservations;
+  const filteredData = applyFilters(activeData.data);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
@@ -199,6 +231,11 @@ export default function UserAllReservation() {
             {t('my_reservations') || 'حجوزاتي'}
           </h1>
           <div className="w-20 h-1 bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-400 dark:to-emerald-400 rounded-full mx-auto"></div>
+        </div>
+
+        {/* Filter Section */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <UserReservationFilter onFilterChange={handleFilterChange} />
         </div>
 
         {/* Tabs */}
@@ -241,7 +278,7 @@ export default function UserAllReservation() {
         )}
 
         {/* Reservations List */}
-        <UserAllReservationsList reservations={activeData.data} loading={loading} />
+        <UserAllReservationsList reservations={filteredData} loading={loading} />
 
         {/* Pagination */}
         {!loading && activeData.totalPages > 1 && (

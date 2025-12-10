@@ -17,7 +17,7 @@ export default function UserAllReservationsList({ reservations = [], loading }) 
     return (
       <div className="text-center py-20">
         <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
-          {t('no_reservations_found') || 'لا توجد حجوزات'}
+          لا توجد حجوزات
         </p>
       </div>
     );
