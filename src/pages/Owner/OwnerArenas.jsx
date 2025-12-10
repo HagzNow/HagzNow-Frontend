@@ -62,12 +62,12 @@ export default function OwnerArenas() {
   return (
     <div>
       {/* Dashboard Header with Filters */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm -m-3 sm:-m-4 md:-m-6 mb-4 sm:mb-6 rounded-t-2xl">
+        <div className="px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex-shrink-0">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">إدارة الملاعب</h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">إدارة الملاعب</h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-1 text-xs sm:text-sm">
                 {total > 0 ? (
                   <>
                     إجمالي الملاعب: <span className="font-semibold text-green-600 dark:text-green-400">{total}</span>
@@ -86,10 +86,11 @@ export default function OwnerArenas() {
             <div className="flex items-center gap-3 flex-shrink-0">
               <button
                 onClick={() => navigate('/owner/add-arena')}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-700 text-white rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors shadow-md hover:shadow-lg whitespace-nowrap"
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-green-600 dark:bg-green-700 text-white rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors shadow-md hover:shadow-lg whitespace-nowrap text-sm sm:text-base"
               >
                 <Plus className="w-4 h-4" />
-                <span>إضافة ملعب جديد</span>
+                <span className="hidden sm:inline">إضافة ملعب جديد</span>
+                <span className="sm:hidden">إضافة</span>
               </button>
             </div>
           </div>
@@ -97,7 +98,7 @@ export default function OwnerArenas() {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full">
         {/* Error State */}
         {error && !loading && (
           <div className="max-w-2xl mx-auto my-8">

@@ -69,20 +69,20 @@ const OwnerArenaDetails = () => {
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 py-8 transition-colors duration-300">
-      <div className="container mx-auto px-4 max-w-7xl">
+    <div dir="rtl">
+      <div className="max-w-7xl mx-auto">
         {/* Header with Back Button */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <button
             onClick={() => navigate('/owner/arenas')}
-            className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors font-medium"
           >
             <ArrowRight className="w-5 h-5" />
             <span>العودة إلى الملاعب</span>
           </button>
           <button
             onClick={() => navigate(`/owner/edit-arena/${id}`)}
-            className="flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-700 text-white rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-700 dark:to-emerald-700 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 dark:hover:from-green-600 dark:hover:to-emerald-600 transition-all duration-300 shadow-md hover:shadow-lg font-semibold"
           >
             <Edit className="w-4 h-4" />
             <span>تعديل الملعب</span>
@@ -90,7 +90,7 @@ const OwnerArenaDetails = () => {
         </div>
 
         {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Images and Info */}
           <div className="lg:col-span-2 space-y-6">
             {/* Stadium Images */}
@@ -99,7 +99,7 @@ const OwnerArenaDetails = () => {
             </div>
 
             {/* Quick Info Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Location Card */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-500 ease-in-out border border-gray-100 dark:border-gray-700 p-4 group hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20">
                 <div className="flex items-center gap-3">
@@ -236,13 +236,13 @@ const OwnerArenaDetails = () => {
               <div className="space-y-2">
                 <button
                   onClick={() => navigate(`/owner/reservations?arenaId=${id}`)}
-                  className="w-full px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors text-center"
+                  className="w-full px-4 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-700 dark:to-cyan-700 text-white rounded-xl hover:from-blue-700 hover:to-cyan-700 dark:hover:from-blue-600 dark:hover:to-cyan-600 transition-all duration-300 shadow-md hover:shadow-lg font-semibold text-center"
                 >
                   عرض الحجوزات
                 </button>
                 <button
                   onClick={() => navigate(`/owner/edit-arena/${id}`)}
-                  className="w-full px-4 py-2 bg-green-600 dark:bg-green-700 text-white rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors text-center"
+                  className="w-full px-4 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-700 dark:to-emerald-700 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 dark:hover:from-green-600 dark:hover:to-emerald-600 transition-all duration-300 shadow-md hover:shadow-lg font-semibold text-center"
                 >
                   تعديل الملعب
                 </button>

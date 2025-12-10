@@ -102,38 +102,33 @@ const ManualBookingForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300" dir="rtl">
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <div className="flex justify-end mb-4">
-          <button
-            className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition text-gray-700 dark:text-gray-300"
-            onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en')}
-          >
-            {i18n.language === 'en' ? 'العربية' : 'English'}
-          </button>
-        </div>
-
-        <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl shadow-sm dark:shadow-gray-900/40 p-6 sm:p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/40 flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-green-600 dark:text-green-300" />
+    <div dir="rtl">
+      <div className="max-w-5xl mx-auto">
+        {/* Page Header */}
+        <div className="mb-6">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-lg">
+              <Calendar className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">حجز يدوي (مالك)</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                أنشئ حجزاً مباشراً لساحتك مع تحديد الساعات والإضافات.
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">حجز يدوي</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                أنشئ حجزاً مباشراً لساحتك مع تحديد الساعات والإضافات
               </p>
             </div>
           </div>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow dark:shadow-gray-900/50 p-6 sm:p-8">
 
           <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">الساحة</label>
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">الساحة</label>
                 <select
                   value={arenaId}
                   onChange={(e) => setArenaId(e.target.value)}
-                  className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent transition-all duration-300 hover:border-green-300 dark:hover:border-green-600"
                 >
                   {arenas.map((arena) => (
                     <option key={arena.id} value={arena.id}>
@@ -144,33 +139,35 @@ const ManualBookingForm = () => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">التاريخ</label>
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">التاريخ</label>
                 <input
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   min={today}
-                  className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-3 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent transition-all duration-300 hover:border-green-300 dark:hover:border-green-600"
                   required
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <ListChecks className="w-4 h-4 text-green-600 dark:text-green-300" />
+                <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                  <ListChecks className="w-4 h-4 text-green-600 dark:text-green-400" />
+                </div>
                 <label className="text-sm font-semibold text-gray-900 dark:text-white">
                   الساعات (يمكن اختيار أكثر من ساعة)
                 </label>
               </div>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
                 {(availableSlots.length ? availableSlots : [10, 11]).map((h) => (
                   <label
                     key={h}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition ${
+                    className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
                       selectedSlots.includes(h)
-                        ? 'bg-green-50 border-green-300 text-green-700 dark:bg-green-900/30 dark:border-green-700 dark:text-green-200'
-                        : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300'
+                        ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-500 text-green-700 dark:from-green-900/40 dark:to-emerald-900/40 dark:border-green-600 dark:text-green-300 shadow-md'
+                        : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-300 dark:hover:border-green-600'
                     }`}
                   >
                     <input
@@ -179,7 +176,7 @@ const ManualBookingForm = () => {
                       checked={selectedSlots.includes(h)}
                       onChange={() => toggleSlot(h)}
                     />
-                    <span className="text-sm">
+                    <span className="text-sm font-medium">
                       {h}:00 - {h + 1}:00
                     </span>
                   </label>
@@ -187,20 +184,26 @@ const ManualBookingForm = () => {
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <Plus className="w-4 h-4 text-blue-500" />
+                <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                  <Plus className="w-4 h-4 text-green-600 dark:text-green-400" />
+                </div>
                 <label className="text-sm font-semibold text-gray-900 dark:text-white">الإضافات</label>
               </div>
-              {extras.length === 0 && <p className="text-sm text-gray-500 dark:text-gray-400">لا توجد إضافات متاحة.</p>}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {extras.length === 0 && (
+                <p className="text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                  لا توجد إضافات متاحة
+                </p>
+              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {extras.map((ex) => (
                   <label
                     key={ex.id}
-                    className={`flex items-center justify-between px-3 py-2 rounded-lg border cursor-pointer transition ${
+                    className={`flex items-center justify-between px-4 py-3 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
                       selectedExtras.includes(ex.id)
-                        ? 'bg-blue-50 border-blue-300 text-blue-700 dark:bg-blue-900/30 dark:border-blue-700 dark:text-blue-200'
-                        : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300'
+                        ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-500 text-green-700 dark:from-green-900/40 dark:to-emerald-900/40 dark:border-green-600 dark:text-green-300 shadow-md'
+                        : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-300 dark:hover:border-green-600'
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -212,7 +215,7 @@ const ManualBookingForm = () => {
                       />
                       <span className="text-sm font-semibold">{ex.name}</span>
                     </div>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">{ex.price}</span>
+                    <span className="text-sm font-bold text-green-600 dark:text-green-400">{ex.price} ج.م</span>
                   </label>
                 ))}
               </div>
@@ -221,9 +224,16 @@ const ManualBookingForm = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-green-600 dark:bg-green-700 text-white py-3 rounded-xl font-semibold hover:bg-green-700 dark:hover:bg-green-600 transition disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-700 dark:to-emerald-700 text-white py-3.5 rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 dark:hover:from-green-600 dark:hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] disabled:transform-none"
             >
-              {loading ? 'جارٍ الإنشاء...' : 'إنشاء حجز يدوي'}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                  جارٍ الإنشاء...
+                </span>
+              ) : (
+                'إنشاء حجز يدوي'
+              )}
             </button>
           </form>
         </div>

@@ -10,6 +10,7 @@ import {
   addDays,
 } from 'date-fns';
 import { arSA } from 'date-fns/locale';
+import { Calendar, Clock, Plus } from 'lucide-react';
 import { arenaService } from '@/services/arenaService';
 import { reservationService } from '@/services/reservationService';
 
@@ -158,25 +159,32 @@ export default function OwnerReservations() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl shadow-sm dark:shadow-gray-900/40 p-6 sm:p-8">
+      <div dir="rtl">
+        <div className="max-w-7xl mx-auto">
+          {/* Page Header */}
+          <div className="mb-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-lg">
+                <Calendar className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">حجوزات الساحات</h1>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  اختر الساحة والفترة الزمنية ثم اعرضها كتقويم أسبوعي
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow dark:shadow-gray-900/50 p-6 sm:p-8">
             <div className="flex flex-col gap-4 sm:gap-6">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">حجوزات الساحات</h1>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    اختر الساحة والفترة الزمنية ثم اعرضها كتقويم أسبوعي.
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2 text-xs">
-                  <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
-                    • توجد حجوزات
-                  </span>
-                </div>
+              <div className="flex flex-wrap items-center gap-2 text-xs mb-2">
+                <span className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-700 font-medium">
+                  • توجد حجوزات
+                </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-gray-700 dark:text-gray-300">الساحة</label>
                   <select
@@ -238,31 +246,35 @@ export default function OwnerReservations() {
                 <button
                   onClick={() => fetchReservations()}
                   disabled={!selectedArena || loading}
-                  className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-700 dark:to-emerald-700 text-white font-semibold hover:from-green-700 hover:to-emerald-700 dark:hover:from-green-600 dark:hover:to-emerald-600 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? 'جارٍ التحميل...' : 'تحديث الحجوزات'}
                 </button>
                 <button
                   onClick={handleWeekFetch}
                   disabled={!selectedArena || loading}
-                  className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200 font-semibold hover:bg-emerald-200 dark:hover:bg-emerald-800 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 dark:from-emerald-900/40 dark:to-teal-900/40 dark:text-emerald-200 font-semibold hover:from-emerald-200 hover:to-teal-200 dark:hover:from-emerald-800 dark:hover:to-teal-800 transition-all duration-300 border border-emerald-200 dark:border-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? '...' : 'جلب حجوزات الأسبوع'}
                 </button>
-                {error && <span className="text-sm text-red-500">{error}</span>}
+                {error && (
+                  <span className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-800">
+                    {error}
+                  </span>
+                )}
               </div>
 
               {/* Weekly calendar: days as columns, hours as rows */}
-              <div className="border border-gray-100 dark:border-gray-700 rounded-2xl overflow-hidden">
-                <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-800/80 px-4 py-3">
-                  <div className="text-sm font-semibold text-gray-900 dark:text-white">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow-sm">
+                <div className="flex items-center justify-between bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-b border-green-200 dark:border-green-800 px-4 py-3">
+                  <div className="text-sm font-bold text-gray-900 dark:text-white">
                     المدى المختار: {startDate && format(parseISO(startDate), 'PPP', { locale: arSA })} -{' '}
                     {endDate && format(parseISO(endDate), 'PPP', { locale: arSA })}
                   </div>
                 </div>
 
-                <div className="overflow-auto">
-                  <div className="min-w-[960px]">
+                <div className="overflow-x-auto">
+                  <div className="min-w-[600px] sm:min-w-[800px]">
                     <div
                       className="grid"
                       style={{ gridTemplateColumns: `80px repeat(${rangeDays.length || 1}, minmax(0, 1fr))` }}
@@ -404,72 +416,86 @@ export default function OwnerReservations() {
       </div>
       {/* Details Modal */}
       {details && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-          <div className="max-w-2xl w-full bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700 p-6 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 backdrop-blur-sm px-4" onClick={() => setDetails(null)}>
+          <div className="max-w-2xl w-full bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-gray-900/50 border border-gray-200 dark:border-gray-700 p-6 relative" onClick={(e) => e.stopPropagation()}>
             <button
-              className="absolute top-3 left-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+              className="absolute top-4 left-4 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-200"
               onClick={() => setDetails(null)}
             >
               ✕
             </button>
-            <div className="space-y-3">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">تفاصيل الحجز</h3>
-              {detailsLoading && <p className="text-sm text-gray-500">جارٍ التحميل...</p>}
-              {detailsError && <p className="text-sm text-red-500">{detailsError}</p>}
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">تفاصيل الحجز</h3>
+              </div>
+              {detailsLoading && (
+                <div className="text-center py-8">
+                  <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">جارٍ التحميل...</p>
+                </div>
+              )}
+              {detailsError && (
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
+                  <p className="text-sm text-red-700 dark:text-red-400">{detailsError}</p>
+                </div>
+              )}
               {!detailsLoading && !detailsError && (
                 <>
-                  <div className="flex flex-wrap gap-3 text-sm text-gray-700 dark:text-gray-300">
-                    {/* <span className="font-semibold text-gray-900 dark:text-white">
-                      {details.playerName || details.userId}
-                    </span> */}
-                    <span className="px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-200">
+                  <div className="flex flex-wrap gap-2 text-sm">
+                    <span className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 dark:from-green-900/40 dark:to-emerald-900/40 dark:text-green-300 border border-green-200 dark:border-green-700 font-semibold">
                       {statusLabel(details.status)}
                     </span>
                     {details.id && (
-                      <span className="text-gray-500 dark:text-gray-400 text-xs">
-                        رقم الحجز: #{details.id.slice(0, 8)}...
+                      <span className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-mono">
+                        #{details.id.slice(0, 8)}...
                       </span>
                     )}
-                    <span className="text-gray-600 dark:text-gray-400">
-                      التاريخ: {format(parseISO(details.dateOfReservation), 'PPP', { locale: arSA })}
+                    <span className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                      {format(parseISO(details.dateOfReservation), 'PPP', { locale: arSA })}
                     </span>
                   </div>
 
                   {details.arena && (
-                    <div className="rounded-xl border border-gray-100 dark:border-gray-700 p-3 bg-gray-50 dark:bg-gray-800/60">
-                      <div className="text-sm text-gray-900 dark:text-white font-semibold">{details.arena.name}</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                    <div className="rounded-xl border-2 border-green-200 dark:border-green-800 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+                      <div className="text-base text-gray-900 dark:text-white font-bold mb-1">{details.arena.name}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
                         {details.arena.categoryName} • {details.arena.locationSummary}
                       </div>
                     </div>
                   )}
 
                   <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="rounded-lg bg-gray-50 dark:bg-gray-800/60 p-3">
-                      <div className="text-gray-500 dark:text-gray-400 text-xs">طريقة الدفع</div>
-                      <div className="font-semibold text-gray-900 dark:text-white">{details.paymentMethod || '-'}</div>
+                    <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-4 border border-gray-200 dark:border-gray-600">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">طريقة الدفع</div>
+                      <div className="font-bold text-gray-900 dark:text-white">{details.paymentMethod || '-'}</div>
                     </div>
-                    <div className="rounded-lg bg-gray-50 dark:bg-gray-800/60 p-3">
-                      <div className="text-gray-500 dark:text-gray-400 text-xs">الإجمالي</div>
-                      <div className="font-semibold text-gray-900 dark:text-white">{details.totalAmount}</div>
+                    <div className="rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-4 border border-green-200 dark:border-green-800">
+                      <div className="text-gray-600 dark:text-gray-400 text-xs mb-1 font-medium">الإجمالي</div>
+                      <div className="font-bold text-green-600 dark:text-green-400 text-lg">{details.totalAmount} ج.م</div>
                     </div>
-                    <div className="rounded-lg bg-gray-50 dark:bg-gray-800/60 p-3">
-                      <div className="text-gray-500 dark:text-gray-400 text-xs">ساعات اللعب</div>
-                      <div className="font-semibold text-gray-900 dark:text-white">{details.totalHours}</div>
+                    <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-4 border border-gray-200 dark:border-gray-600">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">ساعات اللعب</div>
+                      <div className="font-bold text-gray-900 dark:text-white">{details.totalHours} ساعة</div>
                     </div>
-                    <div className="rounded-lg bg-gray-50 dark:bg-gray-800/60 p-3">
-                      <div className="text-gray-500 dark:text-gray-400 text-xs">قيمة اللعب</div>
-                      <div className="font-semibold text-gray-900 dark:text-white">{details.playTotalAmount}</div>
+                    <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-4 border border-gray-200 dark:border-gray-600">
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">قيمة اللعب</div>
+                      <div className="font-bold text-gray-900 dark:text-white">{details.playTotalAmount} ج.م</div>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="text-sm font-semibold text-gray-900 dark:text-white">الأوقات</div>
+                  <div className="space-y-3">
+                    <div className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-green-600 dark:text-green-400" />
+                      الأوقات
+                    </div>
                     <div className="flex flex-wrap gap-2">
                       {(details.slots || []).map((slot) => (
                         <span
                           key={slot.id || slot.hour}
-                          className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs dark:bg-green-900/30 dark:text-green-300"
+                          className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 text-xs dark:from-green-900/40 dark:to-emerald-900/40 dark:text-green-300 border border-green-200 dark:border-green-700 font-semibold"
                         >
                           {slot.date || details.dateOfReservation} • {slotRangeLabel(slot)}
                         </span>
@@ -477,21 +503,26 @@ export default function OwnerReservations() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="text-sm font-semibold text-gray-900 dark:text-white">الإضافات</div>
+                  <div className="space-y-3">
+                    <div className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                      <Plus className="w-4 h-4 text-green-600 dark:text-green-400" />
+                      الإضافات
+                    </div>
                     {details.extras && details.extras.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {details.extras.map((ex) => (
                           <span
                             key={ex.id}
-                            className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs dark:bg-blue-900/30 dark:text-blue-200"
+                            className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 text-xs dark:from-blue-900/40 dark:to-cyan-900/40 dark:text-blue-300 border border-blue-200 dark:border-blue-700 font-semibold"
                           >
-                            {ex.name} • {ex.price}
+                            {ex.name} • {ex.price} ج.م
                           </span>
                         ))}
                       </div>
                     ) : (
-                      <p className="text-xs text-gray-500 dark:text-gray-400">لا توجد إضافات</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                        لا توجد إضافات
+                      </p>
                     )}
                   </div>
                 </>

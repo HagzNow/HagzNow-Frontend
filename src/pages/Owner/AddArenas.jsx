@@ -95,7 +95,7 @@ const AddArena = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-6 sm:py-8 px-4 sm:px-6 transition-colors duration-300">
+    <div dir="rtl">
       <div className="max-w-5xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-8 sm:mb-12">
