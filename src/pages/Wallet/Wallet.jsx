@@ -14,6 +14,7 @@ export default function Wallet() {
   const { t } = useTranslation();
   const { user } = useContext(authContext);
   const isOwner = user?.role === 'owner';
+  const isAdmin = user?.role === 'admin';
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [showModal, setShowModal] = useState(false);
@@ -122,7 +123,7 @@ export default function Wallet() {
                   <ArrowDownCircle className="w-5 h-5" />
                   طلب سحب الأموال
                 </button>
-              ) : (
+              ) : !isAdmin ? (
                 <button
                   onClick={() => setShowModal(true)}
                   className="flex items-center gap-2 mx-auto px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 text-white rounded-2xl hover:from-green-600 hover:to-emerald-600 dark:hover:from-green-700 dark:hover:to-emerald-700 hover:shadow-lg dark:hover:shadow-gray-900/50 transform hover:-translate-y-1 transition-all duration-300 ease-in-out font-semibold text-lg"
@@ -130,7 +131,7 @@ export default function Wallet() {
                   <Plus className="w-5 h-5" />
                   {t('wallet.add_balance')}
                 </button>
-              )}
+              ) : null}
             </div>
           </div>
 
@@ -203,7 +204,7 @@ export default function Wallet() {
       </div>
 
       {/* Modals */}
-      {!isOwner && <AddFundsModal isOpen={showModal} onClose={() => setShowModal(false)} />}
+      {!isOwner && !isAdmin && <AddFundsModal isOpen={showModal} onClose={() => setShowModal(false)} />}
       {isOwner && (
         <WithdrawRequestModal
           isOpen={showWithdrawModal}
