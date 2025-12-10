@@ -26,6 +26,20 @@ import AdminLayout from "./components/AdminLayout/AdminLayout";
 import OwnerLayout from "./components/OwnerComponents/OwnerLayout/OwnerLayout";
 import SettingsPage from "./pages/SettingPage/SettingsPage";
 // import ReservationStep from "./components/Steps/ReservationStep";
+<<<<<<< HEAD
+import ArenaMangmentCategories from './pages/AdminPages/ArenaMangmentCategories';
+import UserManagement from './pages/AdminPages/UserManagement';
+import WithdrawalRequests from './pages/AdminPages/WithdrawalRequests';
+import OwnerArenas from './pages/Owner/OwnerArenas';
+import OwnerDashboard from './pages/Owner/OwnerDashboard';
+import ReservationView from './pages/ReservationView/ReservationView';
+import PendingRequests from './pages/SettingPage/PendingRequests';
+import UserAllReservation from './pages/UserAllReservation/UserAllReservation';
+import UserProfile from './pages/UserProfile/UserProfile';
+import OwnerReservations from './pages/Owner/OwnerReservations';
+import OwnerArenaDetails from './pages/Owner/OwnerArenaDetails';
+import NotFound from './pages/NotFound/NotFound';
+=======
 import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
 import UserManagement from "./pages/AdminPages/UserManagement";
 import WithdrawalRequests from "./pages/AdminPages/WithdrawalRequests";
@@ -37,10 +51,15 @@ import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import OwnerReservations from "./pages/Owner/OwnerReservations";
 import OwnerArenaDetails from "./pages/Owner/OwnerArenaDetails";
+>>>>>>> d469a0af4cbe1660fcd84e560aa221237262db2d
 
 function App() {
   const { i18n } = useTranslation();
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> d469a0af4cbe1660fcd84e560aa221237262db2d
   const routes = createBrowserRouter([
     {
       path: "",
@@ -103,6 +122,7 @@ function App() {
             </ProtectedRoutes>
           ),
         },
+        { path: '*', element: <NotFound /> },
       ],
     },
 

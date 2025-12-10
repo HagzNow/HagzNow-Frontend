@@ -6,6 +6,7 @@ import { formatTime, getTimeRanges } from '../../utils/timeRange';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ar';
+import NotFound from '../NotFound/NotFound';
 
 export default function ConfirmReservation() {
   const { id } = useParams();
@@ -49,31 +50,9 @@ export default function ConfirmReservation() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center transition-colors duration-300">
-        <div className="text-center">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-red-500 to-orange-500 dark:from-red-600 dark:to-orange-600 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-8 h-8 text-white" />
-          </div>
-          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">{error}</p>
-        </div>
-      </div>
-    );
-  }
+  if (error) return <NotFound />;
 
-  if (!reservation) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center transition-colors duration-300">
-        <div className="text-center">
-          <div className="w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-8 h-8 text-gray-400 dark:text-gray-500" />
-          </div>
-          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">لا توجد بيانات حجز</p>
-        </div>
-      </div>
-    );
-  }
+  if (!reservation) return <NotFound />;
 
   const arena = reservation.arena;
   const ranges = getTimeRanges(reservation.slots || []);

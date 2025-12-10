@@ -6,6 +6,7 @@ import ReservationInfoCard from '../../components/Reservation/ReservationInfoCar
 import ReservationActions from '../../components/Reservation/ReservationActions';
 import toast from 'react-hot-toast';
 import ReservationHeader from '@/components/Reservation/reservationHeader';
+import NotFound from '../NotFound/NotFound';
 
 export default function ReservationView() {
   const { id } = useParams();
@@ -61,6 +62,8 @@ export default function ReservationView() {
       </div>
     );
   }
+
+  if (!data && !loading) return <NotFound />;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">

@@ -8,6 +8,7 @@ import StadiumHeader from "./components/StaduimHeader";
 import StadiumMap from "./components/StaduimMap";
 import StadiumInfo from "./components/StaduimInfo";
 import StadiumImage from "./components/StaduimImages";
+import NotFound from "../NotFound/NotFound";
 
 const BookingArena = () => {
   const [arena, setArena] = useState(null);
@@ -43,22 +44,7 @@ const BookingArena = () => {
       </div>
     );
 
-  if (!arena)
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center transition-colors duration-300">
-        <div className="text-center">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-red-500 to-orange-500 dark:from-red-600 dark:to-orange-600 flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8 text-white" />
-          </div>
-          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">
-            حدث خطأ أثناء تحميل البيانات.
-          </p>
-          <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
-            يرجى المحاولة مرة أخرى
-          </p>
-        </div>
-      </div>
-    );
+  if (!arena) return <NotFound />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 py-8 transition-colors duration-300">
