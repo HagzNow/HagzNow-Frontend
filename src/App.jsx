@@ -28,6 +28,7 @@ import SettingsPage from './pages/SettingPage/SettingsPage';
 // import ReservationStep from "./components/Steps/ReservationStep";
 import ArenaMangmentCategories from './pages/AdminPages/ArenaMangmentCategories';
 import UserManagement from './pages/AdminPages/UserManagement';
+import WithdrawalRequests from './pages/AdminPages/WithdrawalRequests';
 import OwnerArenas from './pages/Owner/OwnerArenas';
 import OwnerDashboard from './pages/Owner/OwnerDashboard';
 import ReservationView from './pages/ReservationView/ReservationView';
@@ -142,6 +143,7 @@ function App() {
         { path: 'categoriesmanagment', element: <ArenaMangmentCategories /> },
         { path: 'usermanagment', element: <UserManagement /> },
         { path: 'wallet', element: <Wallet /> },
+        { path: 'withdrawal-requests', element: <WithdrawalRequests /> },
       ],
     },
   ]);

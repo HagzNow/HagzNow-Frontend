@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { ChartLine, Box, Users, Calendar, FileCog, MessageSquareText, WalletCards } from 'lucide-react';
+import { ChartLine, Box, Users, Calendar, FileCog, MessageSquareText, WalletCards, ArrowDownCircle } from 'lucide-react';
 
 import Sidebar from '../Sidebar';
 import Navbar from '../Navbar';
@@ -20,6 +20,12 @@ export default function AdminLayout() {
       label: 'محفظة',
       icon: <WalletCards />,
       to: '/admin/wallet',
+    },
+    {
+      key: 'withdrawal-requests',
+      label: 'طلبات السحب',
+      icon: <ArrowDownCircle />,
+      to: '/admin/withdrawal-requests',
     },
     {
       key: 'categoriesmanagment',

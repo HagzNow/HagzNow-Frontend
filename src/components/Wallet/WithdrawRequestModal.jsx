@@ -66,10 +66,10 @@ export default function WithdrawRequestModal({ isOpen, onClose, availableBalance
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-6 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-t-2xl">
+        <div className="p-6 border-b border-gray-100 dark:border-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-t-2xl">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 dark:from-amber-600 dark:to-orange-600 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-lg">
                 <ArrowDownCircle className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -109,7 +109,7 @@ export default function WithdrawRequestModal({ isOpen, onClose, availableBalance
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.amount}
-                className="w-full border border-gray-300 dark:border-gray-600 rounded-2xl p-4 text-right text-lg font-semibold bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400 focus:border-transparent transition-all duration-300 hover:border-amber-300 dark:hover:border-amber-600"
+                className="w-full border border-gray-300 dark:border-gray-600 rounded-2xl p-4 text-right text-lg font-semibold bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent transition-all duration-300 hover:border-green-300 dark:hover:border-green-600"
                 min="1"
                 step="0.01"
                 max={availableBalance || undefined}
@@ -143,7 +143,7 @@ export default function WithdrawRequestModal({ isOpen, onClose, availableBalance
 
           {/* Submit Button */}
           <button
-            className="w-full bg-gradient-to-r from-amber-500 to-orange-500 dark:from-amber-600 dark:to-orange-600 hover:from-amber-600 hover:to-orange-600 dark:hover:from-amber-700 dark:hover:to-orange-700 text-white py-4 rounded-2xl font-semibold text-lg shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-lg"
+            className="w-full bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 hover:from-green-600 hover:to-emerald-600 dark:hover:from-green-700 dark:hover:to-emerald-700 text-white py-4 rounded-2xl font-semibold text-lg shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-lg"
             type="submit"
             onClick={formik.handleSubmit}
             disabled={loading || !formik.isValid}
@@ -170,4 +170,3 @@ export default function WithdrawRequestModal({ isOpen, onClose, availableBalance
     </div>
   );
 }
-

@@ -117,7 +117,7 @@ export default function Wallet() {
               {isOwner ? (
                 <button
                   onClick={() => setShowWithdrawModal(true)}
-                  className="flex items-center gap-2 mx-auto px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 dark:from-amber-600 dark:to-orange-600 text-white rounded-2xl hover:from-amber-600 hover:to-orange-600 dark:hover:from-amber-700 dark:hover:to-orange-700 hover:shadow-lg dark:hover:shadow-gray-900/50 transform hover:-translate-y-1 transition-all duration-300 ease-in-out font-semibold text-lg"
+                  className="flex items-center gap-2 mx-auto px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 text-white rounded-2xl hover:from-green-600 hover:to-emerald-600 dark:hover:from-green-700 dark:hover:to-emerald-700 hover:shadow-lg dark:hover:shadow-gray-900/50 transform hover:-translate-y-1 transition-all duration-300 ease-in-out font-semibold text-lg"
                 >
                   <ArrowDownCircle className="w-5 h-5" />
                   طلب سحب الأموال
