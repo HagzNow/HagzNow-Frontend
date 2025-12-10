@@ -159,38 +159,38 @@ export default function OwnerReservations() {
 
   return (
     <>
-      <div dir="rtl">
+      <div dir="rtl" className="w-full overflow-x-hidden">
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}
-          <div className="mb-6">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-lg">
-                <Calendar className="w-7 h-7 text-white" />
+          <div className="mb-4 sm:mb-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-lg flex-shrink-0">
+                <Calendar className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">حجوزات الساحات</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">حجوزات الساحات</h1>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
                   اختر الساحة والفترة الزمنية ثم اعرضها كتقويم أسبوعي
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow dark:shadow-gray-900/50 p-6 sm:p-8">
-            <div className="flex flex-col gap-4 sm:gap-6">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl sm:rounded-2xl shadow dark:shadow-gray-900/50 p-4 sm:p-6 lg:p-8">
+            <div className="flex flex-col gap-3 sm:gap-4 lg:gap-6">
               <div className="flex flex-wrap items-center gap-2 text-xs mb-2">
-                <span className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-700 font-medium">
+                <span className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-700 font-medium text-xs">
                   • توجد حجوزات
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">الساحة</label>
+                  <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">الساحة</label>
                   <select
                     value={selectedArena}
                     onChange={(e) => setSelectedArena(e.target.value)}
-                    className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm sm:text-base text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                   >
                     {arenas.map((arena) => (
                       <option key={arena.id} value={arena.id}>
@@ -201,9 +201,9 @@ export default function OwnerReservations() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
                     من تاريخ{' '}
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">
                       ({format(parseISO(startDate), 'EEEE', { locale: arSA })})
                     </span>
                   </label>
@@ -217,14 +217,14 @@ export default function OwnerReservations() {
                       setStartDate(nextStart);
                       setEndDate(format(nextEnd, 'yyyy-MM-dd'));
                     }}
-                    className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm sm:text-base text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
                     إلى تاريخ{' '}
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">
                       ({format(parseISO(endDate), 'EEEE', { locale: arSA })})
                     </span>
                   </label>
@@ -237,44 +237,46 @@ export default function OwnerReservations() {
                       const nextEnd = clampRange(parseISO(startDate), parseISO(e.target.value));
                       setEndDate(format(nextEnd, 'yyyy-MM-dd'));
                     }}
-                    className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm sm:text-base text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                 <button
                   onClick={() => fetchReservations()}
                   disabled={!selectedArena || loading}
-                  className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-700 dark:to-emerald-700 text-white font-semibold hover:from-green-700 hover:to-emerald-700 dark:hover:from-green-600 dark:hover:to-emerald-600 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center justify-center px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-700 dark:to-emerald-700 text-white text-xs sm:text-sm font-semibold hover:from-green-700 hover:to-emerald-700 dark:hover:from-green-600 dark:hover:to-emerald-600 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? 'جارٍ التحميل...' : 'تحديث الحجوزات'}
                 </button>
                 <button
                   onClick={handleWeekFetch}
                   disabled={!selectedArena || loading}
-                  className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 dark:from-emerald-900/40 dark:to-teal-900/40 dark:text-emerald-200 font-semibold hover:from-emerald-200 hover:to-teal-200 dark:hover:from-emerald-800 dark:hover:to-teal-800 transition-all duration-300 border border-emerald-200 dark:border-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center justify-center px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 dark:from-emerald-900/40 dark:to-teal-900/40 dark:text-emerald-200 text-xs sm:text-sm font-semibold hover:from-emerald-200 hover:to-teal-200 dark:hover:from-emerald-800 dark:hover:to-teal-800 transition-all duration-300 border border-emerald-200 dark:border-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? '...' : 'جلب حجوزات الأسبوع'}
+                  {loading ? '...' : <span className="hidden sm:inline">جلب حجوزات الأسبوع</span>}
+                  {loading ? '...' : <span className="sm:hidden">الأسبوع</span>}
                 </button>
                 {error && (
-                  <span className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-800">
+                  <span className="text-xs sm:text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-red-200 dark:border-red-800">
                     {error}
                   </span>
                 )}
               </div>
 
               {/* Weekly calendar: days as columns, hours as rows */}
-              <div className="border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow-sm">
-                <div className="flex items-center justify-between bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-b border-green-200 dark:border-green-800 px-4 py-3">
-                  <div className="text-sm font-bold text-gray-900 dark:text-white">
-                    المدى المختار: {startDate && format(parseISO(startDate), 'PPP', { locale: arSA })} -{' '}
+              <div className="border border-gray-200 dark:border-gray-700 rounded-xl sm:rounded-2xl overflow-hidden shadow-sm">
+                <div className="flex items-center justify-between bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-b border-green-200 dark:border-green-800 px-3 sm:px-4 py-2 sm:py-3">
+                  <div className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
+                    <span className="hidden sm:inline">المدى المختار: </span>
+                    {startDate && format(parseISO(startDate), 'PPP', { locale: arSA })} -{' '}
                     {endDate && format(parseISO(endDate), 'PPP', { locale: arSA })}
                   </div>
                 </div>
 
-                <div className="overflow-x-auto">
-                  <div className="min-w-[600px] sm:min-w-[800px]">
+                <div className="overflow-x-auto -mx-4 sm:mx-0">
+                  <div className="min-w-[600px] sm:min-w-full px-4 sm:px-0">
                     <div
                       className="grid"
                       style={{ gridTemplateColumns: `80px repeat(${rangeDays.length || 1}, minmax(0, 1fr))` }}

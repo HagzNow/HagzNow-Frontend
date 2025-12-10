@@ -100,6 +100,6 @@ export default function OwnerLayout() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

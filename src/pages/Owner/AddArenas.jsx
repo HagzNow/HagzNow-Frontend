@@ -95,23 +95,23 @@ const AddArena = () => {
   };
 
   return (
-    <div dir="rtl">
+    <div dir="rtl" className="w-full overflow-x-hidden">
       <div className="max-w-5xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 shadow-lg mb-4">
-            <Plus className="w-8 h-8 text-white" />
+        <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 shadow-lg mb-3 sm:mb-4">
+            <Plus className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-extrabold text-gray-900 dark:text-white mb-2 px-2">
             {t('addArenaTitle') || 'إضافة ملعب جديد'}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm lg:text-base max-w-2xl mx-auto px-2">
             {t('addArenaSubtitle') || 'املأ النموذج أدناه لإضافة ملعبك الرياضي إلى المنصة'}
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white dark:bg-gray-800 shadow-xl dark:shadow-gray-900/50 rounded-3xl p-6 sm:p-8 lg:p-10 border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-2xl dark:hover:shadow-gray-900/70">
+        <div className="bg-white dark:bg-gray-800 shadow-xl dark:shadow-gray-900/50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 xl:p-10 border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-2xl dark:hover:shadow-gray-900/70">
           <Formik
             initialValues={{
               policy: '',

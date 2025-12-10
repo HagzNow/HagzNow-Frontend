@@ -60,13 +60,13 @@ export default function OwnerArenas() {
   };
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       {/* Dashboard Header with Filters */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm -m-3 sm:-m-4 md:-m-6 mb-4 sm:mb-6 rounded-t-2xl">
-        <div className="px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-4 lg:py-6">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4">
             <div className="flex-shrink-0">
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">إدارة الملاعب</h1>
+              <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 dark:text-white">إدارة الملاعب</h1>
               <p className="text-gray-600 dark:text-gray-400 mt-1 text-xs sm:text-sm">
                 {total > 0 ? (
                   <>
