@@ -1,9 +1,7 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import UserReservationsCard from '../UserReservationsCard/UserReservationsCard';
 
 export default function UserAllReservationsList({ reservations = [], loading }) {
-  const { t } = useTranslation();
 
   if (loading) {
     return (

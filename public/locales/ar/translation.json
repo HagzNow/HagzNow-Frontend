@@ -185,7 +185,10 @@
     "settled": "مكتمل",
     "pending": "قيد المعالجة",
     "refund": "استرجاع",
-    "instant": "فوري"
+    "instant": "فوري",
+    "rejected": "مرفوض",
+    "processed": "مُعالج"
+
   },
   "transaction_type": {
     "deposit": "إيداع",

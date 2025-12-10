@@ -174,7 +174,10 @@
     "settled": "Completed",
     "pending": "Pending",
     "refund": "Refund",
-    "instant": "instant"
+    "instant": "instant",
+    "rejected": "Rejected",
+    "processed": "Processed"
+
   },
   "transaction_type": {
     "deposit": "Deposit",
