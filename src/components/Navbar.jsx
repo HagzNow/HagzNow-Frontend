@@ -207,9 +207,9 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
               className="flex items-center gap-2 group"
             >
               {isDarkMode ? (
-                <img src={darkLogo} alt="Logo" className="w-30 h-25 object-contain lg:w-55  lg:h-40" />
+                <img src={darkLogo} alt="Logo" className="w-30 h-25 object-contain lg:w-55  lg:h-20" />
               ) : (
-                <img src={lightLogo} alt="Logo" className="w-30 h-25 object-contain lg:w-55  lg:h-40" />
+                <img src={lightLogo} alt="Logo" className="w-30 h-25 object-contain lg:w-55  lg:h-20" />
               )}
             </Link>
           </div>
