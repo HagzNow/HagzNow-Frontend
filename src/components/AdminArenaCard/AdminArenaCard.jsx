@@ -1,7 +1,9 @@
+import { useState, useMemo } from 'react';
 import { IoLocationOutline } from 'react-icons/io5';
 import { PiSoccerBall } from 'react-icons/pi';
 import { BiDollar } from 'react-icons/bi';
-import { Link, useNavigate } from 'react-router-dom';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
@@ -12,16 +14,43 @@ export default function AdminArenaCard({
   sport,
   price,
   image,
+  images = [],
   onApprove,
   onReject,
+  onView,
   isProcessing = false,
   isLoading = false,
 }) {
   const navigate = useNavigate();
+  const gallery = useMemo(() => {
+    const base = [];
+    if (image) base.push(image);
+    if (images && images.length) {
+      images.forEach((img) => {
+        if (!base.includes(img)) base.push(img);
+      });
+    }
+    return base;
+  }, [image, images]);
+  const [slide, setSlide] = useState(0);
+
+  const nextSlide = (e) => {
+    e.stopPropagation();
+    setSlide((s) => (gallery.length ? (s + 1) % gallery.length : 0));
+  };
+  const prevSlide = (e) => {
+    e.stopPropagation();
+    setSlide((s) => (gallery.length ? (s - 1 + gallery.length) % gallery.length : 0));
+  };
 
   const handleViewMore = (e) => {
     e.stopPropagation();
-    navigate(`/booking/${id}`);
+    if (typeof onView === 'function') {
+      onView();
+      return;
+    }
+    // keep within admin layout without filtering out the list
+    navigate(`/admin/admin-arena-requests`);
   };
 
   // Loading skeleton
@@ -74,17 +103,47 @@ export default function AdminArenaCard({
       onClick={handleViewMore}
       className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-2xl dark:hover:shadow-gray-900 overflow-hidden cursor-pointer group border border-gray-200 dark:border-gray-700 relative transition-colors"
     >
-      {/* Image Container with Enhanced Overlay */}
-      <div className="relative overflow-hidden h-52 sm:h-56 md:h-60 lg:h-52">
-        <img
-          src={image}
-          alt="arena"
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-        />
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        {/* Shine Effect */}
-        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+      {/* Image Slider */}
+      <div className="relative overflow-hidden h-52 sm:h-56 md:h-60 lg:h-52 bg-gray-100 dark:bg-gray-800">
+        {gallery.length > 0 ? (
+          <>
+            <img
+              src={gallery[slide]}
+              alt="arena"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            />
+            {gallery.length > 1 && (
+              <>
+                <button
+                  onClick={prevSlide}
+                  className="absolute top-1/2 -translate-y-1/2 right-3 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="absolute top-1/2 -translate-y-1/2 left-3 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <div className="absolute bottom-3 inset-x-0 flex justify-center gap-2">
+                  {gallery.map((_, idx) => (
+                    <span
+                      key={idx}
+                      className={`h-2.5 w-2.5 rounded-full border border-white/60 ${
+                        idx === slide ? 'bg-white' : 'bg-white/30'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-sm text-neutral-500 dark:text-gray-400">
+            لا توجد صورة
+          </div>
+        )}
       </div>
 
       {/* Content Container with Gradient Background on Hover */}
@@ -194,7 +253,7 @@ export default function AdminArenaCard({
           </button>
 
           {/* View More Button */}
-            {/* <button
+          {/* <button
                 onClick={(e) => {
                 e.stopPropagation();
                 handleViewMore();
