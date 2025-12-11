@@ -211,7 +211,14 @@ const Navbar = ({ variant = "public", menuItems, onMenuClick, showSearch }) => {
             )}
 
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 group">
+            <Link
+              to={
+                user?.role == "admin" || user?.role == "owner"
+                  ? `/${user.role}/dashboard`
+                  : "/"
+              }
+              className="flex items-center gap-2 group"
+            >
               {isDarkMode ? (
                 <img
                   src={darkLogo}
