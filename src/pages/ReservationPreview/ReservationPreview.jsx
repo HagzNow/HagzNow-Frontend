@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { reservationContext } from '../../Contexts/ReservationContext';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import baseUrl from '../../apis/config';
-import ReservationInfoCard from '../../components/Reservation/ReservationInfoCard';
-import ReservationActions from '../../components/Reservation/ReservationActions';
-import toast from 'react-hot-toast';
-import ReservationHeader from '@/components/Reservation/reservationHeader';
+import React, { useContext, useEffect, useState } from "react";
+import { reservationContext } from "../../Contexts/ReservationContext";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import baseUrl from "../../apis/config";
+import ReservationInfoCard from "../../components/Reservation/ReservationInfoCard";
+import ReservationActions from "../../components/Reservation/ReservationActions";
+import toast from "react-hot-toast";
+import ReservationHeader from "@/components/Reservation/reservationHeader";
 
 export default function ReservationPreview() {
   const [arena, setArena] = useState(null);
@@ -15,8 +15,15 @@ export default function ReservationPreview() {
   const navigate = useNavigate();
   const { i18n } = useTranslation();
 
-  const { selectedExtras, slots, date, submitReservation, arenaId, resetReservation, handleBack } =
-    useContext(reservationContext);
+  const {
+    selectedExtras,
+    slots,
+    date,
+    submitReservation,
+    arenaId,
+    resetReservation,
+    handleBack,
+  } = useContext(reservationContext);
 
   const fetchArena = async () => {
     try {
@@ -30,6 +37,40 @@ export default function ReservationPreview() {
     }
   };
 
+  function transformReservationData(raw) {
+    const arena = raw.arena;
+
+    return {
+      arena: {
+        id: arena.id,
+        name: arena.name,
+        categoryName: arena.category?.name || "",
+        pricePerHour: arena.pricePerHour,
+        thumbnail: arena.thumbnail,
+        status: arena.status,
+        locationSummary: `${arena.location?.city || ""}, ${
+          arena.location?.governorate || ""
+        }`,
+      },
+
+      date: raw.date?.format ? raw.date.format("YYYY-MM-DD") : raw.date,
+
+      slots: raw.slots?.map((s) => ({
+        id: s.id,
+        date: s.date,
+        hour: s.hour,
+      })),
+
+      selectedExtras: raw.selectedExtras || [],
+
+      extrasTotalAmount: raw.extrasTotalAmount ?? 0,
+
+      totalAmount: raw.totalAmount ?? 0,
+
+      status: raw.status,
+    };
+  }
+
   useEffect(() => {
     fetchArena();
   }, []);
@@ -42,10 +83,10 @@ export default function ReservationPreview() {
         const reservationId = response.data.id;
         navigate(`/confirm/${reservationId}`);
       } else {
-        toast.error('فشل في إنشاء الحجز');
+        toast.error("فشل في إنشاء الحجز");
       }
     } catch (err) {
-      console.error('Error in handelSubmit:', err);
+      console.error("Error in handelSubmit:", err);
     } finally {
       setLoadButtom(false);
     }
@@ -53,13 +94,20 @@ export default function ReservationPreview() {
 
   const handleCancel = () => {
     resetReservation();
-    navigate('/user-arena');
+    navigate("/user-arena");
   };
-  console.log('price per hour : ', arena?.data.pricePerHour);
-  console.log('slots length', slots.length);
-  console.log('deposit percent', arena?.data.depositPercent);
-  const totalAmount = (Number(arena?.data.pricePerHour) * slots.length * Number(arena?.data.depositPercent)) / 100;
-  const extrasTotalAmount = selectedExtras.reduce((sum, extra) => sum + Number(extra.price || 0), 0);
+  console.log("price per hour : ", arena?.data.pricePerHour);
+  console.log("slots length", slots.length);
+  console.log("deposit percent", arena?.data.depositPercent);
+  const totalAmount =
+    (Number(arena?.data.pricePerHour) *
+      slots.length *
+      Number(arena?.data.depositPercent)) /
+    100;
+  const extrasTotalAmount = selectedExtras.reduce(
+    (sum, extra) => sum + Number(extra.price || 0),
+    0
+  );
 
   if (loading) {
     return (
@@ -68,20 +116,24 @@ export default function ReservationPreview() {
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center mx-auto mb-4 animate-pulse">
             <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">Loading...</p>
+          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">
+            Loading...
+          </p>
         </div>
       </div>
     );
   }
 
-  const data = {
+  const data = transformReservationData({
     arena: arena.data,
     date,
     slots,
     selectedExtras,
     totalAmount,
     extrasTotalAmount,
-  };
+    status: "pending",  
+  });
+
   console.log(slots);
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 py-8 transition-colors duration-300">
@@ -121,8 +173,12 @@ export default function ReservationPreview() {
                     <span className="text-white font-bold text-lg">!</span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">معلومات مهمة</h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">نقاط هامة قبل تأكيد الحجز</p>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      معلومات مهمة
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">
+                      نقاط هامة قبل تأكيد الحجز
+                    </p>
                   </div>
                 </div>
               </div>
@@ -136,8 +192,12 @@ export default function ReservationPreview() {
                       <span className="text-white text-xs font-bold">✓</span>
                     </div>
                     <div>
-                      <p className="text-green-800 dark:text-green-300 font-medium text-sm">تأكد من صحة جميع البيانات</p>
-                      <p className="text-green-700 dark:text-green-400 text-xs mt-1">تحقق من التاريخ، الوقت، والإضافات المختارة</p>
+                      <p className="text-green-800 dark:text-green-300 font-medium text-sm">
+                        تأكد من صحة جميع البيانات
+                      </p>
+                      <p className="text-green-700 dark:text-green-400 text-xs mt-1">
+                        تحقق من التاريخ، الوقت، والإضافات المختارة
+                      </p>
                     </div>
                   </div>
 
@@ -147,8 +207,12 @@ export default function ReservationPreview() {
                       <span className="text-white text-xs font-bold">✎</span>
                     </div>
                     <div>
-                      <p className="text-blue-800 dark:text-blue-300 font-medium text-sm">يمكنك تعديل الحجز قبل التأكيد</p>
-                      <p className="text-blue-700 dark:text-blue-400 text-xs mt-1">استخدم زر التعديل لإجراء أي تغييرات</p>
+                      <p className="text-blue-800 dark:text-blue-300 font-medium text-sm">
+                        يمكنك تعديل الحجز قبل التأكيد
+                      </p>
+                      <p className="text-blue-700 dark:text-blue-400 text-xs mt-1">
+                        استخدم زر التعديل لإجراء أي تغييرات
+                      </p>
                     </div>
                   </div>
 
@@ -158,8 +222,12 @@ export default function ReservationPreview() {
                       <span className="text-white text-xs font-bold">💰</span>
                     </div>
                     <div>
-                      <p className="text-amber-800 dark:text-amber-300 font-medium text-sm">سيتم خصم المبلغ بعد التأكيد</p>
-                      <p className="text-amber-700 dark:text-amber-400 text-xs mt-1">المبلغ سيخصم تلقائياً من محفظتك</p>
+                      <p className="text-amber-800 dark:text-amber-300 font-medium text-sm">
+                        سيتم خصم المبلغ بعد التأكيد
+                      </p>
+                      <p className="text-amber-700 dark:text-amber-400 text-xs mt-1">
+                        المبلغ سيخصم تلقائياً من محفظتك
+                      </p>
                     </div>
                   </div>
                 </div>

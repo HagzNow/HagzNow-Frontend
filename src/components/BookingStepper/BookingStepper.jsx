@@ -14,6 +14,7 @@ export default function BookingStepper() {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between relative">
+
         {/* Progress Line */}
         <div className="absolute top-5 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 -z-10">
           <div
@@ -31,18 +32,19 @@ export default function BookingStepper() {
 
           return (
             <div key={index} className="flex flex-col items-center relative z-10">
+              
               {/* Step Circle */}
               <div
                 className={`
                   w-12 h-12 rounded-2xl flex items-center justify-center
                   transition-all duration-500 ease-in-out
-                  border-2 shadow-lg
+                  border-2 shadow-lg relative
                   ${
                     isCompleted
                       ? 'bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 border-green-500 dark:border-green-600 text-white scale-110'
                       : isActive
                       ? 'bg-white dark:bg-gray-800 border-green-500 dark:border-green-400 text-green-500 dark:text-green-400 scale-110 shadow-xl'
-                      : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-500'
+                      : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-500 scale-100'
                   }
                 `}
               >
@@ -50,19 +52,28 @@ export default function BookingStepper() {
               </div>
 
               {/* Step Label */}
-              <div className="mt-3 text-center max-w-[120px]">
+              <div className="mt-3 text-center max-w-[150px]">
                 <span
                   className={`
                     text-sm font-semibold transition-colors duration-300
-                    ${isCompleted ? 'text-green-600 dark:text-green-400' : isActive ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}
+                    ${
+                      isCompleted || isActive
+                        ? 'text-green-600 dark:text-green-400'
+                        : 'text-gray-500 dark:text-gray-400'
+                    }
                   `}
                 >
                   {label}
                 </span>
+
                 <div
                   className={`
                     text-xs mt-1 transition-colors duration-300
-                    ${isCompleted ? 'text-green-500 dark:text-green-400' : isActive ? 'text-green-500 dark:text-green-400' : 'text-gray-400 dark:text-gray-500'}
+                    ${
+                      isCompleted || isActive
+                        ? 'text-green-500 dark:text-green-400'
+                        : 'text-gray-400 dark:text-gray-500'
+                    }
                   `}
                 >
                   {isCompleted && 'مكتمل'}
@@ -78,9 +89,7 @@ export default function BookingStepper() {
                   flex items-center justify-center border-2 border-white dark:border-gray-800
                   transition-all duration-300
                   ${
-                    isCompleted
-                      ? 'bg-green-500 dark:bg-green-600 text-white'
-                      : isActive
+                    isCompleted || isActive
                       ? 'bg-green-500 dark:bg-green-600 text-white'
                       : 'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
                   }

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef, useState, useCallback } from "react";
-import logo from "../assets/images/logo.png";
+import darkLogo from "../assets/images/darkLogo.png";
+import lightLogo from "../assets/images/lightLogo.png";
 import { CiSearch } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -210,13 +211,21 @@ const Navbar = ({ variant = "public", menuItems, onMenuClick, showSearch }) => {
             )}
 
             {/* Logo */}
-           <Link to="/" className="flex items-center gap-2 group">
-  <img
-    src={logo}
-    alt="Logo"
-    className="w-30 h-25 object-contain lg:w-35 lg:h-25"
-  />
-</Link>
+            <Link to="/" className="flex items-center gap-2 group">
+              {isDarkMode ? (
+                <img
+                  src={darkLogo}
+                  alt="Logo"
+                  className="w-30 h-25 object-contain lg:w-55  lg:h-40"
+                />
+              ) : (
+                <img
+                  src={lightLogo}
+                  alt="Logo"
+                  className="w-30 h-25 object-contain lg:w-55  lg:h-40"
+                />
+              )}
+            </Link>
           </div>
 
           {/* Desktop Navigation Links */}

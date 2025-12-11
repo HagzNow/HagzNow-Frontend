@@ -20,7 +20,7 @@ export default function Footer() {
           <div className="space-y-5">
             <div>
               <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent">
-                ArenaBook
+               HagzNow
               </h3>
               <div className="w-12 h-1 bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-400 dark:to-emerald-400 rounded-full"></div>
             </div>
@@ -206,7 +206,7 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-gray-600 dark:text-gray-400 text-sm text-center sm:text-left">
               © {new Date().getFullYear()}{' '}
-              <span className="font-semibold text-gray-900 dark:text-white">ArenaBook</span>.{' '}
+              <span className="font-semibold text-gray-900 dark:text-white">HagzNow</span>.{' '}
               {t('footer_rights') || 'جميع الحقوق محفوظة'}.
             </p>
             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">

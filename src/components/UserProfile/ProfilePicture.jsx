@@ -1,6 +1,11 @@
 import { User, UserPen } from "lucide-react";
 
-export default function ProfilePicture({ isEditing, selectedImage, setSelectedImage, userData }) {
+export default function ProfilePicture({
+  isEditing,
+  selectedImage,
+  setSelectedImage,
+  userData,
+}) {
   const displayImage = selectedImage
     ? URL.createObjectURL(selectedImage)
     : userData?.avatar || null;
