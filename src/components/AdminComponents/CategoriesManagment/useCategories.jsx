@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import baseUrl from "../../../apis/config";
 import { API_BASE_URL, API_ENDPOINTS } from "@/config/api";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const useCategories = () => {
   const endpoint = `${API_BASE_URL}${API_ENDPOINTS.CATEGORIES}`;
@@ -31,13 +33,29 @@ const useCategories = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("هل أنت متأكد من حذف هذه الفئة؟")) return;
+  
+   
+const handleDelete = async (id) => {
+  const confirm = await Swal.fire({
+    title: "هل أنت متأكد؟",
+    text: "لا يمكن التراجع بعد الحذف!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "نعم، احذفها",
+    cancelButtonText: "إلغاء",
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+  });
+  if (!confirm.isConfirmed) return; 
+
     try {
       await baseUrl.delete(`${endpoint}/${id}`);
       fetchCategories();
+      toast.success("تم حذف الفئة بنجاح.");
     } catch (err) {
-      console.error("Error deleting category:", err);
+      toast.error("حدث خطأ أثناء حذف الفئة.");
+      console.log(err);
+      
     }
   };
 

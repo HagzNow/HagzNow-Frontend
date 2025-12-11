@@ -6,7 +6,7 @@ import CategoryModal from "@/components/AdminComponents/CategoriesManagment/Cate
 import useCategories from "@/components/AdminComponents/CategoriesManagment/useCategories";
 
 const ArenaMangmentCategories = () => {
-  const { categories, loading, fetchCategories, handleDelete, handleSave } = useCategories();
+  const { categories, loading, handleDelete, handleSave } = useCategories();
   const [modalOpen, setModalOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
