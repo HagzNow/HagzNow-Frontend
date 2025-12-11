@@ -78,7 +78,7 @@ export default function Wallet() {
   return (
     <>
       {/* Main Content */}
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 py-8 transition-colors duration-300">
+      <div className="pt-5">
         <div className="container mx-auto px-4 max-w-6xl">
           {/* Balance Card */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-500 ease-in-out border border-gray-100 dark:border-gray-700 overflow-hidden group mb-8">
