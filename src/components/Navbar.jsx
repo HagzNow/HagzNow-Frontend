@@ -40,17 +40,17 @@ const MENU_PRESETS = (t) => ({
     },
   ],
   admin: [
-    { to: '/dashboard', label: t('dashboard') || 'لوحة التحكم' },
-    {
-      to: '/admin/wallet',
-      label: t('wallet_label') || t('wallet') || 'المحفظة',
-    },
-    { to: '/admin/usermanagment', label: t('users') || 'المستخدمين' },
-    { to: '/admin/admin-arena-requests', label: t('requests') || 'الطلبات' },
+    // { to: '/dashboard', label: t('dashboard') || 'لوحة التحكم' },
+    // {
+    //   to: '/admin/wallet',
+    //   label: t('wallet_label') || t('wallet') || 'المحفظة',
+    // },
+    // { to: '/admin/usermanagment', label: t('users') || 'المستخدمين' },
+    // { to: '/admin/admin-arena-requests', label: t('requests') || 'الطلبات' },
   ],
   owner: [
-    { to: '/owner/arenas', label: t('owner_arenas') || 'ساحاتي' },
-    { to: '/owner/add-arena', label: t('owner_add_arena') || 'إضافة ساحة' },
+    // { to: '/owner/arenas', label: t('owner_arenas') || 'ساحاتي' },
+    // { to: '/owner/add-arena', label: t('owner_add_arena') || 'إضافة ساحة' },
   ],
 });
 
@@ -298,7 +298,7 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
           {/* Theme Toggle & Auth/User Buttons */}
           <div className="flex items-center gap-3">
             {/* Notifications (admin/owner) */}
-            {['admin', 'owner'].includes(variant) && (
+            {/* {['admin', 'owner'].includes(variant) && (
               <button
                 type="button"
                 className="relative p-2.5 rounded-xl hover:bg-green-50 dark:hover:bg-gray-800 transition-all duration-200 active:scale-95 group"
@@ -307,7 +307,7 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
               >
                 <Bell className="h-5 w-5 text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors" />
               </button>
-            )}
+            )} */}
 
             {/* Theme Toggle Button */}
             <button

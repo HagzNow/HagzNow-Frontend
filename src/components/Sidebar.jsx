@@ -113,7 +113,7 @@ export default function Sidebar({
         </div>
 
         {/* Body */}
-        <div className="flex flex-col h-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-green-100 dark:border-gray-800 shadow-sm mt-2">
+        <div className="flex flex-col h-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-green-100 dark:border-gray-800 shadow-sm mt-2 mt-5">
           {/* Menu Items (admin mode) */}
           {inferredMode === 'admin' && menuItems.length > 0 && (
             <ul className="px-3 py-2 space-y-1">
