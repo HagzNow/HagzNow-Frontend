@@ -29,7 +29,7 @@ export default function UserArenas() {
         ...filters,
       });
 
-      setArenas(response.data);
+      setArenas(response.data);    
       setTotalPages(response.totalPages);
     } catch (err) {
       setError(err.message || 'فشل في تحميل الملاعب');
