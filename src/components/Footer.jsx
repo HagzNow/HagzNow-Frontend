@@ -7,7 +7,7 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden border-t border-green-100 dark:border-gray-800 transition-colors duration-300">
+    <footer className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden border-t border-green-100 dark:border-gray-800 transition-colors duration-300 mt-5">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 opacity-30 dark:opacity-10">
         <div className="absolute top-0 left-0 w-96 h-96 bg-green-200 dark:bg-green-900/30 rounded-full blur-3xl"></div>
@@ -20,7 +20,7 @@ export default function Footer() {
           <div className="space-y-5">
             <div>
               <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent">
-               HagzNow
+                HagzNow
               </h3>
               <div className="w-12 h-1 bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-400 dark:to-emerald-400 rounded-full"></div>
             </div>
@@ -180,7 +180,10 @@ export default function Footer() {
                   <FaPhone className="w-4 h-4 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
-                  <span dir="ltr" className="text-gray-600 dark:text-gray-300 text-sm block group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                  <span
+                    dir="ltr"
+                    className="text-gray-600 dark:text-gray-300 text-sm block group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors"
+                  >
                     +20 123 456 7890
                   </span>
                 </div>
@@ -205,8 +208,7 @@ export default function Footer() {
         <div className="container mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-gray-600 dark:text-gray-400 text-sm text-center sm:text-left">
-              © {new Date().getFullYear()}{' '}
-              <span className="font-semibold text-gray-900 dark:text-white">HagzNow</span>.{' '}
+              © {new Date().getFullYear()} <span className="font-semibold text-gray-900 dark:text-white">HagzNow</span>.{' '}
               {t('footer_rights') || 'جميع الحقوق محفوظة'}.
             </p>
             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">

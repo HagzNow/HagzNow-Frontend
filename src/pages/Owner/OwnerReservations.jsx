@@ -8,6 +8,7 @@ import {
   parseISO,
   differenceInCalendarDays,
   addDays,
+  subDays,
 } from 'date-fns';
 import { arSA } from 'date-fns/locale';
 import { Calendar, Clock, Plus } from 'lucide-react';
@@ -16,10 +17,11 @@ import { reservationService } from '@/services/reservationService';
 
 export default function OwnerReservations() {
   const today = useMemo(() => format(startOfDay(new Date()), 'yyyy-MM-dd'), []);
+  const sevenDaysAgo = useMemo(() => format(subDays(startOfDay(new Date()), 6), 'yyyy-MM-dd'), []);
 
   const [arenas, setArenas] = useState([]);
   const [selectedArena, setSelectedArena] = useState('');
-  const [startDate, setStartDate] = useState(today);
+  const [startDate, setStartDate] = useState(sevenDaysAgo);
   const [endDate, setEndDate] = useState(today);
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -168,7 +170,9 @@ export default function OwnerReservations() {
                 <Calendar className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">حجوزات الساحات</h1>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
+                  حجوزات الساحات
+                </h1>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
                   اختر الساحة والفترة الزمنية ثم اعرضها كتقويم أسبوعي
                 </p>
@@ -403,7 +407,7 @@ export default function OwnerReservations() {
                             )}
                           </button>
                         );
-                      }
+                      },
                     )}
                     {(reservations.filter((r) => r.dateOfReservation === format(selectedDay, 'yyyy-MM-dd')) || [])
                       .length === 0 && (
@@ -418,8 +422,14 @@ export default function OwnerReservations() {
       </div>
       {/* Details Modal */}
       {details && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 backdrop-blur-sm px-4" onClick={() => setDetails(null)}>
-          <div className="max-w-2xl w-full bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-gray-900/50 border border-gray-200 dark:border-gray-700 p-6 relative" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 backdrop-blur-sm px-4"
+          onClick={() => setDetails(null)}
+        >
+          <div
+            className="max-w-2xl w-full bg-white dark:bg-gray-800 rounded-2xl shadow-2xl dark:shadow-gray-900/50 border border-gray-200 dark:border-gray-700 p-6 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               className="absolute top-4 left-4 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-200"
               onClick={() => setDetails(null)}
@@ -476,7 +486,9 @@ export default function OwnerReservations() {
                     </div>
                     <div className="rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-4 border border-green-200 dark:border-green-800">
                       <div className="text-gray-600 dark:text-gray-400 text-xs mb-1 font-medium">الإجمالي</div>
-                      <div className="font-bold text-green-600 dark:text-green-400 text-lg">{details.totalAmount} ج.م</div>
+                      <div className="font-bold text-green-600 dark:text-green-400 text-lg">
+                        {details.totalAmount} ج.م
+                      </div>
                     </div>
                     <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-4 border border-gray-200 dark:border-gray-600">
                       <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">ساعات اللعب</div>

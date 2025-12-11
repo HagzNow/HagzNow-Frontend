@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export default function OwnerDashboard() {
   const navigate = useNavigate();
   return (
-    <div dir="rtl" className="w-full overflow-x-hidden">
+    <div dir="rtl" className="w-full px-10 overflow-x-hidden">
       {/* Page Header */}
       <div className="mb-4 sm:mb-6">
         <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1 sm:mb-2">

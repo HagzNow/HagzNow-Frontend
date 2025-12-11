@@ -87,7 +87,7 @@ export default function Register() {
 
   return (
     <>
-      <section className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 py-8 transition-colors duration-300">
+      <section className="pt-5">
         <div className="container mx-auto px-4 text-center py-5">
           <div className="title space-y-2">
             <h2 className="text-2xl font-bold text-green-600 dark:text-green-400">{t('title')}</h2>

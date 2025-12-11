@@ -1,25 +1,17 @@
-import React, { useContext, useEffect } from "react";
-import BookingStepper from "../../components/BookingStepper/BookingStepper";
-import { reservationContext } from "../../Contexts/ReservationContext";
-import { useNavigate, useParams } from "react-router-dom";
-import ReservationStep from "../../components/Steps/ReservationStep";
-import Extras from "../Extras/Extras";
-import { useTranslation } from "react-i18next";
-import ReservationPreview from "../ReservationPreview/ReservationPreview";
-import { ArrowLeft, ArrowRight, Calendar, Package, Eye } from "lucide-react";
+import React, { useContext, useEffect } from 'react';
+import BookingStepper from '../../components/BookingStepper/BookingStepper';
+import { reservationContext } from '../../Contexts/ReservationContext';
+import { useNavigate, useParams } from 'react-router-dom';
+import ReservationStep from '../../components/Steps/ReservationStep';
+import Extras from '../Extras/Extras';
+import { useTranslation } from 'react-i18next';
+import ReservationPreview from '../ReservationPreview/ReservationPreview';
+import { ArrowLeft, ArrowRight, Calendar, Package, Eye } from 'lucide-react';
 
 export default function Reservation() {
   const navigate = useNavigate();
-  const {
-    getExtras,
-    extras,
-    activeStep,
-    steps,
-    handleNext,
-    handleBack,
-    slots,
-    resetReservation,
-  } = useContext(reservationContext);
+  const { getExtras, extras, activeStep, steps, handleNext, handleBack, slots, resetReservation } =
+    useContext(reservationContext);
   let { t } = useTranslation();
   const { id } = useParams();
 
@@ -50,16 +42,12 @@ export default function Reservation() {
   const isNextDisabled = activeStep === 0 && (!slots || slots.length === 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-900 dark:to-gray-800 py-8 transition-colors duration-300">
+    <div className="pt-5">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-            {"حجز الملعب"}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-lg">
-            {"اتبع الخطوات لإكمال حجزك"}
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">{'حجز الملعب'}</h1>
+          <p className="text-gray-600 dark:text-gray-300 text-lg">{'اتبع الخطوات لإكمال حجزك'}</p>
         </div>
 
         {/* Stepper */}
@@ -81,7 +69,7 @@ export default function Reservation() {
               className="flex items-center gap-2 px-8 py-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-600 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-lg dark:hover:shadow-gray-900/50 transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out font-semibold min-w-[140px] justify-center"
             >
               <ArrowRight className="w-5 h-5" />
-              {t("reservation.previous") || "السابق"}
+              {t('reservation.previous') || 'السابق'}
             </button>
 
             {/* Next Button */}
@@ -93,12 +81,12 @@ export default function Reservation() {
                 transform transition-all duration-300 ease-in-out
                 ${
                   isNextDisabled
-                    ? "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed hover:scale-100"
-                    : "bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 hover:from-green-600 hover:to-emerald-600 dark:hover:from-green-700 dark:hover:to-emerald-700 text-white hover:-translate-y-0.5 hover:shadow-xl"
+                    ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed hover:scale-100'
+                    : 'bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 hover:from-green-600 hover:to-emerald-600 dark:hover:from-green-700 dark:hover:to-emerald-700 text-white hover:-translate-y-0.5 hover:shadow-xl'
                 }
               `}
             >
-              {t("reservation.next") || "التالي"}
+              {t('reservation.next') || 'التالي'}
               <ArrowLeft className="w-5 h-5" />
             </button>
           </div>

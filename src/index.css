@@ -1,15 +1,13 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @plugin "tailwindcss-animate";
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
 body {
-  font-family: "Cairo", sans-serif;
+  font-family: 'Cairo', sans-serif;
 }
-
-
 
 @theme {
   --color-mainColor: #0aad0a;
@@ -17,16 +15,13 @@ body {
   --color-thirdColor: rgba(86, 93, 109, 1);
 }
 
-
 @utility container {
   margin: auto;
 }
 
-
-
 @layer components {
   .btn {
-    @apply rounded-md text-white px-10 py-2 border-2 border-thirdColor
+    @apply rounded-md text-white px-10 py-2 border-2 border-thirdColor;
   }
 }
 
@@ -36,17 +31,17 @@ body {
   height: 48px;
   border-radius: 50%;
   position: relative;
-  animation: rotate 1s linear infinite
+  animation: rotate 1s linear infinite;
 }
 
 .loader::before,
 .loader::after {
-  content: "";
+  content: '';
   box-sizing: border-box;
   position: absolute;
   inset: 0px;
   border-radius: 50%;
-  border: 5px solid #FFF;
+  border: 5px solid #fff;
   animation: prixClipFix 2s linear infinite;
 }
 
@@ -58,26 +53,26 @@ body {
 
 @keyframes rotate {
   0% {
-    transform: rotate(0deg)
+    transform: rotate(0deg);
   }
 
   100% {
-    transform: rotate(360deg)
+    transform: rotate(360deg);
   }
 }
 
 @keyframes prixClipFix {
   0% {
-    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0)
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
   }
 
   50% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0)
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
   }
 
   75%,
   100% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%)
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
   }
 }
 
