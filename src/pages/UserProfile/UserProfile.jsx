@@ -3,13 +3,14 @@ import baseUrl from '@/apis/config';
 import { authContext } from '@/Contexts/AuthContext';
 
 export default function UserProfile() {
-  const { token, setUser, refreshUser } = useContext(authContext);
+  const { token, user, setUser, refreshUser } = useContext(authContext);
 
   const [profile, setProfile] = useState({
     fName: '',
     lName: '',
     email: '',
     phone: '',
+    payoutMethod: '',
   });
   const [avatarPreview, setAvatarPreview] = useState('');
   const [avatarFile, setAvatarFile] = useState(null);
@@ -43,6 +44,7 @@ export default function UserProfile() {
         lName: data.lName || '',
         email: data.email || '',
         phone: data.phone || '',
+        payoutMethod: data.payoutMethod || '',
       });
       setAvatarPreview(data.avatar || '');
       setUser?.(data); // sync context with fresh backend data instead of decode
@@ -92,6 +94,9 @@ export default function UserProfile() {
     if (profile.phone.trim() && !phoneRegex.test(profile.phone.trim())) {
       nextErrors.phone = 'رقم الهاتف غير صالح';
     }
+    if (user?.role === 'owner' && (profile.payoutMethod || '').trim() === '') {
+      nextErrors.payoutMethod = 'طريقة الدفع مطلوبة';
+    }
 
     if (Object.keys(nextErrors).length) {
       setProfileErrors(nextErrors);
@@ -104,6 +109,9 @@ export default function UserProfile() {
     formData.append('lName', profile.lName);
     formData.append('email', profile.email);
     formData.append('phone', profile.phone);
+    if (user?.role === 'owner') {
+      formData.append('payoutMethod', profile.payoutMethod);
+    }
     if (avatarFile) formData.append('avatar', avatarFile);
 
     try {
@@ -245,7 +253,58 @@ export default function UserProfile() {
                     <span className="text-red-600 dark:text-red-400 text-sm mt-1">{profileErrors.email}</span>
                   )}
                 </label>
+              </div>
 
+              {user?.role === 'owner' ? (
+                <div className="space-y-4 p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/60 dark:bg-gray-800/60">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">إعدادات الدفعات</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">حدد طريقة استلام الأرباح ورقم التواصل.</p>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className="flex flex-col text-right">
+                      <span className="text-sm text-gray-600 dark:text-gray-300 mb-1">طريقة استلام الأرباح</span>
+                      <select
+                        name="payoutMethod"
+                        value={profile.payoutMethod}
+                        onChange={handleProfileChange}
+                        className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-right text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                        required
+                      >
+                        <option value="" disabled>
+                          اختر طريقة الدفع
+                        </option>
+                        <option value="instapay">Instapay</option>
+                        <option value="wallet">Wallet</option>
+                      </select>
+                      {profileErrors.payoutMethod && (
+                        <span className="text-red-600 dark:text-red-400 text-sm mt-1">
+                          {profileErrors.payoutMethod}
+                        </span>
+                      )}
+                      <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        اختر Instapay أو Wallet لاستلام الدفعات.
+                      </span>
+                    </label>
+
+                    <label className="flex flex-col text-right">
+                      <span className="text-sm text-gray-600 dark:text-gray-300 mb-1">رقم الهاتف</span>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={profile.phone}
+                        onChange={handleProfileChange}
+                        className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-right text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:outline-none"
+                        required
+                      />
+                      {profileErrors.phone && (
+                        <span className="text-red-600 dark:text-red-400 text-sm mt-1">{profileErrors.phone}</span>
+                      )}
+                    </label>
+                  </div>
+                </div>
+              ) : (
                 <label className="flex flex-col text-right">
                   <span className="text-sm text-gray-600 dark:text-gray-300 mb-1">رقم الهاتف</span>
                   <input
@@ -260,7 +319,7 @@ export default function UserProfile() {
                     <span className="text-red-600 dark:text-red-400 text-sm mt-1">{profileErrors.phone}</span>
                   )}
                 </label>
-              </div>
+              )}
 
               <div className="flex items-center gap-4 flex-wrap">
                 {avatarPreview ? (
