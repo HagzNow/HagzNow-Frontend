@@ -156,7 +156,7 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
           </div>
 
           {(isDetailOpen || detailLoading) && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div className="fixed inset-0 z-50 flex items-center justify-center px-3 sm:px-6">
               <div
                 className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 onClick={() => {
@@ -164,7 +164,7 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
                   setIsDetailOpen(false);
                 }}
               ></div>
-              <div className="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl dark:shadow-gray-900/80 border border-neutral-200 dark:border-gray-700 overflow-hidden">
+              <div className="relative w-full max-w-5xl bg-white/95 dark:bg-gray-900/95 rounded-3xl shadow-2xl dark:shadow-gray-900/80 border border-neutral-200 dark:border-gray-700 overflow-hidden">
                 {detailLoading ? (
                   <div className="p-8 flex justify-center items-center min-h-[280px]">
                     <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
@@ -211,23 +211,27 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
                             <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">
                               {selectedArena.name}
                             </h3>
-                            <p className="text-sm text-neutral-500 dark:text-gray-400">
-                              {selectedArena.status || 'معلق'} •{' '}
-                              {selectedArena.location?.city || selectedArena.location?.governorate || 'غير محدد'}
-                            </p>
+                            <div className="flex items-center gap-2 flex-wrap mt-2">
+                              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800">
+                                {selectedArena.status || 'معلق'}
+                              </span>
+                              <span className="px-3 py-1 rounded-full text-xs bg-neutral-100 text-neutral-700 dark:bg-gray-800 dark:text-gray-200 border border-neutral-200 dark:border-gray-700">
+                                {selectedArena.location?.city || selectedArena.location?.governorate || 'غير محدد'}
+                              </span>
+                            </div>
                           </div>
                           <button
                             onClick={() => {
                               setSelectedArena(null);
                               setIsDetailOpen(false);
                             }}
-                            className="text-neutral-500 hover:text-neutral-800 dark:text-gray-400 dark:hover:text-white transition-colors"
+                            className="text-neutral-500 hover:text-neutral-900 dark:text-gray-400 dark:hover:text-white transition-colors p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-gray-800"
                           >
                             ✕
                           </button>
                         </div>
 
-                        <div className="grid md:grid-cols-[1.4fr_1fr] gap-5 p-5">
+                        <div className="grid lg:grid-cols-[1.35fr_1fr] gap-6 p-6">
                           <div className="rounded-2xl overflow-hidden border border-neutral-200 dark:border-gray-700 bg-neutral-50 dark:bg-gray-800 shadow-inner relative">
                             {gallery.length > 0 ? (
                               <>
@@ -276,34 +280,38 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
                             )}
                           </div>
 
-                          <div className="space-y-3 text-right">
-                            <DetailRow label="الموقع" value={locationText} />
-                            <DetailRow label="نوع الرياضة" value={sportText} />
-                            <DetailRow
-                              label="السعر للساعة"
-                              value={`${selectedArena.pricePerHour || '--'} جنيه/ساعة`}
-                              tone="money"
-                            />
-                            <DetailRow label="الحد الأدنى للحجز" value={minPeriod} />
-                            <DetailRow label="ساعات العمل" value={openClose} />
-                            <DetailRow label="نسبة العربون" value={deposit} />
-                            <DetailRow label="الحالة" value={selectedArena.status || 'معلق'} />
-                            <DetailRow label="المالك" value={ownerName} />
-                            <DetailRow label="رقم المالك" value={ownerPhone} />
-                            <DetailRow label="طريقة الدفع للمالك" value={ownerPayout} />
-                            <DetailRow
-                              label="المساحة / المقاس"
-                              value={selectedArena.size || selectedArena.dimensions || 'غير محدد'}
-                            />
-                            <div>
-                              <p className="text-sm text-neutral-500 dark:text-gray-400">الوصف</p>
+                          <div className="space-y-4 text-right">
+                            <div className="grid grid-cols-2 gap-3">
+                              <DetailRow label="الموقع" value={locationText} />
+                              <DetailRow label="نوع الرياضة" value={sportText} />
+                              <DetailRow
+                                label="السعر للساعة"
+                                value={`${selectedArena.pricePerHour || '--'} جنيه/ساعة`}
+                                tone="money"
+                              />
+                              <DetailRow label="الحد الأدنى للحجز" value={minPeriod} />
+                              <DetailRow label="ساعات العمل" value={openClose} />
+                              <DetailRow label="نسبة العربون" value={deposit} />
+                              <DetailRow label="الحالة" value={selectedArena.status || 'معلق'} />
+                              <DetailRow
+                                label="المساحة / المقاس"
+                                value={selectedArena.size || selectedArena.dimensions || 'غير محدد'}
+                              />
+                              <DetailRow label="المالك" value={ownerName} />
+                              <DetailRow label="رقم المالك" value={ownerPhone} />
+                              <DetailRow label="طريقة الدفع للمالك" value={ownerPayout} />
+                            </div>
+
+                            <div className="rounded-2xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-3">
+                              <p className="text-sm font-semibold text-neutral-800 dark:text-white">الوصف</p>
                               <p className="text-neutral-700 dark:text-gray-300 text-sm leading-6">
                                 {selectedArena.description || 'لا يوجد وصف متاح.'}
                               </p>
                             </div>
+
                             {extras.length > 0 && (
-                              <div>
-                                <p className="text-sm text-neutral-500 dark:text-gray-400 mb-1">الإضافات</p>
+                              <div className="rounded-2xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-2">
+                                <p className="text-sm font-semibold text-neutral-800 dark:text-white">الإضافات</p>
                                 <div className="flex flex-wrap gap-2">
                                   {extras.map((ex) => (
                                     <span
@@ -316,9 +324,10 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
                                 </div>
                               </div>
                             )}
+
                             {policy && policy.trim() !== '' && (
-                              <div>
-                                <p className="text-sm text-neutral-500 dark:text-gray-400 mb-1">السياسة</p>
+                              <div className="rounded-2xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-2">
+                                <p className="text-sm font-semibold text-neutral-800 dark:text-white">السياسة</p>
                                 <p className="text-neutral-700 dark:text-gray-300 text-sm leading-6">{policy}</p>
                               </div>
                             )}
