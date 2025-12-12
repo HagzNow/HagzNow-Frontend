@@ -37,18 +37,24 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-gray-900/50 transition-all duration-300">
+    <header className="sticky top-0 z-[60] bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-gray-900/50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="h-16 flex items-center justify-between gap-3">
           {/* Left Section */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* Burger Button */}
             <button
-              onClick={onMenuClick}
-              className="md:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-all duration-200 active:scale-95"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Burger clicked');
+                onMenuClick && onMenuClick();
+              }}
+              className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-all duration-200 active:scale-95 touch-manipulation"
               aria-label="فتح القائمة"
               type="button"
             >
-              <Menu className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+              <Menu className="h-5 w-5 text-gray-700 dark:text-gray-300 pointer-events-none" />
             </button>
 
             {/* Logo/Brand */}

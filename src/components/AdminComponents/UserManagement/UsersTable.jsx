@@ -12,7 +12,8 @@ const UsersTable = ({ users, loading, page, totalPages, setPage, handleStatusTog
         <h3 className="font-semibold text-gray-800 dark:text-white">قائمة المستخدمين</h3>
       </div>
 
-      <table className="w-full text-right border-collapse">
+      <div className="overflow-x-auto">
+        <table className="w-full text-right border-collapse">
         <thead>
           <tr className="border-b dark:border-gray-700 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
             <th className="py-3 px-4">الاسم</th>
@@ -41,6 +42,7 @@ const UsersTable = ({ users, loading, page, totalPages, setPage, handleStatusTog
           ))}
         </tbody>
       </table>
+      </div>
 
       <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
     </div>

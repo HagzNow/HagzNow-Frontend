@@ -12,10 +12,16 @@ import {
 } from 'lucide-react';
 
 import Sidebar from '../Sidebar';
-import Navbar from '../Navbar';
+import AdminNavbar from './AdminNavbar';
 
 export default function AdminLayout() {
   const [activeKey, setActiveKey] = useState('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleMenuToggle = () => {
+    console.log('Toggle clicked, current state:', isSidebarOpen);
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   const menu = [
     {
@@ -66,26 +72,39 @@ export default function AdminLayout() {
 
   return (
     <>
-      {/* ✅ Navbar */}
-      <Navbar variant="admin" />
+      {/* Navbar with burger button */}
+      <AdminNavbar onMenuClick={handleMenuToggle} />
 
-      {/* ✅ Main layout wrapper */}
-      <div className="flex flex-row-reverse min-h-screen bg-neutral-50 dark:bg-gray-900 text-neutral-900 dark:text-gray-100 transition-colors duration-300">
-        {/* ✅ Sidebar */}
-        <aside className="fixed top-16 right-0 h-[calc(100vh-4rem)] w-74 border-l border-neutral-200 dark:border-gray-700 transition-colors duration-300">
+      {/* Main layout wrapper */}
+      <div className="flex flex-row-reverse bg-neutral-50 dark:bg-gray-900 text-neutral-900 dark:text-gray-100 transition-colors duration-300">
+        {/* Overlay */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 top-16 bg-black/50 z-40"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        {/* Sidebar */}
+        <aside className={`fixed top-16 right-0 h-[calc(100vh-4rem)] w-full sm:w-80 md:w-64 max-w-[85vw] border-l border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-800 z-50 overflow-y-auto shadow-2xl ${
+          isSidebarOpen ? 'block' : 'hidden'
+        }`}>
           <Sidebar
             mode="admin"
             menuItems={menu}
             activeKey={activeKey}
-            onChange={setActiveKey}
+            onChange={(key) => {
+              setActiveKey(key);
+              setIsSidebarOpen(false);
+            }}
             isRTL={true}
-            open={true} // ثابت على الديسكتوب
+            open={true}
           />
         </aside>
 
-        {/* ✅ Main Content */}
-        <div className="flex-1 mr-64  p-4 md:p-6">
-          <main className="px-10">
+        {/* Main Content */}
+        <div className="flex-1 w-full min-h-screen">
+          <main className="p-3 sm:p-4 md:p-6">
             <Outlet />
           </main>
         </div>

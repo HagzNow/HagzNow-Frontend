@@ -141,18 +141,18 @@ export default function WithdrawalRequests() {
   };
 
   return (
-    <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300" dir="rtl">
+    <div className="w-full" dir="rtl">
       {/* Page Header */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-lg">
-              <ArrowDownCircle className="w-7 h-7 text-white" />
+      <div className="mb-4 sm:mb-6">
+        <div className="flex items-center justify-between flex-wrap gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-lg">
+              <ArrowDownCircle className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">إدارة طلبات السحب</h2>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 dark:text-white">إدارة طلبات السحب</h2>
               {total > 0 && (
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
                   إجمالي الطلبات: <span className="font-semibold text-green-600 dark:text-green-400">{total}</span> |
                   الصفحة <span className="font-semibold">{currentPage}</span> من{' '}
                   <span className="font-semibold">{totalPages}</span>
@@ -219,14 +219,6 @@ export default function WithdrawalRequests() {
                         <th className="py-5 px-6 text-sm font-bold text-gray-800 dark:text-gray-200 whitespace-nowrap border-l border-green-200 dark:border-green-700 first:border-l-0">
                           <div className="flex items-center gap-2.5">
                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-sm">
-                              <Wallet className="w-4 h-4 text-white" />
-                            </div>
-                            <span>رقم الطلب</span>
-                          </div>
-                        </th>
-                        <th className="py-5 px-6 text-sm font-bold text-gray-800 dark:text-gray-200 whitespace-nowrap border-l border-green-200 dark:border-green-700">
-                          <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-sm">
                               <User className="w-4 h-4 text-white" />
                             </div>
                             <span>المستخدم</span>
@@ -275,20 +267,8 @@ export default function WithdrawalRequests() {
                             index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'
                           } hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 hover:shadow-sm`}
                         >
-                          {/* Request ID */}
-                          <td className="py-5 px-6 border-l border-gray-100 dark:border-gray-700/50 first:border-l-0">
-                            <div className="flex flex-col gap-1">
-                              <span className="text-sm font-bold text-gray-900 dark:text-white">
-                                #{request.id.slice(0, 8)}...
-                              </span>
-                              <span className="text-xs text-gray-500 dark:text-gray-400 font-mono bg-gray-100 dark:bg-gray-700/50 px-2 py-0.5 rounded inline-block w-fit">
-                                {request.referenceId}
-                              </span>
-                            </div>
-                          </td>
-
                           {/* User Name */}
-                          <td className="py-5 px-6 border-l border-gray-100 dark:border-gray-700/50">
+                          <td className="py-5 px-6 border-l border-gray-100 dark:border-gray-700/50 first:border-l-0">
                             <div className="flex items-center gap-3">
                               <div className="w-11 h-11 rounded-full bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/40 dark:to-emerald-900/40 flex items-center justify-center shadow-sm group-hover:from-green-200 group-hover:to-emerald-200 dark:group-hover:from-green-800/60 dark:group-hover:to-emerald-800/60 group-hover:scale-110 transition-all duration-200">
                                 <User className="w-5 h-5 text-green-600 dark:text-green-400" />

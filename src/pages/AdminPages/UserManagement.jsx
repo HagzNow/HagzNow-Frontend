@@ -108,8 +108,8 @@ const UserManagement = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300" dir="rtl">
-      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">إدارة المستخدمين</h2>
+    <div className="w-full" dir="rtl">
+      <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 dark:text-white mb-4 sm:mb-6">إدارة المستخدمين</h2>
       <StatsCards displayStats={displayStats} />
       <UserFilters filters={filters} setFilters={setFilters} setPage={setPage} resetFilters={resetFilters} />
       <UsersTable users={users} loading={loading} page={page} totalPages={totalPages} setPage={setPage} handleStatusToggle={handleStatusToggle} />
