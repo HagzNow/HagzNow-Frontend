@@ -5,6 +5,7 @@ import { authContext } from '../../Contexts/AuthContext';
 import Navbar from '../Navbar'; // كل الأدوار - يتم تغيير القوائم فقط
 import Footer from '../Footer';
 import AdminFooter from '../AdminLayout/AdminFooter';
+import ChatWidget from '../ChatWidget/ChatWidget';
 
 export default function Layout() {
   const { user } = useContext(authContext);
@@ -26,6 +27,9 @@ export default function Layout() {
       <div className={`z-50 relative ${user?.role === 'owner' ? 'mr-[270px]' : ''}`}>
         {FooterComponent && <FooterComponent />}
       </div>
+
+      {/* ✅ AI Booking Chat Widget - Only for users */}
+      {user?.role === 'user' && <ChatWidget />}
     </div>
   );
 }
