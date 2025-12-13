@@ -1,9 +1,9 @@
-import { useContext, useEffect, useRef, useState, useCallback } from 'react';
-import darkLogo from '../assets/images/darkLogo.png';
-import lightLogo from '../assets/images/lightLogo.png';
-import { CiSearch } from 'react-icons/ci';
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useContext, useEffect, useRef, useState, useCallback } from "react";
+import darkLogo from "../assets/images/darkLogo.png";
+import lightLogo from "../assets/images/lightLogo.png";
+import { CiSearch } from "react-icons/ci";
+import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Sun,
   Moon,
@@ -16,26 +16,26 @@ import {
   LogOut,
   Bell,
   Menu,
-} from 'lucide-react';
-import toast from 'react-hot-toast';
-import { authContext } from '../Contexts/AuthContext';
-import { useTheme } from '../Contexts/ThemeContext';
-import { arenaService } from '../services/arenaService';
+} from "lucide-react";
+import toast from "react-hot-toast";
+import { authContext } from "../Contexts/AuthContext";
+import { useTheme } from "../Contexts/ThemeContext";
+import { arenaService } from "../services/arenaService";
 
 const MENU_PRESETS = (t) => ({
   public: [
-    { to: '/user-arena', label: t('navbar_arenas') || 'الملاعب الرئيسية' },
-    { to: '/', label: t('navbar_about') || 'عن المنصة' },
+    { to: "/user-arena", label: t("navbar_arenas") || "الملاعب الرئيسية" },
+    { to: "/", label: t("navbar_about") || "عن المنصة" },
   ],
   user: [
     {
-      to: '/user-arena',
-      label: t('navbar_arenas') || 'الملاعب',
+      to: "/user-arena",
+      label: t("navbar_arenas") || "الملاعب",
       icon: <MapPin className="w-4 h-4" />,
     },
     {
-      to: '/my-bookings',
-      label: t('my_reservations') || 'حجوزاتي',
+      to: "/my-bookings",
+      label: t("my_reservations") || "حجوزاتي",
       icon: <Calendar className="w-4 h-4" />,
     },
   ],
@@ -54,26 +54,27 @@ const MENU_PRESETS = (t) => ({
   ],
 });
 
-const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
+const Navbar = ({ variant = "public", menuItems, onMenuClick, showSearch }) => {
   const { t } = useTranslation();
-  const { user, logout, setUser, setToken, userLoading } = useContext(authContext);
+  const { user, logout, setUser, setToken, userLoading } =
+    useContext(authContext);
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const dropdownRef = useRef(null);
   const searchRef = useRef(null);
 
-  const isLoggedIn = Boolean(localStorage.getItem('token'));
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
   const showUserDropdown = isLoggedIn && user && !userLoading;
   const menus = menuItems || MENU_PRESETS(t)[variant] || MENU_PRESETS(t).public;
-  const enableSearch = showSearch ?? ['public', 'user'].includes(variant);
-  const showAuthButtons = !isLoggedIn && variant === 'public';
+  const enableSearch = showSearch ?? ["public", "user"].includes(variant);
+  const showAuthButtons = !isLoggedIn && variant === "public";
 
   // Search for arenas
   const searchArenas = useCallback(async (query) => {
@@ -89,7 +90,7 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
       setSearchResults(response.data || []);
       setShowSearchDropdown(true);
     } catch (error) {
-      console.error('Search error:', error);
+      console.error("Search error:", error);
       setSearchResults([]);
     } finally {
       setIsSearching(false);
@@ -111,7 +112,7 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
     if (e) e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/user-arena?search=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
+      setSearchQuery("");
       setShowSearchDropdown(false);
     }
   };
@@ -119,14 +120,14 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
   const handleViewAllResults = () => {
     if (searchQuery.trim()) {
       navigate(`/user-arena?search=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
+      setSearchQuery("");
       setShowSearchDropdown(false);
     }
   };
 
   const handleArenaClick = (arenaId) => {
     navigate(`/booking/${arenaId}`);
-    setSearchQuery('');
+    setSearchQuery("");
     setShowSearchDropdown(false);
   };
 
@@ -141,34 +142,39 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Guard protected variants if not logged in
   useEffect(() => {
-    if (['user', 'admin', 'owner'].includes(variant) && !isLoggedIn) {
-      navigate('/login', { replace: true });
+    if (["user", "admin", "owner"].includes(variant) && !isLoggedIn) {
+      navigate("/login", { replace: true });
     }
   }, [isLoggedIn, navigate, variant]);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setUser?.(null);
     setToken?.(null);
     logout?.();
     setIsDropdownOpen(false);
-    toast.success(t('logout_success') || 'تم تسجيل الخروج بنجاح');
-    navigate('/login', { replace: true });
+    toast.success(t("logout_success") || "تم تسجيل الخروج بنجاح");
+    navigate("/login", { replace: true });
   };
 
   const renderMenuItem = (item, onClick) => {
     const className =
-      'flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 font-medium text-sm transition-colors duration-200 relative group';
+      "flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 font-medium text-sm transition-colors duration-200 relative group";
 
     if (item.to) {
       return (
-        <Link key={item.to} to={item.to} className={className} onClick={onClick}>
+        <Link
+          key={item.to}
+          to={item.to}
+          className={className}
+          onClick={onClick}
+        >
           {item.icon}
           <span>{item.label}</span>
           <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 dark:bg-green-400 group-hover:w-full transition-all duration-300"></span>
@@ -177,7 +183,12 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
     }
 
     return (
-      <a key={item.href} href={item.href} className={className} onClick={onClick}>
+      <a
+        key={item.href}
+        href={item.href}
+        className={className}
+        onClick={onClick}
+      >
         {item.icon}
         <span>{item.label}</span>
         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 dark:bg-green-400 group-hover:w-full transition-all duration-300"></span>
@@ -186,7 +197,13 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
   };
 
   return (
-    <nav className="sticky top-0 z-[60] bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-green-100 dark:border-gray-800 shadow-sm">
+    <nav
+      className="sticky top-0 z-50
+  bg-white/10 dark:bg-gray-900/10
+  backdrop-blur-3xl
+  border-b border-white/20 dark:border-gray-800/40
+  transition-all duration-300"
+    >
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Left Section */}
@@ -203,19 +220,33 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
 
             {/* Logo */}
             <Link
-              to={user?.role == 'admin' || user?.role == 'owner' ? `/${user.role}/dashboard` : '/'}
+              to={
+                user?.role == "admin" || user?.role == "owner"
+                  ? `/${user.role}/dashboard`
+                  : "/"
+              }
               className="flex items-center gap-2 group"
             >
               {isDarkMode ? (
-                <img src={darkLogo} alt="Logo" className="w-30 h-25 object-contain lg:w-55  lg:h-20" />
+                <img
+                  src={darkLogo}
+                  alt="Logo"
+                  className="w-30 h-25 object-contain lg:w-55  lg:h-20"
+                />
               ) : (
-                <img src={lightLogo} alt="Logo" className="w-30 h-25 object-contain lg:w-55  lg:h-20" />
+                <img
+                  src={lightLogo}
+                  alt="Logo"
+                  className="w-30 h-25 object-contain lg:w-55  lg:h-20"
+                />
               )}
             </Link>
           </div>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center gap-8">{menus.map((item) => renderMenuItem(item))}</div>
+          <div className="hidden lg:flex items-center gap-8">
+            {menus.map((item) => renderMenuItem(item))}
+          </div>
 
           {/* Search Bar - Desktop */}
           {enableSearch && (
@@ -227,14 +258,18 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    onFocus={() => searchQuery.trim() && setShowSearchDropdown(true)}
+                    onFocus={() =>
+                      searchQuery.trim() && setShowSearchDropdown(true)
+                    }
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === "Enter") {
                         e.preventDefault();
                         handleSearch(e);
                       }
                     }}
-                    placeholder={t('navbar_search_placeholder') || 'ابحث عن ملعب...'}
+                    placeholder={
+                      t("navbar_search_placeholder") || "ابحث عن ملعب..."
+                    }
                     className="w-full py-2.5 pr-10 pl-4 rounded-xl border border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500 transition-all"
                   />
                   <button type="submit" className="hidden">
@@ -262,7 +297,11 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                           >
                             <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-700">
                               {arena.images && arena.images[0] ? (
-                                <img src={arena.images[0]} alt={arena.name} className="w-full h-full object-cover" />
+                                <img
+                                  src={arena.images[0]}
+                                  alt={arena.name}
+                                  className="w-full h-full object-cover"
+                                />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center">
                                   <MapPin className="w-6 h-6 text-gray-400 dark:text-gray-500" />
@@ -270,9 +309,11 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                               )}
                             </div>
                             <div className="flex-1 text-right">
-                              <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{arena.name}</p>
+                              <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                                {arena.name}
+                              </p>
                               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                {arena.locationSummary || 'موقع غير محدد'}
+                                {arena.locationSummary || "موقع غير محدد"}
                               </p>
                             </div>
                           </button>
@@ -314,7 +355,9 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
               onClick={toggleTheme}
               className="w-10 h-10 flex items-center justify-center rounded-xl bg-green-50 dark:bg-gray-800 border border-green-200 dark:border-gray-700 hover:bg-green-100 dark:hover:bg-gray-700 hover:border-green-300 dark:hover:border-gray-600 transition-all duration-300 group"
               aria-label={
-                isDarkMode ? t('theme_light') || 'Switch to light mode' : t('theme_dark') || 'Switch to dark mode'
+                isDarkMode
+                  ? t("theme_light") || "Switch to light mode"
+                  : t("theme_dark") || "Switch to dark mode"
               }
             >
               {isDarkMode ? (
@@ -330,13 +373,13 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                   to="/login"
                   className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors duration-200"
                 >
-                  {t('login_button') || 'تسجيل الدخول'}
+                  {t("login_button") || "تسجيل الدخول"}
                 </Link>
                 <Link
                   to="/register"
                   className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                 >
-                  {t('create_account') || 'إنشاء حساب'}
+                  {t("create_account") || "إنشاء حساب"}
                 </Link>
               </>
             ) : (
@@ -349,7 +392,9 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                   >
                     {user?.avatar ? (
                       <img
-                        src={`${user.avatar}?v=${user.avatarVersion || Date.now()}`}
+                        src={`${user.avatar}?v=${
+                          user.avatarVersion || Date.now()
+                        }`}
                         alt="User Avatar"
                         className="w-9 h-9 rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-sm"
                       />
@@ -360,7 +405,7 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                     )}
                     <div className="hidden sm:flex items-center gap-2">
                       <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
-                        {`${user?.fName || 'User'} ${user?.lName || ''}`}
+                        {`${user?.fName || "User"} ${user?.lName || ""}`}
                       </span>
                       <ChevronDown
                         className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''
@@ -377,7 +422,9 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                         <div className="flex items-center gap-3">
                           {user?.avatar ? (
                             <img
-                              src={`${user.avatar}?v=${user.avatarVersion || Date.now()}`}
+                              src={`${user.avatar}?v=${
+                                user.avatarVersion || Date.now()
+                              }`}
                               alt="User Avatar"
                               className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
                             />
@@ -408,7 +455,9 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                           onClick={() => setIsDropdownOpen(false)}
                         >
                           <UserCircle className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors" />
-                          <span className="font-medium">{t('navbar_profile') || 'تعديل الملف الشخصي'}</span>
+                          <span className="font-medium">
+                            {t("navbar_profile") || "تعديل الملف الشخصي"}
+                          </span>
                         </Link>
 
                         <Link
@@ -423,7 +472,9 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                           onClick={() => setIsDropdownOpen(false)}
                         >
                           <Wallet className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors" />
-                          <span className="font-medium">{t('navbar_wallet') || 'محفظتي'}</span>
+                          <span className="font-medium">
+                            {t("navbar_wallet") || "محفظتي"}
+                          </span>
                         </Link>
 
                         <div className="h-px bg-gray-200 dark:bg-gray-700 my-2"></div>
@@ -433,7 +484,9 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                           className="flex items-center gap-3 px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 dark:hover:text-red-300 rounded-xl transition-all duration-200 group w-full text-right"
                         >
                           <LogOut className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                          <span className="font-medium">{t('navbar_logout') || 'تسجيل خروج'}</span>
+                          <span className="font-medium">
+                            {t("navbar_logout") || "تسجيل خروج"}
+                          </span>
                         </button>
                       </div>
                     </div>
@@ -474,13 +527,15 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === "Enter") {
                         e.preventDefault();
                         handleSearch(e);
                         setIsMenuOpen(false);
                       }
                     }}
-                    placeholder={t('navbar_search_placeholder') || 'ابحث عن ملعب...'}
+                    placeholder={
+                      t("navbar_search_placeholder") || "ابحث عن ملعب..."
+                    }
                     className="w-full py-2.5 pr-10 pl-4 rounded-xl border border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500"
                   />
                   <button type="submit" className="hidden">
@@ -492,7 +547,10 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
 
             {/* Mobile Links */}
             {menus.map((item) => (
-              <div key={item.to || item.href} onClick={() => setIsMenuOpen(false)}>
+              <div
+                key={item.to || item.href}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 {renderMenuItem(item)}
               </div>
             ))}
@@ -505,14 +563,14 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                   className="block w-full text-center px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {t('login_button') || 'تسجيل الدخول'}
+                  {t("login_button") || "تسجيل الدخول"}
                 </Link>
                 <Link
                   to="/register"
                   className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 rounded-lg transition-all"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {t('create_account') || 'إنشاء حساب'}
+                  {t("create_account") || "إنشاء حساب"}
                 </Link>
               </div>
             )}

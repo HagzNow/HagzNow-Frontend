@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useContext, useEffect, useState } from 'react';
 import { authContext } from '../../Contexts/AuthContext';
 import toast from 'react-hot-toast';
+import loginBg from '../../assets/images/login bg.jpg';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -179,31 +180,42 @@ export default function Login() {
   });
 
   return (
-    <section className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-12 px-4 transition-colors duration-300">
-      <div className="w-full max-w-md">
+    <section 
+      className="min-h-screen flex items-center justify-center py-12 px-4 transition-colors duration-300 relative"
+      style={{
+        backgroundImage: `url(${loginBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      {/* Dark overlay for better contrast */}
+      <div className="absolute inset-0 bg-black/40"></div>
+      
+      <div className="w-full max-w-md relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 text-white mb-4 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 text-white mb-4 shadow-lg backdrop-blur-sm">
             <FaEnvelope className="w-8 h-8" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 drop-shadow-lg">
             {t('login_title') || 'Log in to Arena Book'}
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+          <p className="text-white/90 text-sm sm:text-base drop-shadow-md">
             {t('login_subtitle') || 'Sign in to continue your sports journey'}
           </p>
         </div>
 
-        {/* Form Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-green-100 dark:border-gray-700 p-6 sm:p-8 space-y-6 transition-colors duration-300">
+        {/* Form Card with Blur Effect */}
+        <div className="bg-white/10 dark:bg-gray-900/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/30 p-6 sm:p-8 space-y-6 transition-colors duration-300">
           <form onSubmit={formik.handleSubmit} className="space-y-5">
             {/* Email Field */}
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <label htmlFor="email" className="block text-sm font-semibold text-white drop-shadow-md">
                 {t('email') || 'Email'}
               </label>
               <div className="relative">
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300">
                   <FaEnvelope className="w-5 h-5" />
                 </div>
                 <input
@@ -214,14 +226,14 @@ export default function Login() {
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full py-3 pr-11 pl-4 rounded-xl border ${formik.errors.email && formik.touched.email
-                      ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20 focus:ring-red-500 dark:focus:ring-red-400'
-                      : 'border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-700/50 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400'
-                    } focus:outline-none focus:ring-2 transition-all text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500`}
+                  className={`w-full py-3 pr-11 pl-4 rounded-xl bg-white/20 backdrop-blur-sm border ${formik.errors.email && formik.touched.email
+                      ? 'border-red-400 focus:ring-red-400'
+                      : 'border-white/30 focus:ring-green-500 focus:border-green-400'
+                    } focus:outline-none focus:ring-2 transition-all text-white placeholder-white/60`}
                 />
               </div>
               {formik.errors.email && formik.touched.email && (
-                <p className="text-red-500 text-xs flex items-center gap-1">
+                <p className="text-red-300 text-xs flex items-center gap-1 drop-shadow-md">
                   <span>•</span> {formik.errors.email}
                 </p>
               )}
@@ -229,11 +241,11 @@ export default function Login() {
 
             {/* Password Field */}
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <label htmlFor="password" className="block text-sm font-semibold text-white drop-shadow-md">
                 {t('password') || 'Password'}
               </label>
               <div className="relative">
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300">
                   <FaLock className="w-5 h-5" />
                 </div>
                 <input
@@ -244,21 +256,21 @@ export default function Login() {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full py-3 pr-11 pl-10 rounded-xl border ${formik.errors.password && formik.touched.password
-                      ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20 focus:ring-red-500 dark:focus:ring-red-400'
-                      : 'border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-700/50 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400'
-                    } focus:outline-none focus:ring-2 transition-all text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500`}
+                  className={`w-full py-3 pr-11 pl-10 rounded-xl bg-white/20 backdrop-blur-sm border ${formik.errors.password && formik.touched.password
+                      ? 'border-red-400 focus:ring-red-400'
+                      : 'border-white/30 focus:ring-green-500 focus:border-green-400'
+                    } focus:outline-none focus:ring-2 transition-all text-white placeholder-white/60`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-white transition-colors"
                 >
                   {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
                 </button>
               </div>
               {formik.errors.password && formik.touched.password && (
-                <p className="text-red-500 text-xs flex items-center gap-1">
+                <p className="text-red-300 text-xs flex items-center gap-1 drop-shadow-md">
                   <span>•</span> {formik.errors.password}
                 </p>
               )}
@@ -301,12 +313,12 @@ export default function Login() {
           </form>
 
           {/* Sign Up Link */}
-          <div className="text-center pt-4 border-t border-gray-100 dark:border-gray-700">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              {t('already_have_account') || "Don't have an account?"}{' '}
+          <div className="text-center pt-4 border-t border-white/20">
+            <p className="text-sm text-white/90 drop-shadow-md">
+              {t('do_not_have_account') || "Don't have an account?"}{' '}
               <Link
                 to="/register"
-                className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold transition-colors"
+                className="text-green-300 hover:text-green-200 font-semibold transition-colors drop-shadow-md"
               >
                 {t('create_account') || 'Create Account'}
               </Link>

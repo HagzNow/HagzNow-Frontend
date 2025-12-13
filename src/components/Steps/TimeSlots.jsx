@@ -10,6 +10,7 @@ export default function TimeSlots() {
 
   const toggleTime = (time) => {
     setSlots((prev) => (prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]));
+    
   };
 
   if (loading) return <Loader />;

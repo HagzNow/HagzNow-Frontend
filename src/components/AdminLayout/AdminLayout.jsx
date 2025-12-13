@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import {
   ChartLine,
   Box,
@@ -9,46 +9,51 @@ import {
   MessageSquareText,
   WalletCards,
   ArrowDownCircle,
-} from 'lucide-react';
+} from "lucide-react";
 
-import Sidebar from '../Sidebar';
-import AdminNavbar from './AdminNavbar';
+import Sidebar from "../Sidebar";
+import AdminNavbar from "./AdminNavbar";
 
 export default function AdminLayout() {
-  const [activeKey, setActiveKey] = useState('dashboard');
+  const [activeKey, setActiveKey] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleMenuToggle = () => {
-    console.log('Toggle clicked, current state:', isSidebarOpen);
+    console.log("Toggle clicked, current state:", isSidebarOpen);
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   const menu = [
     {
-      key: 'dashboard',
-      label: 'إحصائيات',
+      key: "dashboard",
+      label: "إحصائيات",
       icon: <ChartLine />,
-      to: '/admin/dashboard',
+      to: "/admin/dashboard",
     },
     {
-      key: 'wallet',
-      label: 'محفظة',
+      key: "wallet",
+      label: "محفظة",
       icon: <WalletCards />,
-      to: '/admin/wallet',
+      to: "/admin/wallet",
     },
     {
-      key: 'withdrawal-requests',
-      label: 'طلبات السحب',
+      key: "withdrawal-requests",
+      label: "طلبات السحب",
       icon: <ArrowDownCircle />,
-      to: '/admin/withdrawal-requests',
+      to: "/admin/withdrawal-requests",
     },
     {
-      key: 'categoriesmanagment',
-      label: 'إدارة الفئات',
+      key: "categoriesmanagment",
+      label: "إدارة الفئات",
       icon: <Box />,
-      to: '/admin/categoriesmanagment',
+      to: "/admin/categoriesmanagment",
     },
-    { key: 'users', label: 'إدارة المستخدمين', icon: <Users />, to: '/admin/usermanagment' },
+    {
+      key: "users",
+      label: "إدارة المستخدمين",
+      icon: <Users />,
+      to: "/admin/usermanagment",
+    },
     // {
     //   key: 'reservations',
     //   label: 'عرض جميع الحجوزات',
@@ -56,10 +61,10 @@ export default function AdminLayout() {
     //   to: '/reservations',
     // },
     {
-      key: 'admin-arena-requests',
-      label: 'طلبات الساحة المعلقة',
+      key: "admin-arena-requests",
+      label: "طلبات الساحة المعلقة",
       icon: <FileCog />,
-      to: '/admin/admin-arena-requests',
+      to: "/admin/admin-arena-requests",
     },
     // {
     //   key: 'settings',
