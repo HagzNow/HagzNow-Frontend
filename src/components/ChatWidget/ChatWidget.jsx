@@ -10,7 +10,8 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [conversationId] = useState(() => `conv-${user?.id || Date.now()}`);
+  // Generate a new unique conversation ID on each page load/component mount
+  const [conversationId] = useState(() => `conv-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`);
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -37,7 +38,7 @@ export default function ChatWidget() {
         },
       ]);
     }
-  }, [isOpen, user]);
+  }, [isOpen, user, messages.length]);
 
   // Focus input when opened
   useEffect(() => {
