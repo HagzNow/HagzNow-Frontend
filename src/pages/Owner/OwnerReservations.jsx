@@ -162,7 +162,7 @@ export default function OwnerReservations() {
   return (
     <>
       <div dir="rtl" className="w-full overflow-x-hidden">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           {/* Page Header */}
           <div className="mb-4 sm:mb-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4">
@@ -180,7 +180,7 @@ export default function OwnerReservations() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl sm:rounded-2xl shadow dark:shadow-gray-900/50 p-4 sm:p-6 lg:p-8">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl sm:rounded-2xl shadow dark:shadow-gray-900/50 p-4 sm:p-6 lg:p-6">
             <div className="flex flex-col gap-3 sm:gap-4 lg:gap-6">
               <div className="flex flex-wrap items-center gap-2 text-xs mb-2">
                 <span className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-700 font-medium text-xs">
@@ -316,9 +316,8 @@ export default function OwnerReservations() {
                           return (
                             <div
                               key={key}
-                              className={`min-h-[64px] px-2 py-1 border-r border-gray-100 dark:border-gray-700 ${
-                                booked ? 'bg-emerald-50 dark:bg-emerald-900/30' : 'bg-white dark:bg-gray-800'
-                              }`}
+                              className={`min-h-[64px] px-2 py-1 border-r border-gray-100 dark:border-gray-700 ${booked ? 'bg-emerald-50 dark:bg-emerald-900/30' : 'bg-white dark:bg-gray-800'
+                                }`}
                               onClick={() => setSelectedDay(day)}
                             >
                               {booked ? (
@@ -411,8 +410,8 @@ export default function OwnerReservations() {
                     )}
                     {(reservations.filter((r) => r.dateOfReservation === format(selectedDay, 'yyyy-MM-dd')) || [])
                       .length === 0 && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400">لا توجد حجوزات في هذا اليوم.</p>
-                    )}
+                        <p className="text-sm text-gray-500 dark:text-gray-400">لا توجد حجوزات في هذا اليوم.</p>
+                      )}
                   </div>
                 )}
               </div>
