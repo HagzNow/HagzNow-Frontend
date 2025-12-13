@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import AdminArenaCard from '../AdminArenaCard/AdminArenaCard';
 import { arenaService } from '../../services/arenaService';
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
@@ -13,6 +13,20 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
   const [detailLoading, setDetailLoading] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [detailSlide, setDetailSlide] = useState(0);
+
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    if (isDetailOpen || detailLoading) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup function to ensure scrolling is restored
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isDetailOpen, detailLoading]);
 
   // Handle both array and object with data property
   const arenas = Array.isArray(arenaRequests) ? arenaRequests : arenaRequests?.data || [];
@@ -156,7 +170,7 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
           </div>
 
           {(isDetailOpen || detailLoading) && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center px-3 sm:px-6">
+            <div className="fixed inset-0 z-50 flex items-center justify-center px-3 sm:px-4 md:px-6 pt-20 pb-4">
               <div
                 className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 onClick={() => {
@@ -164,7 +178,7 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
                   setIsDetailOpen(false);
                 }}
               ></div>
-              <div className="relative w-full max-w-5xl bg-white/95 dark:bg-gray-900/95 rounded-3xl shadow-2xl dark:shadow-gray-900/80 border border-neutral-200 dark:border-gray-700 overflow-hidden">
+              <div className="relative w-full max-w-5xl max-h-[calc(100vh-6rem)] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl dark:shadow-gray-900/80 border border-neutral-200 dark:border-gray-700 overflow-hidden flex flex-col">
                 {detailLoading ? (
                   <div className="p-8 flex justify-center items-center min-h-[280px]">
                     <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
@@ -206,16 +220,16 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
                     const policy = selectedArena.policy || 'لا توجد سياسة مضافة.';
                     return (
                       <>
-                        <div className="flex justify-between items-center px-5 py-4 border-b border-neutral-200 dark:border-gray-700">
+                        <div className="flex justify-between items-center px-4 sm:px-5 py-3 sm:py-4 border-b border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-900 flex-shrink-0">
                           <div>
-                            <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">
+                            <h3 className="text-lg sm:text-xl font-semibold text-neutral-900 dark:text-white">
                               {selectedArena.name}
                             </h3>
                             <div className="flex items-center gap-2 flex-wrap mt-2">
-                              <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800">
+                              <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800">
                                 {selectedArena.status || 'معلق'}
                               </span>
-                              <span className="px-3 py-1 rounded-full text-xs bg-neutral-100 text-neutral-700 dark:bg-gray-800 dark:text-gray-200 border border-neutral-200 dark:border-gray-700">
+                              <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs bg-neutral-100 text-neutral-700 dark:bg-gray-800 dark:text-gray-200 border border-neutral-200 dark:border-gray-700">
                                 {selectedArena.location?.city || selectedArena.location?.governorate || 'غير محدد'}
                               </span>
                             </div>
@@ -225,112 +239,117 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
                               setSelectedArena(null);
                               setIsDetailOpen(false);
                             }}
-                            className="text-neutral-500 hover:text-neutral-900 dark:text-gray-400 dark:hover:text-white transition-colors p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-gray-800"
+                            className="text-neutral-500 hover:text-neutral-900 dark:text-gray-400 dark:hover:text-white transition-colors p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-gray-800 flex-shrink-0"
                           >
                             ✕
                           </button>
                         </div>
 
-                        <div className="grid lg:grid-cols-[1.35fr_1fr] gap-6 p-6">
-                          <div className="rounded-2xl overflow-hidden border border-neutral-200 dark:border-gray-700 bg-neutral-50 dark:bg-gray-800 shadow-inner relative">
-                            {gallery.length > 0 ? (
-                              <>
-                                <img
-                                  src={gallery[detailSlide]}
-                                  alt={selectedArena.name}
-                                  className="w-full h-72 object-cover"
-                                />
-                                {gallery.length > 1 && (
+                        <div className="flex-1 overflow-hidden p-4 sm:p-6">
+                          <div className="grid lg:grid-cols-2 gap-6 h-full">
+                            {/* Left Column: Image + Description + Policy */}
+                            <div className="flex flex-col gap-4 h-full overflow-y-auto no-scrollbar">
+                              <div className="rounded-xl overflow-hidden border border-neutral-200 dark:border-gray-700 bg-neutral-50 dark:bg-gray-800 shadow-inner relative h-60 shrink-0">
+                                {gallery.length > 0 ? (
                                   <>
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setDetailSlide((s) => (s - 1 + gallery.length) % gallery.length);
-                                      }}
-                                      className="absolute top-1/2 -translate-y-1/2 right-3 p-2 rounded-full bg-black/60 text-white hover:bg-black/80 transition"
-                                    >
-                                      ‹
-                                    </button>
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setDetailSlide((s) => (s + 1) % gallery.length);
-                                      }}
-                                      className="absolute top-1/2 -translate-y-1/2 left-3 p-2 rounded-full bg-black/60 text-white hover:bg-black/80 transition"
-                                    >
-                                      ›
-                                    </button>
-                                    <div className="absolute bottom-3 inset-x-0 flex justify-center gap-2">
-                                      {gallery.map((_, idx) => (
-                                        <span
-                                          key={idx}
-                                          className={`h-2.5 w-2.5 rounded-full border border-white/70 ${
-                                            idx === detailSlide ? 'bg-white' : 'bg-white/40'
-                                          }`}
-                                        />
-                                      ))}
-                                    </div>
+                                    <img
+                                      src={gallery[detailSlide]}
+                                      alt={selectedArena.name}
+                                      className="w-full h-full object-cover"
+                                    />
+                                    {gallery.length > 1 && (
+                                      <>
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setDetailSlide((s) => (s - 1 + gallery.length) % gallery.length);
+                                          }}
+                                          className="absolute top-1/2 -translate-y-1/2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition text-xl leading-none"
+                                        >
+                                          ‹
+                                        </button>
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setDetailSlide((s) => (s + 1) % gallery.length);
+                                          }}
+                                          className="absolute top-1/2 -translate-y-1/2 left-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition text-xl leading-none"
+                                        >
+                                          ›
+                                        </button>
+                                        <div className="absolute bottom-2 inset-x-0 flex justify-center gap-1.5">
+                                          {gallery.map((_, idx) => (
+                                            <span
+                                              key={idx}
+                                              className={`h-2 w-2 rounded-full border border-white/70 ${idx === detailSlide ? 'bg-white' : 'bg-white/40'
+                                                }`}
+                                            />
+                                          ))}
+                                        </div>
+                                      </>
+                                    )}
                                   </>
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-sm text-neutral-500 dark:text-gray-400">
+                                    لا توجد صور
+                                  </div>
                                 )}
-                              </>
-                            ) : (
-                              <div className="w-full h-72 flex items-center justify-center text-sm text-neutral-500 dark:text-gray-400">
-                                لا توجد صور
                               </div>
-                            )}
-                          </div>
 
-                          <div className="space-y-4 text-right">
-                            <div className="grid grid-cols-2 gap-3">
-                              <DetailRow label="الموقع" value={locationText} />
-                              <DetailRow label="نوع الرياضة" value={sportText} />
-                              <DetailRow
-                                label="السعر للساعة"
-                                value={`${selectedArena.pricePerHour || '--'} جنيه/ساعة`}
-                                tone="money"
-                              />
-                              <DetailRow label="الحد الأدنى للحجز" value={minPeriod} />
-                              <DetailRow label="ساعات العمل" value={openClose} />
-                              <DetailRow label="نسبة العربون" value={deposit} />
-                              <DetailRow label="الحالة" value={selectedArena.status || 'معلق'} />
-                              <DetailRow
-                                label="المساحة / المقاس"
-                                value={selectedArena.size || selectedArena.dimensions || 'غير محدد'}
-                              />
-                              <DetailRow label="المالك" value={ownerName} />
-                              <DetailRow label="رقم المالك" value={ownerPhone} />
-                              <DetailRow label="طريقة الدفع للمالك" value={ownerPayout} />
-                            </div>
+                              <div className="rounded-xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-2">
+                                <p className="text-sm font-semibold text-neutral-800 dark:text-white">الوصف</p>
+                                <p className="text-neutral-700 dark:text-gray-300 text-sm leading-6">
+                                  {selectedArena.description || 'لا يوجد وصف متاح.'}
+                                </p>
+                              </div>
 
-                            <div className="rounded-2xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-3">
-                              <p className="text-sm font-semibold text-neutral-800 dark:text-white">الوصف</p>
-                              <p className="text-neutral-700 dark:text-gray-300 text-sm leading-6">
-                                {selectedArena.description || 'لا يوجد وصف متاح.'}
-                              </p>
-                            </div>
-
-                            {extras.length > 0 && (
-                              <div className="rounded-2xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-2">
-                                <p className="text-sm font-semibold text-neutral-800 dark:text-white">الإضافات</p>
-                                <div className="flex flex-wrap gap-2">
-                                  {extras.map((ex) => (
-                                    <span
-                                      key={ex.id || ex.name}
-                                      className="px-3 py-1 rounded-full text-xs bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800"
-                                    >
-                                      {ex.name} {ex.price ? `- ${ex.price}ج` : ''}
-                                    </span>
-                                  ))}
+                              {policy && policy.trim() !== '' && (
+                                <div className="rounded-xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-2">
+                                  <p className="text-sm font-semibold text-neutral-800 dark:text-white">السياسة</p>
+                                  <p className="text-neutral-700 dark:text-gray-300 text-sm leading-6">{policy}</p>
                                 </div>
-                              </div>
-                            )}
+                              )}
+                            </div>
 
-                            {policy && policy.trim() !== '' && (
-                              <div className="rounded-2xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-2">
-                                <p className="text-sm font-semibold text-neutral-800 dark:text-white">السياسة</p>
-                                <p className="text-neutral-700 dark:text-gray-300 text-sm leading-6">{policy}</p>
+                            {/* Right Column: Key Details + Extras */}
+                            <div className="flex flex-col gap-4 h-full overflow-y-auto no-scrollbar text-right">
+                              <div className="grid grid-cols-2 gap-3 content-start">
+                                <DetailRow label="الموقع" value={locationText} />
+                                <DetailRow label="نوع الرياضة" value={sportText} />
+                                <DetailRow
+                                  label="السعر للساعة"
+                                  value={`${selectedArena.pricePerHour || '--'} جنيه/ساعة`}
+                                  tone="money"
+                                />
+                                <DetailRow label="الحد الأدنى للحجز" value={minPeriod} />
+                                <DetailRow label="ساعات العمل" value={openClose} />
+                                <DetailRow label="نسبة العربون" value={deposit} />
+                                <DetailRow label="الحالة" value={selectedArena.status || 'معلق'} />
+                                <DetailRow
+                                  label="المساحة / المقاس"
+                                  value={selectedArena.size || selectedArena.dimensions || 'غير محدد'}
+                                />
+                                <DetailRow label="المالك" value={ownerName} />
+                                <DetailRow label="رقم المالك" value={ownerPhone} />
+                                <DetailRow label="طريقة الدفع للمالك" value={ownerPayout} />
                               </div>
-                            )}
+
+                              {extras.length > 0 && (
+                                <div className="rounded-xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-2">
+                                  <p className="text-sm font-semibold text-neutral-800 dark:text-white">الإضافات</p>
+                                  <div className="flex flex-wrap gap-2">
+                                    {extras.map((ex) => (
+                                      <span
+                                        key={ex.id || ex.name}
+                                        className="px-3 py-1 rounded-full text-xs bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800"
+                                      >
+                                        {ex.name} {ex.price ? `- ${ex.price}ج` : ''}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </>

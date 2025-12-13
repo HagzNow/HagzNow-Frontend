@@ -167,7 +167,7 @@ export default function Login() {
 
   useEffect(() => {
     if (!user) return;
-    if (user.role === 'admin') navigate('/admin/admin-arena-requests');
+    if (user.role === 'admin') navigate('/admin/dashboard');
     else if (user.role === 'owner') navigate('/owner/dashboard');
     else navigate('/user-arena');
   }, [user, navigate]);
@@ -214,11 +214,10 @@ export default function Login() {
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full py-3 pr-11 pl-4 rounded-xl border ${
-                    formik.errors.email && formik.touched.email
+                  className={`w-full py-3 pr-11 pl-4 rounded-xl border ${formik.errors.email && formik.touched.email
                       ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20 focus:ring-red-500 dark:focus:ring-red-400'
                       : 'border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-700/50 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400'
-                  } focus:outline-none focus:ring-2 transition-all text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500`}
+                    } focus:outline-none focus:ring-2 transition-all text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500`}
                 />
               </div>
               {formik.errors.email && formik.touched.email && (
@@ -245,11 +244,10 @@ export default function Login() {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full py-3 pr-11 pl-10 rounded-xl border ${
-                    formik.errors.password && formik.touched.password
+                  className={`w-full py-3 pr-11 pl-10 rounded-xl border ${formik.errors.password && formik.touched.password
                       ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20 focus:ring-red-500 dark:focus:ring-red-400'
                       : 'border-green-200 dark:border-gray-700 bg-green-50/50 dark:bg-gray-700/50 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400'
-                  } focus:outline-none focus:ring-2 transition-all text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500`}
+                    } focus:outline-none focus:ring-2 transition-all text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500`}
                 />
                 <button
                   type="button"
