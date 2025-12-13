@@ -7,9 +7,9 @@ export default function Sidebar({
   menuItems = [],
   navSections = [],
   activeKey,
-  onChange = () => {},
+  onChange = () => { },
   open = true,
-  onClose = () => {},
+  onClose = () => { },
   isRTL = true,
   className = '',
 }) {
@@ -73,9 +73,8 @@ export default function Sidebar({
     <>
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-40  bg-black/40 md:hidden transition-opacity duration-200 ${
-          open ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
+        className={`fixed inset-0 z-40  bg-black/40 lg:hidden transition-opacity duration-200 ${open ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}
         onClick={onClose}
       />
 
@@ -86,7 +85,7 @@ export default function Sidebar({
           'fixed top-0 bottom-0 z-50 bg-white dark:bg-gray-800 shadow-xl dark:shadow-gray-900/50 transform transition-all duration-300 ease-in-out',
           isRTL ? 'right-0' : 'left-0',
           open ? 'translate-x-0' : isRTL ? 'translate-x-full' : '-translate-x-full',
-          'md:translate-x-0 md:static md:shadow-none md:w-72',
+          'lg:translate-x-0 lg:static lg:shadow-none lg:w-72',
           className,
         ].join(' ')}
       >
@@ -105,7 +104,7 @@ export default function Sidebar({
           )}
           <button
             onClick={onClose}
-            className="md:hidden p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-gray-700 transition-colors"
+            className="lg:hidden p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-gray-700 transition-colors"
             aria-label="إغلاق القائمة"
           >
             <X className="h-5 w-5 text-gray-700 dark:text-gray-300" />

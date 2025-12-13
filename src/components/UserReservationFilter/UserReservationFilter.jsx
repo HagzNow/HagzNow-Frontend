@@ -66,9 +66,9 @@ export default function UserReservationFilter({ onFilterChange }) {
 
     return (
         <div dir="rtl" className="w-full bg-white dark:bg-gray-800 shadow-xl dark:shadow-gray-900/50 rounded-2xl p-6 sm:p-8 border border-gray-100 dark:border-gray-700 transition-colors duration-300">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 sm:gap-4">
+            <div className="flex flex-col md:flex-row flex-wrap lg:flex-nowrap items-stretch md:items-center justify-center gap-4">
                 {/* Search Input */}
-                <div className="relative flex-1 sm:flex-initial sm:w-full sm:max-w-md">
+                <div className="relative flex-1 w-full md:w-auto md:min-w-[300px] lg:min-w-[350px]">
                     <CiSearch className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5 pointer-events-none" />
                     <input
                         type="text"
@@ -85,7 +85,7 @@ export default function UserReservationFilter({ onFilterChange }) {
                         value={selectedCategory}
                         onChange={handleCategoryChange}
                         disabled={loading}
-                        className="w-full sm:w-auto sm:min-w-[200px] py-3 px-4 pr-10 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-white dark:hover:bg-gray-700 hover:border-green-500 dark:hover:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-lg appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full md:w-auto md:min-w-[200px] py-3 px-4 pr-10 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-white dark:hover:bg-gray-700 hover:border-green-500 dark:hover:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-lg appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <option value="">كل أنواع الرياضة</option>
                         {categories.map((category) => (
@@ -106,7 +106,7 @@ export default function UserReservationFilter({ onFilterChange }) {
                     <select
                         value={selectedStatus}
                         onChange={handleStatusChange}
-                        className="w-full sm:w-auto sm:min-w-[200px] py-3 px-4 pr-10 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-white dark:hover:bg-gray-700 hover:border-green-500 dark:hover:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-lg appearance-none cursor-pointer"
+                        className="w-full md:w-auto md:min-w-[200px] py-3 px-4 pr-10 rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-white dark:hover:bg-gray-700 hover:border-green-500 dark:hover:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 shadow-sm hover:shadow-md focus:shadow-lg appearance-none cursor-pointer"
                     >
                         {statuses.map((status) => (
                             <option key={status.value} value={status.value}>

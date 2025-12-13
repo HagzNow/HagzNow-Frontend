@@ -153,33 +153,33 @@ export default function Wallet() {
 
             {/* Table Header */}
             <div className="overflow-x-auto">
-              <div className="grid grid-cols-12 gap-4 p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-b border-green-100 dark:border-green-800 min-w-[600px]">
-              <div className="col-span-3 flex items-center gap-2 text-green-700 dark:text-green-400 font-semibold">
-                <ArrowUpDown className="w-4 h-4" />
-                {t('wallet.status')}
+              <div className="grid grid-cols-12 gap-4 p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-b border-green-100 dark:border-green-800 min-w-[800px]">
+                <div className="col-span-3 flex items-center gap-2 text-green-700 dark:text-green-400 font-semibold">
+                  <ArrowUpDown className="w-4 h-4" />
+                  {t('wallet.status')}
+                </div>
+                <div className="col-span-3 text-green-700 dark:text-green-400 font-semibold text-center">
+                  {t('wallet.amount')}
+                </div>
+                <div className="col-span-3 text-green-700 dark:text-green-400 font-semibold text-center">
+                  {t('wallet.type')}
+                </div>
+                <div className="col-span-3 flex items-center gap-2 justify-end text-green-700 dark:text-green-400 font-semibold">
+                  <Calendar className="w-4 h-4" />
+                  {t('wallet.date')}
+                </div>
               </div>
-              <div className="col-span-3 text-green-700 dark:text-green-400 font-semibold text-center">
-                {t('wallet.amount')}
-              </div>
-              <div className="col-span-3 text-green-700 dark:text-green-400 font-semibold text-center">
-                {t('wallet.type')}
-              </div>
-              <div className="col-span-3 flex items-center gap-2 justify-end text-green-700 dark:text-green-400 font-semibold">
-                <Calendar className="w-4 h-4" />
-                {t('wallet.date')}
-              </div>
-            </div>
 
               {/* Transactions List */}
-              <div className="divide-y divide-gray-100 dark:divide-gray-700 min-w-[600px]">
+              <div className="divide-y divide-gray-100 dark:divide-gray-700 min-w-[800px]">
                 {transactions?.map((transaction) => (
-                <div
-                  key={transaction.id}
-                  className="hover:bg-gradient-to-r hover:from-green-50/50 hover:to-emerald-50/50 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 transition-all duration-300 ease-in-out"
-                >
-                  <TransactionItem transaction={transaction} />
-                </div>
-              ))}              </div>            </div>
+                  <div
+                    key={transaction.id}
+                    className="hover:bg-gradient-to-r hover:from-green-50/50 hover:to-emerald-50/50 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 transition-all duration-300 ease-in-out"
+                  >
+                    <TransactionItem transaction={transaction} />
+                  </div>
+                ))}              </div>            </div>
 
             {/* Empty State */}
             {!transactions?.length && (

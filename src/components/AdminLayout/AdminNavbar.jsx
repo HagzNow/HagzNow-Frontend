@@ -3,6 +3,8 @@ import { Menu, Bell, User, LogOut, Sun, Moon } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authContext } from '../../Contexts/AuthContext';
 import { useTheme } from '../../Contexts/ThemeContext';
+import lightLogo from '../../assets/images/lightLogo.png';
+import darkLogo from '../../assets/images/darKLogo.png';
 
 export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -50,7 +52,7 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
                 console.log('Burger clicked');
                 onMenuClick && onMenuClick();
               }}
-              className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-all duration-200 active:scale-95 touch-manipulation"
+              className="lg:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-all duration-200 active:scale-95 touch-manipulation"
               aria-label="فتح القائمة"
               type="button"
             >
@@ -62,10 +64,11 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
               to="/"
               className="flex items-center gap-2 rounded-xl px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group"
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-                <span className="text-white font-bold text-sm">A</span>
-              </div>
-              <span className="font-extrabold tracking-tight text-gray-900 dark:text-white text-lg">ArenaAdmin</span>
+              <img
+                src={isDarkMode ? darkLogo : lightLogo}
+                alt="HagzNow Logo"
+                className="h-8 w-auto object-contain transition-all duration-300"
+              />
             </Link>
           </div>
 
@@ -94,17 +97,15 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
               <div className="relative w-12 h-6 flex items-center">
                 {/* Toggle Track */}
                 <div
-                  className={`absolute inset-0 rounded-full transition-all duration-300 ease-in-out ${
-                    isDarkMode
-                      ? 'bg-gradient-to-r from-gray-600 to-gray-700'
-                      : 'bg-gradient-to-r from-green-500 to-emerald-500'
-                  }`}
+                  className={`absolute inset-0 rounded-full transition-all duration-300 ease-in-out ${isDarkMode
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-700'
+                    : 'bg-gradient-to-r from-green-500 to-emerald-500'
+                    }`}
                 />
                 {/* Toggle Thumb */}
                 <div
-                  className={`absolute w-5 h-5 bg-white dark:bg-gray-200 rounded-full shadow-lg transform transition-all duration-300 ease-in-out flex items-center justify-center ${
-                    isDarkMode ? 'left-[26px]' : 'left-0.5'
-                  }`}
+                  className={`absolute w-5 h-5 bg-white dark:bg-gray-200 rounded-full shadow-lg transform transition-all duration-300 ease-in-out flex items-center justify-center ${isDarkMode ? 'left-[26px]' : 'left-0.5'
+                    }`}
                 >
                   {isDarkMode ? (
                     <Moon className="w-3 h-3 text-gray-700 dark:text-gray-800" />
