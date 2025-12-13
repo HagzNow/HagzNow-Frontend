@@ -213,7 +213,7 @@ export default function WithdrawalRequests() {
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 border border-gray-200 dark:border-gray-700 overflow-hidden">
                 {/* Table Container */}
                 <div className="overflow-x-auto">
-                  <table className="w-full text-right border-collapse">
+                  <table className="w-full text-right border-collapse min-w-[900px]">
                     <thead>
                       <tr className="bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 dark:from-green-900/30 dark:via-emerald-900/30 dark:to-teal-900/30 border-b-2 border-green-200 dark:border-green-700">
                         <th className="py-5 px-6 text-sm font-bold text-gray-800 dark:text-gray-200 whitespace-nowrap border-l border-green-200 dark:border-green-700 first:border-l-0">
@@ -263,9 +263,8 @@ export default function WithdrawalRequests() {
                       {requests.map((request, index) => (
                         <tr
                           key={request.id}
-                          className={`border-b border-gray-100 dark:border-gray-700/50 transition-all duration-200 group ${
-                            index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'
-                          } hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 hover:shadow-sm`}
+                          className={`border-b border-gray-100 dark:border-gray-700/50 transition-all duration-200 group ${index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50/50 dark:bg-gray-800/50'
+                            } hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 hover:shadow-sm`}
                         >
                           {/* User Name */}
                           <td className="py-5 px-6 border-l border-gray-100 dark:border-gray-700/50 first:border-l-0">

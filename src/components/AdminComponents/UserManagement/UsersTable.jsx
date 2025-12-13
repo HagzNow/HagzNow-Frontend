@@ -13,35 +13,35 @@ const UsersTable = ({ users, loading, page, totalPages, setPage, handleStatusTog
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-right border-collapse">
-        <thead>
-          <tr className="border-b dark:border-gray-700 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
-            <th className="py-3 px-4">الاسم</th>
-            <th className="py-3 px-4">البريد الإلكتروني</th>
-            <th className="py-3 px-4">الهاتف</th>
-            <th className="py-3 px-4">الدور</th>
-            <th className="py-3 px-4 text-center">الحالة</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-              <td className="py-3 px-4 text-gray-900 dark:text-gray-200">{user.fName} {user.lName}</td>
-              <td className="py-3 px-4 text-gray-900 dark:text-gray-200">{user.email}</td>
-              <td className="py-3 px-4 text-gray-900 dark:text-gray-200">{user.phone}</td>
-              <td className="py-3 px-4 text-gray-900 dark:text-gray-200">
-                {user.role === "owner" ? "مالك" : user.role === "admin" ? "مسؤول" : "لاعب"}
-              </td>
-              <td className="py-3 px-4">
-                <UserStatusSwitch
-                  status={user.status}
-                  onToggle={() => handleStatusToggle(user.id, user.status !== "active")}
-                />
-              </td>
+        <table className="w-full text-right border-collapse min-w-[800px]">
+          <thead>
+            <tr className="border-b dark:border-gray-700 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+              <th className="py-3 px-4">الاسم</th>
+              <th className="py-3 px-4">البريد الإلكتروني</th>
+              <th className="py-3 px-4">الهاتف</th>
+              <th className="py-3 px-4">الدور</th>
+              <th className="py-3 px-4 text-center">الحالة</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <td className="py-3 px-4 text-gray-900 dark:text-gray-200">{user.fName} {user.lName}</td>
+                <td className="py-3 px-4 text-gray-900 dark:text-gray-200">{user.email}</td>
+                <td className="py-3 px-4 text-gray-900 dark:text-gray-200">{user.phone}</td>
+                <td className="py-3 px-4 text-gray-900 dark:text-gray-200">
+                  {user.role === "owner" ? "مالك" : user.role === "admin" ? "مسؤول" : "لاعب"}
+                </td>
+                <td className="py-3 px-4">
+                  <UserStatusSwitch
+                    status={user.status}
+                    onToggle={() => handleStatusToggle(user.id, user.status !== "active")}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />

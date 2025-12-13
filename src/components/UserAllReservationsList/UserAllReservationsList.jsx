@@ -24,7 +24,7 @@ export default function UserAllReservationsList({ reservations = [], loading }) 
   return (
     <div
       dir="rtl"
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 my-6 sm:my-8 md:my-10 mx-4 sm:mx-6 md:mx-8 lg:mx-10"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 my-6 md:my-10 mx-4 md:mx-8"
     >
       {reservations.map((reservation) => (
         <UserReservationsCard key={reservation.id} reservation={reservation} />

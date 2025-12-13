@@ -7,9 +7,9 @@ export default function Sidebar({
   menuItems = [],
   navSections = [],
   activeKey,
-  onChange = () => {},
+  onChange = () => { },
   open = true,
-  onClose = () => {},
+  onClose = () => { },
   isRTL = true,
   className = "",
 }) {
@@ -39,6 +39,11 @@ export default function Sidebar({
     setLocalActive(keyOrId);
     onChange(keyOrId);
     if (to) navigate(to);
+
+    // Auto-close on mobile/tablet (lg breakpoint is 1024px)
+    if (window.innerWidth < 1024) {
+      onClose();
+    }
   };
 
   const normalizePath = (p) => {
@@ -82,9 +87,8 @@ export default function Sidebar({
     <>
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-40  bg-black/40 md:hidden transition-opacity duration-200 ${
-          open ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
+        className={`fixed inset-0 z-40  bg-black/40 lg:hidden transition-opacity duration-200 ${open ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}
         onClick={onClose}
       />
 
@@ -92,14 +96,10 @@ export default function Sidebar({
       <aside
         dir={isRTL ? "rtl" : "ltr"}
         className={[
-          "fixed top-0 bottom-0 z-50 bg-white dark:bg-gray-800 shadow-xl dark:shadow-gray-900/50 transform transition-all duration-300 ease-in-out",
-          isRTL ? "right-0" : "left-0",
-          open
-            ? "translate-x-0"
-            : isRTL
-            ? "translate-x-full"
-            : "-translate-x-full",
-          "md:translate-x-0 md:right-0 md:fixed md:w-64",
+          'fixed top-0 bottom-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-xl dark:shadow-gray-950/80 transform transition-all duration-300 ease-in-out border-l border-green-50 dark:border-gray-800',
+          isRTL ? 'right-0' : 'left-0',
+          open ? 'translate-x-0' : isRTL ? 'translate-x-full' : '-translate-x-full',
+          'lg:translate-x-0 lg:static lg:shadow-none lg:w-72',
           className,
         ].join(" ")}
       >
@@ -120,7 +120,7 @@ export default function Sidebar({
           )}
           <button
             onClick={onClose}
-            className="md:hidden p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-gray-700 transition-colors"
+            className="lg:hidden p-2.5 rounded-full bg-gray-50 dark:bg-gray-800 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-sm"
             aria-label="إغلاق القائمة"
           >
             <X className="h-5 w-5 text-gray-700 dark:text-gray-300" />
@@ -128,7 +128,7 @@ export default function Sidebar({
         </div>
 
         {/* Body */}
-        <div className="flex flex-col h-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-green-100 dark:border-gray-800 shadow-sm mt-2 mt-5">
+        <div className="flex flex-col h-full bg-transparent mt-5">
           {/* Menu Items (admin mode) */}
           {inferredMode === "admin" && menuItems.length > 0 && (
             <ul className="px-3 py-2 space-y-1">
@@ -143,11 +143,11 @@ export default function Sidebar({
                         to={item.to}
                         onClick={() => handleSelect(item.key, item.to)}
                         className={[
-                          "group flex items-center gap-3 rounded-xl px-3 py-2 transition-colors",
+                          'group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300 ease-out font-medium',
                           isActiveItem
-                            ? "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold"
-                            : "text-neutral-700 dark:text-gray-300 hover:bg-neutral-50 dark:hover:bg-gray-700",
-                        ].join(" ")}
+                            ? 'bg-gradient-to-r from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 text-white shadow-lg shadow-green-200/50 dark:shadow-green-900/50 scale-[1.02] translate-x-1'
+                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/80 hover:text-green-600 dark:hover:text-green-400 hover:translate-x-1 hover:shadow-sm',
+                        ].join(' ')}
                       >
                         <span className="shrink-0">{item.icon}</span>
                         <span className="truncate">{item.label}</span>
@@ -161,11 +161,11 @@ export default function Sidebar({
                       <button
                         onClick={() => handleSelect(item.key)}
                         className={[
-                          "w-full text-left flex items-center gap-3 rounded-xl px-3 py-2 transition-colors",
+                          'w-full text-left flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300 ease-out font-medium',
                           isActiveItem
-                            ? "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold"
-                            : "text-neutral-700 dark:text-gray-300 hover:bg-neutral-50 dark:hover:bg-gray-700",
-                        ].join(" ")}
+                            ? 'bg-gradient-to-r from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 text-white shadow-lg shadow-green-200/50 dark:shadow-green-900/50 scale-[1.02] translate-x-1'
+                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/80 hover:text-green-600 dark:hover:text-green-400 hover:translate-x-1 hover:shadow-sm',
+                        ].join(' ')}
                       >
                         <span className="shrink-0">{item.icon}</span>
                         <span className="truncate">{item.label}</span>

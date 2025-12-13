@@ -68,66 +68,31 @@ export default function OwnerLayout() {
   return (
     <>
       {/* Navbar */}
-      <Navbar variant="owner" menuItems={ownerTopMenu} onMenuClick={() => setSidebarOpen(true)} showSearch={false} />
+      <Navbar variant="owner" menuItems={ownerTopMenu} onMenuClick={() => setSidebarOpen((prev) => !prev)} showSearch={false} />
 
       {/* Main layout wrapper */}
       <div
-        className="flex flex-row-reverse min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300"
+        className="flex min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300"
         dir={isRTL ? 'rtl' : 'ltr'}
       >
-        {/* Sidebar Desktop */}
-        <aside
-          className={`hidden md:block fixed top-16 ${
-            isRTL ? 'right-0' : 'left-0'
-          } h-[calc(100vh-4rem)] w-74 border-l bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-green-100 dark:border-gray-800 shadow-sm py-2`}
-        >
-          <Sidebar
-            mode="admin"
-            menuItems={menu}
-            activeKey={activeKey}
-            onChange={setActiveKey}
-            isRTL={isRTL}
-            open={true}
-          />
-        </aside>
+        {/* Sidebar - Handles its own responsiveness (fixed on mobile, static on desktop) */}
+        <Sidebar
+          mode="admin"
+          menuItems={menu}
+          activeKey={activeKey}
+          onChange={setActiveKey}
+          isRTL={isRTL}
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
 
         {/* Main Content */}
-        <div className="flex-1 w-full md:mr-64  p-3 sm:p-4 md:p-6">
-          <main>
+        <div className="flex-1 w-full min-h-screen">
+          <main className="p-3 sm:p-4 md:p-6">
             <Outlet />
           </main>
         </div>
       </div>
-
-      {/* Sidebar Mobile Overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-50 md:hidden transition-opacity duration-300"
-          style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            backdropFilter: 'blur(4px)',
-            WebkitBackdropFilter: 'blur(4px)',
-          }}
-          onClick={() => setSidebarOpen(false)}
-        >
-          <div
-            className={`absolute top-16 h-[calc(100vh-4rem)] w-72 bg-white dark:bg-gray-800 shadow-2xl dark:shadow-gray-900/50 transition-all duration-300 ${
-              isRTL ? 'right-0' : 'left-0'
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Sidebar
-              mode="admin"
-              menuItems={menu}
-              activeKey={activeKey}
-              onChange={setActiveKey}
-              isRTL={isRTL}
-              open={sidebarOpen}
-              onClose={() => setSidebarOpen(false)}
-            />
-          </div>
-        </div>
-      )}
     </>
   );
 }

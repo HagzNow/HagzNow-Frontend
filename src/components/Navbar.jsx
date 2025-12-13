@@ -408,9 +408,8 @@ const Navbar = ({ variant = "public", menuItems, onMenuClick, showSearch }) => {
                         {`${user?.fName || "User"} ${user?.lName || ""}`}
                       </span>
                       <ChevronDown
-                        className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-300 ${
-                          isDropdownOpen ? "rotate-180" : ""
-                        }`}
+                        className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''
+                          }`}
                       />
                     </div>
                   </button>
@@ -435,12 +434,9 @@ const Navbar = ({ variant = "public", menuItems, onMenuClick, showSearch }) => {
                             </div>
                           )}
                           <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-sm truncate">{`${
-                              user?.fName || "User"
-                            } ${user?.lName || ""}`}</p>
-                            <p className="text-white/90 text-xs mt-0.5 truncate">
-                              {user?.email || "user@example.com"}
-                            </p>
+                            <p className="font-semibold text-sm truncate">{`${user?.fName || 'User'} ${user?.lName || ''
+                              }`}</p>
+                            <p className="text-white/90 text-xs mt-0.5 truncate">{user?.email || 'user@example.com'}</p>
                           </div>
                         </div>
                       </div>
@@ -449,11 +445,11 @@ const Navbar = ({ variant = "public", menuItems, onMenuClick, showSearch }) => {
                       <div className="p-2">
                         <Link
                           to={
-                            user?.role === "admin"
-                              ? "/admin/userProfile"
-                              : user?.role === "owner"
-                              ? "/owner/userProfile"
-                              : "/userProfile"
+                            user?.role === 'admin'
+                              ? '/admin/userProfile'
+                              : user?.role === 'owner'
+                                ? '/owner/userProfile'
+                                : '/userProfile'
                           }
                           className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400 rounded-xl transition-all duration-200 group"
                           onClick={() => setIsDropdownOpen(false)}
@@ -466,11 +462,11 @@ const Navbar = ({ variant = "public", menuItems, onMenuClick, showSearch }) => {
 
                         <Link
                           to={
-                            user?.role === "admin"
-                              ? "/admin/wallet"
-                              : user?.role === "owner"
-                              ? "/owner/wallet"
-                              : "/wallet"
+                            user?.role === 'admin'
+                              ? '/admin/wallet'
+                              : user?.role === 'owner'
+                                ? '/owner/wallet'
+                                : '/wallet'
                           }
                           className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400 rounded-xl transition-all duration-200 group"
                           onClick={() => setIsDropdownOpen(false)}
@@ -499,35 +495,22 @@ const Navbar = ({ variant = "public", menuItems, onMenuClick, showSearch }) => {
               )
             )}
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-800 hover:text-green-600 dark:hover:text-green-400 transition-colors"
-              aria-label="Menu"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {/* Mobile Menu Button - Only show if there's content */}
+            {(menus.length > 0 || enableSearch || showAuthButtons) && (
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="lg:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-800 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                aria-label="Menu"
               >
-                {isMenuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
-            </button>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {isMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
+            )}
           </div>
         </div>
 
