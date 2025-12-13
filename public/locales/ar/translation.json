@@ -40,7 +40,8 @@
   "password_not_match": "كلمتا المرور غير متطابقتين",
 
   "create_account": "إنشاء حساب",
-  "already_have_account": "هل لديك حساب بالفعل؟ سجّل الدخول",
+  "do_not_have_account": "ليس لديك حساب؟",
+  "already_have_account": "هل لديك حساب بالفعل؟",
 
   "login_button": "تسجيل الدخول",
   "login_success": "تم تسجيل الدخول بنجاح!",

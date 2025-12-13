@@ -3,10 +3,12 @@ import React, { useContext, useState } from 'react';
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import { object, string, ref } from 'yup';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { authContext } from '../../Contexts/AuthContext';
 import toast from 'react-hot-toast';
+import loginBg from '../../assets/images/login bg.jpg';
+
 
 export default function Register() {
   const { t, i18n } = useTranslation();
@@ -87,12 +89,23 @@ export default function Register() {
 
   return (
     <>
-      <section className="pt-5">
-        <div className="container mx-auto px-4 text-center py-5">
-          <div className="title space-y-2">
-            <h2 className="text-2xl font-bold text-green-600 dark:text-green-400">{t('title')}</h2>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('register_title')}</h2>
-            <p className="font-medium text-gray-600 dark:text-gray-300 text-xs md:text-sm">{t('register_subtitle')}</p>
+      <section 
+        className="min-h-screen flex items-center justify-center py-12 px-4 relative"
+        style={{
+          backgroundImage: `url(${loginBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Dark overlay for better contrast */}
+        <div className="absolute inset-0 bg-black/40"></div>
+        
+        <div className="container mx-auto px-4 text-center py-5 relative z-10">
+          <div className="title space-y-2 mb-6">
+            <h2 className="text-2xl font-bold text-white drop-shadow-lg">{t('title')}</h2>
+            <h2 className="text-2xl font-bold text-white drop-shadow-lg">{t('register_title')}</h2>
+            <p className="font-medium text-white/90 text-xs md:text-sm drop-shadow-md">{t('register_subtitle')}</p>
           </div>
 
           <form
@@ -102,13 +115,13 @@ export default function Register() {
           >
             <div
               className="
-        bg-white dark:bg-gray-800
+        bg-white/10 backdrop-blur-xl
         w-[90%] sm:w-[70%] md:w-[40%] lg:w-[30%]
         mx-auto 
         p-6 sm:p-8
         rounded-2xl 
-        shadow-lg dark:shadow-gray-900/50
-        border border-gray-100 dark:border-gray-700
+        shadow-2xl
+        border border-white/20
         space-y-4
         transition-colors duration-300
       "
@@ -156,7 +169,7 @@ export default function Register() {
               </div>
 
               <div className="flex flex-col text-start space-y-2 text-sm">
-                <label className="text-gray-700 dark:text-gray-300 font-medium">{t('first_name')}</label>
+                <label className="text-white font-medium drop-shadow-md">{t('first_name')}</label>
                 <input
                   type="text"
                   name="fName"
@@ -164,15 +177,15 @@ export default function Register() {
                   value={formik.values.fName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-colors"
+                  className={`p-3 rounded-lg bg-white/20 backdrop-blur-sm border ${formik.errors.fName && formik.touched.fName ? 'border-red-400 focus:ring-red-400' : 'border-white/30 focus:ring-green-500'} text-white placeholder-white/60 focus:outline-none focus:ring-2 transition-colors`}
                 />
                 {formik.errors.fName && formik.touched.fName && (
-                  <p className="text-red-500 dark:text-red-400 text-xs">{formik.errors.fName}</p>
+                  <p className="text-red-300 text-xs drop-shadow-md">{formik.errors.fName}</p>
                 )}
               </div>
 
               <div className="flex flex-col text-start space-y-2 text-sm">
-                <label className="text-gray-700 dark:text-gray-300 font-medium">{t('last_name')}</label>
+                <label className="text-white font-medium drop-shadow-md">{t('last_name')}</label>
                 <input
                   type="text"
                   name="lName"
@@ -180,15 +193,15 @@ export default function Register() {
                   value={formik.values.lName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-colors"
+                  className={`p-3 rounded-lg bg-white/20 backdrop-blur-sm border ${formik.errors.lName && formik.touched.lName ? 'border-red-400 focus:ring-red-400' : 'border-white/30 focus:ring-green-500'} text-white placeholder-white/60 focus:outline-none focus:ring-2 transition-colors`}
                 />
                 {formik.errors.lName && formik.touched.lName && (
-                  <p className="text-red-500 dark:text-red-400 text-xs">{formik.errors.lName}</p>
+                  <p className="text-red-300 text-xs drop-shadow-md">{formik.errors.lName}</p>
                 )}
               </div>
 
               <div className="flex flex-col text-start space-y-2 text-sm">
-                <label className="text-gray-700 dark:text-gray-300 font-medium">{t('email')}</label>
+                <label className="text-white font-medium drop-shadow-md">{t('email')}</label>
                 <input
                   type="text"
                   name="email"
@@ -196,15 +209,15 @@ export default function Register() {
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-colors"
+                  className={`p-3 rounded-lg bg-white/20 backdrop-blur-sm border ${formik.errors.email && formik.touched.email ? 'border-red-400 focus:ring-red-400' : 'border-white/30 focus:ring-green-500'} text-white placeholder-white/60 focus:outline-none focus:ring-2 transition-colors`}
                 />
                 {formik.errors.email && formik.touched.email && (
-                  <p className="text-red-500 dark:text-red-400 text-xs">{formik.errors.email}</p>
+                  <p className="text-red-300 text-xs drop-shadow-md">{formik.errors.email}</p>
                 )}
               </div>
 
               <div className="flex flex-col text-start space-y-2 text-sm">
-                <label className="text-gray-700 dark:text-gray-300 font-medium">{t('phone')}</label>
+                <label className="text-white font-medium drop-shadow-md">{t('phone')}</label>
                 <input
                   type="text"
                   name="phone"
@@ -212,15 +225,15 @@ export default function Register() {
                   value={formik.values.phone}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-colors"
+                  className={`p-3 rounded-lg bg-white/20 backdrop-blur-sm border ${formik.errors.phone && formik.touched.phone ? 'border-red-400 focus:ring-red-400' : 'border-white/30 focus:ring-green-500'} text-white placeholder-white/60 focus:outline-none focus:ring-2 transition-colors`}
                 />
                 {formik.errors.phone && formik.touched.phone && (
-                  <p className="text-red-500 dark:text-red-400 text-xs">{formik.errors.phone}</p>
+                  <p className="text-red-300 text-xs drop-shadow-md">{formik.errors.phone}</p>
                 )}
               </div>
 
               <div className="flex flex-col text-start space-y-2 text-sm">
-                <label className="text-gray-700 dark:text-gray-300 font-medium">{t('password')}</label>
+                <label className="text-white font-medium drop-shadow-md">{t('password')}</label>
                 <input
                   type="password"
                   name="password"
@@ -228,15 +241,15 @@ export default function Register() {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-colors"
+                  className={`p-3 rounded-lg bg-white/20 backdrop-blur-sm border ${formik.errors.password && formik.touched.password ? 'border-red-400 focus:ring-red-400' : 'border-white/30 focus:ring-green-500'} text-white placeholder-white/60 focus:outline-none focus:ring-2 transition-colors`}
                 />
                 {formik.errors.password && formik.touched.password && (
-                  <p className="text-red-500 dark:text-red-400 text-xs">{formik.errors.password}</p>
+                  <p className="text-red-300 text-xs drop-shadow-md">{formik.errors.password}</p>
                 )}
               </div>
 
               <div className="flex flex-col text-start space-y-2 text-sm">
-                <label className="text-gray-700 dark:text-gray-300 font-medium">{t('confirm_password')}</label>
+                <label className="text-white font-medium drop-shadow-md">{t('confirm_password')}</label>
                 <input
                   type="password"
                   name="rePassword"
@@ -244,10 +257,10 @@ export default function Register() {
                   value={formik.values.rePassword}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-colors"
+                  className={`p-3 rounded-lg bg-white/20 backdrop-blur-sm border ${formik.errors.rePassword && formik.touched.rePassword ? 'border-red-400 focus:ring-red-400' : 'border-white/30 focus:ring-green-500'} text-white placeholder-white/60 focus:outline-none focus:ring-2 transition-colors`}
                 />
                 {formik.errors.rePassword && formik.touched.rePassword && (
-                  <p className="text-red-500 dark:text-red-400 text-xs">{formik.errors.rePassword}</p>
+                  <p className="text-red-300 text-xs drop-shadow-md">{formik.errors.rePassword}</p>
                 )}
               </div>
 
@@ -259,17 +272,20 @@ export default function Register() {
                 {loadbuttom ? <i className="fa-solid fa-spinner fa-spin"></i> : t('create_account')}
               </button>
 
-              <p className="text-green-600 dark:text-green-400 text-xs py-1">{t('already_have_account')}</p>
-              <p className="text-gray-500 dark:text-gray-400 text-xs">{t('or')}</p>
-
-              <div className="flex flex-col space-y-2">
-                <button className="p-3 border rounded-lg w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 flex justify-center items-center gap-2 text-xs font-medium transition-colors">
-                  <FaGoogle className="text-blue-600 dark:text-blue-400" /> {t('continue_google')}
-                </button>
-                <button className="p-3 border rounded-lg w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 flex justify-center items-center gap-2 text-xs font-medium transition-colors">
-                  <FaFacebookF className="text-blue-600 dark:text-blue-400" /> {t('continue_facebook')}
-                </button>
+              <div className="text-center pt-2">
+                <p className="text-sm text-white/90 drop-shadow-md">
+                  {t('already_have_account') || 'هل لديك حساب بالفعل؟'}{' '}
+                  <Link
+                    to="/login"
+                    className="text-green-300 hover:text-green-200 font-semibold transition-colors drop-shadow-md"
+                  >
+                    تسجيل الدخول
+                  </Link>
+                </p>
               </div>
+              
+
+              
             </div>
           </form>
         </div>
