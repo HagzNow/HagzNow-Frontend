@@ -26,7 +26,7 @@ export default function Hero() {
 
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed">
               {t('hero_description') ||
-                'منصة ArenaBook توفر لك أفضل تجربة حجز للملاعب الرياضية. ابحث، قارن، واحجز خلال دقائق بخطوات بسيطة وآمنة.'}
+                'منصة HagzNow توفر لك أفضل تجربة حجز للملاعب الرياضية. ابحث، قارن، واحجز خلال دقائق بخطوات بسيطة وآمنة.'}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">

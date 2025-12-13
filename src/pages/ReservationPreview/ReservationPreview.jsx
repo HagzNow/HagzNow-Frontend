@@ -22,7 +22,6 @@ export default function ReservationPreview() {
     try {
       const { data } = await baseUrl.get(`/arenas/${arenaId}`);
       setArena(data);
-      console.log(data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -43,21 +42,13 @@ export default function ReservationPreview() {
         status: arena.status,
         locationSummary: `${arena.location?.city || ''}, ${arena.location?.governorate || ''}`,
       },
-
       date: raw.date?.format ? raw.date.format('YYYY-MM-DD') : raw.date,
+     slots: raw.slots || [],
 
-      slots: raw.slots?.map((s) => ({
-        id: s.id,
-        date: s.date,
-        hour: s.hour,
-      })),
 
       selectedExtras: raw.selectedExtras || [],
-
       extrasTotalAmount: raw.extrasTotalAmount ?? 0,
-
       totalAmount: raw.totalAmount ?? 0,
-
       status: raw.status,
     };
   }
@@ -87,9 +78,6 @@ export default function ReservationPreview() {
     resetReservation();
     navigate('/user-arena');
   };
-  console.log('price per hour : ', arena?.data.pricePerHour);
-  console.log('slots length', slots.length);
-  console.log('deposit percent', arena?.data.depositPercent);
   const totalAmount = (Number(arena?.data.pricePerHour) * slots.length * Number(arena?.data.depositPercent)) / 100;
   const extrasTotalAmount = selectedExtras.reduce((sum, extra) => sum + Number(extra.price || 0), 0);
 
@@ -116,7 +104,7 @@ export default function ReservationPreview() {
     status: 'pending',
   });
 
-  console.log(slots);
+ 
   return (
     <div className="pt-5">
       <div className="container mx-auto px-4 max-w-7xl">

@@ -18,6 +18,7 @@ export default function ReservationView() {
   const fetchReservation = useCallback(async () => {
     try {
       const { data } = await baseUrl.get(`/reservations/${id}`);
+  
       setData({
         date: data.data.dateOfReservation,
         slots: data.data.slots,

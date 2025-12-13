@@ -20,12 +20,10 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
     navigate('/login', { replace: true });
   };
 
-  // شبكة أمان: لو التوكن اتشال في أي مكان، نوجّه على طول
   useEffect(() => {
     if (!token) navigate('/login', { replace: true });
   }, [token, navigate]);
 
-  // إغلاق القائمة عند الضغط خارجها
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {

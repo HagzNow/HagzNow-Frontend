@@ -19,6 +19,9 @@ import toast from "react-hot-toast";
 export default function ReservationInfoCard({ data, i18n, isPreview }) {
   const { arena, date, slots, selectedExtras, totalAmount, extrasTotalAmount } =
     data;
+
+  
+    
   const ranges = getTimeRanges(slots);
   const [review, setReview] = useState({
     rating: 0,
@@ -123,7 +126,7 @@ export default function ReservationInfoCard({ data, i18n, isPreview }) {
                       key={index}
                       className="bg-white dark:bg-gray-800 px-3 py-2 rounded-xl border border-green-200 dark:border-green-700 text-green-700 dark:text-green-400 font-medium text-sm shadow-sm dark:shadow-gray-900/50"
                     >
-                      ⏰ من {formatTime(range.start, i18n.language)} إلى{" "}
+                       من {formatTime(range.start, i18n.language)} إلى{" "}
                       {formatTime(range.end + 1, i18n.language)}
                     </div>
                   ))}
@@ -216,25 +219,7 @@ export default function ReservationInfoCard({ data, i18n, isPreview }) {
           </div>
         </div>
 
-        {/* Arena Location */}
-        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-2xl p-4 border border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-500 transition-colors duration-300">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-              <MapPin className="w-6 h-6 text-red-600 dark:text-red-400" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                موقع الملعب
-              </p>
-              <h4 className="font-semibold text-gray-900 dark:text-white">
-                {arena?.location?.city}
-              </h4>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
-                {arena?.location?.governorate}
-              </p>
-            </div>
-          </div>
-        </div>
+       
 
         {/* ---------------- Review Section ---------------- */}
         {!isPreview && isPastReservation && (

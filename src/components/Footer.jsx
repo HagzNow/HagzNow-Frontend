@@ -171,7 +171,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <span className="text-gray-600 dark:text-gray-300 text-sm block group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-                    info@arenabook.com
+                    info@HagzNow.com
                   </span>
                 </div>
               </li>
