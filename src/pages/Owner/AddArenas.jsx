@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-hot-toast';
-import { Plus, Save, Loader2 } from 'lucide-react';
+import React, { useState } from "react";
+import { Formik, Form } from "formik";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-hot-toast";
+import { Plus, Save, Loader2 } from "lucide-react";
 
-import BasicInfoSection from '../../components/OwnerComponents/AddArenaComponents/BasicInfoSection';
-import MediaSection from '../../components/OwnerComponents/AddArenaComponents/MediaSection';
-import LocationPriceSection from '../../components/OwnerComponents/AddArenaComponents/LocationPriceSection';
-import FeaturesSection from '../../components/OwnerComponents/AddArenaComponents/FeaturesSection';
-import DescriptionSection from '../../components/OwnerComponents/AddArenaComponents/DescriptionSection';
-import ArenaSchema from '../../components/OwnerComponents/AddArenaComponents/ArenaSchema';
-import baseUrl from '@/apis/config';
+import BasicInfoSection from "../../components/OwnerComponents/AddArenaComponents/BasicInfoSection";
+import MediaSection from "../../components/OwnerComponents/AddArenaComponents/MediaSection";
+import LocationPriceSection from "../../components/OwnerComponents/AddArenaComponents/LocationPriceSection";
+import FeaturesSection from "../../components/OwnerComponents/AddArenaComponents/FeaturesSection";
+import DescriptionSection from "../../components/OwnerComponents/AddArenaComponents/DescriptionSection";
+import ArenaSchema from "../../components/OwnerComponents/AddArenaComponents/ArenaSchema";
+import baseUrl from "@/apis/config";
 
 const AddArena = () => {
   const { t, i18n } = useTranslation();
@@ -31,62 +31,67 @@ const AddArena = () => {
       }
 
       // Append basic info
-      formData.append('name', values.name);
-      formData.append('categoryId', values.categoryId);
-      formData.append('pricePerHour', values.price || 150);
-      formData.append('description', values.description || '');
-      formData.append('status', values.status || 'pending');
-      formData.append('minPeriod', values.minPeriod || 60);
-      formData.append('openingHour', values.openingHour || 8);
-      formData.append('closingHour', values.closingHour || 22);
-      formData.append('depositPercent', values.depositPercent || 20);
-      formData.append('policy', values.policy || '');
+      formData.append("name", values.name);
+      formData.append("categoryId", values.categoryId);
+      formData.append("pricePerHour", values.price || 150);
+      formData.append("description", values.description || "");
+      formData.append("status", values.status || "pending");
+      formData.append("minPeriod", values.minPeriod || 60);
+      formData.append("openingHour", values.openingHour || 8);
+      formData.append("closingHour", values.closingHour || 22);
+      formData.append("depositPercent", values.depositPercent || 20);
+      formData.append("policy", values.policy || "");
 
       // Append location
-      formData.append('location[lat]', values.latitude);
-      formData.append('location[lng]', values.longitude);
-      formData.append('location[governorate]', values.governorate || 'Cairo');
-      formData.append('location[city]', values.city || 'Zamalek');
+      formData.append("location[lat]", values.latitude);
+      formData.append("location[lng]", values.longitude);
+      formData.append("location[governorate]", values.governorate || "Cairo");
+      formData.append("location[city]", values.city || "Zamalek");
 
       // Append media
-      if (values.thumbnail instanceof File) formData.append('thumbnail', values.thumbnail);
+      if (values.thumbnail instanceof File)
+        formData.append("thumbnail", values.thumbnail);
       if (Array.isArray(values.images)) {
         values.images.forEach((img) => {
-          if (img instanceof File) formData.append('images', img);
+          if (img instanceof File) formData.append("images", img);
         });
       }
 
-      const res = await baseUrl.post('http://localhost:3000/arenas', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const res = await baseUrl.post("http://localhost:3000/arenas", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       if (res.data?.isSuccess) {
-        toast.success(t('addArenaSuccess') || 'تم إضافة الملعب بنجاح', {
+        toast.success(t("addArenaSuccess") || "تم إضافة الملعب بنجاح", {
           duration: 4000,
           style: {
-            direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
           },
         });
         resetForm();
       } else {
-        toast.error(t('addArenaError') || 'لم يتم الإضافة: ' + (res.data?.message || 'حدث خطأ غير معروف'), {
-          duration: 5000,
-          style: {
-            direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
-          },
-        });
+        toast.error(
+          t("addArenaError") ||
+            "لم يتم الإضافة: " + (res.data?.message || "حدث خطأ غير معروف"),
+          {
+            duration: 5000,
+            style: {
+              direction: i18n.language === "ar" ? "rtl" : "ltr",
+            },
+          }
+        );
       }
     } catch (err) {
-      console.error('Error adding arena:', err?.response?.data || err.message);
+      console.error("Error adding arena:", err?.response?.data || err.message);
       const errorMessage =
         err?.response?.data?.message ||
         err?.message ||
-        t('addArenaErrorGeneric') ||
-        'حدث خطأ أثناء الإضافة. يرجى المحاولة مرة أخرى.';
+        t("addArenaErrorGeneric") ||
+        "حدث خطأ أثناء الإضافة. يرجى المحاولة مرة أخرى.";
       toast.error(errorMessage, {
         duration: 5000,
         style: {
-          direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
         },
       });
     } finally {
@@ -103,10 +108,11 @@ const AddArena = () => {
             <Plus className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
           </div>
           <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-extrabold text-gray-900 dark:text-white mb-2 px-2">
-            {t('addArenaTitle') || 'إضافة ملعب جديد'}
+            {t("addArenaTitle") || "إضافة ملعب جديد"}
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm lg:text-base max-w-2xl mx-auto px-2">
-            {t('addArenaSubtitle') || 'املأ النموذج أدناه لإضافة ملعبك الرياضي إلى المنصة'}
+            {t("addArenaSubtitle") ||
+              "املأ النموذج أدناه لإضافة ملعبك الرياضي إلى المنصة"}
           </p>
         </div>
 
@@ -114,22 +120,22 @@ const AddArena = () => {
         <div className="bg-white dark:bg-gray-800 shadow-xl dark:shadow-gray-900/50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 xl:p-10 border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-2xl dark:hover:shadow-gray-900/70">
           <Formik
             initialValues={{
-              policy: '',
-              name: '',
-              price: '',
-              description: '',
+              policy: "",
+              name: "",
+              price: "",
+              description: "",
               extras: [],
-              notes: '',
-              status: '',
-              latitude: '',
-              longitude: '',
-              governorate: '',
-              categoryId: '',
-              city: '',
-              minPeriod: '',
-              openingHour: '',
-              closingHour: '',
-              depositPercent: '',
+              notes: "",
+              status: "",
+              latitude: "",
+              longitude: "",
+              governorate: "",
+              categoryId: "",
+              city: "",
+              minPeriod: "",
+              openingHour: "",
+              closingHour: "",
+              depositPercent: "",
               thumbnail: null,
               images: [],
             }}
@@ -142,10 +148,12 @@ const AddArena = () => {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 pb-2 border-b border-gray-200 dark:border-gray-700">
                     <div className="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                      <span className="text-green-600 dark:text-green-400 font-bold text-lg">1</span>
+                      <span className="text-green-600 dark:text-green-400 font-bold text-lg">
+                        1
+                      </span>
                     </div>
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                      {t('basicInfo') || 'المعلومات الأساسية'}
+                      {t("basicInfo") || "المعلومات الأساسية"}
                     </h2>
                   </div>
                   <BasicInfoSection />
@@ -155,10 +163,12 @@ const AddArena = () => {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 pb-2 border-b border-gray-200 dark:border-gray-700">
                     <div className="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                      <span className="text-green-600 dark:text-green-400 font-bold text-lg">2</span>
+                      <span className="text-green-600 dark:text-green-400 font-bold text-lg">
+                        2
+                      </span>
                     </div>
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                      {t('media') || 'الصور'}
+                      {t("media") || "الصور"}
                     </h2>
                   </div>
                   <MediaSection />
@@ -168,10 +178,12 @@ const AddArena = () => {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 pb-2 border-b border-gray-200 dark:border-gray-700">
                     <div className="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                      <span className="text-green-600 dark:text-green-400 font-bold text-lg">3</span>
+                      <span className="text-green-600 dark:text-green-400 font-bold text-lg">
+                        3
+                      </span>
                     </div>
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                      {t('locationPrice') || 'الموقع والسعر'}
+                      {t("locationPrice") || "الموقع والسعر"}
                     </h2>
                   </div>
                   <LocationPriceSection setFieldValue={setFieldValue} />
@@ -181,10 +193,12 @@ const AddArena = () => {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 pb-2 border-b border-gray-200 dark:border-gray-700">
                     <div className="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                      <span className="text-green-600 dark:text-green-400 font-bold text-lg">4</span>
+                      <span className="text-green-600 dark:text-green-400 font-bold text-lg">
+                        4
+                      </span>
                     </div>
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                      {t('features') || 'الخدمات الإضافية'}
+                      {t("features") || "الخدمات الإضافية"}
                     </h2>
                   </div>
                   <FeaturesSection />
@@ -194,10 +208,12 @@ const AddArena = () => {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 pb-2 border-b border-gray-200 dark:border-gray-700">
                     <div className="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                      <span className="text-green-600 dark:text-green-400 font-bold text-lg">5</span>
+                      <span className="text-green-600 dark:text-green-400 font-bold text-lg">
+                        5
+                      </span>
                     </div>
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                      {t('descriptionNotes') || 'الوصف والسياسات'}
+                      {t("descriptionNotes") || "الوصف والسياسات"}
                     </h2>
                   </div>
                   <DescriptionSection />
@@ -207,7 +223,8 @@ const AddArena = () => {
                 <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-right">
-                      {t('addArenaHint') || 'تأكد من ملء جميع الحقول المطلوبة قبل الحفظ'}
+                      {t("addArenaHint") ||
+                        "تأكد من ملء جميع الحقول المطلوبة قبل الحفظ"}
                     </p>
                     <button
                       type="submit"
@@ -217,12 +234,12 @@ const AddArena = () => {
                       {loading ? (
                         <>
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>{t('saving') || 'جاري الحفظ...'}</span>
+                          <span>{t("saving") || "جاري الحفظ..."}</span>
                         </>
                       ) : (
                         <>
                           <Save className="w-5 h-5" />
-                          <span>{t('saveArena') || 'حفظ الملعب'}</span>
+                          <span>{t("saveArena") || "حفظ الملعب"}</span>
                         </>
                       )}
                     </button>

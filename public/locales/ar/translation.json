@@ -119,6 +119,8 @@
   "describeAddress": "اكتب وصف بسيط للمكان",
   "pricePerHour": "السعر (في الساعة)",
   "enterPrice": "اكتب السعر في الساعة",
+  "enterDeposit": "نسبه العربون",
+  "depositAmount": "مبلغ التأمين (اختياري)",
   "features": "المميزات والخدمات",
   "greatLocation": "موقع حلو",
   "wifi": "واي فاي",

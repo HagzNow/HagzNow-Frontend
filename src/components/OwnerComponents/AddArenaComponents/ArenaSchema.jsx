@@ -1,22 +1,3 @@
-// import * as Yup from "yup";
-
-// const ArenaSchema = Yup.object().shape({
-//   name: Yup.string().required("Required"),
-//   //sportType: Yup.string().required("Required"),
-//   categoryId: Yup.string().required("Required"),
-
-//   price: Yup.number().required("Required").positive("Must be positive"),
-//   description: Yup.string().required("Required"),
-//   extras: Yup.array().required("Required"),
-//   governorate: Yup.string().required("Required"),
-//   city: Yup.string().required("Required"),
-
-  
-// });
-
-// export default ArenaSchema;
-
-
 import * as Yup from "yup";
 
 const ArenaSchema = Yup.object().shape({
@@ -34,7 +15,10 @@ const ArenaSchema = Yup.object().shape({
   city: Yup.string().required("المدينة مطلوبة"),
   latitude: Yup.number().required("يجب اختيار الموقع على الخريطة"),
   longitude: Yup.number().required("يجب اختيار الموقع على الخريطة"),
+  depositPercent: Yup.number()
+    .required("نسبة التأمين مطلوبة")
+    .min(20, "يجب أن تكون النسبة 0 أو أكثر")
+    .max(100, "يجب أن تكون النسبة 100 أو أقل"),
 });
 
 export default ArenaSchema;
-

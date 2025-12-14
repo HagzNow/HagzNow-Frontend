@@ -13,6 +13,8 @@ export default function AdminNavbar({ onMenuClick, notifCount = 3 }) {
 
   const navigate = useNavigate();
   const { token, setToken, user, setUser } = useContext(authContext);
+  console.log(user);
+  
 
   const handleLogout = () => {
     localStorage.removeItem('token');

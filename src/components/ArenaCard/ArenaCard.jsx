@@ -11,6 +11,7 @@ export default function ArenaCard({
   averageRating,
   image,
   id,
+  depositePercent,
 }) {
   const navigate = useNavigate();
   function handleCardClick() {
@@ -92,10 +93,17 @@ export default function ArenaCard({
               <span className="text-gray-500 dark:text-gray-400 text-sm mr-1 group-hover:text-white/90 dark:group-hover:text-white/90 transition-colors duration-300 font-medium">
                 ج.م
               </span>
+              <span className="text-gray-400 dark:text-gray-500 text-xs mt-0.5 group-hover:text-white/80 dark:group-hover:text-white/80 transition-colors duration-300">
+                / ساعة
+              </span>
             </div>
-            <span className="text-gray-400 dark:text-gray-500 text-xs mt-0.5 group-hover:text-white/80 dark:group-hover:text-white/80 transition-colors duration-300">
-              /ساعة
-            </span>
+
+            {/* Deposit */}
+            {depositePercent && (
+              <span className="mt-1 text-xs font-medium text-orange-500 dark:text-orange-400 group-hover:text-white/90 transition-colors duration-300">
+                {depositePercent} % نسبه العربون
+              </span>
+            )}
           </div>
         </div>
       </div>
