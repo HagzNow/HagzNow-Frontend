@@ -6,13 +6,16 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useContext, useEffect, useState } from 'react';
 import { authContext } from '../../Contexts/AuthContext';
+import { useTheme } from '../../Contexts/ThemeContext';
 import toast from 'react-hot-toast';
 import loginBg from '../../assets/images/login bg.jpg';
+import loginBgLight from '../../assets/images/login-lite.webp';
 
 export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setToken, user } = useContext(authContext);
+  const { isDarkMode } = useTheme();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -196,7 +199,7 @@ export default function Login() {
     <section
       className="min-h-screen flex items-center justify-center py-12 px-4 transition-colors duration-300 relative"
       style={{
-        backgroundImage: `url(${loginBg})`,
+        backgroundImage: `url(${isDarkMode ? loginBg : loginBgLight})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

@@ -2,8 +2,10 @@ import React, { useState, useContext } from 'react';
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { authContext } from '../../Contexts/AuthContext';
+import { useTheme } from '../../Contexts/ThemeContext';
 import toast from 'react-hot-toast';
 import loginBg from '../../assets/images/login bg.jpg';
+import loginBgLight from '../../assets/images/login-lite.webp';
 import { userInitialValues, ownerInitialValues } from './formConfigs';
 import { userSchema, ownerSchema } from './validationSchemas';
 import { submitUser, submitOwner } from './submitHandlers';
@@ -14,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 export default function Register() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { isDarkMode } = useTheme();
 
   const { setToken } = useContext(authContext);
   const [role, setRole] = useState('user');
@@ -78,7 +81,7 @@ export default function Register() {
     <section
       className="min-h-screen flex items-center justify-center py-12 px-4 relative"
       style={{
-        backgroundImage: `url(${loginBg})`,
+        backgroundImage: `url(${isDarkMode ? loginBg : loginBgLight})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
