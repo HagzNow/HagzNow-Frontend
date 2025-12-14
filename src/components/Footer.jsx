@@ -181,10 +181,10 @@ export default function Footer() {
                 </div>
                 <div>
                   <span
-                    dir="ltr"
+                    dir="rtl"
                     className="text-gray-600 dark:text-gray-300 text-sm block group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors"
                   >
-                    +20 123 456 7890
+                    201030816763
                   </span>
                 </div>
               </li>

@@ -130,7 +130,7 @@ export default function AdminArenasReqsList({ arenaRequests = [], loading, onRef
 
       {loading ? (
         <div
-          dir="ltr"
+          dir="rtl"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 sm:gap-6 md:gap-7 py-2 px-3 sm:px-4 md:px-6 lg:px-8"
         >
           {/* Show 6 skeleton cards while loading */}

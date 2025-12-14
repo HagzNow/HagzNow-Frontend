@@ -16,6 +16,7 @@ export default function UserArenas() {
     sport: '',
     minPrice: '',
     maxPrice: '',
+    governorate: '',
   });
 
   const fetchArenas = useCallback(async () => {
@@ -29,7 +30,7 @@ export default function UserArenas() {
         ...filters,
       });
 
-      setArenas(response.data);    
+      setArenas(response.data);
       setTotalPages(response.totalPages);
     } catch (err) {
       setError(err.message || 'فشل في تحميل الملاعب');
@@ -133,7 +134,6 @@ export default function UserArenas() {
           )}
         </div>
       </div>
-
     </>
   );
 }

@@ -1,5 +1,5 @@
-import ArenaCard from "../ArenaCard/ArenaCard";
-import { PiSoccerBall } from "react-icons/pi";
+import ArenaCard from '../ArenaCard/ArenaCard';
+import { PiSoccerBall } from 'react-icons/pi';
 
 export default function ArenasList({ arenas, loading }) {
   console.log(arenas);
@@ -13,9 +13,7 @@ export default function ArenasList({ arenas, loading }) {
             <PiSoccerBall className="text-green-600 dark:text-green-400 text-xl animate-pulse" />
           </div>
         </div>
-        <p className="mt-6 text-gray-600 dark:text-gray-300 text-lg font-medium">
-          جاري تحميل الملاعب...
-        </p>
+        <p className="mt-6 text-gray-600 dark:text-gray-300 text-lg font-medium">جاري تحميل الملاعب...</p>
       </div>
     );
   }
@@ -26,25 +24,19 @@ export default function ArenasList({ arenas, loading }) {
         <div className="bg-gray-100 dark:bg-gray-800 rounded-full p-6 mb-6">
           <PiSoccerBall className="text-6xl text-gray-400 dark:text-gray-500" />
         </div>
-        <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-          لا توجد ملاعب متاحة
-        </h3>
+        <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">لا توجد ملاعب متاحة</h3>
         <p className="text-gray-500 dark:text-gray-400 text-lg max-w-md">
-          لم يتم العثور على ملاعب تطابق معايير البحث الخاصة بك. جرب تغيير
-          الفلاتر أو البحث مرة أخرى.
+          لم يتم العثور على ملاعب تطابق معايير البحث الخاصة بك. جرب تغيير الفلاتر أو البحث مرة أخرى.
         </p>
       </div>
     );
   }
 
   return (
-    <div
-      dir="ltr"
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-6"
-    >
+    <div dir="rtl" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-6">
       {arenas.map((arena) => {
         // Format location - handle new API structure
-        const location = arena.locationSummary || "غير محدد";
+        const location = arena.locationSummary || 'غير محدد';
 
         // Get category name - handle new API structure
         const category = arena.categoryName || null;
@@ -58,10 +50,9 @@ export default function ArenasList({ arenas, loading }) {
             category={category}
             price={arena.pricePerHour}
             rating={arena.rating || 0}
-            image={arena.thumbnail || "src/assets/imgs/arena-img.png"}
+            image={arena.thumbnail || 'src/assets/imgs/arena-img.png'}
             averageRating={arena.averageRating || 0}
             depositePercent={arena.depositPercent || 20}
-            
           />
         );
       })}

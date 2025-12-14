@@ -27,6 +27,7 @@ export const arenaService = {
       if (params.sport) queryParams.append('sport', params.sport);
       if (params.minPrice) queryParams.append('minPrice', params.minPrice);
       if (params.maxPrice) queryParams.append('maxPrice', params.maxPrice);
+      if (params.governorate) queryParams.append('governorate', params.governorate);
 
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ARENAS}?${queryParams.toString()}`);
 
@@ -340,6 +341,31 @@ export const arenaService = {
       };
     } catch (error) {
       console.error('Error fetching owner arenas:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Fetch all available governorates
+   * @returns {Promise} Array of governorate names
+   */
+  async getGovernorates() {
+    try {
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ARENAS}/governorate`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (!result.isSuccess) {
+        throw new Error(result.message || 'Failed to fetch governorates');
+      }
+
+      return result.data || [];
+    } catch (error) {
+      console.error('Error fetching governorates:', error);
       throw error;
     }
   },
