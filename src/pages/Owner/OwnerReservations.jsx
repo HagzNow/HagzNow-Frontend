@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 import {
   format,
   startOfDay,
@@ -9,45 +9,48 @@ import {
   differenceInCalendarDays,
   addDays,
   subDays,
-} from 'date-fns';
-import { arSA } from 'date-fns/locale';
-import { Calendar, Clock, Plus } from 'lucide-react';
-import { arenaService } from '@/services/arenaService';
-import { reservationService } from '@/services/reservationService';
+} from "date-fns";
+import { arSA } from "date-fns/locale";
+import { Calendar, Clock, Plus } from "lucide-react";
+import { arenaService } from "@/services/arenaService";
+import { reservationService } from "@/services/reservationService";
 
 export default function OwnerReservations() {
-  const today = useMemo(() => format(startOfDay(new Date()), 'yyyy-MM-dd'), []);
-  const sevenDaysAgo = useMemo(() => format(subDays(startOfDay(new Date()), 6), 'yyyy-MM-dd'), []);
+  const today = useMemo(() => format(startOfDay(new Date()), "yyyy-MM-dd"), []);
+  const sevenDaysAgo = useMemo(
+    () => format(subDays(startOfDay(new Date()), 6), "yyyy-MM-dd"),
+    []
+  );
 
   const [arenas, setArenas] = useState([]);
-  const [selectedArena, setSelectedArena] = useState('');
+  const [selectedArena, setSelectedArena] = useState("");
   const [startDate, setStartDate] = useState(sevenDaysAgo);
   const [endDate, setEndDate] = useState(today);
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [viewDate, setViewDate] = useState(() => startOfDay(new Date()));
   const [selectedDay, setSelectedDay] = useState(null);
   const [details, setDetails] = useState(null);
   const [detailsLoading, setDetailsLoading] = useState(false);
-  const [detailsError, setDetailsError] = useState('');
+  const [detailsError, setDetailsError] = useState("");
 
   const statusLabel = (status) => {
     const map = {
-      confirmed: 'مؤكد',
-      pending: 'معلق',
-      canceled: 'ملغي',
-      paid: 'مدفوع',
-      completed: 'مكتمل',
+      confirmed: "مؤكد",
+      pending: "معلق",
+      canceled: "ملغي",
+      paid: "مدفوع",
+      completed: "مكتمل",
     };
-    return map[status] || status || '-';
+    return map[status] || status || "-";
   };
 
   const slotRangeLabel = (slot) => {
     if (slot && Number.isFinite(slot.hour)) {
       return `${slot.hour}:00 - ${slot.hour + 1}:00`;
     }
-    return '-';
+    return "-";
   };
 
   // Fetch arenas for owner
@@ -60,7 +63,7 @@ export default function OwnerReservations() {
           setSelectedArena(res.data[0].id);
         }
       } catch (err) {
-        setError(err.message || 'تعذر تحميل الساحات');
+        setError(err.message || "تعذر تحميل الساحات");
       }
     };
     loadArenas();
@@ -72,7 +75,7 @@ export default function OwnerReservations() {
     const eDate = opts.endDate ?? endDate;
     if (!arenaId) return;
     setLoading(true);
-    setError('');
+    setError("");
     try {
       const data = await reservationService.getOwnerReservations({
         arenaId,
@@ -81,7 +84,7 @@ export default function OwnerReservations() {
       });
       setReservations(data);
     } catch (err) {
-      setError(err.message || 'تعذر تحميل الحجوزات');
+      setError(err.message || "تعذر تحميل الحجوزات");
     } finally {
       setLoading(false);
     }
@@ -120,19 +123,22 @@ export default function OwnerReservations() {
   const loadDetails = async (id) => {
     try {
       setDetailsLoading(true);
-      setDetailsError('');
+      setDetailsError("");
       const data = await reservationService.getReservationById(id);
       setDetails(data);
     } catch (err) {
-      setDetailsError(err.message || 'تعذر تحميل التفاصيل');
+      setDetailsError(err.message || "تعذر تحميل التفاصيل");
     } finally {
       setDetailsLoading(false);
     }
   };
 
   const handleWeekFetch = () => {
-    const start = format(startOfWeek(viewDate, { weekStartsOn: 0 }), 'yyyy-MM-dd');
-    const end = format(endOfWeek(viewDate, { weekStartsOn: 0 }), 'yyyy-MM-dd');
+    const start = format(
+      startOfWeek(viewDate, { weekStartsOn: 0 }),
+      "yyyy-MM-dd"
+    );
+    const end = format(endOfWeek(viewDate, { weekStartsOn: 0 }), "yyyy-MM-dd");
     setStartDate(start);
     setEndDate(end);
     fetchReservations({ startDate: start, endDate: end });
@@ -153,11 +159,11 @@ export default function OwnerReservations() {
   }, [startDate]);
 
   const endDateMax = useMemo(() => {
-    if (!startDate) return '';
-    return format(addDays(parseISO(startDate), 6), 'yyyy-MM-dd');
+    if (!startDate) return "";
+    return format(addDays(parseISO(startDate), 6), "yyyy-MM-dd");
   }, [startDate]);
 
-  const shortDayNames = ['أحد', 'اثنـ', 'ثلا', 'أربـ', 'خميـ', 'جمعة', 'سبت'];
+  const shortDayNames = ["أحد", "اثنـ", "ثلا", "أربـ", "خميـ", "جمعة", "سبت"];
 
   return (
     <>
@@ -174,7 +180,7 @@ export default function OwnerReservations() {
                   حجوزات الساحات
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  اختر الساحة والفترة الزمنية ثم اعرضها كتقويم أسبوعي
+                  اختر الملاعب والفترة الزمنية ثم اعرضها كتقويم أسبوعي
                 </p>
               </div>
             </div>
@@ -190,7 +196,9 @@ export default function OwnerReservations() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">الساحة</label>
+                  <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
+                    الملاعب
+                  </label>
                   <select
                     value={selectedArena}
                     onChange={(e) => setSelectedArena(e.target.value)}
@@ -206,9 +214,9 @@ export default function OwnerReservations() {
 
                 <div className="flex flex-col gap-2">
                   <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
-                    من تاريخ{' '}
+                    من تاريخ{" "}
                     <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">
-                      ({format(parseISO(startDate), 'EEEE', { locale: arSA })})
+                      ({format(parseISO(startDate), "EEEE", { locale: arSA })})
                     </span>
                   </label>
                   <input
@@ -217,9 +225,12 @@ export default function OwnerReservations() {
                     max={endDateMax}
                     onChange={(e) => {
                       const nextStart = e.target.value;
-                      const nextEnd = clampRange(parseISO(nextStart), parseISO(endDate));
+                      const nextEnd = clampRange(
+                        parseISO(nextStart),
+                        parseISO(endDate)
+                      );
                       setStartDate(nextStart);
-                      setEndDate(format(nextEnd, 'yyyy-MM-dd'));
+                      setEndDate(format(nextEnd, "yyyy-MM-dd"));
                     }}
                     className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm sm:text-base text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
@@ -227,9 +238,9 @@ export default function OwnerReservations() {
 
                 <div className="flex flex-col gap-2">
                   <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
-                    إلى تاريخ{' '}
+                    إلى تاريخ{" "}
                     <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">
-                      ({format(parseISO(endDate), 'EEEE', { locale: arSA })})
+                      ({format(parseISO(endDate), "EEEE", { locale: arSA })})
                     </span>
                   </label>
                   <input
@@ -238,8 +249,11 @@ export default function OwnerReservations() {
                     min={startDate}
                     max={endDateMax}
                     onChange={(e) => {
-                      const nextEnd = clampRange(parseISO(startDate), parseISO(e.target.value));
-                      setEndDate(format(nextEnd, 'yyyy-MM-dd'));
+                      const nextEnd = clampRange(
+                        parseISO(startDate),
+                        parseISO(e.target.value)
+                      );
+                      setEndDate(format(nextEnd, "yyyy-MM-dd"));
                     }}
                     className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm sm:text-base text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
@@ -252,15 +266,19 @@ export default function OwnerReservations() {
                   disabled={!selectedArena || loading}
                   className="inline-flex items-center justify-center px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-700 dark:to-emerald-700 text-white text-xs sm:text-sm font-semibold hover:from-green-700 hover:to-emerald-700 dark:hover:from-green-600 dark:hover:to-emerald-600 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? 'جارٍ التحميل...' : 'تحديث الحجوزات'}
+                  {loading ? "جارٍ التحميل..." : "تحديث الحجوزات"}
                 </button>
                 <button
                   onClick={handleWeekFetch}
                   disabled={!selectedArena || loading}
                   className="inline-flex items-center justify-center px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 dark:from-emerald-900/40 dark:to-teal-900/40 dark:text-emerald-200 text-xs sm:text-sm font-semibold hover:from-emerald-200 hover:to-teal-200 dark:hover:from-emerald-800 dark:hover:to-teal-800 transition-all duration-300 border border-emerald-200 dark:border-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? '...' : <span className="hidden sm:inline">جلب حجوزات الأسبوع</span>}
-                  {loading ? '...' : <span className="sm:hidden">الأسبوع</span>}
+                  {loading ? (
+                    "..."
+                  ) : (
+                    <span className="hidden sm:inline">جلب حجوزات الأسبوع</span>
+                  )}
+                  {loading ? "..." : <span className="sm:hidden">الأسبوع</span>}
                 </button>
                 {error && (
                   <span className="text-xs sm:text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-red-200 dark:border-red-800">
@@ -274,8 +292,11 @@ export default function OwnerReservations() {
                 <div className="flex items-center justify-between bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-b border-green-200 dark:border-green-800 px-3 sm:px-4 py-2 sm:py-3">
                   <div className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
                     <span className="hidden sm:inline">المدى المختار: </span>
-                    {startDate && format(parseISO(startDate), 'PPP', { locale: arSA })} -{' '}
-                    {endDate && format(parseISO(endDate), 'PPP', { locale: arSA })}
+                    {startDate &&
+                      format(parseISO(startDate), "PPP", { locale: arSA })}{" "}
+                    -{" "}
+                    {endDate &&
+                      format(parseISO(endDate), "PPP", { locale: arSA })}
                   </div>
                 </div>
 
@@ -283,7 +304,11 @@ export default function OwnerReservations() {
                   <div className="min-w-[600px] sm:min-w-full px-4 sm:px-0">
                     <div
                       className="grid"
-                      style={{ gridTemplateColumns: `80px repeat(${rangeDays.length || 1}, minmax(0, 1fr))` }}
+                      style={{
+                        gridTemplateColumns: `80px repeat(${
+                          rangeDays.length || 1
+                        }, minmax(0, 1fr))`,
+                      }}
                     >
                       {/* Header row */}
                       <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700"></div>
@@ -292,68 +317,91 @@ export default function OwnerReservations() {
                           key={day.toISOString()}
                           className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 text-center py-2"
                         >
-                          <div className="text-xs text-gray-500 dark:text-gray-400">{shortDayNames[day.getDay()]}</div>
-                          <div className="text-sm font-semibold text-gray-900 dark:text-white">{format(day, 'd')}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            {shortDayNames[day.getDay()]}
+                          </div>
+                          <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                            {format(day, "d")}
+                          </div>
                         </div>
                       ))}
                     </div>
 
                     {/* Hours rows */}
-                    {Array.from({ length: 24 }, (_, hour) => hour).map((hour) => (
-                      <div
-                        key={hour}
-                        className="grid border-t border-gray-100 dark:border-gray-700"
-                        style={{ gridTemplateColumns: `80px repeat(${rangeDays.length || 1}, minmax(0, 1fr))` }}
-                      >
-                        <div className="bg-gray-50 dark:bg-gray-900/60 text-xs text-gray-600 dark:text-gray-300 flex items-center justify-center border-r border-gray-100 dark:border-gray-700">
-                          {hour}:00
-                        </div>
-                        {rangeDays.map((day) => {
-                          const dayKey = format(day, 'yyyy-MM-dd');
-                          const key = `${dayKey}-${hour}`;
-                          const slotReservations = reservationsByDayHour.get(key) || [];
-                          const booked = slotReservations.length > 0;
-                          return (
-                            <div
-                              key={key}
-                              className={`min-h-[64px] px-2 py-1 border-r border-gray-100 dark:border-gray-700 ${booked ? 'bg-emerald-50 dark:bg-emerald-900/30' : 'bg-white dark:bg-gray-800'
+                    {Array.from({ length: 24 }, (_, hour) => hour).map(
+                      (hour) => (
+                        <div
+                          key={hour}
+                          className="grid border-t border-gray-100 dark:border-gray-700"
+                          style={{
+                            gridTemplateColumns: `80px repeat(${
+                              rangeDays.length || 1
+                            }, minmax(0, 1fr))`,
+                          }}
+                        >
+                          <div className="bg-gray-50 dark:bg-gray-900/60 text-xs text-gray-600 dark:text-gray-300 flex items-center justify-center border-r border-gray-100 dark:border-gray-700">
+                            {hour}:00
+                          </div>
+                          {rangeDays.map((day) => {
+                            const dayKey = format(day, "yyyy-MM-dd");
+                            const key = `${dayKey}-${hour}`;
+                            const slotReservations =
+                              reservationsByDayHour.get(key) || [];
+                            const booked = slotReservations.length > 0;
+                            return (
+                              <div
+                                key={key}
+                                className={`min-h-[64px] px-2 py-1 border-r border-gray-100 dark:border-gray-700 ${
+                                  booked
+                                    ? "bg-emerald-50 dark:bg-emerald-900/30"
+                                    : "bg-white dark:bg-gray-800"
                                 }`}
-                              onClick={() => setSelectedDay(day)}
-                            >
-                              {booked ? (
-                                <div className="space-y-1">
-                                  {slotReservations.map((r) => {
-                                    const slotHours = (r.slots || []).sort((a, b) => a - b);
-                                    const slotRange =
-                                      slotHours.length > 0
-                                        ? `${slotHours[0]}:00 - ${slotHours[slotHours.length - 1] + 1}:00`
-                                        : `${hour}:00`;
-                                    return (
-                                      <button
-                                        key={r.id}
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setSelectedDay(day);
-                                          loadDetails(r.id);
-                                        }}
-                                        className="w-full text-left text-[11px] text-emerald-800 dark:text-emerald-200 bg-white/70 dark:bg-gray-900/40 rounded-md px-2 py-1 shadow-sm hover:bg-white dark:hover:bg-gray-800 transition-colors"
-                                      >
-                                        <div className="font-semibold">{r.playerName}</div>
-                                        <div className="text-[10px] text-gray-600 dark:text-gray-400">
-                                          {slotRange} • {r.totalAmount}
-                                        </div>
-                                      </button>
-                                    );
-                                  })}
-                                </div>
-                              ) : (
-                                <span className="text-[11px] text-gray-400 dark:text-gray-500">متاح</span>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ))}
+                                onClick={() => setSelectedDay(day)}
+                              >
+                                {booked ? (
+                                  <div className="space-y-1">
+                                    {slotReservations.map((r) => {
+                                      const slotHours = (r.slots || []).sort(
+                                        (a, b) => a - b
+                                      );
+                                      const slotRange =
+                                        slotHours.length > 0
+                                          ? `${slotHours[0]}:00 - ${
+                                              slotHours[slotHours.length - 1] +
+                                              1
+                                            }:00`
+                                          : `${hour}:00`;
+                                      return (
+                                        <button
+                                          key={r.id}
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedDay(day);
+                                            loadDetails(r.id);
+                                          }}
+                                          className="w-full text-left text-[11px] text-emerald-800 dark:text-emerald-200 bg-white/70 dark:bg-gray-900/40 rounded-md px-2 py-1 shadow-sm hover:bg-white dark:hover:bg-gray-800 transition-colors"
+                                        >
+                                          <div className="font-semibold">
+                                            {r.playerName}
+                                          </div>
+                                          <div className="text-[10px] text-gray-600 dark:text-gray-400">
+                                            {slotRange} • {r.totalAmount}
+                                          </div>
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                ) : (
+                                  <span className="text-[11px] text-gray-400 dark:text-gray-500">
+                                    متاح
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -362,56 +410,75 @@ export default function OwnerReservations() {
               <div className="border-t border-gray-100 dark:border-gray-700 pt-4">
                 {selectedDay && (
                   <div className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
-                    التفاصيل ليوم {format(selectedDay, 'PPP', { locale: arSA })}
+                    التفاصيل ليوم {format(selectedDay, "PPP", { locale: arSA })}
                   </div>
                 )}
                 {!selectedDay && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">اختر يوماً من الجدول لعرض التفاصيل.</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    اختر يوماً من الجدول لعرض التفاصيل.
+                  </p>
                 )}
                 {selectedDay && (
                   <div className="space-y-3">
-                    {(reservations.filter((r) => r.dateOfReservation === format(selectedDay, 'yyyy-MM-dd')) || []).map(
-                      (res) => {
-                        const slotHours = (res.slots || []).sort((a, b) => a - b);
-                        const slotRange =
-                          slotHours.length > 0 ? `${slotHours[0]}:00 - ${slotHours[slotHours.length - 1] + 1}:00` : '';
-                        return (
-                          <button
-                            key={res.id}
-                            onClick={() => loadDetails(res.id)}
-                            className="w-full text-left rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/80 p-4 flex flex-col gap-2 hover:border-green-300 dark:hover:border-green-500 transition-colors"
-                          >
-                            <div className="flex flex-wrap items-center gap-3">
-                              <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {res.playerName}
-                              </span>
+                    {(
+                      reservations.filter(
+                        (r) =>
+                          r.dateOfReservation ===
+                          format(selectedDay, "yyyy-MM-dd")
+                      ) || []
+                    ).map((res) => {
+                      const slotHours = (res.slots || []).sort((a, b) => a - b);
+                      const slotRange =
+                        slotHours.length > 0
+                          ? `${slotHours[0]}:00 - ${
+                              slotHours[slotHours.length - 1] + 1
+                            }:00`
+                          : "";
+                      return (
+                        <button
+                          key={res.id}
+                          onClick={() => loadDetails(res.id)}
+                          className="w-full text-left rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/80 p-4 flex flex-col gap-2 hover:border-green-300 dark:hover:border-green-500 transition-colors"
+                        >
+                          <div className="flex flex-wrap items-center gap-3">
+                            <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                              {res.playerName}
+                            </span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                              المبلغ: {res.totalAmount}
+                            </span>
+                            {slotRange && (
                               <span className="text-sm text-gray-500 dark:text-gray-400">
-                                المبلغ: {res.totalAmount}
+                                الوقت: {slotRange}
                               </span>
-                              {slotRange && (
-                                <span className="text-sm text-gray-500 dark:text-gray-400">الوقت: {slotRange}</span>
-                              )}
-                            </div>
-                            {res.slots && (
-                              <div className="flex flex-wrap gap-2">
-                                {res.slots.map((slot) => (
-                                  <span
-                                    key={slot}
-                                    className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs dark:bg-green-900/30 dark:text-green-300"
-                                  >
-                                    الساعة: {slot}:00
-                                  </span>
-                                ))}
-                              </div>
                             )}
-                          </button>
-                        );
-                      },
+                          </div>
+                          {res.slots && (
+                            <div className="flex flex-wrap gap-2">
+                              {res.slots.map((slot) => (
+                                <span
+                                  key={slot}
+                                  className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs dark:bg-green-900/30 dark:text-green-300"
+                                >
+                                  الساعة: {slot}:00
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                    {(
+                      reservations.filter(
+                        (r) =>
+                          r.dateOfReservation ===
+                          format(selectedDay, "yyyy-MM-dd")
+                      ) || []
+                    ).length === 0 && (
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        لا توجد حجوزات في هذا اليوم.
+                      </p>
                     )}
-                    {(reservations.filter((r) => r.dateOfReservation === format(selectedDay, 'yyyy-MM-dd')) || [])
-                      .length === 0 && (
-                        <p className="text-sm text-gray-500 dark:text-gray-400">لا توجد حجوزات في هذا اليوم.</p>
-                      )}
                   </div>
                 )}
               </div>
@@ -440,17 +507,23 @@ export default function OwnerReservations() {
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center">
                   <Calendar className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">تفاصيل الحجز</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  تفاصيل الحجز
+                </h3>
               </div>
               {detailsLoading && (
                 <div className="text-center py-8">
                   <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">جارٍ التحميل...</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    جارٍ التحميل...
+                  </p>
                 </div>
               )}
               {detailsError && (
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
-                  <p className="text-sm text-red-700 dark:text-red-400">{detailsError}</p>
+                  <p className="text-sm text-red-700 dark:text-red-400">
+                    {detailsError}
+                  </p>
                 </div>
               )}
               {!detailsLoading && !detailsError && (
@@ -465,37 +538,56 @@ export default function OwnerReservations() {
                       </span>
                     )}
                     <span className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
-                      {format(parseISO(details.dateOfReservation), 'PPP', { locale: arSA })}
+                      {format(parseISO(details.dateOfReservation), "PPP", {
+                        locale: arSA,
+                      })}
                     </span>
                   </div>
 
                   {details.arena && (
                     <div className="rounded-xl border-2 border-green-200 dark:border-green-800 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
-                      <div className="text-base text-gray-900 dark:text-white font-bold mb-1">{details.arena.name}</div>
+                      <div className="text-base text-gray-900 dark:text-white font-bold mb-1">
+                        {details.arena.name}
+                      </div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
-                        {details.arena.categoryName} • {details.arena.locationSummary}
+                        {details.arena.categoryName} •{" "}
+                        {details.arena.locationSummary}
                       </div>
                     </div>
                   )}
 
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-4 border border-gray-200 dark:border-gray-600">
-                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">طريقة الدفع</div>
-                      <div className="font-bold text-gray-900 dark:text-white">{details.paymentMethod || '-'}</div>
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">
+                        طريقة الدفع
+                      </div>
+                      <div className="font-bold text-gray-900 dark:text-white">
+                        {details.paymentMethod || "-"}
+                      </div>
                     </div>
                     <div className="rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-4 border border-green-200 dark:border-green-800">
-                      <div className="text-gray-600 dark:text-gray-400 text-xs mb-1 font-medium">الإجمالي</div>
+                      <div className="text-gray-600 dark:text-gray-400 text-xs mb-1 font-medium">
+                        الإجمالي
+                      </div>
                       <div className="font-bold text-green-600 dark:text-green-400 text-lg">
                         {details.totalAmount} ج.م
                       </div>
                     </div>
                     <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-4 border border-gray-200 dark:border-gray-600">
-                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">ساعات اللعب</div>
-                      <div className="font-bold text-gray-900 dark:text-white">{details.totalHours} ساعة</div>
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">
+                        ساعات اللعب
+                      </div>
+                      <div className="font-bold text-gray-900 dark:text-white">
+                        {details.totalHours} ساعة
+                      </div>
                     </div>
                     <div className="rounded-xl bg-gray-50 dark:bg-gray-700/50 p-4 border border-gray-200 dark:border-gray-600">
-                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">قيمة اللعب</div>
-                      <div className="font-bold text-gray-900 dark:text-white">{details.playTotalAmount} ج.م</div>
+                      <div className="text-gray-500 dark:text-gray-400 text-xs mb-1 font-medium">
+                        قيمة اللعب
+                      </div>
+                      <div className="font-bold text-gray-900 dark:text-white">
+                        {details.playTotalAmount} ج.م
+                      </div>
                     </div>
                   </div>
 
@@ -510,7 +602,8 @@ export default function OwnerReservations() {
                           key={slot.id || slot.hour}
                           className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 text-xs dark:from-green-900/40 dark:to-emerald-900/40 dark:text-green-300 border border-green-200 dark:border-green-700 font-semibold"
                         >
-                          {slot.date || details.dateOfReservation} • {slotRangeLabel(slot)}
+                          {slot.date || details.dateOfReservation} •{" "}
+                          {slotRangeLabel(slot)}
                         </span>
                       ))}
                     </div>
