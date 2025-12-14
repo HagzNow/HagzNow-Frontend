@@ -199,7 +199,7 @@ export default function Login() {
             <FaEnvelope className="w-8 h-8" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 drop-shadow-lg">
-            {t('login_title') || 'Log in to Arena Book'}
+            {t('login_title') || 'Log in to HagzNow'}
           </h1>
           <p className="text-white/90 text-sm sm:text-base drop-shadow-md">
             {t('login_subtitle') || 'Sign in to continue your sports journey'}
