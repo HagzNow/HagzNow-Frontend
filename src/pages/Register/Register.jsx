@@ -44,7 +44,7 @@ export default function Register() {
             navigate("/");
           }, 1200);
       } catch (err) {
-        
+
         const msg = err.response?.data?.error?.code || "Unknown error";
         const translated = t(`errors.${msg}`, { defaultValue: msg });
         toast.error(translated);
@@ -82,15 +82,14 @@ export default function Register() {
         </div>
 
         <form onSubmit={formik.handleSubmit}>
-          <div className="bg-white/10 backdrop-blur-xl w-[90%] sm:w-[70%] md:w-[40%] lg:w-[30%] mx-auto p-6 sm:p-8 rounded-2xl shadow-2xl border border-white/20 space-y-4 transition-colors duration-300">
+          <div className="bg-white/10 backdrop-blur-xl w-[95%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] mx-auto p-6 sm:p-8 rounded-2xl shadow-2xl border border-white/20 space-y-4 transition-colors duration-300">
             {/* Role selection */}
             <div className="flex justify-center gap-2">
               <label
-                className={`cursor-pointer px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                  role === "owner"
+                className={`cursor-pointer px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${role === "owner"
                     ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
+                  }`}
               >
                 <input
                   type="radio"
@@ -104,11 +103,10 @@ export default function Register() {
               </label>
 
               <label
-                className={`cursor-pointer px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                  role === "user"
+                className={`cursor-pointer px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${role === "user"
                     ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
+                  }`}
               >
                 <input
                   type="radio"
