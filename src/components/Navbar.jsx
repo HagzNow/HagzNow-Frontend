@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState, useCallback } from 'react';
 import darkLogo from '../assets/images/darkLogo.png';
 import lightLogo from '../assets/images/lightLogo.png';
 import { CiSearch } from 'react-icons/ci';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Sun,
@@ -59,6 +59,7 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
   const { user, logout, setUser, setToken, userLoading } = useContext(authContext);
   const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -73,7 +74,11 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
   const showUserDropdown = isLoggedIn && user && !userLoading;
   const menus = menuItems || MENU_PRESETS(t)[variant] || MENU_PRESETS(t).public;
   const enableSearch = showSearch ?? ['public', 'user'].includes(variant);
-  const showAuthButtons = !isLoggedIn && variant === 'public';
+
+  // Hide auth buttons on pending-approval and rejected-account pages
+  const hideAuthPages = ['/pending-approval', '/rejected-account'];
+  const shouldHideAuthButtons = hideAuthPages.includes(location.pathname);
+  const showAuthButtons = !isLoggedIn && variant === 'public' && !shouldHideAuthButtons;
 
   // Search for arenas
   const searchArenas = useCallback(async (query) => {
