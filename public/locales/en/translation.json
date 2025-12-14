@@ -177,7 +177,6 @@
     "instant": "instant",
     "rejected": "Rejected",
     "processed": "Processed"
-
   },
   "transaction_type": {
     "deposit": "Deposit",
@@ -307,5 +306,17 @@
   "owner_add_arena": "Add Arena",
   "wallet_label": "Wallet",
   "saving": "Saving...",
-  "loading": "Loading"
+  "loading": "Loading",
+  "register_success": "Account registered successfully",
+  "pending_approval_title": "Account Pending Approval",
+  "pending_approval_success": "Registration Successful!",
+  "pending_approval_message": "Your owner account registration was successful. Your account is now pending admin approval.",
+  "pending_approval_documents_title": "Document Verification",
+  "pending_approval_documents_message": "Our admin team is reviewing your submitted documents (National ID front, National ID back, and selfie with ID). You will be notified once your account is approved.",
+  "pending_approval_next_steps": "What's Next?",
+  "pending_approval_step1": "Wait for admin review of your documents",
+  "pending_approval_step2": "You will receive a notification once your account is approved",
+  "pending_approval_step3": "Once approved, you can log in and start managing your arenas",
+  "pending_approval_back_to_login": "Back to Login",
+  "pending_approval_go_home": "Go to Home"
 }

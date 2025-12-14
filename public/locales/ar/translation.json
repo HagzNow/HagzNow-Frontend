@@ -53,11 +53,9 @@
   "continue_google": "المتابعة باستخدام جوجل",
   "continue_facebook": "المتابعة باستخدام فيسبوك",
 
-  
   "nationalIdFront": "الصورة الأمامية للهوية مطلوبة",
   "nationalIdBack": "الصورة الخلفية للهوية مطلوبة",
   "selfieWithId": "الصورة الشخصية مع الهوية مطلوبة",
-
 
   "reservation": {
     "step1": "تحديد التاريخ والوقت",
@@ -198,7 +196,6 @@
     "instant": "فوري",
     "rejected": "مرفوض",
     "processed": "مُعالج"
-
   },
   "transaction_type": {
     "deposit": "إيداع",
@@ -340,5 +337,17 @@
   "users": "المستخدمون",
   "owner_arenas": "ساحاتي",
   "owner_add_arena": "إضافة ساحة",
-  "wallet_label": "المحفظة"
+  "wallet_label": "المحفظة",
+  "register_success": "تم إنشاء الحساب بنجاح",
+  "pending_approval_title": "الحساب قيد الموافقة",
+  "pending_approval_success": "تم التسجيل بنجاح!",
+  "pending_approval_message": "تم تسجيل حساب المالك بنجاح. حسابك الآن قيد مراجعة الإدارة للموافقة عليه.",
+  "pending_approval_documents_title": "التحقق من المستندات",
+  "pending_approval_documents_message": "فريق الإدارة يراجع المستندات المقدمة (صورة الهوية الأمامية، صورة الهوية الخلفية، والصورة الشخصية مع الهوية). سيتم إشعارك بمجرد الموافقة على حسابك.",
+  "pending_approval_next_steps": "ماذا بعد؟",
+  "pending_approval_step1": "انتظر مراجعة الإدارة لمستنداتك",
+  "pending_approval_step2": "ستتلقى إشعاراً بمجرد الموافقة على حسابك",
+  "pending_approval_step3": "بمجرد الموافقة، يمكنك تسجيل الدخول والبدء في إدارة ملاعبك",
+  "pending_approval_back_to_login": "العودة لتسجيل الدخول",
+  "pending_approval_go_home": "الذهاب للصفحة الرئيسية"
 }
