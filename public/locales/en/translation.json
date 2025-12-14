@@ -382,5 +382,8 @@
   "about_why4_title": "Customer Support",
   "about_why4_text": "Support team available 24/7 to help you with any inquiry or issue.",
   "about_cta_title": "Join Us Today",
-  "about_cta_text": "Start your sports journey with us and book your favorite arena easily and securely"
+  "about_cta_text": "Start your sports journey with us and book your favorite arena easily and securely",
+  "pwa_install_title": "Install App",
+  "pwa_install_message": "Install HagzNow on your device for quick access and better experience",
+  "pwa_install_button": "Install"
 }

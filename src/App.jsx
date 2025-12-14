@@ -42,6 +42,7 @@ import UserProfile from './pages/UserProfile/UserProfile';
 import OwnerReservations from './pages/Owner/OwnerReservations';
 import OwnerArenaDetails from './pages/Owner/OwnerArenaDetails';
 import NotFound from './pages/NotFound/NotFound';
+import PWAInstallPrompt from './components/PWAInstallPrompt/PWAInstallPrompt';
 
 function App() {
   const { i18n } = useTranslation();
@@ -171,6 +172,7 @@ function App() {
               }}
             />
             <RouterProvider router={routes} />
+            <PWAInstallPrompt />
           </ReservationContextProvider>
         </AuthContextProvider>
       </ThemeProvider>
