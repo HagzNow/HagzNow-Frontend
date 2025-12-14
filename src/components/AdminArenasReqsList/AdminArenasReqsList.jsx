@@ -1,25 +1,21 @@
-import { useState, useEffect } from "react";
-import AdminArenaCard from "../AdminArenaCard/AdminArenaCard";
-import { arenaService } from "../../services/arenaService";
-import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
-import Toast from "../Toast/Toast";
-import noImage from "../../assets/imgs/no-img.jpg";
+import { useState, useEffect } from 'react';
+import AdminArenaCard from '../AdminArenaCard/AdminArenaCard';
+import { arenaService } from '../../services/arenaService';
+import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
+import Toast from '../Toast/Toast';
+import noImage from '../../assets/imgs/no-img.jpg';
 
-export default function AdminArenasReqsList({
-  arenaRequests = [],
-  loading,
-  onRefresh,
-}) {
+export default function AdminArenasReqsList({ arenaRequests = [], loading, onRefresh }) {
   const [processingId, setProcessingId] = useState(null);
   const [confirmDialog, setConfirmDialog] = useState({
     isOpen: false,
-    type: "",
+    type: '',
     arenaId: null,
   });
   const [toast, setToast] = useState({
     isVisible: false,
-    message: "",
-    type: "success",
+    message: '',
+    type: 'success',
   });
   const [selectedArena, setSelectedArena] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
@@ -29,37 +25,35 @@ export default function AdminArenasReqsList({
   // Prevent background scrolling when modal is open
   useEffect(() => {
     if (isDetailOpen || detailLoading) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     }
 
     // Cleanup function to ensure scrolling is restored
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     };
   }, [isDetailOpen, detailLoading]);
 
   // Handle both array and object with data property
-  const arenas = Array.isArray(arenaRequests)
-    ? arenaRequests
-    : arenaRequests?.data || [];
+  const arenas = Array.isArray(arenaRequests) ? arenaRequests : arenaRequests?.data || [];
 
-  console.log("AdminArenasReqsList received arenaRequests:", arenaRequests);
-  console.log("Processed arenas:", arenas);
-  console.log("arenas is array?:", Array.isArray(arenas));
-  console.log("arenas length:", arenas?.length);
+  console.log('AdminArenasReqsList received arenaRequests:', arenaRequests);
+  console.log('Processed arenas:', arenas);
+  console.log('arenas is array?:', Array.isArray(arenas));
+  console.log('arenas length:', arenas?.length);
 
-  const showToast = (message, type = "success") => {
+  const showToast = (message, type = 'success') => {
     setToast({ isVisible: true, message, type });
   };
 
   const handleApprove = async (id) => {
-    setConfirmDialog({ isOpen: true, type: "approve", arenaId: id });
+    setConfirmDialog({ isOpen: true, type: 'approve', arenaId: id });
   };
 
   const handleReject = async (id) => {
-    setConfirmDialog({ isOpen: true, type: "reject", arenaId: id });
+    setConfirmDialog({ isOpen: true, type: 'reject', arenaId: id });
   };
 
   const handleView = async (arenaId) => {
@@ -71,7 +65,7 @@ export default function AdminArenasReqsList({
       const detail = await arenaService.getArenaById(arenaId);
       setSelectedArena(detail);
     } catch (error) {
-      showToast("تعذر تحميل تفاصيل الملعب", "error");
+      showToast('تعذر تحميل تفاصيل الملعب', 'error');
       setIsDetailOpen(false);
       console.log(error);
     } finally {
@@ -82,15 +76,15 @@ export default function AdminArenasReqsList({
   const handleConfirmAction = async () => {
     const { type, arenaId } = confirmDialog;
     setProcessingId(arenaId);
-    setConfirmDialog({ isOpen: false, type: "", arenaId: null });
+    setConfirmDialog({ isOpen: false, type: '', arenaId: null });
 
     try {
-      if (type === "approve") {
+      if (type === 'approve') {
         await arenaService.approveArena(arenaId);
-        showToast("تم الموافقة على الملعب بنجاح", "success");
-      } else if (type === "reject") {
+        showToast('تم الموافقة على الملعب بنجاح', 'success');
+      } else if (type === 'reject') {
         await arenaService.rejectArena(arenaId);
-        showToast("تم رفض الملعب بنجاح", "success");
+        showToast('تم رفض الملعب بنجاح', 'success');
       }
 
       // Refresh the list after action
@@ -99,10 +93,8 @@ export default function AdminArenasReqsList({
       }
     } catch (error) {
       showToast(
-        type === "approve"
-          ? "فشل في الموافقة على الملعب: " + error.message
-          : "فشل في رفض الملعب: " + error.message,
-        "error"
+        type === 'approve' ? 'فشل في الموافقة على الملعب: ' + error.message : 'فشل في رفض الملعب: ' + error.message,
+        'error',
       );
       console.error(`Error ${type}ing arena:`, error);
     } finally {
@@ -115,21 +107,17 @@ export default function AdminArenasReqsList({
       {/* Confirm Dialog */}
       <ConfirmDialog
         isOpen={confirmDialog.isOpen}
-        onClose={() =>
-          setConfirmDialog({ isOpen: false, type: "", arenaId: null })
-        }
+        onClose={() => setConfirmDialog({ isOpen: false, type: '', arenaId: null })}
         onConfirm={handleConfirmAction}
-        title={
-          confirmDialog.type === "approve" ? "تأكيد الموافقة" : "تأكيد الرفض"
-        }
+        title={confirmDialog.type === 'approve' ? 'تأكيد الموافقة' : 'تأكيد الرفض'}
         message={
-          confirmDialog.type === "approve"
-            ? "هل أنت متأكد من الموافقة على هذا الملعب؟ سيتم تفعيل الملعب وإتاحته للمستخدمين."
-            : "هل أنت متأكد من رفض هذا الملعب؟ سيتم إلغاء الطلب ولن يكون الملعب متاحاً."
+          confirmDialog.type === 'approve'
+            ? 'هل أنت متأكد من الموافقة على هذا الملعب؟ سيتم تفعيل الملعب وإتاحته للمستخدمين.'
+            : 'هل أنت متأكد من رفض هذا الملعب؟ سيتم إلغاء الطلب ولن يكون الملعب متاحاً.'
         }
-        confirmText={confirmDialog.type === "approve" ? "موافقة" : "رفض"}
+        confirmText={confirmDialog.type === 'approve' ? 'موافقة' : 'رفض'}
         cancelText="إلغاء"
-        type={confirmDialog.type === "approve" ? "success" : "danger"}
+        type={confirmDialog.type === 'approve' ? 'success' : 'danger'}
       />
 
       {/* Toast Notification */}
@@ -159,23 +147,18 @@ export default function AdminArenasReqsList({
       ) : (
         <div className="relative space-y-4">
           <div className="flex items-center justify-between px-3 sm:px-4 md:px-6 lg:px-8">
-            <h3 className="text-lg font-semibold text-neutral-800 dark:text-white">
-              طلبات الملاعب
-            </h3>
+            <h3 className="text-lg font-semibold text-neutral-800 dark:text-white">طلبات الملاعب</h3>
             <span className="px-3 py-1 rounded-full text-sm bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800">
               {arenas.length} طلب
             </span>
           </div>
 
           <div
-            dir="ltr"
+            dir="rt;"
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 sm:gap-6 md:gap-7 py-2 px-3 sm:px-4 md:px-6 lg:px-8"
           >
             {arenas.map((arena) => {
-              const imageToUse =
-                arena.thumbnail && arena.thumbnail.trim() !== ""
-                  ? arena.thumbnail
-                  : noImage;
+              const imageToUse = arena.thumbnail && arena.thumbnail.trim() !== '' ? arena.thumbnail : noImage;
               return (
                 <AdminArenaCard
                   key={arena.id}
@@ -188,9 +171,7 @@ export default function AdminArenasReqsList({
                   onApprove={() => handleApprove(arena.id)}
                   onReject={() => handleReject(arena.id)}
                   onView={() => handleView(arena.id)}
-                  images={(arena.images || [])
-                    .map((img) => img.path || img)
-                    .filter(Boolean)}
+                  images={(arena.images || []).map((img) => img.path || img).filter(Boolean)}
                   isProcessing={processingId === arena.id}
                 />
               );
@@ -217,57 +198,35 @@ export default function AdminArenasReqsList({
                       selectedArena.thumbnail ||
                       (selectedArena.images &&
                         selectedArena.images[0] &&
-                        (selectedArena.images[0].path ||
-                          selectedArena.images[0]));
+                        (selectedArena.images[0].path || selectedArena.images[0]));
                     const locationText =
                       selectedArena.locationSummary ||
                       selectedArena.address ||
-                      [
-                        selectedArena.location?.city,
-                        selectedArena.location?.governorate,
-                      ]
-                        .filter(Boolean)
-                        .join(" - ") ||
-                      "غير محدد";
-                    const gallery = [
-                      primaryImage,
-                      ...galleryFromImages(selectedArena.images, primaryImage),
-                    ].filter(Boolean);
-                    const sportText =
-                      selectedArena.categoryName ||
-                      selectedArena.category?.name ||
-                      "غير محدد";
+                      [selectedArena.location?.city, selectedArena.location?.governorate].filter(Boolean).join(' - ') ||
+                      'غير محدد';
+                    const gallery = [primaryImage, ...galleryFromImages(selectedArena.images, primaryImage)].filter(
+                      Boolean,
+                    );
+                    const sportText = selectedArena.categoryName || selectedArena.category?.name || 'غير محدد';
                     const ownerName =
                       selectedArena.ownerName ||
                       (selectedArena.owner
-                        ? `${selectedArena.owner.fName || ""} ${
-                            selectedArena.owner.lName || ""
-                          }`.trim()
-                        : "") ||
-                      "غير معروف";
-                    const ownerPhone =
-                      selectedArena.ownerPhone ||
-                      selectedArena.owner?.phone ||
-                      "غير متوفر";
-                    const ownerPayout =
-                      selectedArena.owner?.payoutMethod || "غير محدد";
-                    const minPeriod = selectedArena.minPeriod
-                      ? `${selectedArena.minPeriod} دقيقة`
-                      : "غير محدد";
+                        ? `${selectedArena.owner.fName || ''} ${selectedArena.owner.lName || ''}`.trim()
+                        : '') ||
+                      'غير معروف';
+                    const ownerPhone = selectedArena.ownerPhone || selectedArena.owner?.phone || 'غير متوفر';
+                    const ownerPayout = selectedArena.owner?.payoutMethod || 'غير محدد';
+                    const minPeriod = selectedArena.minPeriod ? `${selectedArena.minPeriod} دقيقة` : 'غير محدد';
                     const openClose =
                       selectedArena.openingHour || selectedArena.closingHour
-                        ? `${selectedArena.openingHour || "--"}:00 - ${
-                            selectedArena.closingHour || "--"
-                          }:00`
-                        : "غير محدد";
+                        ? `${selectedArena.openingHour || '--'}:00 - ${selectedArena.closingHour || '--'}:00`
+                        : 'غير محدد';
                     const deposit =
-                      selectedArena.depositPercent !== undefined &&
-                      selectedArena.depositPercent !== null
+                      selectedArena.depositPercent !== undefined && selectedArena.depositPercent !== null
                         ? `${selectedArena.depositPercent}%`
-                        : "غير محدد";
+                        : 'غير محدد';
                     const extras = selectedArena.extras || [];
-                    const policy =
-                      selectedArena.policy || "لا توجد سياسة مضافة.";
+                    const policy = selectedArena.policy || 'لا توجد سياسة مضافة.';
                     return (
                       <>
                         <div className="flex justify-between items-center px-4 sm:px-5 py-3 sm:py-4 border-b border-neutral-200 dark:border-gray-700 bg-white dark:bg-gray-900 flex-shrink-0">
@@ -277,12 +236,10 @@ export default function AdminArenasReqsList({
                             </h3>
                             <div className="flex items-center gap-2 flex-wrap mt-2">
                               <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800">
-                                {selectedArena.status || "معلق"}
+                                {selectedArena.status || 'معلق'}
                               </span>
                               <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs bg-neutral-100 text-neutral-700 dark:bg-gray-800 dark:text-gray-200 border border-neutral-200 dark:border-gray-700">
-                                {selectedArena.location?.city ||
-                                  selectedArena.location?.governorate ||
-                                  "غير محدد"}
+                                {selectedArena.location?.city || selectedArena.location?.governorate || 'غير محدد'}
                               </span>
                             </div>
                           </div>
@@ -314,11 +271,7 @@ export default function AdminArenasReqsList({
                                         <button
                                           onClick={(e) => {
                                             e.stopPropagation();
-                                            setDetailSlide(
-                                              (s) =>
-                                                (s - 1 + gallery.length) %
-                                                gallery.length
-                                            );
+                                            setDetailSlide((s) => (s - 1 + gallery.length) % gallery.length);
                                           }}
                                           className="absolute top-1/2 -translate-y-1/2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition text-xl leading-none"
                                         >
@@ -327,9 +280,7 @@ export default function AdminArenasReqsList({
                                         <button
                                           onClick={(e) => {
                                             e.stopPropagation();
-                                            setDetailSlide(
-                                              (s) => (s + 1) % gallery.length
-                                            );
+                                            setDetailSlide((s) => (s + 1) % gallery.length);
                                           }}
                                           className="absolute top-1/2 -translate-y-1/2 left-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition text-xl leading-none"
                                         >
@@ -340,9 +291,7 @@ export default function AdminArenasReqsList({
                                             <span
                                               key={idx}
                                               className={`h-2 w-2 rounded-full border border-white/70 ${
-                                                idx === detailSlide
-                                                  ? "bg-white"
-                                                  : "bg-white/40"
+                                                idx === detailSlide ? 'bg-white' : 'bg-white/40'
                                               }`}
                                             />
                                           ))}
@@ -358,23 +307,16 @@ export default function AdminArenasReqsList({
                               </div>
 
                               <div className="rounded-xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-2">
-                                <p className="text-sm font-semibold text-neutral-800 dark:text-white">
-                                  الوصف
-                                </p>
+                                <p className="text-sm font-semibold text-neutral-800 dark:text-white">الوصف</p>
                                 <p className="text-neutral-700 dark:text-gray-300 text-sm leading-6">
-                                  {selectedArena.description ||
-                                    "لا يوجد وصف متاح."}
+                                  {selectedArena.description || 'لا يوجد وصف متاح.'}
                                 </p>
                               </div>
 
-                              {policy && policy.trim() !== "" && (
+                              {policy && policy.trim() !== '' && (
                                 <div className="rounded-xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-2">
-                                  <p className="text-sm font-semibold text-neutral-800 dark:text-white">
-                                    السياسة
-                                  </p>
-                                  <p className="text-neutral-700 dark:text-gray-300 text-sm leading-6">
-                                    {policy}
-                                  </p>
+                                  <p className="text-sm font-semibold text-neutral-800 dark:text-white">السياسة</p>
+                                  <p className="text-neutral-700 dark:text-gray-300 text-sm leading-6">{policy}</p>
                                 </div>
                               )}
                             </div>
@@ -382,69 +324,36 @@ export default function AdminArenasReqsList({
                             {/* Right Column: Key Details + Extras */}
                             <div className="flex flex-col gap-4 h-full overflow-y-auto no-scrollbar text-right">
                               <div className="grid grid-cols-2 gap-3 content-start">
-                                <DetailRow
-                                  label="الموقع"
-                                  value={locationText}
-                                />
-                                <DetailRow
-                                  label="نوع الرياضة"
-                                  value={sportText}
-                                />
+                                <DetailRow label="الموقع" value={locationText} />
+                                <DetailRow label="نوع الرياضة" value={sportText} />
                                 <DetailRow
                                   label="السعر للساعة"
-                                  value={`${
-                                    selectedArena.pricePerHour || "--"
-                                  } جنيه/ساعة`}
+                                  value={`${selectedArena.pricePerHour || '--'} جنيه/ساعة`}
                                   tone="money"
                                 />
-                                <DetailRow
-                                  label="الحد الأدنى للحجز"
-                                  value={minPeriod}
-                                />
-                                <DetailRow
-                                  label="ساعات العمل"
-                                  value={openClose}
-                                />
-                                <DetailRow
-                                  label="نسبة المقدم"
-                                  value={deposit}
-                                />
-                                <DetailRow
-                                  label="الحالة"
-                                  value={selectedArena.status || "معلق"}
-                                />
+                                <DetailRow label="الحد الأدنى للحجز" value={minPeriod} />
+                                <DetailRow label="ساعات العمل" value={openClose} />
+                                <DetailRow label="نسبة المقدم" value={deposit} />
+                                <DetailRow label="الحالة" value={selectedArena.status || 'معلق'} />
                                 <DetailRow
                                   label="المساحة / المقاس"
-                                  value={
-                                    selectedArena.size ||
-                                    selectedArena.dimensions ||
-                                    "غير محدد"
-                                  }
+                                  value={selectedArena.size || selectedArena.dimensions || 'غير محدد'}
                                 />
                                 <DetailRow label="المالك" value={ownerName} />
-                                <DetailRow
-                                  label="رقم المالك"
-                                  value={ownerPhone}
-                                />
-                                <DetailRow
-                                  label="طريقة الدفع للمالك"
-                                  value={ownerPayout}
-                                />
+                                <DetailRow label="رقم المالك" value={ownerPhone} />
+                                <DetailRow label="طريقة الدفع للمالك" value={ownerPayout} />
                               </div>
 
                               {extras.length > 0 && (
                                 <div className="rounded-xl border border-neutral-200 dark:border-gray-700 bg-neutral-50/80 dark:bg-gray-800/70 p-4 space-y-2">
-                                  <p className="text-sm font-semibold text-neutral-800 dark:text-white">
-                                    الإضافات
-                                  </p>
+                                  <p className="text-sm font-semibold text-neutral-800 dark:text-white">الإضافات</p>
                                   <div className="flex flex-wrap gap-2">
                                     {extras.map((ex) => (
                                       <span
                                         key={ex.id || ex.name}
                                         className="px-3 py-1 rounded-full text-xs bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800"
                                       >
-                                        {ex.name}{" "}
-                                        {ex.price ? `- ${ex.price}ج` : ""}
+                                        {ex.name} {ex.price ? `- ${ex.price}ج` : ''}
                                       </span>
                                     ))}
                                   </div>
@@ -467,10 +376,7 @@ export default function AdminArenasReqsList({
 }
 
 function DetailRow({ label, value, tone }) {
-  const toneClass =
-    tone === "money"
-      ? "text-emerald-600 dark:text-emerald-400"
-      : "text-neutral-900 dark:text-white";
+  const toneClass = tone === 'money' ? 'text-emerald-600 dark:text-emerald-400' : 'text-neutral-900 dark:text-white';
 
   return (
     <div>

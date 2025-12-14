@@ -20,57 +20,57 @@ export default function TransactionItem({ transaction }) {
   const { t } = useTranslation();
 
   // Status configuration with icons and custom colors
- const statusConfig = {
-  instant: {
-    bgColor: 'bg-[#3B82F6]',
-    textColor: 'text-white',
-    icon: Zap,
-    label: t(`transaction_status.instant`),
-  },
-  hold: {
-    bgColor: 'bg-[#FBBF24]',
-    textColor: 'text-white',
-    icon: Lock,
-    label: t(`transaction_status.hold`),
-  },
-  refund: {
-    bgColor: 'bg-[#10B981]',
-    textColor: 'text-white',
-    icon: RotateCcw,
-    label: t(`transaction_status.refund`),
-  },
-  settled: {
-    bgColor: 'bg-[#059669]',
-    textColor: 'text-white',
-    icon: CheckCircle,
-    label: t(`transaction_status.settled`),
-  },
-  pending: {
-    bgColor: 'bg-[#6B7280]',
-    textColor: 'text-white',
-    icon: Clock,
-    label: t(`transaction_status.pending`),
-  },
-  failed: {
-    bgColor: 'bg-[#EF4444]',
-    textColor: 'text-white',
-    icon: AlertCircle,
-    label: t(`transaction_status.failed`),
-  },
-  rejected: {
-    bgColor: 'bg-[#DC2626]', 
-    textColor: 'text-white',
-    icon: Ban, 
-    label: t(`transaction_status.rejected`),
-  },
+  const statusConfig = {
+    instant: {
+      bgColor: 'bg-[#3B82F6]',
+      textColor: 'text-white',
+      icon: Zap,
+      label: t(`transaction_status.instant`),
+    },
+    hold: {
+      bgColor: 'bg-[#FBBF24]',
+      textColor: 'text-white',
+      icon: Lock,
+      label: t(`transaction_status.hold`),
+    },
+    refund: {
+      bgColor: 'bg-[#10B981]',
+      textColor: 'text-white',
+      icon: RotateCcw,
+      label: t(`transaction_status.refund`),
+    },
+    settled: {
+      bgColor: 'bg-[#059669]',
+      textColor: 'text-white',
+      icon: CheckCircle,
+      label: t(`transaction_status.settled`),
+    },
+    pending: {
+      bgColor: 'bg-[#6B7280]',
+      textColor: 'text-white',
+      icon: Clock,
+      label: t(`transaction_status.pending`),
+    },
+    failed: {
+      bgColor: 'bg-[#EF4444]',
+      textColor: 'text-white',
+      icon: AlertCircle,
+      label: t(`transaction_status.failed`),
+    },
+    rejected: {
+      bgColor: 'bg-[#DC2626]',
+      textColor: 'text-white',
+      icon: Ban,
+      label: t(`transaction_status.rejected`),
+    },
 
-  processed: {
-    bgColor: 'bg-[#2563EB]',
-    textColor: 'text-white',
-    icon: Check, 
-    label: t(`transaction_status.processed`),
-  },
-};
+    processed: {
+      bgColor: 'bg-[#2563EB]',
+      textColor: 'text-white',
+      icon: Check,
+      label: t(`transaction_status.processed`),
+    },
+  };
 
   // Type configuration with icons and colors
   const typeConfig = {
@@ -143,7 +143,7 @@ export default function TransactionItem({ transaction }) {
           <TypeIcon className={`w-4 h-4 ${currentType.color}`} />
           <span className={`text-lg font-bold ${currentType.color}`}>
             {currentType.sign}
-            {transaction.amount}
+            {Number(transaction.amount).toLocaleString('ar-EG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             <span className="text-sm font-normal mr-1">ج.م</span>
           </span>
         </div>
