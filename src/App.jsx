@@ -4,6 +4,7 @@ import Layout from './components/Layout/Layout';
 import AdminArenaRequests from './pages/AdminArenaRequests/AdminArenaRequests';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import Home from './pages/Home/Home';
+import About from './pages/About/About';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import PendingApproval from './pages/PendingApproval/PendingApproval';
@@ -51,7 +52,7 @@ function App() {
       element: <Layout />,
       children: [
         { path: '/', element: <Home /> },
-
+        { path: '/about', element: <About /> },
         { path: '/login', element: <Login /> },
         { path: '/register', element: <Register /> },
         { path: '/pending-approval', element: <PendingApproval /> },
