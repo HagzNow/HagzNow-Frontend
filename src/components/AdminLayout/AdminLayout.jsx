@@ -63,7 +63,7 @@ export default function AdminLayout() {
     // },
     {
       key: 'admin-arena-requests',
-      label: 'طلبات الساحة المعلقة',
+      label: 'طلبات الملاعب المعلقة',
       icon: <FileCog />,
       to: '/admin/admin-arena-requests',
     },

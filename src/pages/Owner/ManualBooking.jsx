@@ -1,22 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Calendar, ListChecks, Plus } from 'lucide-react';
-import toast from 'react-hot-toast';
-import { format, startOfDay } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Calendar, ListChecks, Plus } from "lucide-react";
+import toast from "react-hot-toast";
+import { format, startOfDay } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
-import { arenaService } from '@/services/arenaService';
-import { reservationService } from '@/services/reservationService';
-import baseUrl from '@/apis/config';
+import { arenaService } from "@/services/arenaService";
+import { reservationService } from "@/services/reservationService";
+import baseUrl from "@/apis/config";
 
 const ManualBookingForm = () => {
-  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
-  const today = format(startOfDay(new Date()), 'yyyy-MM-dd');
+  const today = format(startOfDay(new Date()), "yyyy-MM-dd");
   const [arenas, setArenas] = useState([]);
-  const [arenaId, setArenaId] = useState('');
-  const [date, setDate] = useState('');
+  const [arenaId, setArenaId] = useState("");
+  const [date, setDate] = useState("");
   const [availableSlots, setAvailableSlots] = useState([]);
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [extras, setExtras] = useState([]);
@@ -30,7 +28,7 @@ const ManualBookingForm = () => {
         setArenas(res.data || []);
         if (res.data?.length) setArenaId(res.data[0].id);
       } catch (err) {
-        toast.error(err.message || 'تعذر تحميل الساحات');
+        toast.error(err.message || "تعذر تحميل الساحات");
       }
     };
     load();
@@ -41,11 +39,17 @@ const ManualBookingForm = () => {
     const loadSlots = async () => {
       if (!arenaId || !date) return;
       try {
-        const { data } = await baseUrl.get(`/arenas/${arenaId}/slots/available?date=${date}`);
+        const { data } = await baseUrl.get(
+          `/arenas/${arenaId}/slots/available?date=${date}`
+        );
         setAvailableSlots(data.data.availableHours || []);
       } catch (err) {
         setAvailableSlots([]);
-        toast.error(err?.response?.data?.message || err.message || 'تعذر تحميل الأوقات المتاحة');
+        toast.error(
+          err?.response?.data?.message ||
+            err.message ||
+            "تعذر تحميل الأوقات المتاحة"
+        );
       }
     };
     loadSlots();
@@ -60,6 +64,7 @@ const ManualBookingForm = () => {
         setExtras(data.data || []);
       } catch (err) {
         setExtras([]);
+        console.log(err);
       }
     };
     loadExtras();
@@ -67,18 +72,22 @@ const ManualBookingForm = () => {
 
   const toggleSlot = (slot) => {
     setSelectedSlots((prev) =>
-      prev.includes(slot) ? prev.filter((s) => s !== slot) : [...prev, slot].sort((a, b) => a - b)
+      prev.includes(slot)
+        ? prev.filter((s) => s !== slot)
+        : [...prev, slot].sort((a, b) => a - b)
     );
   };
 
   const toggleExtra = (id) => {
-    setSelectedExtras((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+    setSelectedExtras((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!arenaId || !date || selectedSlots.length === 0) {
-      toast.error('اختر الساحة والتاريخ والساعة على الأقل');
+      toast.error("اختر الساحة والتاريخ والساعة على الأقل");
       return;
     }
     setLoading(true);
@@ -89,13 +98,15 @@ const ManualBookingForm = () => {
         slots: selectedSlots,
         extras: selectedExtras,
       };
-      const data = await reservationService.createOwnerManualReservation(payload);
-      toast.success('تم إنشاء حجز يدوي بنجاح');
+      const data = await reservationService.createOwnerManualReservation(
+        payload
+      );
+      toast.success("تم إنشاء حجز يدوي بنجاح");
       setSelectedSlots([]);
       if (data?.dateOfReservation) setDate(data.dateOfReservation);
-      navigate('/owner/reservations');
+      navigate("/owner/reservations");
     } catch (err) {
-      toast.error(err.message || 'تعذر إنشاء الحجز');
+      toast.error(err.message || "تعذر إنشاء الحجز");
     } finally {
       setLoading(false);
     }
@@ -111,7 +122,9 @@ const ManualBookingForm = () => {
               <Calendar className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">حجز يدوي</h1>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
+                حجز يدوي
+              </h1>
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
                 أنشئ حجزاً مباشراً لساحتك مع تحديد الساعات والإضافات
               </p>
@@ -120,11 +133,12 @@ const ManualBookingForm = () => {
         </div>
 
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl sm:rounded-2xl shadow dark:shadow-gray-900/50 p-4 sm:p-6 lg:p-8">
-
           <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
               <div className="flex flex-col gap-2">
-                <label className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">الساحة</label>
+                <label className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">
+                  الملاعب
+                </label>
                 <select
                   value={arenaId}
                   onChange={(e) => setArenaId(e.target.value)}
@@ -139,7 +153,9 @@ const ManualBookingForm = () => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">التاريخ</label>
+                <label className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">
+                  التاريخ
+                </label>
                 <input
                   type="date"
                   value={date}
@@ -161,26 +177,28 @@ const ManualBookingForm = () => {
                 </label>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
-                {(availableSlots.length ? availableSlots : [10, 11]).map((h) => (
-                  <label
-                    key={h}
-                    className={`flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border-2 cursor-pointer transition-all duration-200 ${
-                      selectedSlots.includes(h)
-                        ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-500 text-green-700 dark:from-green-900/40 dark:to-emerald-900/40 dark:border-green-600 dark:text-green-300 shadow-md'
-                        : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-300 dark:hover:border-green-600'
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      className="hidden"
-                      checked={selectedSlots.includes(h)}
-                      onChange={() => toggleSlot(h)}
-                    />
-                    <span className="text-xs sm:text-sm font-medium text-center">
-                      {h}:00 - {h + 1}:00
-                    </span>
-                  </label>
-                ))}
+                {(availableSlots.length ? availableSlots : [10, 11]).map(
+                  (h) => (
+                    <label
+                      key={h}
+                      className={`flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                        selectedSlots.includes(h)
+                          ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-500 text-green-700 dark:from-green-900/40 dark:to-emerald-900/40 dark:border-green-600 dark:text-green-300 shadow-md"
+                          : "bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-300 dark:hover:border-green-600"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="hidden"
+                        checked={selectedSlots.includes(h)}
+                        onChange={() => toggleSlot(h)}
+                      />
+                      <span className="text-xs sm:text-sm font-medium text-center">
+                        {h}:00 - {h + 1}:00
+                      </span>
+                    </label>
+                  )
+                )}
               </div>
             </div>
 
@@ -189,7 +207,9 @@ const ManualBookingForm = () => {
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
                   <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-600 dark:text-green-400" />
                 </div>
-                <label className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">الإضافات</label>
+                <label className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">
+                  الإضافات
+                </label>
               </div>
               {extras.length === 0 && (
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 p-2 sm:p-3 rounded-lg">
@@ -202,8 +222,8 @@ const ManualBookingForm = () => {
                     key={ex.id}
                     className={`flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border-2 cursor-pointer transition-all duration-200 ${
                       selectedExtras.includes(ex.id)
-                        ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-500 text-green-700 dark:from-green-900/40 dark:to-emerald-900/40 dark:border-green-600 dark:text-green-300 shadow-md'
-                        : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-300 dark:hover:border-green-600'
+                        ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-500 text-green-700 dark:from-green-900/40 dark:to-emerald-900/40 dark:border-green-600 dark:text-green-300 shadow-md"
+                        : "bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-300 dark:hover:border-green-600"
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -213,9 +233,13 @@ const ManualBookingForm = () => {
                         checked={selectedExtras.includes(ex.id)}
                         onChange={() => toggleExtra(ex.id)}
                       />
-                      <span className="text-xs sm:text-sm font-semibold">{ex.name}</span>
+                      <span className="text-xs sm:text-sm font-semibold">
+                        {ex.name}
+                      </span>
                     </div>
-                    <span className="text-xs sm:text-sm font-bold text-green-600 dark:text-green-400">{ex.price} ج.م</span>
+                    <span className="text-xs sm:text-sm font-bold text-green-600 dark:text-green-400">
+                      {ex.price} ج.م
+                    </span>
                   </label>
                 ))}
               </div>
@@ -232,7 +256,7 @@ const ManualBookingForm = () => {
                   <span className="text-xs sm:text-sm">جارٍ الإنشاء...</span>
                 </span>
               ) : (
-                'إنشاء حجز يدوي'
+                "إنشاء حجز يدوي"
               )}
             </button>
           </form>
