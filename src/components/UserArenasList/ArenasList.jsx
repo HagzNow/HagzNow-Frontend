@@ -60,6 +60,8 @@ export default function ArenasList({ arenas, loading }) {
             rating={arena.rating || 0}
             image={arena.thumbnail || "src/assets/imgs/arena-img.png"}
             averageRating={arena.averageRating || 0}
+            depositePercent={arena.depositPercent || 20}
+            
           />
         );
       })}
