@@ -20,6 +20,7 @@ export default function ArenaCard({
   }
   const stars = [1, 2, 3, 4, 5];
 
+
   return (
     <div
       dir="rtl"
@@ -101,7 +102,7 @@ export default function ArenaCard({
             {/* Deposit */}
             {depositePercent && (
               <span className="mt-1 text-xs font-medium text-orange-500 dark:text-orange-400 group-hover:text-white/90 transition-colors duration-300">
-                {depositePercent} % نسبه العربون
+                مقدم: {(price * depositePercent) / 100} ج.م / ساعه
               </span>
             )}
           </div>

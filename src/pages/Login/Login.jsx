@@ -58,6 +58,19 @@ export default function Login() {
         const responseData = error.response.data;
         errorCode = responseData?.error?.code || 'SERVER_ERROR';
 
+        // Handle special error codes that require navigation
+        if (errorCode === 'PENDING_ACCOUNT') {
+          // Route to pending approval page
+          navigate('/pending-approval');
+          return; // Don't show error toast, just navigate
+        }
+
+        if (errorCode === 'REJECTED_ACCOUNT') {
+          // Route to rejected account page
+          navigate('/rejected-account');
+          return; // Don't show error toast, just navigate
+        }
+
         // Priority 1: Extract message from backend (can be array or string)
         if (responseData?.message) {
           if (Array.isArray(responseData.message)) {
@@ -180,18 +193,18 @@ export default function Login() {
   });
 
   return (
-    <section 
+    <section
       className="min-h-screen flex items-center justify-center py-12 px-4 transition-colors duration-300 relative"
       style={{
         backgroundImage: `url(${loginBg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
       }}
     >
       {/* Dark overlay for better contrast */}
       <div className="absolute inset-0 bg-black/40"></div>
-      
+
       <div className="w-full max-w-md relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
@@ -226,10 +239,11 @@ export default function Login() {
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full py-3 pr-11 pl-4 rounded-xl bg-white/20 backdrop-blur-sm border ${formik.errors.email && formik.touched.email
+                  className={`w-full py-3 pr-11 pl-4 rounded-xl bg-white/20 backdrop-blur-sm border ${
+                    formik.errors.email && formik.touched.email
                       ? 'border-red-400 focus:ring-red-400'
                       : 'border-white/30 focus:ring-green-500 focus:border-green-400'
-                    } focus:outline-none focus:ring-2 transition-all text-white placeholder-white/60`}
+                  } focus:outline-none focus:ring-2 transition-all text-white placeholder-white/60`}
                 />
               </div>
               {formik.errors.email && formik.touched.email && (
@@ -256,10 +270,11 @@ export default function Login() {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full py-3 pr-11 pl-10 rounded-xl bg-white/20 backdrop-blur-sm border ${formik.errors.password && formik.touched.password
+                  className={`w-full py-3 pr-11 pl-10 rounded-xl bg-white/20 backdrop-blur-sm border ${
+                    formik.errors.password && formik.touched.password
                       ? 'border-red-400 focus:ring-red-400'
                       : 'border-white/30 focus:ring-green-500 focus:border-green-400'
-                    } focus:outline-none focus:ring-2 transition-all text-white placeholder-white/60`}
+                  } focus:outline-none focus:ring-2 transition-all text-white placeholder-white/60`}
                 />
                 <button
                   type="button"

@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { Loader, MapPin, Clock, Star, Users, Shield } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { Loader, MapPin, Clock, Star, Users, Shield } from "lucide-react";
 
-import StaduimReviews from './components/StaduimReviews';
-import StadiumHeader from './components/StaduimHeader';
-import StadiumMap from './components/StaduimMap';
-import StadiumInfo from './components/StaduimInfo';
-import StadiumImage from './components/StaduimImages';
-import NotFound from '../NotFound/NotFound';
+import StaduimReviews from "./components/StaduimReviews";
+import StadiumHeader from "./components/StaduimHeader";
+import StadiumMap from "./components/StaduimMap";
+import StadiumInfo from "./components/StaduimInfo";
+import StadiumImage from "./components/StaduimImages";
+import NotFound from "../NotFound/NotFound";
 
 const BookingArena = () => {
   const [arena, setArena] = useState(null);
@@ -22,7 +22,7 @@ const BookingArena = () => {
           setArena(res.data.data);
         }
       } catch (err) {
-        console.error('Error fetching arena:', err);
+        console.error("Error fetching arena:", err);
       } finally {
         setLoading(false);
       }
@@ -37,7 +37,9 @@ const BookingArena = () => {
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center mx-auto mb-4 animate-pulse">
             <Loader className="w-8 h-8 text-white animate-spin" />
           </div>
-          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">جاري تحميل بيانات الملعب...</p>
+          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">
+            جاري تحميل بيانات الملعب...
+          </p>
         </div>
       </div>
     );
@@ -65,7 +67,9 @@ const BookingArena = () => {
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">الموقع</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                      الموقع
+                    </p>
                     <p className="font-semibold text-gray-900 dark:text-white">
                       {arena.location.city} , {arena.location.governorate}
                     </p>
@@ -81,7 +85,9 @@ const BookingArena = () => {
                     <Clock className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">ساعات العمل</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                      ساعات العمل
+                    </p>
                     <p className="font-semibold text-gray-900 dark:text-white">
                       {arena.openingHour}:00 - {arena.closingHour}:00
                     </p>
@@ -97,8 +103,12 @@ const BookingArena = () => {
                     <Users className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">النوع</p>
-                    <p className="font-semibold text-gray-900 dark:text-white">{arena.category.name}</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                      النوع
+                    </p>
+                    <p className="font-semibold text-gray-900 dark:text-white">
+                      {arena.category.name}
+                    </p>
                     {/* <p className="text-gray-500 text-xs">ملعب كرة قدم</p> */}
                   </div>
                 </div>
@@ -157,26 +167,38 @@ const BookingArena = () => {
                   <p className="font-semibold text-gray-900 dark:text-white">
                     {arena.owner.fName} {arena.owner.lName}
                   </p>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">{arena.owner.phone}</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    {arena.owner.phone}
+                  </p>
                 </div>
               </div>
             </div>
 
             {/* Quick Stats */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-500 ease-in-out border border-gray-100 dark:border-gray-700 p-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">معلومات سريعة</h3>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                معلومات سريعة
+              </h3>
               <div className="space-y-3">
                 {/* <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
                   <span className="text-gray-600 dark:text-gray-300">السعر لكل ساعة</span>
                   <span className="font-bold text-green-600 dark:text-green-400">{arena.pricePerHour} ج.م</span>
                 </div> */}
                 <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
-                  <span className="text-gray-600 dark:text-gray-300">أقل مدة حجز</span>
-                  <span className="font-bold text-gray-900 dark:text-white">{arena.minPeriod} دقيقة</span>
+                  <span className="text-gray-600 dark:text-gray-300">
+                    أقل مدة حجز
+                  </span>
+                  <span className="font-bold text-gray-900 dark:text-white">
+                    {arena.minPeriod} دقيقة
+                  </span>
                 </div>
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-600 dark:text-gray-300">نسبة العربون</span>
-                  <span className="font-bold text-orange-600 dark:text-orange-400">{arena.depositPercent}%</span>
+                  <span className="text-gray-600 dark:text-gray-300">
+                    نسبة المقدم
+                  </span>
+                  <span className="font-bold text-orange-600 dark:text-orange-400">
+                    {arena.depositPercent}%
+                  </span>
                 </div>
               </div>
             </div>

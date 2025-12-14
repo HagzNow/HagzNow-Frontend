@@ -9,6 +9,7 @@ import {
   MessageSquareText,
   WalletCards,
   ArrowDownCircle,
+  UserCheck,
 } from 'lucide-react';
 
 import Sidebar from '../Sidebar';
@@ -63,9 +64,15 @@ export default function AdminLayout() {
     // },
     {
       key: 'admin-arena-requests',
-      label: 'طلبات الساحة المعلقة',
+      label: 'طلبات الملاعب المعلقة',
       icon: <FileCog />,
       to: '/admin/admin-arena-requests',
+    },
+    {
+      key: 'pending-requests',
+      label: 'طلبات الملاك المعلقة',
+      icon: <UserCheck />,
+      to: '/admin/pending-requests',
     },
     // {
     //   key: 'settings',
@@ -84,7 +91,7 @@ export default function AdminLayout() {
       // { to: '/owner/reservations', label: 'الحجوزات' },
       // { to: '/owner/wallet', label: 'المحفظة' },
     ],
-    [],
+    []
   );
 
   return (

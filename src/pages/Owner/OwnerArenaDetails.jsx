@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Loader, MapPin, Clock, Users, Shield, ArrowRight, Edit } from 'lucide-react';
-import { arenaService } from '@/services/arenaService';
-import toast from 'react-hot-toast';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  Loader,
+  MapPin,
+  Clock,
+  Users,
+  Shield,
+  ArrowRight,
+  Edit,
+} from "lucide-react";
+import { arenaService } from "@/services/arenaService";
+import toast from "react-hot-toast";
 
-import StadiumMap from '@/pages/BookingArena/components/StaduimMap';
-import StadiumImage from '@/pages/BookingArena/components/StaduimImages';
-import StadiumInfo from '@/pages/BookingArena/components/StaduimInfo';
-import NotFound from '../NotFound/NotFound';
+import StadiumMap from "@/pages/BookingArena/components/StaduimMap";
+import StadiumImage from "@/pages/BookingArena/components/StaduimImages";
+import StadiumInfo from "@/pages/BookingArena/components/StaduimInfo";
+import NotFound from "../NotFound/NotFound";
 
 const OwnerArenaDetails = () => {
   const { id } = useParams();
@@ -24,9 +32,9 @@ const OwnerArenaDetails = () => {
         const data = await arenaService.getArenaById(id);
         setArena(data);
       } catch (err) {
-        console.error('Error fetching arena:', err);
-        setError(err.message || 'فشل في تحميل بيانات الملعب');
-        toast.error(err.message || 'فشل في تحميل بيانات الملعب');
+        console.error("Error fetching arena:", err);
+        setError(err.message || "فشل في تحميل بيانات الملعب");
+        toast.error(err.message || "فشل في تحميل بيانات الملعب");
       } finally {
         setLoading(false);
       }
@@ -43,7 +51,9 @@ const OwnerArenaDetails = () => {
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center mx-auto mb-4 animate-pulse">
             <Loader className="w-8 h-8 text-white animate-spin" />
           </div>
-          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">جاري تحميل بيانات الملعب...</p>
+          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">
+            جاري تحميل بيانات الملعب...
+          </p>
         </div>
       </div>
     );
@@ -56,7 +66,7 @@ const OwnerArenaDetails = () => {
         {/* Header with Back Button */}
         <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
           <button
-            onClick={() => navigate('/owner/arenas')}
+            onClick={() => navigate("/owner/arenas")}
             className="flex items-center gap-2 text-sm sm:text-base text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors font-medium"
           >
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -89,9 +99,12 @@ const OwnerArenaDetails = () => {
                     <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">الموقع</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
+                      الموقع
+                    </p>
                     <p className="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm truncate">
-                      {arena.location?.city || 'غير محدد'} , {arena.location?.governorate || 'غير محدد'}
+                      {arena.location?.city || "غير محدد"} ,{" "}
+                      {arena.location?.governorate || "غير محدد"}
                     </p>
                   </div>
                 </div>
@@ -104,9 +117,12 @@ const OwnerArenaDetails = () => {
                     <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">ساعات العمل</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
+                      ساعات العمل
+                    </p>
                     <p className="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm">
-                      {arena.openingHour || '00'}:00 - {arena.closingHour || '00'}:00
+                      {arena.openingHour || "00"}:00 -{" "}
+                      {arena.closingHour || "00"}:00
                     </p>
                   </div>
                 </div>
@@ -119,9 +135,11 @@ const OwnerArenaDetails = () => {
                     <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">النوع</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
+                      النوع
+                    </p>
                     <p className="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm">
-                      {arena.category?.name || arena.categoryName || 'غير محدد'}
+                      {arena.category?.name || arena.categoryName || "غير محدد"}
                     </p>
                   </div>
                 </div>
@@ -132,20 +150,30 @@ const OwnerArenaDetails = () => {
             <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-500 ease-in-out border border-gray-100 dark:border-gray-700 p-4 sm:p-6">
               <div className="flex items-start justify-between mb-3 sm:mb-4">
                 <div className="flex-1 min-w-0">
-                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 break-words">{arena.name}</h1>
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2 break-words">
+                    {arena.name}
+                  </h1>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                     <span
-                      className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap ${arena.status === 'active'
-                          ? 'bg-green-500 text-white'
-                          : arena.status === 'pending'
-                            ? 'bg-yellow-500 text-white'
-                            : 'bg-red-500 text-white'
-                        }`}
+                      className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap ${
+                        arena.status === "active"
+                          ? "bg-green-500 text-white"
+                          : arena.status === "pending"
+                          ? "bg-yellow-500 text-white"
+                          : "bg-red-500 text-white"
+                      }`}
                     >
-                      {arena.status === 'active' ? 'نشط' : arena.status === 'pending' ? 'قيد المراجعة' : 'معطل'}
+                      {arena.status === "active"
+                        ? "نشط"
+                        : arena.status === "pending"
+                        ? "قيد المراجعة"
+                        : "معطل"}
                     </span>
                     <span className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600 dark:text-green-400 whitespace-nowrap">
-                      {arena.pricePerHour} <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">ج.م/ساعة</span>
+                      {arena.pricePerHour}{" "}
+                      <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                        ج.م/ساعة
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -179,32 +207,51 @@ const OwnerArenaDetails = () => {
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
-                  <span className="text-gray-600 dark:text-gray-300">السعر لكل ساعة</span>
-                  <span className="font-bold text-green-600 dark:text-green-400">{arena.pricePerHour} ج.م</span>
+                  <span className="text-gray-600 dark:text-gray-300">
+                    السعر لكل ساعة
+                  </span>
+                  <span className="font-bold text-green-600 dark:text-green-400">
+                    {arena.pricePerHour} ج.م
+                  </span>
                 </div>
                 {arena.minPeriod && (
                   <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
-                    <span className="text-gray-600 dark:text-gray-300">أقل مدة حجز</span>
-                    <span className="font-bold text-gray-900 dark:text-white">{arena.minPeriod} دقيقة</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      أقل مدة حجز
+                    </span>
+                    <span className="font-bold text-gray-900 dark:text-white">
+                      {arena.minPeriod} دقيقة
+                    </span>
                   </div>
                 )}
                 {arena.depositPercent && (
                   <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
-                    <span className="text-gray-600 dark:text-gray-300">نسبة العربون</span>
-                    <span className="font-bold text-orange-600 dark:text-orange-400">{arena.depositPercent}%</span>
+                    <span className="text-gray-600 dark:text-gray-300">
+                      نسبة المقدم
+                    </span>
+                    <span className="font-bold text-orange-600 dark:text-orange-400">
+                      {arena.depositPercent}%
+                    </span>
                   </div>
                 )}
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-600 dark:text-gray-300">الحالة</span>
+                  <span className="text-gray-600 dark:text-gray-300">
+                    الحالة
+                  </span>
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-semibold ${arena.status === 'active'
-                        ? 'bg-green-500 text-white'
-                        : arena.status === 'pending'
-                          ? 'bg-yellow-500 text-white'
-                          : 'bg-red-500 text-white'
-                      }`}
+                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                      arena.status === "active"
+                        ? "bg-green-500 text-white"
+                        : arena.status === "pending"
+                        ? "bg-yellow-500 text-white"
+                        : "bg-red-500 text-white"
+                    }`}
                   >
-                    {arena.status === 'active' ? 'نشط' : arena.status === 'pending' ? 'قيد المراجعة' : 'معطل'}
+                    {arena.status === "active"
+                      ? "نشط"
+                      : arena.status === "pending"
+                      ? "قيد المراجعة"
+                      : "معطل"}
                   </span>
                 </div>
               </div>
@@ -212,7 +259,9 @@ const OwnerArenaDetails = () => {
 
             {/* Actions */}
             <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-500 ease-in-out border border-gray-100 dark:border-gray-700 p-4 sm:p-6">
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">الإجراءات</h3>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
+                الإجراءات
+              </h3>
               <div className="space-y-2">
                 <button
                   onClick={() => navigate(`/owner/reservations?arenaId=${id}`)}
@@ -236,4 +285,3 @@ const OwnerArenaDetails = () => {
 };
 
 export default OwnerArenaDetails;
-

@@ -6,6 +6,8 @@ import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import PendingApproval from './pages/PendingApproval/PendingApproval';
+import RejectedAccount from './pages/RejectedAccount/RejectedAccount';
 import Reservation from './pages/Reservation/Reservation';
 import UserArenas from './pages/UserArenas/UserArenas';
 // import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
@@ -52,6 +54,8 @@ function App() {
 
         { path: '/login', element: <Login /> },
         { path: '/register', element: <Register /> },
+        { path: '/pending-approval', element: <PendingApproval /> },
+        { path: '/rejected-account', element: <RejectedAccount /> },
         {
           path: '/userProfile',
           element: (
