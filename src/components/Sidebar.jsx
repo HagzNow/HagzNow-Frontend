@@ -78,7 +78,7 @@ export default function Sidebar({
     <>
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-40  bg-black/40 lg:hidden transition-opacity duration-200 ${
+        className={`fixed inset-0 z-0  bg-black/40 lg:hidden transition-opacity duration-200 ${
           open ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
         onClick={onClose}
