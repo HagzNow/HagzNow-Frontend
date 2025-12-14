@@ -1,38 +1,33 @@
-import { useState, useMemo, useEffect } from "react";
-import { X, ChevronDown, ChevronUp } from "lucide-react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useState, useMemo, useEffect } from 'react';
+import { X, ChevronDown, ChevronUp } from 'lucide-react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 
 export default function Sidebar({
   mode,
   menuItems = [],
   navSections = [],
   activeKey,
-  onChange = () => { },
+  onChange = () => {},
   open = true,
-  onClose = () => { },
+  onClose = () => {},
   isRTL = true,
-  className = "",
+  className = '',
 }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   // determine mode if not explicitly provided
-  const inferredMode =
-    mode || (navSections && navSections.length ? "owner" : "admin");
+  const inferredMode = mode || (navSections && navSections.length ? 'owner' : 'admin');
 
   // expanded sections state
   const initialOpen = useMemo(() => {
     if (!navSections || navSections.length === 0) return {};
-    return Object.fromEntries(
-      navSections.map((s) => [s.title, !!s.openByDefault])
-    );
+    return Object.fromEntries(navSections.map((s) => [s.title, !!s.openByDefault]));
   }, [navSections]);
   const [expanded, setExpanded] = useState(initialOpen);
 
   // active item state
-  const [localActive, setLocalActive] = useState(
-    activeKey || menuItems[0]?.key || navSections[0]?.items?.[0]?.id
-  );
+  const [localActive, setLocalActive] = useState(activeKey || menuItems[0]?.key || navSections[0]?.items?.[0]?.id);
   const active = activeKey ?? localActive;
 
   const handleSelect = (keyOrId, to) => {
@@ -47,25 +42,23 @@ export default function Sidebar({
   };
 
   const normalizePath = (p) => {
-    if (!p) return "";
-    if (p === "/") return "/";
-    return p.replace(/\/+$/, "");
+    if (!p) return '';
+    if (p === '/') return '/';
+    return p.replace(/\/+$/, '');
   };
 
   const currentPath = normalizePath(location.pathname);
   const isActivePath = (path) => {
     const target = normalizePath(path);
     if (!target) return false;
-    if (target === "/") return currentPath === "/";
+    if (target === '/') return currentPath === '/';
     return currentPath === target || currentPath.startsWith(`${target}/`);
   };
 
   // sync active item with current path when navigation happens outside the sidebar (e.g., clicking logo)
   useEffect(() => {
     // admin menu check
-    const menuMatch = menuItems.find(
-      (item) => item.to && isActivePath(item.to)
-    );
+    const menuMatch = menuItems.find((item) => item.to && isActivePath(item.to));
     if (menuMatch) {
       setLocalActive(menuMatch.key);
       return;
@@ -73,9 +66,7 @@ export default function Sidebar({
 
     // nav sections check
     for (const section of navSections) {
-      const itemMatch = (section.items || []).find((item) =>
-        isActivePath(item.path)
-      );
+      const itemMatch = (section.items || []).find((item) => isActivePath(item.path));
       if (itemMatch) {
         setLocalActive(itemMatch.id);
         return;
@@ -87,21 +78,22 @@ export default function Sidebar({
     <>
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-40  bg-black/40 lg:hidden transition-opacity duration-200 ${open ? 'opacity-100 visible' : 'opacity-0 invisible'
-          }`}
+        className={`fixed inset-0 z-40  bg-black/40 lg:hidden transition-opacity duration-200 ${
+          open ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
         onClick={onClose}
       />
 
       {/* Sidebar Panel */}
       <aside
-        dir={isRTL ? "rtl" : "ltr"}
+        dir={isRTL ? 'rtl' : 'ltr'}
         className={[
-          'fixed top-0 bottom-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-xl dark:shadow-gray-950/80 transform transition-all duration-300 ease-in-out border-l border-green-50 dark:border-gray-800',
+          'fixed top-0 bottom-0 z-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-xl dark:shadow-gray-950/80 transform transition-all duration-300 ease-in-out border-l border-green-50 dark:border-gray-800',
           isRTL ? 'right-0' : 'left-0',
           open ? 'translate-x-0' : isRTL ? 'translate-x-full' : '-translate-x-full',
           'lg:translate-x-0 lg:static lg:shadow-none lg:w-72',
           className,
-        ].join(" ")}
+        ].join(' ')}
       >
         {/* Header */}
         <div
@@ -111,11 +103,9 @@ export default function Sidebar({
         //     : ""
         // }`}
         >
-          {inferredMode !== "admin" && (
+          {inferredMode !== 'admin' && (
             <div className="flex flex-1 items-center justify-center py-2">
-              <span className="font-extrabold text-lg text-gray-900 dark:text-white">
-                لوحة التحكم
-              </span>
+              <span className="font-extrabold text-lg text-gray-900 dark:text-white">لوحة التحكم</span>
             </div>
           )}
           <button
@@ -130,12 +120,10 @@ export default function Sidebar({
         {/* Body */}
         <div className="flex flex-col h-full bg-transparent mt-5">
           {/* Menu Items (admin mode) */}
-          {inferredMode === "admin" && menuItems.length > 0 && (
+          {inferredMode === 'admin' && menuItems.length > 0 && (
             <ul className="px-3 py-2 space-y-1">
               {menuItems.map((item) => {
-                const isActiveItem = item.to
-                  ? isActivePath(item.to)
-                  : active === item.key;
+                const isActiveItem = item.to ? isActivePath(item.to) : active === item.key;
                 return (
                   <li key={item.key}>
                     {item.to ? (
@@ -205,11 +193,11 @@ export default function Sidebar({
                       } else if (section.path) navigate(section.path);
                     }}
                     className={[
-                      "w-full px-3 py-2 flex items-center justify-between text-sm font-medium rounded-t-xl transition-colors",
+                      'w-full px-3 py-2 flex items-center justify-between text-sm font-medium rounded-t-xl transition-colors',
                       sectionActive
-                        ? "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold"
-                        : "text-neutral-700 dark:text-gray-300 hover:bg-neutral-50 dark:hover:bg-gray-700",
-                    ].join(" ")}
+                        ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold'
+                        : 'text-neutral-700 dark:text-gray-300 hover:bg-neutral-50 dark:hover:bg-gray-700',
+                    ].join(' ')}
                   >
                     <span className="flex items-center gap-2">
                       {section.icon && <section.icon className="h-4 w-4" />}
@@ -232,17 +220,13 @@ export default function Sidebar({
                           <button
                             onClick={() => handleSelect(item.id, item.path)}
                             className={[
-                              "w-full flex items-center gap-3 px-3 py-2 my-1 rounded-lg text-sm transition-colors",
+                              'w-full flex items-center gap-3 px-3 py-2 my-1 rounded-lg text-sm transition-colors',
                               isActivePath(item.path)
-                                ? "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold"
-                                : "text-neutral-700 dark:text-gray-300 hover:bg-neutral-50 dark:hover:bg-gray-700",
-                            ].join(" ")}
+                                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-semibold'
+                                : 'text-neutral-700 dark:text-gray-300 hover:bg-neutral-50 dark:hover:bg-gray-700',
+                            ].join(' ')}
                           >
-                            {item.icon ? (
-                              <item.icon className="h-4 w-4" />
-                            ) : (
-                              <span className="w-4" />
-                            )}
+                            {item.icon ? <item.icon className="h-4 w-4" /> : <span className="w-4" />}
                             <span className="truncate">{item.label}</span>
                           </button>
                         </li>

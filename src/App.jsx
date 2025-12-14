@@ -146,6 +146,7 @@ function App() {
         { path: 'categoriesmanagment', element: <ArenaMangmentCategories /> },
         { path: 'usermanagment', element: <UserManagement /> },
         { path: 'wallet', element: <Wallet /> },
+        { path: 'userProfile', element: <UserProfile /> },
         { path: 'withdrawal-requests', element: <WithdrawalRequests /> },
       ],
     },
