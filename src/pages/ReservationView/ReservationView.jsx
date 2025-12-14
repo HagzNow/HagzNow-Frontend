@@ -18,7 +18,7 @@ export default function ReservationView() {
   const fetchReservation = useCallback(async () => {
     try {
       const { data } = await baseUrl.get(`/reservations/${id}`);
-  
+
       setData({
         date: data.data.dateOfReservation,
         slots: data.data.slots,
@@ -58,7 +58,7 @@ export default function ReservationView() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center transition-colors duration-300">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+          <p className="text-gray-600 dark:text-gray-400">جاري التحميل...</p>
         </div>
       </div>
     );
