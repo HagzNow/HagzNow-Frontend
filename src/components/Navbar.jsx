@@ -25,7 +25,7 @@ import { arenaService } from '../services/arenaService';
 const MENU_PRESETS = (t) => ({
   public: [
     { to: '/user-arena', label: t('navbar_arenas') || 'الملاعب الرئيسية' },
-    { to: '/', label: t('navbar_about') || 'عن المنصة' },
+    { to: '/about', label: t('navbar_about') || 'عن المنصة' },
   ],
   user: [
     {

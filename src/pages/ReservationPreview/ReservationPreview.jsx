@@ -43,8 +43,7 @@ export default function ReservationPreview() {
         locationSummary: `${arena.location?.city || ''}, ${arena.location?.governorate || ''}`,
       },
       date: raw.date?.format ? raw.date.format('YYYY-MM-DD') : raw.date,
-     slots: raw.slots || [],
-
+      slots: raw.slots || [],
 
       selectedExtras: raw.selectedExtras || [],
       extrasTotalAmount: raw.extrasTotalAmount ?? 0,
@@ -88,7 +87,7 @@ export default function ReservationPreview() {
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center mx-auto mb-4 animate-pulse">
             <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">Loading...</p>
+          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium">جاري التحميل...</p>
         </div>
       </div>
     );
@@ -104,7 +103,6 @@ export default function ReservationPreview() {
     status: 'pending',
   });
 
- 
   return (
     <div className="pt-5">
       <div className="container mx-auto px-4 max-w-7xl">
