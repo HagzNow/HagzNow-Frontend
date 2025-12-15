@@ -16,12 +16,12 @@ import { useMemo } from 'react';
 export default function AdminDashboard() {
   const stats = useMemo(
     () => [
-      { label: 'إجمالي الإيرادات', value: '1,240,000 ر.س', delta: '+12.4%', icon: Coins, tone: 'success' },
+      { label: 'إجمالي الإيرادات', value: '1,240,000 ج.م', delta: '+12.4%', icon: Coins, tone: 'success' },
       { label: 'الحجوزات النشطة', value: '8,312', delta: '+4.1%', icon: CalendarCheck, tone: 'info' },
-      { label: 'أرصدة المحافظ', value: '326,500 ر.س', delta: '-1.8%', icon: Wallet2, tone: 'warn' },
+      { label: 'أرصدة المحافظ', value: '326,500 ج.م', delta: '-1.8%', icon: Wallet2, tone: 'warn' },
       { label: 'شكاوى مفتوحة', value: '18', delta: '-12%', icon: ShieldCheck, tone: 'success' },
     ],
-    []
+    [],
   );
 
   const revenueByChannel = useMemo(
@@ -30,7 +30,7 @@ export default function AdminDashboard() {
       { channel: 'الويب', amount: '410,000', share: 33 },
       { channel: 'الحجوزات اليدوية', amount: '110,000', share: 9 },
     ],
-    []
+    [],
   );
 
   const arenaPerformance = useMemo(
@@ -40,7 +40,7 @@ export default function AdminDashboard() {
       { title: 'ساحة 03', occupancy: 79, bookings: 341, revenue: '64,900' },
       { title: 'ساحة 04', occupancy: 76, bookings: 315, revenue: '58,100' },
     ],
-    []
+    [],
   );
 
   const timeline = useMemo(
@@ -51,7 +51,7 @@ export default function AdminDashboard() {
       { title: 'إغلاق 7 شكاوى بعد المعالجة', time: 'قبل 5 ساعات', tone: 'positive' },
       { title: 'تنبيه: ارتفاع الإلغاءات في فترة الذروة', time: 'قبل 7 ساعات', tone: 'alert' },
     ],
-    []
+    [],
   );
 
   return (
@@ -167,7 +167,7 @@ export default function AdminDashboard() {
               <div key={row.channel}>
                 <div className="flex justify-between text-sm text-neutral-600 dark:text-gray-300 mb-1">
                   <span>{row.channel}</span>
-                  <span className="font-semibold text-neutral-900 dark:text-white">{row.amount} ر.س</span>
+                  <span className="font-semibold text-neutral-900 dark:text-white">{row.amount} ج.م</span>
                 </div>
                 <div className="h-2 bg-neutral-100 dark:bg-gray-700 rounded-full overflow-hidden">
                   <div
@@ -205,7 +205,7 @@ export default function AdminDashboard() {
                     style={{ width: `${arena.occupancy}%` }}
                   />
                 </div>
-                <div className="mt-2 text-xs text-neutral-500 dark:text-gray-400">الإيراد: {arena.revenue} ر.س</div>
+                <div className="mt-2 text-xs text-neutral-500 dark:text-gray-400">الإيراد: {arena.revenue} ج.م</div>
               </div>
             ))}
           </div>
@@ -260,7 +260,7 @@ export default function AdminDashboard() {
               { label: 'متوسط زمن الموافقة على السحب', value: '18 دقيقة' },
               { label: 'نسبة الإشغال في الذروة', value: '91%' },
               { label: 'حجوزات مكررة اليوم', value: '1,204' },
-              { label: 'إجمالي الخصومات المفعلة', value: '64,300 ر.س' },
+              { label: 'إجمالي الخصومات المفعلة', value: '64,300 ج.م' },
             ].map((kpi) => (
               <div
                 key={kpi.label}
