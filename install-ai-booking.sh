@@ -46,7 +46,7 @@ if [ ! -f ".env" ]; then
 OPENAI_API_KEY=${OPENAI_KEY}
 OPENAI_MODEL=gpt-4o-mini
 PORT=3001
-BACKEND_API_URL=http://localhost:3000
+BACKEND_API_URL=https://api.hagznow.com
 CORS_ORIGIN=http://localhost:5173
 EOL
     
@@ -63,7 +63,7 @@ echo "🎨 Step 2: Configuring Frontend..."
 
 if [ ! -f ".env" ]; then
     cat > .env << EOL
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=https://api.hagznow.com
 VITE_AI_API_URL=http://localhost:3001
 EOL
     echo -e "${GREEN}✅ Frontend .env created${NC}"

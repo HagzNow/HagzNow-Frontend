@@ -13,7 +13,7 @@ export default function AuthContextProvider({ children }) {
     if (!token) return;
     try {
       setUserLoading(true);
-      const res = await baseUrl.get('http://localhost:3000/users/profile', {
+      const res = await baseUrl.get('https://api.hagznow.com/users/profile', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(res.data?.data || null);

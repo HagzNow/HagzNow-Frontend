@@ -18,7 +18,7 @@ cat > .env << EOL
 OPENAI_API_KEY=your-openai-api-key-here
 OPENAI_MODEL=gpt-4o-mini
 PORT=3001
-BACKEND_API_URL=http://localhost:3000
+BACKEND_API_URL=https://api.hagznow.com
 CORS_ORIGIN=http://localhost:5173
 EOL
 
@@ -36,7 +36,7 @@ cd ..
 
 # Create .env file (if not exists)
 cat > .env << EOL
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=https://api.hagznow.com
 VITE_AI_API_URL=http://localhost:3001
 EOL
 
@@ -91,7 +91,7 @@ User → ChatWidget → AI Backend → OpenAI (GPT-4o-mini)
 **Connection error?**
 
 - Check AI backend is running: `curl http://localhost:3001/health`
-- Check main backend is running: `curl http://localhost:3000/categories`
+- Check main backend is running: `curl https://api.hagznow.com/categories`
 
 **OpenAI error?**
 

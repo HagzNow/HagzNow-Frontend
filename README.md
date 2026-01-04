@@ -381,7 +381,7 @@ HagzNow-Frontend/
 ### Prerequisites
 
 - **Node.js** 18+ and npm
-- **Backend API** running (default: `http://localhost:3000`)
+- **Backend API** running (default: `https://api.hagznow.com`)
 - **AI Backend** (optional, for AI booking feature)
 
 ### Installation
@@ -404,7 +404,7 @@ HagzNow-Frontend/
    Create a `.env` file in the root directory:
 
    ```env
-   VITE_API_URL=http://localhost:3000
+   VITE_API_URL=https://api.hagznow.com
    VITE_AI_API_URL=http://localhost:3001
    ```
 
@@ -442,7 +442,7 @@ Create `.env` file in the root directory:
 
 ```env
 # Main Backend API URL
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=https://api.hagznow.com
 
 # AI Backend API URL (optional, for AI booking feature)
 VITE_AI_API_URL=http://localhost:3001
@@ -561,7 +561,7 @@ The application uses a centralized API configuration:
 **`src/config/api.js`**
 
 ```javascript
-export const API_BASE_URL = 'http://localhost:3000';
+export const API_BASE_URL = 'https://api.hagznow.com';
 
 export const API_ENDPOINTS = {
   ARENAS: '/arenas',
@@ -619,7 +619,7 @@ The platform includes an AI-powered booking assistant powered by OpenAI GPT-4o-m
    OPENAI_API_KEY=your-openai-api-key
    OPENAI_MODEL=gpt-4o-mini
    PORT=3001
-   BACKEND_API_URL=http://localhost:3000
+   BACKEND_API_URL=https://api.hagznow.com
    CORS_ORIGIN=http://localhost:5173
    ```
 
@@ -781,7 +781,7 @@ server {
 
     # API proxy (if needed)
     location /api {
-        proxy_pass http://localhost:3000;
+        proxy_pass https://api.hagznow.com;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';

@@ -35,7 +35,7 @@ export default function UserProfile() {
 
   const fetchUserData = useCallback(async () => {
     try {
-      const res = await baseUrl.get(`http://localhost:3000/users/profile`, {
+      const res = await baseUrl.get(`https://api.hagznow.com/users/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = res.data.data;
@@ -119,7 +119,7 @@ export default function UserProfile() {
       setProfileError('');
       setSavingProfile(true);
 
-      await baseUrl.patch(`http://localhost:3000/users/profile`, formData, {
+      await baseUrl.patch(`https://api.hagznow.com/users/profile`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -168,12 +168,12 @@ export default function UserProfile() {
       setSavingPassword(true);
 
       await baseUrl.patch(
-        `http://localhost:3000/auth/change-password`,
+        `https://api.hagznow.com/auth/change-password`,
         {
           oldPassword: passwordForm.oldPassword,
           newPassword: passwordForm.newPassword,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       setPasswordMessage('تم تغيير كلمة المرور');

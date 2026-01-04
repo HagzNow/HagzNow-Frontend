@@ -52,6 +52,7 @@ HagzNow-Frontend/
 **Key Files:**
 
 #### `server.js`
+
 - **Main server file** with OpenAI integration
 - **Function calling** implementation for dynamic API access
 - **Tool definitions** for categories, arenas, slots, wallet, booking
@@ -59,6 +60,7 @@ HagzNow-Frontend/
 - **CORS configuration** for frontend access
 
 **Key Features:**
+
 - OpenAI GPT-4o-mini integration
 - Function calling for real-time data
 - JWT token forwarding
@@ -66,7 +68,9 @@ HagzNow-Frontend/
 - Conversation history (last 30 messages)
 
 #### `package.json`
+
 Dependencies:
+
 - `express` - Web server
 - `cors` - Cross-origin requests
 - `dotenv` - Environment variables
@@ -76,11 +80,13 @@ Dependencies:
 ### 🎨 Frontend Components
 
 #### `ChatWidget.jsx`
+
 **Location:** `src/components/ChatWidget/ChatWidget.jsx`
 
 **Purpose:** Beautiful, responsive chat interface for users.
 
 **Features:**
+
 - Auto-greeting on open
 - Message history display
 - Loading states
@@ -90,13 +96,15 @@ Dependencies:
 - Dark mode support
 
 **Key Functions:**
+
 ```javascript
-handleSendMessage()    // Send user message to AI
-handleReset()          // Reset conversation
-scrollToBottom()       // Auto-scroll to latest message
+handleSendMessage(); // Send user message to AI
+handleReset(); // Reset conversation
+scrollToBottom(); // Auto-scroll to latest message
 ```
 
 **State Management:**
+
 - `messages` - Chat history
 - `inputMessage` - Current input
 - `isLoading` - Loading state
@@ -104,9 +112,11 @@ scrollToBottom()       // Auto-scroll to latest message
 - `conversationId` - Unique conversation ID
 
 #### `ChatWidget.css`
+
 **Location:** `src/components/ChatWidget/ChatWidget.css`
 
 **Styling Features:**
+
 - Gradient purple theme
 - Smooth animations
 - Responsive design
@@ -117,6 +127,7 @@ scrollToBottom()       // Auto-scroll to latest message
 ### 🔧 Services
 
 #### `aiBookingService.js`
+
 **Location:** `src/services/aiBookingService.js`
 
 **Purpose:** API communication layer for AI backend.
@@ -124,34 +135,40 @@ scrollToBottom()       // Auto-scroll to latest message
 **Functions:**
 
 ```javascript
-chatWithAI(message, conversationId, token)
+chatWithAI(message, conversationId, token);
 // Send message to AI, returns AI response
 
-resetConversation(conversationId)
+resetConversation(conversationId);
 // Clear conversation history
 
-checkAIServiceHealth()
+checkAIServiceHealth();
 // Verify AI backend is running
 ```
 
 ### 🔄 Integration Points
 
 #### `Layout.jsx` (Updated)
+
 **Location:** `src/components/Layout/Layout.jsx`
 
 **Changes:**
+
 - Import `ChatWidget` component
 - Conditionally render for users only (not owners/admins)
 - Positioned at bottom-right of screen
 
 ```jsx
-{user?.role === 'user' && <ChatWidget />}
+{
+  user?.role === 'user' && <ChatWidget />;
+}
 ```
 
 #### `AuthContext.jsx` (Existing)
+
 **Location:** `src/Contexts/AuthContext.jsx`
 
 **Used by ChatWidget for:**
+
 - JWT token access
 - User information
 - Authentication state
@@ -183,7 +200,7 @@ checkAIServiceHealth()
 
 5. Tool functions call HagzNow API
    └─> axios request with JWT token
-   └─> GET/POST http://localhost:3000/...
+   └─> GET/POST https://api.hagznow.com/...
 
 6. HagzNow API responds
    └─> Returns data (categories, arenas, slots, etc.)
@@ -214,9 +231,11 @@ User Login
 ### AI Backend Endpoints
 
 #### POST `/api/chat`
+
 **Purpose:** Send message to AI assistant
 
 **Request:**
+
 ```json
 {
   "message": "I want to book a football field",
@@ -226,6 +245,7 @@ User Login
 ```
 
 **Response:**
+
 ```json
 {
   "message": "Great! I found 5 football arenas...",
@@ -234,9 +254,11 @@ User Login
 ```
 
 #### POST `/api/chat/reset`
+
 **Purpose:** Reset conversation history
 
 **Request:**
+
 ```json
 {
   "conversationId": "conv-user123"
@@ -244,6 +266,7 @@ User Login
 ```
 
 **Response:**
+
 ```json
 {
   "message": "Conversation reset"
@@ -251,9 +274,11 @@ User Login
 ```
 
 #### GET `/health`
+
 **Purpose:** Health check
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -264,40 +289,48 @@ User Login
 ### HagzNow API Endpoints (Used by AI)
 
 #### GET `/categories`
+
 Fetch all sports categories
 
 #### GET `/arenas/detailed`
+
 Fetch arenas by category (with body: `{categoryId}`)
 
 #### GET `/arenas/:arenaId/slots/available?date=YYYY-MM-DD`
+
 Get available time slots
 
 #### GET `/wallet/balance`
+
 Check user wallet balance
 
 #### POST `/reservations/`
+
 Create a booking
 
 ## Environment Variables
 
 ### Frontend (`.env`)
+
 ```env
-VITE_API_URL=http://localhost:3000        # Main backend
+VITE_API_URL=https://api.hagznow.com        # Main backend
 VITE_AI_API_URL=http://localhost:3001     # AI backend
 ```
 
 ### AI Backend (`ai-booking-backend/.env`)
+
 ```env
 OPENAI_API_KEY=sk-...                     # OpenAI API key
 OPENAI_MODEL=gpt-4o-mini                  # AI model
 PORT=3001                                 # Server port
-BACKEND_API_URL=http://localhost:3000     # HagzNow API
+BACKEND_API_URL=https://api.hagznow.com     # HagzNow API
 CORS_ORIGIN=http://localhost:5173         # Frontend URL
 ```
 
 ## Key Technologies
 
 ### Backend
+
 - **Express.js** - Web framework
 - **OpenAI SDK** - AI integration
 - **Axios** - HTTP client
@@ -305,12 +338,14 @@ CORS_ORIGIN=http://localhost:5173         # Frontend URL
 - **dotenv** - Environment config
 
 ### Frontend
+
 - **React 19** - UI framework
 - **Lucide React** - Icons
 - **Axios** - HTTP client
 - **CSS3** - Styling with animations
 
 ### AI
+
 - **GPT-4o-mini** - Language model
 - **Function Calling** - Dynamic API access
 - **Conversation Memory** - Context retention
@@ -318,23 +353,27 @@ CORS_ORIGIN=http://localhost:5173         # Frontend URL
 ## Security Considerations
 
 ### Token Handling
+
 - JWT tokens never exposed in frontend code
 - Tokens sent via Authorization headers
 - AI backend forwards tokens securely
 - No token storage in AI backend
 
 ### API Keys
+
 - OpenAI key stored in `.env` (never committed)
 - Environment variables for all secrets
 - `.gitignore` configured properly
 
 ### CORS
+
 - Restricted to specific origins
 - Configurable via environment variables
 
 ## Performance
 
 ### Response Times
+
 - **Average:** 2-5 seconds per message
 - **Factors:**
   - OpenAI API latency
@@ -342,17 +381,20 @@ CORS_ORIGIN=http://localhost:5173         # Frontend URL
   - Backend API response time
 
 ### Optimization
+
 - Conversation history limited to 30 messages
 - Recent context limited to 20 messages
 - Simplified arena data for AI processing
 
 ### Costs
+
 - **GPT-4o-mini:** ~$0.001-0.002 per booking
 - Very cost-effective for production use
 
 ## Deployment Considerations
 
 ### Production Checklist
+
 - [ ] Set production environment variables
 - [ ] Use HTTPS for all endpoints
 - [ ] Set up reverse proxy (Nginx)
@@ -363,6 +405,7 @@ CORS_ORIGIN=http://localhost:5173         # Frontend URL
 - [ ] Test on mobile devices
 
 ### Scaling
+
 - AI backend is stateless (except in-memory conversations)
 - Can use Redis for conversation storage
 - Can deploy multiple AI backend instances
@@ -371,6 +414,7 @@ CORS_ORIGIN=http://localhost:5173         # Frontend URL
 ## Testing
 
 ### Manual Testing
+
 1. Start both backends
 2. Login as user
 3. Open chat widget
@@ -378,6 +422,7 @@ CORS_ORIGIN=http://localhost:5173         # Frontend URL
 5. Verify booking completion
 
 ### Test Scenarios
+
 - Category selection
 - Arena filtering
 - Date/time selection
@@ -391,21 +436,25 @@ CORS_ORIGIN=http://localhost:5173         # Frontend URL
 ### Common Issues
 
 **Chat button not visible:**
+
 - Check user role (must be 'user')
 - Verify Layout.jsx integration
 - Check browser console
 
 **Connection errors:**
+
 - Verify AI backend is running
 - Check environment variables
 - Test health endpoint
 
 **OpenAI errors:**
+
 - Verify API key
 - Check account credits
 - Review model access
 
 **Booking fails:**
+
 - Check JWT token validity
 - Verify backend API is running
 - Review API endpoint responses
@@ -413,6 +462,7 @@ CORS_ORIGIN=http://localhost:5173         # Frontend URL
 ## Future Enhancements
 
 ### Potential Features
+
 - [ ] Voice input support
 - [ ] Multi-language UI
 - [ ] Booking history in chat
@@ -425,6 +475,7 @@ CORS_ORIGIN=http://localhost:5173         # Frontend URL
 - [ ] Custom AI personality per user
 
 ### Technical Improvements
+
 - [ ] Redis for conversation storage
 - [ ] WebSocket for real-time updates
 - [ ] Streaming responses
@@ -443,6 +494,7 @@ CORS_ORIGIN=http://localhost:5173         # Frontend URL
 ## Support
 
 For issues or questions:
+
 1. Check documentation files
 2. Review code comments
 3. Test each component separately
@@ -456,4 +508,3 @@ Part of HagzNow project.
 
 **Last Updated:** December 13, 2025
 **Version:** 1.0.0
-

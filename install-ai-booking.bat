@@ -39,7 +39,7 @@ if not exist ".env" (
         echo OPENAI_API_KEY=%OPENAI_KEY%
         echo OPENAI_MODEL=gpt-4o-mini
         echo PORT=3001
-        echo BACKEND_API_URL=http://localhost:3000
+        echo BACKEND_API_URL=https://api.hagznow.com
         echo CORS_ORIGIN=http://localhost:5173
     ) > .env
     
@@ -56,7 +56,7 @@ echo 🎨 Step 2: Configuring Frontend...
 
 if not exist ".env" (
     (
-        echo VITE_API_URL=http://localhost:3000
+        echo VITE_API_URL=https://api.hagznow.com
         echo VITE_AI_API_URL=http://localhost:3001
     ) > .env
     echo ✅ Frontend .env created

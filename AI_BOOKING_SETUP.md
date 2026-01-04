@@ -73,7 +73,7 @@ OPENAI_MODEL=gpt-4o-mini
 PORT=3001
 
 # Backend API URL (Your HagzNow API)
-BACKEND_API_URL=http://localhost:3000
+BACKEND_API_URL=https://api.hagznow.com
 
 # Frontend CORS Origin
 CORS_ORIGIN=http://localhost:5173
@@ -93,7 +93,7 @@ You should see:
 
 ```
 🤖 AI Booking Assistant running on port 3001
-📡 Backend API: http://localhost:3000
+📡 Backend API: https://api.hagznow.com
 ```
 
 ### Step 5: Verify Backend is Running
@@ -129,7 +129,7 @@ Create or update `.env` file:
 
 ```env
 # Backend API URL
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=https://api.hagznow.com
 
 # AI Booking Assistant API URL
 VITE_AI_API_URL=http://localhost:3001
@@ -160,7 +160,7 @@ npm run dev
 curl http://localhost:3001/health
 
 # Test main backend
-curl http://localhost:3000/categories
+curl https://api.hagznow.com/categories
 ```
 
 ### 2. Frontend Testing

@@ -5,6 +5,7 @@
 An **AI-powered conversational booking assistant** that allows users to book sports arenas through natural language chat in Arabic or English.
 
 ### Key Achievement
+
 ✨ **Users can now book arenas by simply chatting**, without navigating through multiple pages!
 
 ---
@@ -12,6 +13,7 @@ An **AI-powered conversational booking assistant** that allows users to book spo
 ## 📦 What's Included
 
 ### 1. **AI Backend Service** (`ai-booking-backend/`)
+
 - Express.js server with OpenAI integration
 - GPT-4o-mini for natural language understanding
 - Function calling for dynamic API access
@@ -19,6 +21,7 @@ An **AI-powered conversational booking assistant** that allows users to book spo
 - JWT token forwarding to main API
 
 ### 2. **Frontend Chat Widget** (`src/components/ChatWidget/`)
+
 - Beautiful purple gradient UI
 - Real-time messaging interface
 - Mobile responsive design
@@ -26,16 +29,19 @@ An **AI-powered conversational booking assistant** that allows users to book spo
 - Loading states and error handling
 
 ### 3. **Service Layer** (`src/services/aiBookingService.js`)
+
 - API communication with AI backend
 - Error handling
 - Health check functionality
 
 ### 4. **Integration** (`src/components/Layout/Layout.jsx`)
+
 - Chat widget added to user pages
 - Conditional rendering (users only)
 - Seamless integration with existing auth
 
 ### 5. **Documentation**
+
 - **QUICK_START.md** - 5-minute setup guide
 - **AI_BOOKING_SETUP.md** - Comprehensive documentation
 - **PROJECT_STRUCTURE.md** - Architecture details
@@ -43,6 +49,7 @@ An **AI-powered conversational booking assistant** that allows users to book spo
 - **AI_BOOKING_SUMMARY.md** - This file
 
 ### 6. **Installation Scripts**
+
 - `install-ai-booking.sh` - Unix/Linux/Mac installer
 - `install-ai-booking.bat` - Windows installer
 
@@ -100,30 +107,35 @@ An **AI-powered conversational booking assistant** that allows users to book spo
 ### For Users
 
 #### 🗣️ Natural Conversation
+
 - Chat in Arabic or English
 - No technical knowledge needed
 - Ask questions naturally
 - Get instant answers
 
 #### 🔍 Smart Search
+
 - Find arenas by sport type
 - Filter by location
 - Compare prices
 - Check ratings
 
 #### 📅 Easy Booking
+
 - Check available slots
 - Select date and time
 - Add extras (water, equipment)
 - Confirm booking
 
 #### 💰 Price Transparency
+
 - See costs upfront
 - Calculate total automatically
 - Check wallet balance
 - Get insufficient funds warning
 
 #### 🎯 Personalized Experience
+
 - Remembers conversation context
 - Suggests based on preferences
 - Provides alternatives
@@ -132,24 +144,28 @@ An **AI-powered conversational booking assistant** that allows users to book spo
 ### For Developers
 
 #### 🔧 Easy Integration
+
 - Drop-in component
 - Minimal configuration
 - Uses existing auth
 - No database changes
 
 #### 🛠️ Maintainable Code
+
 - Well-documented
 - Modular architecture
 - Clear separation of concerns
 - Easy to customize
 
 #### 📊 Scalable Design
+
 - Stateless backend
 - Can use Redis for storage
 - Multiple instances support
 - Load balancer ready
 
 #### 🔒 Secure
+
 - JWT token forwarding
 - No token storage in AI backend
 - Environment variables for secrets
@@ -171,7 +187,7 @@ cat > .env << EOL
 OPENAI_API_KEY=your-key-here
 OPENAI_MODEL=gpt-4o-mini
 PORT=3001
-BACKEND_API_URL=http://localhost:3000
+BACKEND_API_URL=https://api.hagznow.com
 CORS_ORIGIN=http://localhost:5173
 EOL
 
@@ -195,12 +211,14 @@ npm run dev
 ### Or Use Installation Script
 
 **Unix/Linux/Mac:**
+
 ```bash
 chmod +x install-ai-booking.sh
 ./install-ai-booking.sh
 ```
 
 **Windows:**
+
 ```cmd
 install-ai-booking.bat
 ```
@@ -210,6 +228,7 @@ install-ai-booking.bat
 ## 🎮 Usage Examples
 
 ### Example 1: Simple Booking
+
 ```
 User: "أريد حجز ملعب كرة قدم"
 AI: Shows available football arenas
@@ -224,6 +243,7 @@ AI: Completes booking ✅
 ```
 
 ### Example 2: Location-Based
+
 ```
 User: "ملعب في الزمالك"
 AI: Shows Zamalek arenas
@@ -234,6 +254,7 @@ AI: Proceeds with booking
 ```
 
 ### Example 3: Price Comparison
+
 ```
 User: "أريد ملعب أقل من 200 جنيه"
 AI: Filters and shows matching arenas
@@ -247,21 +268,21 @@ AI: Recommends based on rating and location
 
 ### OpenAI API Costs (GPT-4o-mini)
 
-| Metric | Cost |
-|--------|------|
-| Input tokens | $0.150 / 1M tokens |
-| Output tokens | $0.600 / 1M tokens |
-| Average conversation | ~5,000 tokens |
-| **Cost per booking** | **~$0.001-0.002** |
+| Metric               | Cost               |
+| -------------------- | ------------------ |
+| Input tokens         | $0.150 / 1M tokens |
+| Output tokens        | $0.600 / 1M tokens |
+| Average conversation | ~5,000 tokens      |
+| **Cost per booking** | **~$0.001-0.002**  |
 
 ### Monthly Estimates
 
-| Bookings/Month | Cost |
-|----------------|------|
-| 100 | $0.10 - $0.20 |
-| 1,000 | $1.00 - $2.00 |
-| 10,000 | $10 - $20 |
-| 100,000 | $100 - $200 |
+| Bookings/Month | Cost          |
+| -------------- | ------------- |
+| 100            | $0.10 - $0.20 |
+| 1,000          | $1.00 - $2.00 |
+| 10,000         | $10 - $20     |
+| 100,000        | $100 - $200   |
 
 **Conclusion:** Very cost-effective! 💰✅
 
@@ -270,6 +291,7 @@ AI: Recommends based on rating and location
 ## 🔧 Technical Stack
 
 ### Backend
+
 - **Node.js** - Runtime
 - **Express.js** - Web framework
 - **OpenAI SDK** - AI integration
@@ -277,12 +299,14 @@ AI: Recommends based on rating and location
 - **CORS** - Cross-origin support
 
 ### Frontend
+
 - **React 19** - UI framework
 - **Lucide React** - Icons
 - **CSS3** - Styling with animations
 - **Axios** - API communication
 
 ### AI
+
 - **GPT-4o-mini** - Language model
 - **Function Calling** - Dynamic API access
 - **Conversation Memory** - Context retention
@@ -292,6 +316,7 @@ AI: Recommends based on rating and location
 ## 🎨 UI/UX Highlights
 
 ### Visual Design
+
 - ✨ Modern purple gradient theme
 - 🎭 Smooth animations
 - 📱 Mobile responsive
@@ -299,6 +324,7 @@ AI: Recommends based on rating and location
 - 🎨 Clean message bubbles
 
 ### User Experience
+
 - ⚡ Real-time responses
 - 📜 Auto-scroll to latest
 - ⏳ Loading indicators
@@ -310,11 +336,13 @@ AI: Recommends based on rating and location
 ## 📊 Performance
 
 ### Response Times
+
 - **Simple queries:** 2-3 seconds
 - **With API calls:** 3-5 seconds
 - **Complete booking:** 5-10 seconds
 
 ### Accuracy
+
 - **Intent recognition:** ~95%
 - **Data retrieval:** 100%
 - **Booking success:** ~98%
@@ -324,18 +352,21 @@ AI: Recommends based on rating and location
 ## 🔒 Security
 
 ### Token Handling
+
 - ✅ JWT tokens forwarded securely
 - ✅ No token storage in AI backend
 - ✅ Authorization headers only
 - ✅ HTTPS in production
 
 ### API Keys
+
 - ✅ Environment variables
 - ✅ Never committed to git
 - ✅ .gitignore configured
 - ✅ Spending limits set
 
 ### CORS
+
 - ✅ Restricted origins
 - ✅ Configurable per environment
 - ✅ No wildcard in production
@@ -345,6 +376,7 @@ AI: Recommends based on rating and location
 ## 🚀 Deployment
 
 ### Development
+
 ```bash
 # AI Backend
 cd ai-booking-backend
@@ -357,6 +389,7 @@ npm run dev
 ### Production
 
 #### AI Backend
+
 ```bash
 # Environment
 NODE_ENV=production
@@ -371,11 +404,13 @@ pm2 startup
 ```
 
 #### Frontend
+
 ```env
 VITE_AI_API_URL=https://api.hagznow.com/ai
 ```
 
 #### Nginx Reverse Proxy
+
 ```nginx
 location /ai/ {
     proxy_pass http://localhost:3001/;
@@ -393,15 +428,16 @@ location /ai/ {
 
 ### Common Issues & Solutions
 
-| Issue | Solution |
-|-------|----------|
+| Issue                   | Solution                        |
+| ----------------------- | ------------------------------- |
 | Chat button not visible | Login as user (not owner/admin) |
-| Connection error | Check AI backend is running |
-| OpenAI error | Verify API key and credits |
-| Slow responses | Normal (2-5 seconds for AI) |
-| Booking fails | Check backend API and JWT token |
+| Connection error        | Check AI backend is running     |
+| OpenAI error            | Verify API key and credits      |
+| Slow responses          | Normal (2-5 seconds for AI)     |
+| Booking fails           | Check backend API and JWT token |
 
 ### Debug Checklist
+
 - [ ] AI backend running on port 3001
 - [ ] Main backend running on port 3000
 - [ ] Frontend running on port 5173
@@ -426,6 +462,7 @@ location /ai/ {
 ## 🎯 Future Enhancements
 
 ### Planned Features
+
 - [ ] Voice input support
 - [ ] Booking history in chat
 - [ ] Arena recommendations
@@ -435,6 +472,7 @@ location /ai/ {
 - [ ] Analytics dashboard
 
 ### Technical Improvements
+
 - [ ] Redis for conversation storage
 - [ ] WebSocket for real-time updates
 - [ ] Streaming responses
@@ -447,6 +485,7 @@ location /ai/ {
 ## ✅ What You Get
 
 ### Immediate Benefits
+
 1. **Better User Experience** - Natural conversation vs. form filling
 2. **Increased Conversions** - Easier booking process
 3. **24/7 Availability** - AI never sleeps
@@ -454,6 +493,7 @@ location /ai/ {
 5. **Modern Technology** - Latest AI capabilities
 
 ### Business Value
+
 - **Higher booking rates** - Simplified process
 - **Lower bounce rates** - Engaging interface
 - **Better user satisfaction** - Personalized experience
@@ -465,6 +505,7 @@ location /ai/ {
 ## 🎓 Learning Outcomes
 
 ### Technologies Used
+
 - ✅ OpenAI GPT-4o-mini
 - ✅ Function calling (tool use)
 - ✅ React hooks and context
@@ -475,6 +516,7 @@ location /ai/ {
 - ✅ Responsive design
 
 ### Concepts Learned
+
 - ✅ RAG-like systems with dynamic data
 - ✅ Conversational AI design
 - ✅ Real-time API integration
@@ -487,6 +529,7 @@ location /ai/ {
 ## 🤝 Support & Contribution
 
 ### Getting Help
+
 1. Check documentation files
 2. Review code comments
 3. Test components separately
@@ -494,6 +537,7 @@ location /ai/ {
 5. Review backend logs
 
 ### Contributing
+
 - Report bugs
 - Suggest features
 - Improve documentation
@@ -511,6 +555,7 @@ Part of HagzNow project.
 ## 🎉 Success Metrics
 
 ### Technical
+
 - ✅ Zero database changes required
 - ✅ Seamless integration with existing code
 - ✅ No breaking changes
@@ -518,6 +563,7 @@ Part of HagzNow project.
 - ✅ Production ready
 
 ### User Experience
+
 - ✅ Natural conversation flow
 - ✅ Fast response times
 - ✅ Beautiful UI
@@ -525,6 +571,7 @@ Part of HagzNow project.
 - ✅ Accessible
 
 ### Business
+
 - ✅ Low operational cost
 - ✅ High scalability
 - ✅ Easy maintenance
@@ -551,6 +598,7 @@ npm install
 ## 📞 Contact
 
 For questions or support:
+
 - Check documentation files
 - Review demo scenarios
 - Test with provided examples
@@ -561,6 +609,7 @@ For questions or support:
 ## 🌟 Final Notes
 
 This AI booking assistant demonstrates:
+
 - **Modern AI integration** in real-world applications
 - **User-centric design** with natural language
 - **Practical implementation** of OpenAI function calling
@@ -576,4 +625,3 @@ This AI booking assistant demonstrates:
 **Last Updated:** December 13, 2025  
 **Version:** 1.0.0  
 **Status:** ✅ Production Ready
-

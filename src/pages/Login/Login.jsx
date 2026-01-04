@@ -31,7 +31,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const { data } = await axios.post('http://localhost:3000/auth/login', values);
+      const { data } = await axios.post('https://api.hagznow.com/auth/login', values);
 
       if (!data?.data?.token) {
         throw new Error('INVALID_RESPONSE');

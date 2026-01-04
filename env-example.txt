@@ -2,7 +2,7 @@
 # Copy this file to .env and update with your values
 
 # Backend API URL
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=https://api.hagznow.com
 
 # AI Booking Assistant API URL
 VITE_AI_API_URL=http://localhost:3001

@@ -42,7 +42,7 @@ Create `ai-booking-backend/.env`:
 OPENAI_API_KEY=your-openai-api-key-here
 OPENAI_MODEL=gpt-4o-mini
 PORT=3001
-BACKEND_API_URL=http://localhost:3000
+BACKEND_API_URL=https://api.hagznow.com
 CORS_ORIGIN=http://localhost:5173
 ```
 
@@ -131,6 +131,7 @@ HagzNow-Frontend/
 ## 🎨 Screenshots
 
 ### Chat Widget (Closed)
+
 ```
 ┌─────────────────┐
 │                 │
@@ -144,6 +145,7 @@ HagzNow-Frontend/
 ```
 
 ### Chat Widget (Open)
+
 ```
 ┌─────────────────────────────────────┐
 │ 🤖 مساعد الحجز الذكي        🔄 ✕ │  ← Header
@@ -183,16 +185,19 @@ graph LR
 ### Technology Stack
 
 **Backend:**
+
 - Express.js - Web server
 - OpenAI SDK - AI integration
 - Axios - HTTP client
 
 **Frontend:**
+
 - React 19 - UI framework
 - Lucide React - Icons
 - CSS3 - Styling
 
 **AI:**
+
 - GPT-4o-mini - Language model
 - Function calling - Dynamic data access
 
@@ -202,11 +207,11 @@ graph LR
 
 ### OpenAI Costs (GPT-4o-mini)
 
-| Usage | Monthly Cost |
-|-------|--------------|
-| 100 bookings | $0.10 - $0.20 |
-| 1,000 bookings | $1 - $2 |
-| 10,000 bookings | $10 - $20 |
+| Usage           | Monthly Cost  |
+| --------------- | ------------- |
+| 100 bookings    | $0.10 - $0.20 |
+| 1,000 bookings  | $1 - $2       |
+| 10,000 bookings | $10 - $20     |
 
 **Cost per booking:** ~$0.001-0.002 ✅ Very affordable!
 
@@ -221,7 +226,7 @@ graph LR
 ✅ **Real-time Availability** - Live slot checking  
 ✅ **Price Calculator** - Automatic cost calculation  
 ✅ **Balance Check** - Wallet verification  
-✅ **Instant Booking** - Complete in seconds  
+✅ **Instant Booking** - Complete in seconds
 
 ### For Developers
 
@@ -229,20 +234,20 @@ graph LR
 ✅ **Well Documented** - Comprehensive guides  
 ✅ **Secure** - JWT token forwarding  
 ✅ **Scalable** - Stateless architecture  
-✅ **Maintainable** - Clean, modular code  
+✅ **Maintainable** - Clean, modular code
 
 ---
 
 ## 📚 Documentation
 
-| Document | Description |
-|----------|-------------|
-| [QUICK_START.md](./QUICK_START.md) | Get started in 5 minutes |
-| [AI_BOOKING_SETUP.md](./AI_BOOKING_SETUP.md) | Comprehensive setup guide |
-| [AI_BOOKING_DEMO.md](./AI_BOOKING_DEMO.md) | Usage scenarios & examples |
-| [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) | Architecture details |
-| [AI_BOOKING_SUMMARY.md](./AI_BOOKING_SUMMARY.md) | Complete overview |
-| [IMPLEMENTATION_CHECKLIST.md](./IMPLEMENTATION_CHECKLIST.md) | Setup checklist |
+| Document                                                     | Description                |
+| ------------------------------------------------------------ | -------------------------- |
+| [QUICK_START.md](./QUICK_START.md)                           | Get started in 5 minutes   |
+| [AI_BOOKING_SETUP.md](./AI_BOOKING_SETUP.md)                 | Comprehensive setup guide  |
+| [AI_BOOKING_DEMO.md](./AI_BOOKING_DEMO.md)                   | Usage scenarios & examples |
+| [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md)               | Architecture details       |
+| [AI_BOOKING_SUMMARY.md](./AI_BOOKING_SUMMARY.md)             | Complete overview          |
+| [IMPLEMENTATION_CHECKLIST.md](./IMPLEMENTATION_CHECKLIST.md) | Setup checklist            |
 
 ---
 
@@ -259,18 +264,21 @@ graph LR
 ## 🐛 Troubleshooting
 
 ### Chat button not showing?
+
 - Make sure you're logged in as a **user** (not owner/admin)
 
 ### Connection error?
+
 ```bash
 # Check AI backend
 curl http://localhost:3001/health
 
 # Check main backend
-curl http://localhost:3000/categories
+curl https://api.hagznow.com/categories
 ```
 
 ### OpenAI error?
+
 - Verify API key in `.env`
 - Check account has credits
 - Ensure model access
@@ -355,6 +363,7 @@ Part of HagzNow project.
 ## 🌟 Credits
 
 Built with:
+
 - [OpenAI GPT-4o-mini](https://openai.com/)
 - [React](https://react.dev/)
 - [Express.js](https://expressjs.com/)
@@ -385,4 +394,3 @@ Made with ❤️ for HagzNow
 [Get Started](#-quick-start) • [Documentation](#-documentation) • [Demo](#-example-conversations)
 
 </div>
-
