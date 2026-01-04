@@ -27,10 +27,9 @@ export const arenaService = {
       if (params.sport) queryParams.append('sport', params.sport);
       if (params.minPrice) queryParams.append('minPrice', params.minPrice);
       if (params.maxPrice) queryParams.append('maxPrice', params.maxPrice);
+      if (params.governorate) queryParams.append('governorate', params.governorate);
 
-      const response = await fetch(
-        `${API_BASE_URL}${API_ENDPOINTS.ARENAS}?${queryParams.toString()}`
-      );
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ARENAS}?${queryParams.toString()}`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -48,7 +47,7 @@ export const arenaService = {
         total: result.data.total,
         page: result.data.page,
         limit: result.data.limit,
-        totalPages: result.data.totalPages
+        totalPages: result.data.totalPages,
       };
     } catch (error) {
       console.error('Error fetching arenas:', error);
@@ -144,7 +143,7 @@ export const arenaService = {
         total: result.data.total || 0,
         page: result.data.page || 1,
         limit: result.data.limit || 10,
-        totalPages: result.data.totalPages || 0
+        totalPages: result.data.totalPages || 0,
       };
     } catch (error) {
       console.error('Error fetching arena requests:', error);
@@ -172,14 +171,11 @@ export const arenaService = {
         headers['Authorization'] = `Bearer ${token}`;
       }
 
-      const response = await fetch(
-        `${API_BASE_URL}${API_ENDPOINTS.ARENAS}/${id}/status`,
-        {
-          method: 'PATCH',
-          headers: headers,
-          body: JSON.stringify({ status }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ARENAS}/${id}/status`, {
+        method: 'PATCH',
+        headers: headers,
+        body: JSON.stringify({ status }),
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -217,14 +213,11 @@ export const arenaService = {
 
       console.log('Approving arena:', id);
 
-      const response = await fetch(
-        `${API_BASE_URL}${API_ENDPOINTS.ARENAS}/${id}/status`,
-        {
-          method: 'PATCH',
-          headers: headers,
-          body: JSON.stringify({ status: 'active' }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ARENAS}/${id}/status`, {
+        method: 'PATCH',
+        headers: headers,
+        body: JSON.stringify({ status: 'active' }),
+      });
 
       console.log('Approve response status:', response.status);
 
@@ -263,14 +256,11 @@ export const arenaService = {
 
       console.log('Rejecting arena:', id);
 
-      const response = await fetch(
-        `${API_BASE_URL}${API_ENDPOINTS.ARENAS}/${id}/status`,
-        {
-          method: 'PATCH',
-          headers: headers,
-          body: JSON.stringify({ status: 'disabled' }),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ARENAS}/${id}/status`, {
+        method: 'PATCH',
+        headers: headers,
+        body: JSON.stringify({ status: 'disabled' }),
+      });
 
       console.log('Reject response status:', response.status);
 
@@ -305,7 +295,7 @@ export const arenaService = {
 
       // Add pagination parameters
       queryParams.append('page', params.page || 1);
-      queryParams.append('limit', params.limit || 12);
+      queryParams.append('limit', params.limit || 100);
 
       // Add optional filters
       if (params.name) queryParams.append('name', params.name);
@@ -323,7 +313,7 @@ export const arenaService = {
         headers['Authorization'] = `Bearer ${token}`;
       }
 
-      const url = `${API_BASE_URL}${API_ENDPOINTS.ARENAS}?${queryParams.toString()}`;
+      const url = `${API_BASE_URL}/arenas/owner?${queryParams.toString()}`;
 
       const response = await fetch(url, {
         method: 'GET',
@@ -347,10 +337,35 @@ export const arenaService = {
         total: result.data.total || 0,
         page: result.data.page || 1,
         limit: result.data.limit || 10,
-        totalPages: result.data.totalPages || 0
+        totalPages: result.data.totalPages || 0,
       };
     } catch (error) {
       console.error('Error fetching owner arenas:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Fetch all available governorates
+   * @returns {Promise} Array of governorate names
+   */
+  async getGovernorates() {
+    try {
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ARENAS}/governorate`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (!result.isSuccess) {
+        throw new Error(result.message || 'Failed to fetch governorates');
+      }
+
+      return result.data || [];
+    } catch (error) {
+      console.error('Error fetching governorates:', error);
       throw error;
     }
   },

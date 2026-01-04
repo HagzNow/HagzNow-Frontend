@@ -1,275 +1,168 @@
-import { useFormik } from "formik";
-import React, { useContext, useState } from "react";
-import { FaGoogle, FaFacebookF } from "react-icons/fa";
-import { object, string, ref } from "yup";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { authContext } from "../../Contexts/AuthContext";
-import toast from "react-hot-toast";
+import React, { useState, useContext } from 'react';
+import { useFormik } from 'formik';
+import { Link, useNavigate } from 'react-router-dom';
+import { authContext } from '../../Contexts/AuthContext';
+import { useTheme } from '../../Contexts/ThemeContext';
+import toast from 'react-hot-toast';
+import loginBg from '../../assets/images/login bg.jpg';
+import loginBgLight from '../../assets/images/login-lite.webp';
+import { userInitialValues, ownerInitialValues } from './formConfigs';
+import { userSchema, ownerSchema } from './validationSchemas';
+import { submitUser, submitOwner } from './submitHandlers';
+import UserFormFields from './UserFormFields';
+import OwnerFormFields from './OwnerFormFields';
+import { useTranslation } from 'react-i18next';
 
 export default function Register() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
-  const passwordRegx = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/;
-  const phoneRegx = /^01[0125][0-9]{8}$/;
-  const naviagte = useNavigate();
-  let { setToken } = useContext(authContext);
-  let [loadbuttom, setLoadButtom] = useState(false);
+  const { isDarkMode } = useTheme();
 
-  const validationSchema = object({
-    fName: string().required(t("first_name_required")).min(3).max(20),
-    lName: string().required(t("last_name_required")).min(3).max(20),
-    email: string().required(t("email_required")).email(t("email_invalid")),
-    role: string().required(t("role_required")),
-    password: string()
-      .required(t("password_required"))
-      .matches(passwordRegx, t("password_invalid")),
-    rePassword: string()
-      .required(t("confirm_password_required"))
-      .matches(passwordRegx, t("password_invalid"))
-      .oneOf([ref("password")], t("password_not_match")),
-    phone: string()
-      .required(t("phone_required"))
-      .matches(phoneRegx, t("phone_invalid")),
-  });
+  const { setToken } = useContext(authContext);
+  const [role, setRole] = useState('user');
+  const [loadButton, setLoadButton] = useState(false);
 
-  async function sendDataToRegister(values) {
-    const loadingToast = toast.loading("loading.....");
-    setLoadButtom(true);
-    try {
-      const { rePassword: _, ...userData } = values;
-      const option = {
-        url: "http://localhost:3000/auth/register",
-        method: "POST",
-        data: userData,
-      };
-      const { data } = await axios.request(option);
-      setToken(data.data.token);
-      localStorage.setItem("token", data.data.token);
-      toast.success("Account registerd successfuly");
-      setToken(data.data.token);
-      setTimeout(() => {
-        naviagte("/home");
-      }, 2000);
-    } catch (error) {
-      const msg = error.response?.data?.error?.code || "Unknown error";
-      const translated = t(`errors.${msg}`, { defaultValue: msg });
-      toast.error(translated);
-    } finally {
-      toast.dismiss(loadingToast);
-      setLoadButtom(false);
-    }
-  }
+  const handleRoleChange = (newRole) => {
+    setRole(newRole);
+    formik.resetForm({
+      values: newRole === 'owner' ? ownerInitialValues : userInitialValues,
+    });
+  };
 
   const formik = useFormik({
-    initialValues: {
-      fName: "",
-      lName: "",
-      role: "user",
-      email: "",
-      phone: "",
-      password: "",
-      rePassword: "",
+    initialValues: role === 'owner' ? ownerInitialValues : userInitialValues,
+    validationSchema: role === 'owner' ? ownerSchema : userSchema,
+    onSubmit: async (values) => {
+      setLoadButton(true);
+      try {
+        const data = role === 'owner' ? await submitOwner(values) : await submitUser(values);
+
+        // Check if owner registration is pending approval
+        if (
+          role === 'owner' &&
+          data?.data?.message &&
+          (data.data.message.includes('Pending approval') ||
+            data.data.message.includes('pending approval') ||
+            data.data.message.includes('Pending'))
+        ) {
+          // Owner registration successful but pending approval
+          // Don't set token since account is not yet approved
+          toast.success(t('register_success') || 'Account registered successfully', {
+            duration: 2000,
+          });
+          setTimeout(() => {
+            navigate('/pending-approval');
+          }, 1500);
+        } else {
+          // Regular user registration or owner with immediate approval
+          // Only set token if it exists in the response
+          if (data?.data?.token) {
+            setToken(data.data.token);
+            localStorage.setItem('token', data.data.token);
+          }
+          toast.success(t('register_success') || 'Account registered successfully', {
+            duration: 2000,
+          });
+          setTimeout(() => {
+            navigate('/');
+          }, 1200);
+        }
+      } catch (err) {
+        const msg = err.response?.data?.error?.code || 'Unknown error';
+        const translated = t(`errors.${msg}`, { defaultValue: msg });
+        toast.error(translated);
+      } finally {
+        setLoadButton(false);
+      }
     },
-    onSubmit: sendDataToRegister,
-    validationSchema,
   });
 
   return (
-    <>
-      <section className="container text-center py-5">
-        <div className="title space-y-2">
-          <h2 className="text-2xl font-bold text-mainColor">{t("title")}</h2>
-          <h2 className="text-2xl font-bold">{t("register_title")}</h2>
-          <p className="font-medium text-thirdColor text-xs md:text-sm">
-            {t("register_subtitle")}
-          </p>
+    <section
+      className="min-h-screen flex items-center justify-center py-12 px-4 relative"
+      style={{
+        backgroundImage: `url(${isDarkMode ? loginBg : loginBgLight})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/40"></div>
+
+      <div className="absolute inset-0 bg-black/40"></div>
+
+      <div className="container mx-auto px-4 text-center py-5 relative z-10">
+        <div className="title space-y-2 mb-6">
+          <h2 className="text-2xl font-bold text-white drop-shadow-lg">{t('title')}</h2>
+          <h2 className="text-2xl font-bold text-white drop-shadow-lg">{t('register_title')}</h2>
+          <p className="font-medium text-white/90 text-xs md:text-sm drop-shadow-md">{t('register_subtitle')}</p>
         </div>
 
-        <form
-          className="mt-4"
-          onSubmit={formik.handleSubmit}
-          // dir={i18n.language === "ar" ? "rtl" : "ltr"}
-        >
-          <div
-            className="
-        bg-secondColor 
-        w-[90%] sm:w-[70%] md:w-[40%] lg:w-[30%]
-        mx-auto 
-        p-4 
-        rounded-xl 
-        shadow-md 
-        space-y-4
-      "
-          >
+        <form onSubmit={formik.handleSubmit}>
+          <div className="bg-white/10 backdrop-blur-xl w-[95%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] mx-auto p-6 sm:p-8 rounded-2xl shadow-2xl border border-white/20 space-y-4 transition-colors duration-300">
+            {/* Role selection */}
             <div className="flex justify-center gap-2">
               <label
-                htmlFor="owner"
-                className={`btn text-sm ${
-                  formik.values.role === "owner"
-                    ? "bg-mainColor text-white"
-                    : "bg-secondColor text-black"
+                className={`cursor-pointer px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  role === 'owner'
+                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
                 <input
                   type="radio"
-                  id="owner"
                   name="role"
                   value="owner"
                   className="hidden"
-                  onChange={formik.handleChange}
-                  checked={formik.values.role === "owner"}
+                  checked={role === 'owner'}
+                  onChange={() => handleRoleChange('owner')}
                 />
-                {t("role_owner")}
+                مالك
               </label>
 
               <label
-                htmlFor="user"
-                className={`btn text-sm ${
-                  formik.values.role === "user"
-                    ? "bg-mainColor text-white"
-                    : "bg-secondColor text-black"
+                className={`cursor-pointer px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  role === 'user'
+                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
                 <input
                   type="radio"
-                  id="user"
                   name="role"
                   value="user"
                   className="hidden"
-                  onChange={formik.handleChange}
-                  checked={formik.values.role === "user"}
+                  checked={role === 'user'}
+                  onChange={() => handleRoleChange('user')}
                 />
-                {t("role_user")}
+                لاعب
               </label>
             </div>
 
-            <div className="flex flex-col text-start space-y-2 text-sm">
-              <label>{t("first_name")}</label>
-              <input
-                type="text"
-                name="fName"
-                placeholder={t("first_name_placeholder")}
-                value={formik.values.fName}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className="p-2 rounded-md border border-gray-300 focus:outline-none"
-              />
-              {formik.errors.fName && formik.touched.fName && (
-                <p className="text-red-500 text-xs">{formik.errors.fName}</p>
-              )}
-            </div>
-
-            <div className="flex flex-col text-start space-y-2 text-sm">
-              <label>{t("last_name")}</label>
-              <input
-                type="text"
-                name="lName"
-                placeholder={t("last_name_placeholder")}
-                value={formik.values.lName}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className="p-2 rounded-md border border-gray-300 focus:outline-none"
-              />
-              {formik.errors.lName && formik.touched.lName && (
-                <p className="text-red-500 text-xs">{formik.errors.lName}</p>
-              )}
-            </div>
-
-            <div className="flex flex-col text-start space-y-2 text-sm">
-              <label>{t("email")}</label>
-              <input
-                type="text"
-                name="email"
-                placeholder={t("email_placeholder")}
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className="p-2 rounded-md border border-gray-300 focus:outline-none"
-              />
-              {formik.errors.email && formik.touched.email && (
-                <p className="text-red-500 text-xs">{formik.errors.email}</p>
-              )}
-            </div>
-
-            <div className="flex flex-col text-start space-y-2 text-sm">
-              <label>{t("phone")}</label>
-              <input
-                type="text"
-                name="phone"
-                placeholder={t("phone_placeholder")}
-                value={formik.values.phone}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className="p-2 rounded-md border border-gray-300 focus:outline-none"
-              />
-              {formik.errors.phone && formik.touched.phone && (
-                <p className="text-red-500 text-xs">{formik.errors.phone}</p>
-              )}
-            </div>
-
-            <div className="flex flex-col text-start space-y-2 text-sm">
-              <label>{t("password")}</label>
-              <input
-                type="password"
-                name="password"
-                placeholder={t("password_placeholder")}
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className="p-2 rounded-md border border-gray-300 focus:outline-none"
-              />
-              {formik.errors.password && formik.touched.password && (
-                <p className="text-red-500 text-xs">{formik.errors.password}</p>
-              )}
-            </div>
-
-            <div className="flex flex-col text-start space-y-2 text-sm">
-              <label>{t("confirm_password")}</label>
-              <input
-                type="password"
-                name="rePassword"
-                placeholder={t("confirm_password_placeholder")}
-                value={formik.values.rePassword}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className="p-2 rounded-md border border-gray-300 focus:outline-none"
-              />
-              {formik.errors.rePassword && formik.touched.rePassword && (
-                <p className="text-red-500 text-xs">
-                  {formik.errors.rePassword}
-                </p>
-              )}
-            </div>
+            {role === 'owner' ? <OwnerFormFields formik={formik} /> : <UserFormFields formik={formik} />}
 
             <button
-              disabled={loadbuttom}
+              disabled={loadButton}
               type="submit"
-              className="btn bg-mainColor text-white w-full py-2 text-sm"
+              className="w-full py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loadbuttom ? (
-                <i className=" fa-solid fa-spinner fa-spin"></i>
-              ) : (
-                t("create_account")
-              )}
+              {loadButton ? <i className="fa-solid fa-spinner fa-spin"></i> : t('create_account')}
             </button>
 
-            <p className="text-mainColor text-xs py-1">
-              {t("already_have_account")}
-            </p>
-            <p className="text-xs">{t("or")}</p>
-
-            <div className="flex flex-col space-y-2">
-              <button className="p-2 border rounded-lg w-full bg-white border-thirdColor flex justify-center items-center gap-2 text-xs">
-                <FaGoogle /> {t("continue_google")}
-              </button>
-              <button className="p-2 border rounded-lg w-full bg-white border-thirdColor flex justify-center items-center gap-2 text-xs">
-                <FaFacebookF /> {t("continue_facebook")}
-              </button>
+            <div className="text-center pt-2">
+              <p className="text-sm text-white/90 drop-shadow-md">
+                {t('already_have_account') || 'هل لديك حساب بالفعل؟'}{' '}
+                <Link
+                  to="/login"
+                  className="text-green-300 hover:text-green-200 font-semibold transition-colors drop-shadow-md"
+                >
+                  تسجيل الدخول
+                </Link>
+              </p>
             </div>
           </div>
         </form>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

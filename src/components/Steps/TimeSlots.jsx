@@ -10,6 +10,7 @@ export default function TimeSlots() {
 
   const toggleTime = (time) => {
     setSlots((prev) => (prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]));
+    
   };
 
   if (loading) return <Loader />;
@@ -29,8 +30,10 @@ export default function TimeSlots() {
           <button
             key={i}
             onClick={() => toggleTime(time)}
-            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
-              isSelected ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium ${
+              isSelected
+                ? 'bg-green-500 dark:bg-green-600 text-white shadow-md'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {formattedRange}

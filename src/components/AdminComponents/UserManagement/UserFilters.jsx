@@ -5,14 +5,14 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 
 const UserFilters = ({ filters, setFilters, setPage, resetFilters }) => {
   return (
-    <div className="bg-white rounded-2xl shadow p-4 mb-6">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow dark:shadow-gray-900/50 p-4 mb-6 border border-gray-200 dark:border-gray-700 transition-colors">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-medium text-gray-800 flex items-center gap-2">
+        <h3 className="font-medium text-gray-800 dark:text-white flex items-center gap-2">
           <Filter size={18} /> فلتر المستخدمين
         </h3>
         <Button
           variant="outline"
-          className="text-gray-600 border-green-300 hover:bg-green-100"
+          className="text-gray-600 dark:text-gray-300 border-green-300 dark:border-green-600 hover:bg-green-100 dark:hover:bg-green-900/30"
           onClick={resetFilters}
         >
           إعادة التعيين

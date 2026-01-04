@@ -1,196 +1,91 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./App.css";
-import Layout from "./components/Layout/Layout";
-import AdminArenaRequests from "./pages/AdminArenaRequests/AdminArenaRequests";
-import Home from "./pages/Home/Home";
-import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
-import Reservation from "./pages/Reservation/Reservation";
-import UserArenas from "./pages/UserArenas/UserArenas";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import './App.css';
+import Layout from './components/Layout/Layout';
+import AdminArenaRequests from './pages/AdminArenaRequests/AdminArenaRequests';
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
+import Home from './pages/Home/Home';
+import About from './pages/About/About';
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
+import PendingApproval from './pages/PendingApproval/PendingApproval';
+import RejectedAccount from './pages/RejectedAccount/RejectedAccount';
+import Reservation from './pages/Reservation/Reservation';
+import UserArenas from './pages/UserArenas/UserArenas';
 // import ReservationDetails from "./pages/ReservationDetails/ReservationDetails";
-import { Toaster } from "react-hot-toast";
-import { useTranslation } from "react-i18next";
-import ArenaCardPremium from "./components/OwnerComponents/ArenaCardComponent/ArenaCard";
-import AuthContextProvider from "./Contexts/AuthContext";
-import ReservationContextProvider from "./Contexts/ReservationContext";
-import BookingArena from "./pages/BookingArena/BookingArena";
-import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
-import Extras from "./pages/Extras/Extras";
-import AddArena from "./pages/Owner/AddArenas";
-import ManualBookingForm from "./pages/Owner/ManualBooking";
-import Wallet from "./pages/Wallet/Wallet";
-import ProtectedRoutes from "./Routes/ProtectedRoute";
+import { Toaster } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import ArenaCardPremium from './components/OwnerComponents/ArenaCardComponent/ArenaCard';
+import AuthContextProvider from './Contexts/AuthContext';
+import ReservationContextProvider from './Contexts/ReservationContext';
+import { ThemeProvider } from './Contexts/ThemeContext';
+import BookingArena from './pages/BookingArena/BookingArena';
+import ConfirmReservation from './pages/ConfirmReservation/ConfirmReservation';
+import Extras from './pages/Extras/Extras';
+import AddArena from './pages/Owner/AddArenas';
+import ManualBookingForm from './pages/Owner/ManualBooking';
+import Wallet from './pages/Wallet/Wallet';
+import ProtectedRoutes from './Routes/ProtectedRoute';
 
-import AdminLayout from "./components/AdminLayout/AdminLayout";
-import OwnerLayout from "./components/OwnerComponents/OwnerLayout/OwnerLayout";
-import SettingsPage from "./pages/SettingPage/SettingsPage";
+import AdminLayout from './components/AdminLayout/AdminLayout';
+import OwnerLayout from './components/OwnerComponents/OwnerLayout/OwnerLayout';
+import SettingsPage from './pages/SettingPage/SettingsPage';
 // import ReservationStep from "./components/Steps/ReservationStep";
-import ArenaMangmentCategories from "./pages/AdminPages/ArenaMangmentCategories";
-import UserManagement from "./pages/AdminPages/UserManagement";
-import OwnerArenas from "./pages/Owner/OwnerArenas";
-import OwnerDashboard from "./pages/Owner/OwnerDashboard";
-import ReservationView from "./pages/ReservationView/ReservationView";
-import PendingRequests from "./pages/SettingPage/PendingRequests";
-import UserAllReservation from "./pages/UserAllReservation/UserAllReservation";
-import UserProfile from "./pages/UserProfile/UserProfile";
+import ArenaMangmentCategories from './pages/AdminPages/ArenaMangmentCategories';
+import UserManagement from './pages/AdminPages/UserManagement';
+import WithdrawalRequests from './pages/AdminPages/WithdrawalRequests';
+import OwnerArenas from './pages/Owner/OwnerArenas';
+import OwnerDashboard from './pages/Owner/OwnerDashboard';
+import ReservationView from './pages/ReservationView/ReservationView';
+import PendingRequests from './pages/SettingPage/PendingRequests';
+import UserAllReservation from './pages/UserAllReservation/UserAllReservation';
+import UserProfile from './pages/UserProfile/UserProfile';
+import OwnerReservations from './pages/Owner/OwnerReservations';
+import OwnerArenaDetails from './pages/Owner/OwnerArenaDetails';
+import NotFound from './pages/NotFound/NotFound';
+import PWAInstallPrompt from './components/PWAInstallPrompt/PWAInstallPrompt';
 
 function App() {
   const { i18n } = useTranslation();
 
-  // const routes = createBrowserRouter([
-  //   {
-  //     path: "",
-  //     element: <Layout />,
-  //     children: [
-  //       { path: "/home", element: <Home /> },
-
-  //       {
-  //         path: "/login",
-  //         element: (
-  //           // <ProtectedLoginAndRegister>
-  //           <Login />
-  //           // </ProtectedLoginAndRegister>
-  //         ),
-  //       },
-  //       {
-  //         path: "/register",
-  //         element: (
-  //           // <ProtectedLoginAndRegister>
-  //           <Register />
-  //           // </ProtectedLoginAndRegister>
-  //         ),
-  //       },
-
-  //       {
-  //         path: "/reservation/:id",
-  //         element: (
-  //           <ProtectedRoutes role="user">
-  //             <Reservation />
-  //           </ProtectedRoutes>
-  //         ),
-  //       },
-  //       {
-  //         path: "/extras/:id",
-  //         element: (
-  //           <ProtectedRoutes role="user">
-  //             <Extras />
-  //           </ProtectedRoutes>
-  //         ),
-  //       },
-  //       {
-  //         path: "/addarena",
-  //         element: (
-  //           //<ProtectedRoutes role="owner">
-
-  //             <AddArena />
-  //           //</ProtectedRoutes>
-  //         ),
-  //       },
-  //       {
-  //         path: "/manualbooking",
-  //         element: (
-  //           // <ProtectedRoutes role="user">
-  //           <ManualBookingForm />
-  //           //</ProtectedRoutes>
-  //         ),
-  //       },
-  //       {
-  //         path: "/arenacard",
-  //         element: (
-  //           // <ProtectedRoutes role="user">
-  //           <ArenaCardPremium />
-  //           // </ProtectedRoutes>
-  //         ),
-  //       },
-  //       {
-  //         path: "/confirm",
-  //         element: (
-  //           // <ProtectedRoutes role="user">
-  //           <ConfirmReservation />
-  //           // </ProtectedRoutes>
-  //         ),
-  //       },
-  //       {
-  //         path: "/user-arena",
-  //         element: <UserArenas />,
-  //       },
-  //       {
-  //         path: "/admin-arena-requests",
-  //         element: (
-  //           <ProtectedRoutes role="admin">
-  //             <AdminArenaRequests />
-  //           </ProtectedRoutes>
-  //         ),
-  //       },
-  //       {
-  //         path: "/booking/:id",
-  //         element: (
-  //           // <ProtectedRoutes role="user">
-  //           <BookingArena />
-  //           // </ProtectedRoutes>
-  //         ),
-  //       },
-  //       {
-  //         path: "/wallet",
-  //         element: <Wallet />,
-  //       },
-
-  //       {
-  //         path: "/SettingsPage",
-  //         element: (
-  //           <ProtectedRoutes role="admin">
-  //             <AdminLayout />
-  //           </ProtectedRoutes>
-  //         ),
-  //       },
-  //     ],
-  //   },
-  // ]);
-
   const routes = createBrowserRouter([
     {
-      path: "",
+      path: '',
       element: <Layout />,
       children: [
-        { path: "/home", element: <Home /> },
-        { path: "/", element: <Home /> },
-        { path: "/login", element: <Login /> },
-        { path: "/register", element: <Register /> },
+        { path: '/', element: <Home /> },
+        { path: '/about', element: <About /> },
+        { path: '/login', element: <Login /> },
+        { path: '/register', element: <Register /> },
+        { path: '/pending-approval', element: <PendingApproval /> },
+        { path: '/rejected-account', element: <RejectedAccount /> },
         {
-          path: "/userProfile",
+          path: '/userProfile',
           element: (
-            <ProtectedRoutes role="user">
+            <ProtectedRoutes>
               <UserProfile />
             </ProtectedRoutes>
           ),
         },
-
         {
-          path: "/reservation/:id",
+          path: '/reservation/:id',
           element: (
             <ProtectedRoutes role="user">
               <Reservation />
             </ProtectedRoutes>
           ),
         },
+        { path: '/reservations/:id', element: <ReservationView /> },
         {
-          path: "/reservations/:id",
-          element: <ReservationView />,
-        },
-        {
-          path: "/extras/:id",
+          path: '/extras/:id',
           element: (
             <ProtectedRoutes role="user">
               <Extras />
             </ProtectedRoutes>
           ),
         },
+        { path: '/booking/:id', element: <BookingArena /> },
         {
-          path: "/booking/:id",
-          element: <BookingArena />,
-        },
-        {
-          path: "/my-bookings",
+          path: '/my-bookings',
           element: (
             <ProtectedRoutes role="user">
               <UserAllReservation />
@@ -198,246 +93,89 @@ function App() {
           ),
         },
         {
-          path: "wallet",
+          path: '/wallet',
           element: (
             <ProtectedRoutes>
               <Wallet />
             </ProtectedRoutes>
           ),
         },
+        { path: '/confirm/:id', element: <ConfirmReservation /> },
+        { path: '/user-arena', element: <UserArenas /> },
+        { path: '/arenacard', element: <ArenaCardPremium /> },
+        {
+          path: '/all-reservations',
+          element: (
+            <ProtectedRoutes role="user">
+              <UserAllReservation />
+            </ProtectedRoutes>
+          ),
+        },
+        { path: '*', element: <NotFound /> },
       ],
     },
 
-    // ✅ Owner routes
+    // Owner routes
     {
-      path: "/owner",
+      path: '/owner',
       element: (
         <ProtectedRoutes role="owner">
           <OwnerLayout />
         </ProtectedRoutes>
       ),
       children: [
-        { path: "dashboard", element: <OwnerDashboard /> },
-        { path: "add-arena", element: <AddArena /> },
-        { path: "manual-booking", element: <ManualBookingForm /> },
-        { path: "my-arenas", element: <OwnerArenas /> },
-        {
-          path: "wallet",
-          element: (
-            <ProtectedRoutes>
-              <Wallet />
-            </ProtectedRoutes>
-          ),
-        },
+        { path: 'dashboard', element: <OwnerDashboard /> },
+        { path: 'add-arena', element: <AddArena /> },
+        { path: 'manual-booking', element: <ManualBookingForm /> },
+        { path: 'arenas', element: <OwnerArenas /> },
+        { path: 'arena/:id', element: <OwnerArenaDetails /> },
+        { path: 'reservations', element: <OwnerReservations /> },
+        { path: 'wallet', element: <Wallet /> },
+        { path: 'userProfile', element: <UserProfile /> },
+        { path: 'reservations/:id', element: <ReservationView /> },
       ],
     },
 
-    // ✅ Admin routes
+    // Admin routes
     {
-      path: "/admin",
+      path: '/admin',
       element: (
         <ProtectedRoutes role="admin">
           <AdminLayout />
         </ProtectedRoutes>
       ),
       children: [
-        { path: "settings", element: <SettingsPage /> },
-        { path: "pending-requests", element: <PendingRequests /> },
-        // { path: "all-reservations", element:  <UserAllReservation /> },
-        { path: "admin-arena-requests", element: <AdminArenaRequests /> },
-        {
-          path: "categoriesmanagment",
-          element: (
-            <ProtectedRoutes role="admin">
-              <ArenaMangmentCategories />
-            </ProtectedRoutes>
-          ),
-        },
-        {
-          path: "usermanagment",
-          element: (
-            <ProtectedRoutes role="admin">
-              <UserManagement />
-            </ProtectedRoutes>
-          ),
-        },
-        {
-          path: "wallet",
-          element: (
-            <ProtectedRoutes>
-              <Wallet />
-            </ProtectedRoutes>
-          ),
-        },
+        { path: 'dashboard', element: <AdminDashboard /> },
+        { path: 'settings', element: <SettingsPage /> },
+        { path: 'pending-requests', element: <PendingRequests /> },
+        { path: 'admin-arena-requests', element: <AdminArenaRequests /> },
+        { path: 'categoriesmanagment', element: <ArenaMangmentCategories /> },
+        { path: 'usermanagment', element: <UserManagement /> },
+        { path: 'wallet', element: <Wallet /> },
+        { path: 'userProfile', element: <UserProfile /> },
+        { path: 'withdrawal-requests', element: <WithdrawalRequests /> },
       ],
     },
-
-    {
-      path: "/confirm/:id",
-      element: (
-        // <ProtectedRoutes role="user">
-        <ConfirmReservation />
-        // </ProtectedRoutes>
-      ),
-    },
-    {
-      path: "/user-arena",
-      element: <UserArenas />,
-    },
-    {
-      path: "/arenacard",
-      element: (
-        // <ProtectedRoutes role="user">
-        <ArenaCardPremium />
-        // </ProtectedRoutes>
-      ),
-    },
-    {
-      path: "/wallet",
-
-      element: (
-        <ProtectedRoutes>
-          <Wallet />
-        </ProtectedRoutes>
-      ),
-    },
-
-    {
-      path: "/SettingsPage",
-      element: (
-        <ProtectedRoutes role="admin">
-          <AdminLayout />
-        </ProtectedRoutes>
-      ),
-    },
-    {
-      path: "/all-reservations",
-      element: (
-        <ProtectedRoutes role="user">
-          <UserAllReservation />
-        </ProtectedRoutes>
-      ),
-    },
-    // {
-    //   path: "/categoriesmanagment",
-    //   element: (
-    //     <ProtectedRoutes role="admin">
-    //       <ArenaMangmentCategories />
-    //     </ProtectedRoutes>
-    //   ),
-    // },
-    // {
-    //   path: "/usermanagment",
-    //   element: (
-    //     <ProtectedRoutes role="admin">
-    //       <UserManagement />
-    //     </ProtectedRoutes>
-    //   ),
-    // },
-
-    // ✅ Owner routes
-    {
-      path: "/owner",
-      element: (
-        //  <ProtectedRoutes role="owner">
-        <OwnerLayout />
-        // </ProtectedRoutes>
-      ),
-      children: [
-        { path: "add-arena", element: <AddArena /> },
-        { path: "manual-booking", element: <ManualBookingForm /> },
-      ],
-    },
-
-    // ✅ Admin routes
-    {
-      path: "/admin",
-      element: (
-        <ProtectedRoutes role="admin">
-          <AdminLayout />
-        </ProtectedRoutes>
-      ),
-      children: [
-        { path: "settings", element: <SettingsPage /> },
-        { path: "pending-requests", element: <PendingRequests /> },
-        // { path: "all-reservations", element:  <UserAllReservation /> },
-        { path: "admin-arena-requests", element: <AdminArenaRequests /> },
-        { path: "users-management", element: <UserManagement /> },
-        { path: "categories-management", element: <ArenaMangmentCategories /> },
-      ],
-    },
-
-    {
-      path: "/confirm",
-      element: (
-        // <ProtectedRoutes role="user">
-        <ConfirmReservation />
-        // </ProtectedRoutes>
-      ),
-    },
-    {
-      path: "/user-arena",
-      element: <UserArenas />,
-    },
-    {
-      path: "/arenacard",
-      element: (
-        // <ProtectedRoutes role="user">
-        <ArenaCardPremium />
-        // </ProtectedRoutes>
-      ),
-    },
-    {
-      path: "/wallet",
-
-      element: (
-        <ProtectedRoutes role="user">
-          <Wallet />
-        </ProtectedRoutes>
-      ),
-    },
-
-    {
-      path: "/SettingsPage",
-      element: (
-        <ProtectedRoutes role="admin">
-          <AdminLayout />
-        </ProtectedRoutes>
-      ),
-    },
-    {
-      path: "/categoriesmanagment",
-      element: (
-        <ProtectedRoutes role="admin">
-          <ArenaMangmentCategories />
-        </ProtectedRoutes>
-      ),
-    },
-    // {
-    //   path: "/usermanagment",
-    //   element: (
-    //     <ProtectedRoutes role="admin">
-    //       <UserManagement />
-    //     </ProtectedRoutes>
-    //   ),
-    // },
   ]);
   return (
     <>
-      <AuthContextProvider>
-        <ReservationContextProvider>
-          <Toaster
-            key={i18n.language}
-            position="bottom-left"
-            toastOptions={{
-              style: {
-                direction: i18n.language === "ar" ? "rtl" : "ltr",
-              },
-            }}
-          />
-          <RouterProvider router={routes} />
-        </ReservationContextProvider>
-      </AuthContextProvider>
+      <ThemeProvider>
+        <AuthContextProvider>
+          <ReservationContextProvider>
+            <Toaster
+              key={i18n.language}
+              position="bottom-left"
+              toastOptions={{
+                style: {
+                  direction: i18n.language === 'ar' ? 'rtl' : 'ltr',
+                },
+              }}
+            />
+            <RouterProvider router={routes} />
+            <PWAInstallPrompt />
+          </ReservationContextProvider>
+        </AuthContextProvider>
+      </ThemeProvider>
     </>
   );
 }

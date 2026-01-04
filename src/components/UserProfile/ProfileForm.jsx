@@ -1,6 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 import baseUrl from "@/apis/config";
 import { useState, useContext, useMemo } from "react";
@@ -16,15 +17,9 @@ export default function ProfileForm({
   setSubmitRef,
   onSaved,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { setUser } = useContext(authContext);
-  const [toast, setToast] = useState({ message: "", type: "success", visible: false });
   const [selectedImage, setSelectedImage] = useState(null);
-
-  const showToast = (message, type = "success", duration = 3000) => {
-    setToast({ message, type, visible: true });
-    setTimeout(() => setToast(prev => ({ ...prev, visible: false })), duration);
-  };
 
   const infoValidationSchema = Yup.object({
     name: Yup.string().required(t("first_name_required")),
@@ -78,7 +73,12 @@ export default function ProfileForm({
         values.phone !== userData.phone;
 
       if (!wantsToChangeInfo && !wantsToChangeImage) {
-        showToast(t("UserProfile.no_changes"), "info");
+        toast.info(t("UserProfile.no_changes") || "لا توجد تغييرات", {
+          duration: 3000,
+          style: {
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
+          },
+        });
         onSaved?.();
         return;
       }
@@ -110,7 +110,12 @@ export default function ProfileForm({
 
       setUser(prev => ({ ...prev, ...updatedUser }));
       onSaved?.(updatedUser);
-      showToast(t("successMessageProfile"), "success");
+      toast.success(t("successMessageProfile") || "تم تحديث الملف الشخصي بنجاح", {
+        duration: 3000,
+        style: {
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
+        },
+      });
       setSelectedImage(null);
     } catch (err) {
       console.error(err);
@@ -123,7 +128,12 @@ export default function ProfileForm({
       };
       const msg = errorMap[raw] || t("UserProfile.password_invalid") || "حدث خطأ أثناء تحديث البيانات";
       setServerError(msg);
-      showToast(msg, "error");
+      toast.error(msg, {
+        duration: 4000,
+        style: {
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
+        },
+      });
     } finally {
       setSubmitting(false);
       setFormikSubmitting(false);
@@ -138,21 +148,36 @@ export default function ProfileForm({
 
       const wantsToChangePassword = (values.newPassword || "").trim() !== "";
       if (!wantsToChangePassword) {
-        showToast(t("UserProfile.no_changes"), "info");
+        toast.info(t("UserProfile.no_changes") || "لا توجد تغييرات", {
+          duration: 3000,
+          style: {
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
+          },
+        });
         return;
       }
 
       if (!values.oldPassword || !values.confirmPassword || !values.newPassword) {
-        const msg = t("UserProfile.password_incomplete");
+        const msg = t("UserProfile.password_incomplete") || "يرجى ملء جميع حقول كلمة المرور";
         setServerError(msg);
-        showToast(msg, "error");
+        toast.error(msg, {
+          duration: 4000,
+          style: {
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
+          },
+        });
         return;
       }
 
       if ((values.newPassword || "").trim() !== (values.confirmPassword || "").trim()) {
-        const msg = t("password_not_match");
+        const msg = t("password_not_match") || "كلمات المرور غير متطابقة";
         setServerError(msg);
-        showToast(msg, "error");
+        toast.error(msg, {
+          duration: 4000,
+          style: {
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
+          },
+        });
         return;
       }
 
@@ -168,7 +193,12 @@ export default function ProfileForm({
 
       resetForm();
       onSaved?.();
-      showToast(t("successMessagePassword"), "success");
+      toast.success(t("successMessagePassword") || "تم تغيير كلمة المرور بنجاح", {
+        duration: 3000,
+        style: {
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
+        },
+      });
     } catch (err) {
       console.error(err);
       const raw = err?.response?.data?.message;
@@ -181,7 +211,12 @@ export default function ProfileForm({
       };
       const msg = errorMap[raw] || t("UserProfile.password_invalid") || "حدث خطأ أثناء تحديث البيانات";
       setServerError(msg);
-      showToast(msg, "error");
+      toast.error(msg, {
+        duration: 4000,
+        style: {
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
+        },
+      });
     } finally {
       setSubmitting(false);
       setFormikSubmitting(false);
@@ -189,25 +224,6 @@ export default function ProfileForm({
   };
 
   const isInfoLocked = () => !isEditing || isSubmitting;
-
-  const Toast = ({ message, type }) => {
-    if (!toast.visible) return null;
-    const typeStyles = {
-      success: "bg-emerald-600 border-emerald-700",
-      error: "bg-red-600 border-red-700",
-      warning: "bg-amber-600 border-amber-700",
-      info: "bg-blue-600 border-blue-700",
-    };
-    return (
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
-        <div
-          className={`${typeStyles[type] || typeStyles.info} text-white px-4 py-3 rounded-xl border shadow-2xl w-fit max-w-[92vw] transition-transform animate-[slideDown_.25s_ease-out]`}
-        >
-          {message}
-        </div>
-      </div>
-    );
-  };
 
   return (
     <>
@@ -225,7 +241,7 @@ export default function ProfileForm({
               <div className="grid grid-cols-2 gap-6 mb-12">
                 {["name", "email"].map((field) => (
                   <div className="text-right" key={field}>
-                    <label className="block text-gray-600 mb-2">
+                    <label className="block text-gray-600 dark:text-gray-300 mb-2">
                       {field === "name" ? t("first_name") : t("email")}
                     </label>
                     {isEditing ? (
@@ -234,16 +250,16 @@ export default function ProfileForm({
                           type={field === "email" ? "email" : "text"}
                           name={field}
                           disabled={isInfoLocked()}
-                          className={`w-full px-3 py-2 border rounded-lg text-right focus:outline-none ${
+                          className={`w-full px-3 py-2 border rounded-lg text-right focus:outline-none transition-colors ${
                             isInfoLocked()
-                              ? "bg-gray-100 cursor-not-allowed"
-                              : "border-gray-300 focus:ring-2 focus:ring-green-500"
+                              ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400"
+                              : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400"
                           }`}
                         />
-                        <ErrorMessage name={field} component="div" className="text-red-500 text-sm mt-1" />
+                        <ErrorMessage name={field} component="div" className="text-red-500 dark:text-red-400 text-sm mt-1" />
                       </>
                     ) : (
-                      <div className="text-gray-900 font-medium">
+                      <div className="text-gray-900 dark:text-white font-medium">
                         {field === "name" ? values.name : values.email}
                       </div>
                     )}
@@ -251,23 +267,23 @@ export default function ProfileForm({
                 ))}
 
                 <div className="text-right col-span-2">
-                  <label className="block text-gray-600 mb-2">{t("phone")}</label>
+                  <label className="block text-gray-600 dark:text-gray-300 mb-2">{t("phone")}</label>
                   {isEditing ? (
                     <>
                       <Field
                         type="tel"
                         name="phone"
                         disabled={isInfoLocked()}
-                        className={`w-full px-3 py-2 border rounded-lg text-right focus:outline-none ${
+                        className={`w-full px-3 py-2 border rounded-lg text-right focus:outline-none transition-colors ${
                           isInfoLocked()
-                            ? "bg-gray-100 cursor-not-allowed"
-                            : "border-gray-300 focus:ring-2 focus:ring-green-500"
+                            ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400"
+                            : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400"
                         }`}
                       />
-                      <ErrorMessage name="phone" component="div" className="text-red-500 text-sm mt-1" />
+                      <ErrorMessage name="phone" component="div" className="text-red-500 dark:text-red-400 text-sm mt-1" />
                     </>
                   ) : (
-                    <div className="text-gray-900">{infoInitialValues.phone}</div>
+                    <div className="text-gray-900 dark:text-white">{infoInitialValues.phone}</div>
                   )}
                 </div>
               </div>
@@ -293,14 +309,14 @@ export default function ProfileForm({
 
           return (
             <Form onSubmit={handleSubmit}>
-              <div className="border-t pt-8 mb-8">
-                <h2 className="text-xl font-bold text-gray-900 mb-2">{t("labels.security")}</h2>
-                <p className="text-gray-600 mb-6">{t("labels.updatePassword")}</p>
+              <div className="border-t dark:border-gray-700 pt-8 mb-8">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t("labels.security")}</h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-6">{t("labels.updatePassword")}</p>
 
                 <div className="space-y-4">
                   {["oldPassword", "newPassword", "confirmPassword"].map((field) => (
                     <div key={field}>
-                      <label className="block text-gray-600 mb-2">
+                      <label className="block text-gray-600 dark:text-gray-300 mb-2">
                         {field === "oldPassword"
                           ? "كلمة المرور القديمة"
                           : field === "newPassword"
@@ -318,28 +334,28 @@ export default function ProfileForm({
                             ? t("password_placeholder")
                             : t("confirm_password_placeholder")
                         }
-                        className={`w-full px-4 py-3 border rounded-lg text-right focus:outline-none ${
+                        className={`w-full px-4 py-3 border rounded-lg text-right focus:outline-none transition-colors ${
                           isSubmitting
-                            ? "bg-gray-100 cursor-not-allowed"
-                            : "border-gray-300 focus:ring-2 focus:ring-green-500"
+                            ? "bg-gray-100 dark:bg-gray-700 cursor-not-allowed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400"
+                            : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400"
                         }`}
                       />
-                      <ErrorMessage name={field} component="div" className="text-red-500 text-sm mt-1" />
+                      {/* <ErrorM~essage name={field} component="div" className="text-red-500 dark:text-red-400 text-sm mt-1" /> */}
                       {field === "confirmPassword" && isFormFilled && !passwordsMatch && (
-                        <div className="text-red-500 text-sm mt-1">{t("password_not_match")}</div>
+                        <div className="text-red-500 dark:text-red-400 text-sm mt-1">{t("password_not_match")}</div>
                       )}
                     </div>
                   ))}
 
-                  {serverError && <div className="text-red-500 text-sm mt-2 text-center">{serverError}</div>}
+                  {serverError && <div className="text-red-500 dark:text-red-400 text-sm mt-2 text-center">{serverError}</div>}
 
                   <button
                     type="submit"
                     disabled={!canSubmitPwd}
                     className={`px-8 py-3 rounded-lg font-medium transition-colors ${
                       !canSubmitPwd
-                        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                        : "bg-green-600 hover:bg-green-700 text-white"
+                        ? "bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 cursor-not-allowed"
+                        : "bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-600 text-white"
                     }`}
                   >
                     {isSubmitting ? t("buttons.saving") : t("buttons.changePassword")}
@@ -350,8 +366,6 @@ export default function ProfileForm({
           );
         }}
       </Formik>
-
-      <Toast message={toast.message} type={toast.type} />
     </>
   );
 }

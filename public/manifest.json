@@ -1,0 +1,55 @@
+{
+  "name": "HagzNow - منصة حجز الملاعب الرياضية",
+  "short_name": "HagzNow",
+  "description": "منصة رائدة لحجز الملاعب الرياضية بسهولة وأمان",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#10b981",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/logo192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo512x515.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["sports", "lifestyle", "utilities"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "استكشف الملاعب",
+      "short_name": "الملاعب",
+      "description": "تصفح جميع الملاعب المتاحة",
+      "url": "/user-arena",
+      "icons": [{ "src": "/logo96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "حجوزاتي",
+      "short_name": "الحجوزات",
+      "description": "عرض جميع حجوزاتي",
+      "url": "/my-bookings",
+      "icons": [{ "src": "/logo96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

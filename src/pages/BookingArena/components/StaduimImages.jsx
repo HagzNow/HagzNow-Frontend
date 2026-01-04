@@ -14,12 +14,12 @@ const StadiumImage = ({ images = [], name }) => {
 
   if (!images.length)
     return (
-      <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out border border-gray-100 overflow-hidden p-12 text-center">
-        <div className="w-20 h-20 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
-          <ImageIcon className="w-8 h-8 text-gray-400" />
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-500 ease-in-out border border-gray-100 dark:border-gray-700 overflow-hidden p-12 text-center">
+        <div className="w-20 h-20 rounded-2xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center mx-auto mb-4">
+          <ImageIcon className="w-8 h-8 text-gray-400 dark:text-gray-500" />
         </div>
-        <h3 className="text-gray-600 text-lg font-medium mb-2">لا توجد صور متاحة</h3>
-        <p className="text-gray-500 text-sm">سيتم إضافة صور للملعب قريباً</p>
+        <h3 className="text-gray-600 dark:text-gray-300 text-lg font-medium mb-2">لا توجد صور متاحة</h3>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">سيتم إضافة صور للملعب قريباً</p>
       </div>
     );
 
@@ -82,7 +82,7 @@ const StadiumImage = ({ images = [], name }) => {
       `}</style>
 
       {/* Main Image Gallery */}
-      <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out border border-gray-100 overflow-hidden group">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-500 ease-in-out border border-gray-100 dark:border-gray-700 overflow-hidden group">
         <div className="relative rounded-2xl overflow-hidden">
           <Swiper
             ref={swiperRef}
@@ -141,31 +141,31 @@ const StadiumImage = ({ images = [], name }) => {
               <button
                 className="stadium-swiper-prev
                   absolute top-1/2 left-4 -translate-y-1/2 z-10
-                  bg-white/90 hover:bg-white
+                  bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800
                   w-12 h-12 flex items-center justify-center
-                  rounded-2xl shadow-lg
-                  ring-1 ring-black/5
+                  rounded-2xl shadow-lg dark:shadow-gray-900/50
+                  ring-1 ring-black/5 dark:ring-white/10
                   transition-all duration-300 ease-in-out
-                  hover:scale-110 hover:shadow-xl
+                  hover:scale-110 hover:shadow-xl dark:hover:shadow-gray-900
                   cursor-pointer"
                 aria-label="الصورة السابقة"
               >
-                <ChevronLeft className="w-6 h-6 text-gray-700" />
+                <ChevronLeft className="w-6 h-6 text-gray-700 dark:text-gray-300" />
               </button>
 
               <button
                 className="stadium-swiper-next
                   absolute top-1/2 right-4 -translate-y-1/2 z-10
-                  bg-white/90 hover:bg-white
+                  bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800
                   w-12 h-12 flex items-center justify-center
-                  rounded-2xl shadow-lg
-                  ring-1 ring-black/5
+                  rounded-2xl shadow-lg dark:shadow-gray-900/50
+                  ring-1 ring-black/5 dark:ring-white/10
                   transition-all duration-300 ease-in-out
-                  hover:scale-110 hover:shadow-xl
+                  hover:scale-110 hover:shadow-xl dark:hover:shadow-gray-900
                   cursor-pointer"
                 aria-label="الصورة التالية"
               >
-                <ChevronRight className="w-6 h-6 text-gray-700" />
+                <ChevronRight className="w-6 h-6 text-gray-700 dark:text-gray-300" />
               </button>
             </>
           )}
@@ -184,15 +184,15 @@ const StadiumImage = ({ images = [], name }) => {
 
         {/* Thumbnail Strip */}
         {images.length > 1 && (
-          <div className="p-4 bg-gray-50 border-t border-gray-100">
+          <div className="p-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-100 dark:border-gray-700">
             <div className="flex gap-2 justify-center overflow-x-auto pb-2">
               {images.map((img, index) => (
                 <div
                   key={img.id}
                   className={`flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
                     currentImageIndex === index
-                      ? 'border-green-500 opacity-100 scale-105'
-                      : 'border-transparent opacity-70 hover:border-green-300 hover:opacity-100'
+                      ? 'border-green-500 dark:border-green-400 opacity-100 scale-105'
+                      : 'border-transparent dark:border-gray-600 opacity-70 hover:border-green-300 dark:hover:border-green-600 hover:opacity-100'
                   }`}
                   onClick={() => handleThumbnailClick(index)}
                 >
@@ -206,17 +206,17 @@ const StadiumImage = ({ images = [], name }) => {
 
       {/* Fullscreen Modal */}
       {isFullscreen && (
-        <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black dark:bg-black z-50 flex items-center justify-center">
           {/* Close Button */}
           <button
             onClick={closeFullscreen}
-            className="absolute top-6 right-6 z-50 bg-black/50 text-white p-3 rounded-2xl hover:bg-black/70 transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+            className="absolute top-6 right-6 z-50 bg-black/50 dark:bg-black/70 text-white p-3 rounded-2xl hover:bg-black/70 dark:hover:bg-black/90 transition-all duration-300 hover:scale-110 backdrop-blur-sm"
           >
             <X className="w-6 h-6" />
           </button>
 
           {/* Image Counter */}
-          <div className="absolute top-6 left-6 z-50 bg-black/50 text-white px-4 py-2 rounded-2xl backdrop-blur-sm">
+          <div className="absolute top-6 left-6 z-50 bg-black/50 dark:bg-black/70 text-white px-4 py-2 rounded-2xl backdrop-blur-sm">
             {currentImageIndex + 1} / {images.length}
           </div>
 
@@ -255,9 +255,9 @@ const StadiumImage = ({ images = [], name }) => {
           </div>
 
           {/* Image Name */}
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-50 bg-black/50 text-white px-6 py-3 rounded-2xl backdrop-blur-sm text-center">
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-50 bg-black/50 dark:bg-black/70 text-white px-6 py-3 rounded-2xl backdrop-blur-sm text-center">
             <h3 className="font-bold text-lg">{name}</h3>
-            <p className="text-white/80 text-sm">
+            <p className="text-white/80 dark:text-white/90 text-sm">
               الصورة {currentImageIndex + 1} من {images.length}
             </p>
           </div>
