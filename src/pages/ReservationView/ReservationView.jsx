@@ -5,7 +5,7 @@ import baseUrl from '../../apis/config';
 import ReservationInfoCard from '../../components/Reservation/ReservationInfoCard';
 import ReservationActions from '../../components/Reservation/ReservationActions';
 import toast from 'react-hot-toast';
-import ReservationHeader from '@/components/Reservation/reservationHeader';
+import ReservationHeader from '@/components/Reservation/ReservationHeader';
 import NotFound from '../NotFound/NotFound';
 
 export default function ReservationView() {

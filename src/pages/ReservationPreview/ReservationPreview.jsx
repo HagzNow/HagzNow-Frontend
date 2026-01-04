@@ -6,7 +6,7 @@ import baseUrl from '../../apis/config';
 import ReservationInfoCard from '../../components/Reservation/ReservationInfoCard';
 import ReservationActions from '../../components/Reservation/ReservationActions';
 import toast from 'react-hot-toast';
-import ReservationHeader from '@/components/Reservation/reservationHeader';
+import ReservationHeader from '@/components/Reservation/ReservationHeader';
 
 export default function ReservationPreview() {
   const [arena, setArena] = useState(null);
