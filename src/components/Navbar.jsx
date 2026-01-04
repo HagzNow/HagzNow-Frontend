@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState, useCallback } from 'react';
-import darkLogo from '../assets/images/darkLogo.png';
+import darkLogo from '../assets/images/darKLogo.png';
 import lightLogo from '../assets/images/lightLogo.png';
 import { CiSearch } from 'react-icons/ci';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
