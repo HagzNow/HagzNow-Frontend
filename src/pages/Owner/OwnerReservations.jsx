@@ -40,6 +40,11 @@ import {
   Copy,
   Share2,
   FileText,
+  SortAsc,
+  SortDesc,
+  ArrowUpDown,
+  ZoomIn,
+  ZoomOut,
 } from 'lucide-react';
 import { arenaService } from '@/services/arenaService';
 import { reservationService } from '@/services/reservationService';
@@ -72,6 +77,8 @@ export default function OwnerReservations() {
   const [activeDatePreset, setActiveDatePreset] = useState(null);
   const [showRevenueSummary, setShowRevenueSummary] = useState(true);
   const [showDensityHeatmap, setShowDensityHeatmap] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(100);
 
   const statusLabel = (status) => {
     const map = {
@@ -285,7 +292,7 @@ export default function OwnerReservations() {
     return { cellMap: map, spans: reservationSpans, cellsToSkip };
   }, [reservations, timeSlots, slotDuration, rangeDays]);
 
-  // Filter reservations by search query and status
+  // Filter and sort reservations
   const filteredReservations = useMemo(() => {
     let filtered = reservations;
 
@@ -482,6 +489,58 @@ export default function OwnerReservations() {
     const slotRange = formatMergedSlots(reservation.slots || []);
     const info = `الحجز: ${reservation.playerName}\nالتاريخ: ${reservation.dateOfReservation}\nالوقت: ${slotRange}\nالمبلغ: ${reservation.totalAmount} ج.م`;
     navigator.clipboard.writeText(info);
+  };
+
+  // Full screen toggle
+  const toggleFullscreen = () => {
+    if (!isFullscreen) {
+      const elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+      setIsFullscreen(true);
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+      setIsFullscreen(false);
+    }
+  };
+
+  // Handle fullscreen change
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('msfullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('msfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
+  // Zoom controls
+  const handleZoomIn = () => {
+    setZoomLevel((prev) => Math.min(prev + 10, 200));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel((prev) => Math.max(prev - 10, 50));
+  };
+
+  const handleZoomReset = () => {
+    setZoomLevel(100);
   };
 
   // Constrain range to max 7 days
@@ -944,10 +1003,47 @@ export default function OwnerReservations() {
             background: rgba(107, 114, 128, 0.9);
           }
         }
+        
+        /* Smooth transitions and animations */
+        * {
+          transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          transition-duration: 150ms;
+        }
+        
+        /* Enhanced hover effects */
+        button:hover {
+          transform: translateY(-1px);
+        }
+        
+        button:active {
+          transform: translateY(0);
+        }
+        
+        /* Card hover effects */
+        .hover-lift:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Gradient animations */
+        @keyframes gradient-shift {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+        
+        .gradient-animate {
+          background-size: 200% 200%;
+          animation: gradient-shift 3s ease infinite;
+        }
       `,
         }}
       />
-      <div dir="rtl" className="w-full overflow-x-hidden">
+      <div dir="rtl" className="w-full overflow-x-hidden" style={{ zoom: `${zoomLevel}%` }}>
         <div className="max-w-7xl mx-auto px-2 sm:px-4">
           {/* Page Header */}
           <div className="mb-4 sm:mb-6 no-print">
@@ -965,11 +1061,49 @@ export default function OwnerReservations() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                  <button
+                    onClick={handleZoomOut}
+                    disabled={zoomLevel <= 50}
+                    className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="تصغير"
+                  >
+                    <ZoomOut className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                  </button>
+                  <span className="text-xs font-medium text-gray-700 dark:text-gray-300 min-w-[3rem] text-center">
+                    {zoomLevel}%
+                  </span>
+                  <button
+                    onClick={handleZoomIn}
+                    disabled={zoomLevel >= 200}
+                    className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="تكبير"
+                  >
+                    <ZoomIn className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                  </button>
+                  {zoomLevel !== 100 && (
+                    <button
+                      onClick={handleZoomReset}
+                      className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-xs text-gray-700 dark:text-gray-300"
+                      title="إعادة تعيين"
+                    >
+                      Reset
+                    </button>
+                  )}
+                </div>
+                <button
+                  onClick={toggleFullscreen}
+                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm shadow-sm"
+                  title={isFullscreen ? 'خروج من وضع ملء الشاشة' : 'ملء الشاشة'}
+                >
+                  {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                  <span className="hidden sm:inline">{isFullscreen ? 'خروج' : 'ملء الشاشة'}</span>
+                </button>
                 <button
                   onClick={handlePrint}
                   disabled={reservations.length === 0}
-                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
+                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm shadow-sm"
                 >
                   <Printer className="w-4 h-4" />
                   <span className="hidden sm:inline">طباعة</span>
@@ -977,7 +1111,7 @@ export default function OwnerReservations() {
                 <button
                   onClick={exportToCSV}
                   disabled={reservations.length === 0}
-                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
+                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm shadow-sm"
                 >
                   <Download className="w-4 h-4" />
                   <span className="hidden sm:inline">تصدير</span>
@@ -995,61 +1129,61 @@ export default function OwnerReservations() {
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-4 sm:mb-6">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-3 sm:p-4 border border-blue-200 dark:border-blue-800">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-3 sm:p-4 border border-blue-200 dark:border-blue-800 hover-lift transition-all duration-300 cursor-default shadow-sm hover:shadow-md">
                 <div className="flex items-center justify-between mb-2">
-                  <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <Users className="w-5 h-5 text-blue-600 dark:text-blue-400 transition-transform hover:scale-110" />
                 </div>
-                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white transition-colors">
                   {statistics.totalReservations}
                 </div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">إجمالي الحجوزات</div>
               </div>
 
-              <div className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-800/20 rounded-xl p-3 sm:p-4 border border-green-200 dark:border-green-800">
+              <div className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-800/20 rounded-xl p-3 sm:p-4 border border-green-200 dark:border-green-800 hover-lift transition-all duration-300 cursor-default shadow-sm hover:shadow-md">
                 <div className="flex items-center justify-between mb-2">
-                  <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
+                  <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400 transition-transform hover:scale-110" />
                 </div>
-                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white transition-colors">
                   {statistics.totalRevenue.toFixed(2)}
                 </div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">إجمالي الإيرادات</div>
               </div>
 
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl p-3 sm:p-4 border border-purple-200 dark:border-purple-800">
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl p-3 sm:p-4 border border-purple-200 dark:border-purple-800 hover-lift transition-all duration-300 cursor-default shadow-sm hover:shadow-md">
                 <div className="flex items-center justify-between mb-2">
-                  <TrendingUp className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  <TrendingUp className="w-5 h-5 text-purple-600 dark:text-purple-400 transition-transform hover:scale-110" />
                 </div>
-                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white transition-colors">
                   {statistics.averageRevenue.toFixed(2)}
                 </div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">متوسط الحجز</div>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl p-3 sm:p-4 border border-orange-200 dark:border-orange-800">
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl p-3 sm:p-4 border border-orange-200 dark:border-orange-800 hover-lift transition-all duration-300 cursor-default shadow-sm hover:shadow-md">
                 <div className="flex items-center justify-between mb-2">
-                  <Calendar className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                  <Calendar className="w-5 h-5 text-orange-600 dark:text-orange-400 transition-transform hover:scale-110" />
                 </div>
-                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white transition-colors">
                   {statistics.upcomingCount}
                 </div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">حجوزات قادمة</div>
               </div>
 
-              <div className="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 rounded-xl p-3 sm:p-4 border border-teal-200 dark:border-teal-800">
+              <div className="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 rounded-xl p-3 sm:p-4 border border-teal-200 dark:border-teal-800 hover-lift transition-all duration-300 cursor-default shadow-sm hover:shadow-md">
                 <div className="flex items-center justify-between mb-2">
-                  <BarChart3 className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                  <BarChart3 className="w-5 h-5 text-teal-600 dark:text-teal-400 transition-transform hover:scale-110" />
                 </div>
-                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white transition-colors">
                   {statistics.mostBookedDay ? format(parseISO(statistics.mostBookedDay), 'd', { locale: arSA }) : '-'}
                 </div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">أكثر يوم حجز</div>
               </div>
 
-              <div className="bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20 rounded-xl p-3 sm:p-4 border border-pink-200 dark:border-pink-800">
+              <div className="bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20 rounded-xl p-3 sm:p-4 border border-pink-200 dark:border-pink-800 hover-lift transition-all duration-300 cursor-default shadow-sm hover:shadow-md">
                 <div className="flex items-center justify-between mb-2">
-                  <Clock className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                  <Clock className="w-5 h-5 text-pink-600 dark:text-pink-400 transition-transform hover:scale-110" />
                 </div>
-                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white transition-colors">
                   {statistics.peakHour || '-'}
                 </div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">ساعة الذروة</div>
@@ -1082,50 +1216,50 @@ export default function OwnerReservations() {
                   <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">اختيار سريع:</span>
                   <button
                     onClick={() => handleDatePreset('today')}
-                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-colors ${
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-all duration-200 shadow-sm ${
                       activeDatePreset === 'today'
-                        ? 'bg-green-600 text-white dark:bg-green-700'
-                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-green-600 text-white dark:bg-green-700 shadow-md scale-105'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105'
                     }`}
                   >
                     اليوم
                   </button>
                   <button
                     onClick={() => handleDatePreset('tomorrow')}
-                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-colors ${
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-all duration-200 shadow-sm ${
                       activeDatePreset === 'tomorrow'
-                        ? 'bg-green-600 text-white dark:bg-green-700'
-                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-green-600 text-white dark:bg-green-700 shadow-md scale-105'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105'
                     }`}
                   >
                     غداً
                   </button>
                   <button
                     onClick={() => handleDatePreset('thisWeek')}
-                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-colors ${
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-all duration-200 shadow-sm ${
                       activeDatePreset === 'thisWeek'
-                        ? 'bg-green-600 text-white dark:bg-green-700'
-                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-green-600 text-white dark:bg-green-700 shadow-md scale-105'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105'
                     }`}
                   >
                     هذا الأسبوع
                   </button>
                   <button
                     onClick={() => handleDatePreset('nextWeek')}
-                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-colors ${
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-all duration-200 shadow-sm ${
                       activeDatePreset === 'nextWeek'
-                        ? 'bg-green-600 text-white dark:bg-green-700'
-                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-green-600 text-white dark:bg-green-700 shadow-md scale-105'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105'
                     }`}
                   >
                     الأسبوع القادم
                   </button>
                   <button
                     onClick={() => handleDatePreset('thisMonth')}
-                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-colors ${
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-all duration-200 shadow-sm ${
                       activeDatePreset === 'thisMonth'
-                        ? 'bg-green-600 text-white dark:bg-green-700'
-                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        ? 'bg-green-600 text-white dark:bg-green-700 shadow-md scale-105'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 hover:scale-105'
                     }`}
                   >
                     هذا الشهر
@@ -1214,7 +1348,7 @@ export default function OwnerReservations() {
                       placeholder="ابحث عن حجز (اسم اللاعب، التاريخ، المبلغ)..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="h-10 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-10 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                      className="h-10 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-10 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
                     />
                   </div>
                 </div>

@@ -21,6 +21,7 @@ import toast from 'react-hot-toast';
 import { authContext } from '../Contexts/AuthContext';
 import { useTheme } from '../Contexts/ThemeContext';
 import { arenaService } from '../services/arenaService';
+import PWAInstallButton from './PWAInstallButton/PWAInstallButton';
 
 const MENU_PRESETS = (t) => ({
   public: [
@@ -321,6 +322,9 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
               </button>
             )} */}
 
+            {/* PWA Install Button */}
+            <PWAInstallButton variant="icon" className="w-10 h-10" showAlways={true} />
+
             {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
@@ -415,8 +419,8 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                             user?.role === 'admin'
                               ? '/admin/userProfile'
                               : user?.role === 'owner'
-                              ? '/owner/userProfile'
-                              : '/userProfile'
+                                ? '/owner/userProfile'
+                                : '/userProfile'
                           }
                           className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400 rounded-xl transition-all duration-200 group"
                           onClick={() => setIsDropdownOpen(false)}
@@ -430,8 +434,8 @@ const Navbar = ({ variant = 'public', menuItems, onMenuClick, showSearch }) => {
                             user?.role === 'admin'
                               ? '/admin/wallet'
                               : user?.role === 'owner'
-                              ? '/owner/wallet'
-                              : '/wallet'
+                                ? '/owner/wallet'
+                                : '/wallet'
                           }
                           className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400 rounded-xl transition-all duration-200 group"
                           onClick={() => setIsDropdownOpen(false)}

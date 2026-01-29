@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FaPlayCircle } from 'react-icons/fa';
 import arena from '/public/arena.jpg';
+import PWAInstallButton from './PWAInstallButton/PWAInstallButton';
 
 export default function Hero() {
   const { t } = useTranslation();
@@ -29,7 +30,7 @@ export default function Hero() {
                 'منصة HagzNow توفر لك أفضل تجربة حجز للملاعب الرياضية. ابحث، قارن، واحجز خلال دقائق بخطوات بسيطة وآمنة.'}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
               <Link
                 to="/user-arena"
                 className="inline-flex items-center justify-center gap-2 bg-green-600 dark:bg-green-500 hover:bg-green-700 dark:hover:bg-green-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
@@ -43,6 +44,11 @@ export default function Hero() {
               >
                 {t('hero_cta_secondary') || 'استكشف الملاعب'}
               </Link>
+              <PWAInstallButton
+                variant="button"
+                showAlways={true}
+                className="px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 h-auto min-h-[3rem] flex items-center"
+              />
             </div>
           </div>
 
