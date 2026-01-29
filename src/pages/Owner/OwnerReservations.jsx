@@ -9,6 +9,8 @@ import {
   differenceInCalendarDays,
   addDays,
   subDays,
+  startOfMonth,
+  endOfMonth,
 } from 'date-fns';
 import { arSA } from 'date-fns/locale';
 import {
@@ -29,6 +31,15 @@ import {
   X,
   Maximize2,
   Minimize2,
+  DollarSign,
+  Users,
+  TrendingUp,
+  BarChart3,
+  Printer,
+  MoreVertical,
+  Copy,
+  Share2,
+  FileText,
 } from 'lucide-react';
 import { arenaService } from '@/services/arenaService';
 import { reservationService } from '@/services/reservationService';
@@ -44,7 +55,6 @@ export default function OwnerReservations() {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [viewDate, setViewDate] = useState(() => startOfDay(new Date()));
   const [selectedDay, setSelectedDay] = useState(null);
   const [details, setDetails] = useState(null);
   const [detailsLoading, setDetailsLoading] = useState(false);
@@ -58,19 +68,10 @@ export default function OwnerReservations() {
   const [viewMode, setViewMode] = useState('calendar'); // 'calendar', 'list', 'compact'
   const [searchQuery, setSearchQuery] = useState('');
   const [showSettings, setShowSettings] = useState(false);
-
-  // Check mobile on mount and resize - auto switch to vertical on mobile
-  useEffect(() => {
-    const checkMobile = () => {
-      // Auto switch to vertical on mobile
-      if (window.innerWidth < 768 && orientation === 'horizontal') {
-        setOrientation('vertical');
-      }
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, [orientation]);
+  const [statusFilter, setStatusFilter] = useState('all'); // 'all', 'confirmed', 'pending', 'paid', 'canceled', 'completed'
+  const [activeDatePreset, setActiveDatePreset] = useState(null);
+  const [showRevenueSummary, setShowRevenueSummary] = useState(true);
+  const [showDensityHeatmap, setShowDensityHeatmap] = useState(false);
 
   const statusLabel = (status) => {
     const map = {
@@ -88,6 +89,45 @@ export default function OwnerReservations() {
       return `${slot.hour}:00 - ${slot.hour + 1}:00`;
     }
     return '-';
+  };
+
+  // Merge consecutive slots into ranges
+  const mergeConsecutiveSlots = (slots) => {
+    if (!slots || slots.length === 0) return [];
+
+    const sorted = [...slots].sort((a, b) => a - b);
+    const ranges = [];
+    let start = sorted[0];
+    let end = sorted[0];
+
+    for (let i = 1; i < sorted.length; i++) {
+      if (sorted[i] === end + 1) {
+        // Consecutive, extend the range
+        end = sorted[i];
+      } else {
+        // Not consecutive, save current range and start new one
+        ranges.push([start, end]);
+        start = sorted[i];
+        end = sorted[i];
+      }
+    }
+    // Don't forget the last range
+    ranges.push([start, end]);
+
+    return ranges;
+  };
+
+  // Format merged slots as string
+  const formatMergedSlots = (slots) => {
+    const ranges = mergeConsecutiveSlots(slots);
+    return ranges
+      .map(([start, end]) => {
+        if (start === end) {
+          return `${start}:00 - ${start + 1}:00`;
+        }
+        return `${start}:00 - ${end + 1}:00`;
+      })
+      .join(', ');
   };
 
   // Fetch arenas for owner
@@ -158,35 +198,198 @@ export default function OwnerReservations() {
     return slots;
   }, [startHour, endHour, slotDuration]);
 
-  // Map reservations by day/slot
+  // Map reservations by day/slot with span information for merging consecutive cells
   const reservationsByDaySlot = useMemo(() => {
     const map = new Map();
+    const reservationSpans = new Map(); // Track spans for each reservation
+    const cellsToSkip = new Set(); // Track cells that should be skipped (part of spans)
+
     reservations.forEach((r) => {
       const dayKey = r.dateOfReservation;
-      (r.slots || []).forEach((slotHour) => {
-        // Find which time slot this hour belongs to
-        const slot = timeSlots.find((s) => slotHour >= s.start && slotHour < s.end);
-        if (slot) {
-          const key = `${dayKey}-${slot.start}`;
+
+      // Get consecutive slot ranges for this reservation
+      const mergedRanges = mergeConsecutiveSlots(r.slots || []);
+
+      mergedRanges.forEach(([startHour, endHour]) => {
+        // Find which time slots this range covers
+        const coveredSlots = [];
+        for (let hour = startHour; hour <= endHour; hour++) {
+          const slot = timeSlots.find((s) => hour >= s.start && hour < s.end);
+          if (slot && !coveredSlots.find((s) => s.start === slot.start)) {
+            coveredSlots.push(slot);
+          }
+        }
+
+        if (coveredSlots.length > 0) {
+          // Sort slots by start time
+          coveredSlots.sort((a, b) => a.start - b.start);
+          const firstSlot = coveredSlots[0];
+
+          // Calculate span based on actual hours, not just number of slots
+          // This ensures that a 1-hour reservation and 4-hour reservation show different sizes
+          const actualHours = endHour - startHour + 1;
+
+          // For vertical orientation: span is based on time slots (columns)
+          // For horizontal orientation: span is based on time slots (rows)
+          const verticalSpan = coveredSlots.length; // Number of time slot columns
+          const horizontalSpan = coveredSlots.length; // Number of time slot rows
+
+          // Mark cells to skip (all except the first one)
+          for (let i = 1; i < coveredSlots.length; i++) {
+            // For vertical: skip columns (time slots)
+            const skipKeyVertical = `${dayKey}-${coveredSlots[i].start}`;
+            cellsToSkip.add(skipKeyVertical);
+
+            // For horizontal: skip rows (time slots) - need to mark all days for this slot
+            rangeDays.forEach((day) => {
+              const dayKeyForSkip = format(day, 'yyyy-MM-dd');
+              if (dayKeyForSkip === dayKey) {
+                const skipKeyHorizontal = `${dayKeyForSkip}-${coveredSlots[i].start}`;
+                cellsToSkip.add(skipKeyHorizontal);
+              }
+            });
+          }
+
+          // Store span information
+          const spanKey = `${dayKey}-${firstSlot.start}-${r.id}-${startHour}-${endHour}`;
+          reservationSpans.set(spanKey, {
+            reservation: r,
+            span: verticalSpan, // For vertical orientation
+            horizontalSpan: horizontalSpan, // For horizontal orientation
+            startSlot: firstSlot.start,
+            slotRange: `${startHour}:00 - ${endHour + 1}:00`,
+            actualHours,
+          });
+
+          // Only add to the first slot cell
+          const key = `${dayKey}-${firstSlot.start}`;
           if (!map.has(key)) map.set(key, []);
-          map.get(key).push(r);
+          // Check if this reservation is already added for this range (avoid duplicates)
+          const existingIndex = map
+            .get(key)
+            .findIndex((existing) => existing.id === r.id && existing.spanKey === spanKey);
+          if (existingIndex === -1) {
+            map.get(key).push({
+              ...r,
+              spanKey,
+              span: verticalSpan,
+              horizontalSpan: horizontalSpan,
+              startSlot: firstSlot.start,
+              actualHours,
+            });
+          }
         }
       });
     });
-    return map;
-  }, [reservations, timeSlots]);
 
-  // Filter reservations by search query
+    return { cellMap: map, spans: reservationSpans, cellsToSkip };
+  }, [reservations, timeSlots, slotDuration, rangeDays]);
+
+  // Filter reservations by search query and status
   const filteredReservations = useMemo(() => {
-    if (!searchQuery.trim()) return reservations;
-    const query = searchQuery.toLowerCase();
-    return reservations.filter(
-      (r) =>
-        r.playerName?.toLowerCase().includes(query) ||
-        r.dateOfReservation?.includes(query) ||
-        r.totalAmount?.toString().includes(query),
-    );
-  }, [reservations, searchQuery]);
+    let filtered = reservations;
+
+    // Apply status filter (when API supports it)
+    if (statusFilter !== 'all' && reservations.length > 0) {
+      // Note: Current API doesn't return status, but prepare for future
+      // filtered = filtered.filter(r => r.status === statusFilter);
+    }
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (r) =>
+          r.playerName?.toLowerCase().includes(query) ||
+          r.dateOfReservation?.includes(query) ||
+          r.totalAmount?.toString().includes(query),
+      );
+    }
+
+    return filtered;
+  }, [reservations, searchQuery, statusFilter]);
+
+  // Calculate statistics
+  const statistics = useMemo(() => {
+    const totalReservations = filteredReservations.length;
+    const totalRevenue = filteredReservations.reduce((sum, r) => sum + parseFloat(r.totalAmount || 0), 0);
+    const averageRevenue = totalReservations > 0 ? totalRevenue / totalReservations : 0;
+
+    // Upcoming reservations (today and future)
+    const todayStr = format(startOfDay(new Date()), 'yyyy-MM-dd');
+    const upcomingCount = filteredReservations.filter((r) => r.dateOfReservation >= todayStr).length;
+
+    // Most booked day
+    const dayCounts = new Map();
+    filteredReservations.forEach((r) => {
+      const count = dayCounts.get(r.dateOfReservation) || 0;
+      dayCounts.set(r.dateOfReservation, count + 1);
+    });
+    let mostBookedDay = null;
+    let maxCount = 0;
+    dayCounts.forEach((count, date) => {
+      if (count > maxCount) {
+        maxCount = count;
+        mostBookedDay = date;
+      }
+    });
+
+    // Peak hours
+    const hourCounts = new Map();
+    filteredReservations.forEach((r) => {
+      (r.slots || []).forEach((hour) => {
+        const count = hourCounts.get(hour) || 0;
+        hourCounts.set(hour, count + 1);
+      });
+    });
+    let peakHour = null;
+    let maxHourCount = 0;
+    hourCounts.forEach((count, hour) => {
+      if (count > maxHourCount) {
+        maxHourCount = count;
+        peakHour = hour;
+      }
+    });
+
+    return {
+      totalReservations,
+      totalRevenue,
+      averageRevenue,
+      upcomingCount,
+      mostBookedDay,
+      peakHour: peakHour !== null ? `${peakHour}:00` : null,
+    };
+  }, [filteredReservations]);
+
+  // Reservation counts per day
+  const reservationsByDay = useMemo(() => {
+    const map = new Map();
+    filteredReservations.forEach((r) => {
+      const count = map.get(r.dateOfReservation) || 0;
+      map.set(r.dateOfReservation, count + 1);
+    });
+    return map;
+  }, [filteredReservations]);
+
+  // Get status color helper (for future use when API supports status)
+  // const getStatusColor = (status) => {
+  //   const colors = {
+  //     confirmed: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-700',
+  //     pending: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300 border-yellow-200 dark:border-yellow-700',
+  //     paid: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-700',
+  //     canceled: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 border-red-200 dark:border-red-700',
+  //     completed: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border-purple-200 dark:border-purple-700',
+  //   };
+  //   return colors[status] || colors.confirmed;
+  // };
+
+  // Get density color for day
+  const getDensityColor = (count) => {
+    if (count === 0) return 'bg-gray-100 dark:bg-gray-700';
+    if (count <= 2) return 'bg-green-100 dark:bg-green-900/30';
+    if (count <= 5) return 'bg-yellow-100 dark:bg-yellow-900/30';
+    return 'bg-orange-100 dark:bg-orange-900/30';
+  };
 
   const loadDetails = async (id) => {
     try {
@@ -201,12 +404,84 @@ export default function OwnerReservations() {
     }
   };
 
-  const handleWeekFetch = () => {
-    const start = format(startOfWeek(viewDate, { weekStartsOn: 0 }), 'yyyy-MM-dd');
-    const end = format(endOfWeek(viewDate, { weekStartsOn: 0 }), 'yyyy-MM-dd');
+  // Date preset handlers
+  const handleDatePreset = (preset) => {
+    const today = startOfDay(new Date());
+    let start, end;
+
+    switch (preset) {
+      case 'today': {
+        start = format(today, 'yyyy-MM-dd');
+        end = format(today, 'yyyy-MM-dd');
+        break;
+      }
+      case 'tomorrow': {
+        const tomorrow = addDays(today, 1);
+        start = format(tomorrow, 'yyyy-MM-dd');
+        end = format(tomorrow, 'yyyy-MM-dd');
+        break;
+      }
+      case 'thisWeek': {
+        start = format(startOfWeek(today, { weekStartsOn: 0 }), 'yyyy-MM-dd');
+        end = format(endOfWeek(today, { weekStartsOn: 0 }), 'yyyy-MM-dd');
+        break;
+      }
+      case 'nextWeek': {
+        const nextWeekStart = addDays(startOfWeek(today, { weekStartsOn: 0 }), 7);
+        start = format(nextWeekStart, 'yyyy-MM-dd');
+        end = format(endOfWeek(nextWeekStart, { weekStartsOn: 0 }), 'yyyy-MM-dd');
+        break;
+      }
+      case 'thisMonth': {
+        start = format(startOfMonth(today), 'yyyy-MM-dd');
+        end = format(endOfMonth(today), 'yyyy-MM-dd');
+        break;
+      }
+      default:
+        return;
+    }
+
     setStartDate(start);
     setEndDate(end);
+    setActiveDatePreset(preset);
     fetchReservations({ startDate: start, endDate: end });
+  };
+
+  // Date navigation handlers
+  const navigateDateRange = (direction) => {
+    const start = parseISO(startDate);
+    const end = parseISO(endDate);
+    const diff = differenceInCalendarDays(end, start);
+
+    let newStart;
+    let newEnd;
+    if (direction === 'prev') {
+      newStart = subDays(start, diff + 1);
+      newEnd = subDays(start, 1);
+    } else {
+      newStart = addDays(end, 1);
+      newEnd = addDays(end, diff + 1);
+    }
+
+    const newStartStr = format(newStart, 'yyyy-MM-dd');
+    const newEndStr = format(newEnd, 'yyyy-MM-dd');
+
+    setStartDate(newStartStr);
+    setEndDate(newEndStr);
+    setActiveDatePreset(null);
+    fetchReservations({ startDate: newStartStr, endDate: newEndStr });
+  };
+
+  // Print handler
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // Copy reservation info
+  const copyReservationInfo = (reservation) => {
+    const slotRange = formatMergedSlots(reservation.slots || []);
+    const info = `الحجز: ${reservation.playerName}\nالتاريخ: ${reservation.dateOfReservation}\nالوقت: ${slotRange}\nالمبلغ: ${reservation.totalAmount} ج.م`;
+    navigator.clipboard.writeText(info);
   };
 
   // Constrain range to max 7 days
@@ -215,13 +490,6 @@ export default function OwnerReservations() {
     if (diff > 6) return addDays(start, 6);
     return end;
   };
-
-  // Sync viewDate header with selected start date
-  useEffect(() => {
-    if (startDate) {
-      setViewDate(startOfDay(parseISO(startDate)));
-    }
-  }, [startDate]);
 
   const endDateMax = useMemo(() => {
     if (!startDate) return '';
@@ -232,8 +500,7 @@ export default function OwnerReservations() {
   const exportToCSV = () => {
     const headers = ['التاريخ', 'اسم اللاعب', 'الأوقات', 'المبلغ الإجمالي'];
     const rows = reservations.map((r) => {
-      const slots = (r.slots || []).sort((a, b) => a - b);
-      const slotRange = slots.length > 0 ? `${slots[0]}:00 - ${slots[slots.length - 1] + 1}:00` : '-';
+      const slotRange = formatMergedSlots(r.slots || []) || '-';
       return [r.dateOfReservation, r.playerName, slotRange, r.totalAmount];
     });
     const csv = [headers, ...rows].map((row) => row.join(',')).join('\n');
@@ -247,7 +514,7 @@ export default function OwnerReservations() {
   // Render calendar view
   const renderCalendarView = () => {
     if (orientation === 'vertical') {
-      // Vertical: Time on top, Days on right
+      // Vertical: Time on top (horizontal), Days on right (vertical)
       return (
         <div className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm">
           <div className="flex items-center justify-between bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-b border-green-200 dark:border-green-800 px-3 sm:px-4 py-2 sm:py-3">
@@ -262,89 +529,120 @@ export default function OwnerReservations() {
               <div
                 className="grid"
                 style={{
-                  gridTemplateRows: `60px repeat(${timeSlots.length || 1}, minmax(80px, auto))`,
-                  gridTemplateColumns: `repeat(${rangeDays.length || 1}, minmax(120px, 1fr))`,
+                  gridTemplateRows: `80px repeat(${rangeDays.length || 1}, minmax(80px, auto))`,
+                  gridTemplateColumns: `120px repeat(${timeSlots.length || 1}, minmax(100px, 1fr))`,
                 }}
               >
                 {/* Empty corner */}
                 <div className="bg-white dark:bg-gray-800 border-b border-r border-gray-200 dark:border-gray-700"></div>
-                {/* Day headers */}
-                {rangeDays.map((day) => (
+                {/* Time slot headers at top */}
+                {timeSlots.map((slot) => (
                   <div
-                    key={day.toISOString()}
-                    className="bg-white dark:bg-gray-800 border-b border-r border-gray-200 dark:border-gray-700 text-center py-2 px-2"
+                    key={`time-header-${slot.start}`}
+                    className="bg-gray-50 dark:bg-gray-900/60 text-xs text-gray-600 dark:text-gray-300 flex items-center justify-center border-r border-b border-gray-200 dark:border-gray-700 px-2 py-2"
                   >
-                    <div className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      {format(day, 'EEEE', { locale: arSA })}
-                    </div>
-                    <div className="text-sm font-semibold text-gray-900 dark:text-white">{format(day, 'd')}</div>
-                    <div className="text-[10px] text-gray-400 dark:text-gray-500">
-                      {format(day, 'MMM', { locale: arSA })}
+                    <div className="text-center">
+                      <div className="font-semibold text-sm">{slot.start.toString().padStart(2, '0')}:00</div>
+                      <div className="text-[10px] text-gray-400">- {slot.end.toString().padStart(2, '0')}:00</div>
                     </div>
                   </div>
                 ))}
-                {/* Time slots rows */}
-                {timeSlots.map((slot) => (
-                  <>
-                    {/* Time label */}
-                    <div
-                      key={`time-${slot.start}`}
-                      className="bg-gray-50 dark:bg-gray-900/60 text-xs text-gray-600 dark:text-gray-300 flex items-center justify-center border-r border-b border-gray-200 dark:border-gray-700 px-2"
-                    >
-                      <div className="text-center">
-                        <div className="font-semibold">{slot.start.toString().padStart(2, '0')}:00</div>
-                        <div className="text-[10px] text-gray-400">{slot.end.toString().padStart(2, '0')}:00</div>
-                      </div>
-                    </div>
-                    {/* Day cells */}
-                    {rangeDays.map((day) => {
-                      const dayKey = format(day, 'yyyy-MM-dd');
-                      const key = `${dayKey}-${slot.start}`;
-                      const slotReservations = reservationsByDaySlot.get(key) || [];
-                      const booked = slotReservations.length > 0;
-                      return (
-                        <div
-                          key={key}
-                          className={`min-h-[80px] px-2 py-2 border-r border-b border-gray-200 dark:border-gray-700 ${
-                            booked ? 'bg-emerald-50 dark:bg-emerald-900/30' : 'bg-white dark:bg-gray-800'
-                          }`}
-                          onClick={() => setSelectedDay(day)}
-                        >
-                          {booked ? (
-                            <div className="space-y-1">
-                              {slotReservations.map((r) => {
-                                const slotHours = (r.slots || []).sort((a, b) => a - b);
-                                const slotRange =
-                                  slotHours.length > 0
-                                    ? `${slotHours[0]}:00 - ${slotHours[slotHours.length - 1] + 1}:00`
-                                    : `${slot.start}:00`;
-                                return (
-                                  <button
-                                    key={r.id}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setSelectedDay(day);
-                                      loadDetails(r.id);
-                                    }}
-                                    className="w-full text-right text-[11px] text-emerald-800 dark:text-emerald-200 bg-white/70 dark:bg-gray-900/40 rounded-md px-2 py-1.5 shadow-sm hover:bg-white dark:hover:bg-gray-800 transition-colors"
-                                  >
-                                    <div className="font-semibold truncate">{r.playerName}</div>
-                                    <div className="text-[10px] text-gray-600 dark:text-gray-400">{slotRange}</div>
-                                    <div className="text-[10px] font-medium text-emerald-700 dark:text-emerald-300">
-                                      {r.totalAmount} ج.م
-                                    </div>
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          ) : (
-                            <span className="text-[11px] text-gray-400 dark:text-gray-500">متاح</span>
+                {/* Day rows */}
+                {rangeDays.map((day) => {
+                  const dayKey = format(day, 'yyyy-MM-dd');
+                  const count = reservationsByDay.get(dayKey) || 0;
+                  return (
+                    <>
+                      {/* Day header */}
+                      <div
+                        key={`day-header-${day.toISOString()}`}
+                        className={`bg-white dark:bg-gray-800 border-b border-r border-gray-200 dark:border-gray-700 text-center py-2 px-2 ${
+                          showDensityHeatmap ? getDensityColor(count) : ''
+                        }`}
+                      >
+                        <div className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
+                          {format(day, 'EEEE', { locale: arSA })}
+                        </div>
+                        <div className="flex items-center justify-center gap-1">
+                          <div className="text-sm font-semibold text-gray-900 dark:text-white">{format(day, 'd')}</div>
+                          {count > 0 && (
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-green-500 text-white dark:bg-green-600 font-medium">
+                              {count}
+                            </span>
                           )}
                         </div>
-                      );
-                    })}
-                  </>
-                ))}
+                        <div className="text-[10px] text-gray-400 dark:text-gray-500">
+                          {format(day, 'MMM', { locale: arSA })}
+                        </div>
+                      </div>
+                      {/* Time slot cells for this day */}
+                      {timeSlots.map((slot) => {
+                        const key = `${dayKey}-${slot.start}`;
+                        const slotReservations = reservationsByDaySlot.cellMap.get(key) || [];
+                        const booked = slotReservations.length > 0;
+
+                        // Skip this cell if it's part of a merged span (but not the start)
+                        if (reservationsByDaySlot.cellsToSkip.has(key)) {
+                          return null;
+                        }
+
+                        // Calculate span based on actual hours for vertical orientation
+                        const spanInfo = slotReservations[0]
+                          ? reservationsByDaySlot.spans.get(slotReservations[0].spanKey)
+                          : null;
+                        const cellSpan = spanInfo
+                          ? Math.max(1, Math.ceil(spanInfo.actualHours / slotDuration))
+                          : slotReservations[0]?.span || 1;
+
+                        return (
+                          <div
+                            key={key}
+                            className={`min-h-[80px] px-2 py-2 border-r border-b border-gray-200 dark:border-gray-700 ${
+                              booked ? 'bg-emerald-50 dark:bg-emerald-900/30' : 'bg-white dark:bg-gray-800'
+                            }`}
+                            style={
+                              booked && cellSpan > 1
+                                ? {
+                                    gridColumn: `span ${cellSpan}`,
+                                  }
+                                : {}
+                            }
+                            onClick={() => setSelectedDay(day)}
+                          >
+                            {booked ? (
+                              <div className="space-y-1">
+                                {slotReservations.map((r) => {
+                                  const spanInfo = reservationsByDaySlot.spans.get(r.spanKey);
+                                  const slotRange =
+                                    spanInfo?.slotRange || formatMergedSlots(r.slots || []) || `${slot.start}:00`;
+                                  return (
+                                    <button
+                                      key={r.id}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedDay(day);
+                                        loadDetails(r.id);
+                                      }}
+                                      className="w-full text-right text-[11px] text-emerald-800 dark:text-emerald-200 bg-white/70 dark:bg-gray-900/40 rounded-md px-2 py-1.5 shadow-sm hover:bg-white dark:hover:bg-gray-800 transition-colors"
+                                    >
+                                      <div className="font-semibold truncate">{r.playerName}</div>
+                                      <div className="text-[10px] text-gray-600 dark:text-gray-400">{slotRange}</div>
+                                      <div className="text-[10px] font-medium text-emerald-700 dark:text-emerald-300">
+                                        {r.totalAmount} ج.م
+                                      </div>
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            ) : (
+                              <span className="text-[11px] text-gray-400 dark:text-gray-500">متاح</span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -371,84 +669,137 @@ export default function OwnerReservations() {
               >
                 {/* Header row */}
                 <div className="bg-white dark:bg-gray-800 border-b border-r border-gray-200 dark:border-gray-700"></div>
-                {rangeDays.map((day) => (
-                  <div
-                    key={day.toISOString()}
-                    className="bg-white dark:bg-gray-800 border-b border-r border-gray-200 dark:border-gray-700 text-center py-2 px-2"
-                  >
-                    <div className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      {format(day, 'EEEE', { locale: arSA })}
-                    </div>
-                    <div className="text-sm font-semibold text-gray-900 dark:text-white">{format(day, 'd')}</div>
-                    <div className="text-[10px] text-gray-400 dark:text-gray-500">
-                      {format(day, 'MMM', { locale: arSA })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              {/* Time slots rows */}
-              {timeSlots.map((slot) => (
-                <div
-                  key={slot.start}
-                  className="grid border-t border-gray-200 dark:border-gray-700"
-                  style={{
-                    gridTemplateColumns: `100px repeat(${rangeDays.length || 1}, minmax(0, 1fr))`,
-                  }}
-                >
-                  <div className="bg-gray-50 dark:bg-gray-900/60 text-xs text-gray-600 dark:text-gray-300 flex items-center justify-center border-r border-gray-200 dark:border-gray-700 px-2 py-3">
-                    <div className="text-center">
-                      <div className="font-semibold">{slot.start.toString().padStart(2, '0')}:00</div>
-                      <div className="text-[10px] text-gray-400">- {slot.end.toString().padStart(2, '0')}:00</div>
-                    </div>
-                  </div>
-                  {rangeDays.map((day) => {
-                    const dayKey = format(day, 'yyyy-MM-dd');
-                    const key = `${dayKey}-${slot.start}`;
-                    const slotReservations = reservationsByDaySlot.get(key) || [];
-                    const booked = slotReservations.length > 0;
-                    return (
-                      <div
-                        key={key}
-                        className={`min-h-[80px] px-2 py-2 border-r border-gray-200 dark:border-gray-700 ${
-                          booked ? 'bg-emerald-50 dark:bg-emerald-900/30' : 'bg-white dark:bg-gray-800'
-                        }`}
-                        onClick={() => setSelectedDay(day)}
-                      >
-                        {booked ? (
-                          <div className="space-y-1">
-                            {slotReservations.map((r) => {
-                              const slotHours = (r.slots || []).sort((a, b) => a - b);
-                              const slotRange =
-                                slotHours.length > 0
-                                  ? `${slotHours[0]}:00 - ${slotHours[slotHours.length - 1] + 1}:00`
-                                  : `${slot.start}:00`;
-                              return (
-                                <button
-                                  key={r.id}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedDay(day);
-                                    loadDetails(r.id);
-                                  }}
-                                  className="w-full text-right text-[11px] text-emerald-800 dark:text-emerald-200 bg-white/70 dark:bg-gray-900/40 rounded-md px-2 py-1.5 shadow-sm hover:bg-white dark:hover:bg-gray-800 transition-colors"
-                                >
-                                  <div className="font-semibold truncate">{r.playerName}</div>
-                                  <div className="text-[10px] text-gray-600 dark:text-gray-400">{slotRange}</div>
-                                  <div className="text-[10px] font-medium text-emerald-700 dark:text-emerald-300">
-                                    {r.totalAmount} ج.م
-                                  </div>
-                                </button>
-                              );
-                            })}
-                          </div>
-                        ) : (
-                          <span className="text-[11px] text-gray-400 dark:text-gray-500">متاح</span>
+                {rangeDays.map((day) => {
+                  const dayKey = format(day, 'yyyy-MM-dd');
+                  const count = reservationsByDay.get(dayKey) || 0;
+                  return (
+                    <div
+                      key={day.toISOString()}
+                      className={`bg-white dark:bg-gray-800 border-b border-r border-gray-200 dark:border-gray-700 text-center py-2 px-2 ${
+                        showDensityHeatmap ? getDensityColor(count) : ''
+                      }`}
+                    >
+                      <div className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
+                        {format(day, 'EEEE', { locale: arSA })}
+                      </div>
+                      <div className="flex items-center justify-center gap-1">
+                        <div className="text-sm font-semibold text-gray-900 dark:text-white">{format(day, 'd')}</div>
+                        {count > 0 && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-green-500 text-white dark:bg-green-600 font-medium">
+                            {count}
+                          </span>
                         )}
                       </div>
-                    );
-                  })}
-                </div>
-              ))}
+                      <div className="text-[10px] text-gray-400 dark:text-gray-500">
+                        {format(day, 'MMM', { locale: arSA })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              {/* Time slots rows */}
+              {timeSlots.map((slot) => {
+                // Check if this row should be skipped (part of a merged span)
+                const shouldSkipRow = rangeDays.some((day) => {
+                  const dayKey = format(day, 'yyyy-MM-dd');
+                  const key = `${dayKey}-${slot.start}`;
+                  return reservationsByDaySlot.cellsToSkip.has(key);
+                });
+
+                if (shouldSkipRow) {
+                  return null;
+                }
+
+                return (
+                  <div
+                    key={slot.start}
+                    className="grid border-t border-gray-200 dark:border-gray-700"
+                    style={{
+                      gridTemplateColumns: `100px repeat(${rangeDays.length || 1}, minmax(0, 1fr))`,
+                    }}
+                  >
+                    <div className="bg-gray-50 dark:bg-gray-900/60 text-xs text-gray-600 dark:text-gray-300 flex items-center justify-center border-r border-gray-200 dark:border-gray-700 px-2 py-3">
+                      <div className="text-center">
+                        <div className="font-semibold">{slot.start.toString().padStart(2, '0')}:00</div>
+                        <div className="text-[10px] text-gray-400">- {slot.end.toString().padStart(2, '0')}:00</div>
+                      </div>
+                    </div>
+                    {rangeDays.map((day) => {
+                      const dayKey = format(day, 'yyyy-MM-dd');
+                      const key = `${dayKey}-${slot.start}`;
+                      const slotReservations = reservationsByDaySlot.cellMap.get(key) || [];
+                      const booked = slotReservations.length > 0;
+
+                      // Skip this cell if it's part of a merged span (but not the start)
+                      if (reservationsByDaySlot.cellsToSkip.has(key)) {
+                        return null;
+                      }
+
+                      // Calculate span based on actual hours for horizontal orientation
+                      const spanInfo = slotReservations[0]
+                        ? reservationsByDaySlot.spans.get(slotReservations[0].spanKey)
+                        : null;
+                      const actualHours = spanInfo?.actualHours || slotReservations[0]?.actualHours || slotDuration;
+                      const cellHeight = Math.max(80, (actualHours / slotDuration) * 80);
+
+                      return (
+                        <div
+                          key={key}
+                          className={`px-2 py-2 border-r border-gray-200 dark:border-gray-700 flex items-center justify-center ${
+                            booked ? 'bg-emerald-50 dark:bg-emerald-900/30' : 'bg-white dark:bg-gray-800'
+                          }`}
+                          style={{
+                            minHeight: `${cellHeight}px`,
+                          }}
+                          onClick={() => setSelectedDay(day)}
+                        >
+                          {booked ? (
+                            <div className="space-y-1 w-full">
+                              {slotReservations.map((r) => {
+                                const spanInfo = reservationsByDaySlot.spans.get(r.spanKey);
+                                const slotRange =
+                                  spanInfo?.slotRange || formatMergedSlots(r.slots || []) || `${slot.start}:00`;
+                                return (
+                                  <div key={r.id} className="relative group">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedDay(day);
+                                        loadDetails(r.id);
+                                      }}
+                                      className="w-full text-right text-[11px] text-emerald-800 dark:text-emerald-200 bg-white/70 dark:bg-gray-900/40 rounded-md px-2 py-1.5 shadow-sm hover:bg-white dark:hover:bg-gray-800 transition-colors"
+                                    >
+                                      <div className="font-semibold truncate">{r.playerName}</div>
+                                      <div className="text-[10px] text-gray-600 dark:text-gray-400">{slotRange}</div>
+                                      <div className="text-[10px] font-medium text-emerald-700 dark:text-emerald-300">
+                                        {r.totalAmount} ج.م
+                                      </div>
+                                    </button>
+                                    <div className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          copyReservationInfo(r);
+                                        }}
+                                        className="p-1 bg-white dark:bg-gray-800 rounded shadow-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                        title="نسخ معلومات الحجز"
+                                      >
+                                        <Copy className="w-3 h-3 text-gray-600 dark:text-gray-400" />
+                                      </button>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ) : (
+                            <span className="text-[11px] text-gray-400 dark:text-gray-500">متاح</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -458,15 +809,38 @@ export default function OwnerReservations() {
 
   // Render list view
   const renderListView = () => {
+    const hasSearchOrFilter = searchQuery.trim() || statusFilter !== 'all';
+    const isEmpty = filteredReservations.length === 0;
+    const hasReservations = reservations.length > 0;
+
     return (
       <div className="space-y-3">
-        {filteredReservations.length === 0 ? (
-          <div className="text-center py-12 text-gray-500 dark:text-gray-400">لا توجد حجوزات</div>
+        {isEmpty ? (
+          <div className="text-center py-12">
+            <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              {hasSearchOrFilter && hasReservations ? 'لا توجد نتائج مطابقة للبحث' : 'لا توجد حجوزات'}
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              {hasSearchOrFilter && hasReservations
+                ? 'جرب تغيير معايير البحث أو الفلترة'
+                : 'لا توجد حجوزات في الفترة المحددة. جرب تغيير التاريخ أو اختيار ملعب آخر.'}
+            </p>
+            {hasSearchOrFilter && hasReservations && (
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setStatusFilter('all');
+                }}
+                className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors text-sm"
+              >
+                مسح الفلاتر
+              </button>
+            )}
+          </div>
         ) : (
           filteredReservations.map((res) => {
-            const slotHours = (res.slots || []).sort((a, b) => a - b);
-            const slotRange =
-              slotHours.length > 0 ? `${slotHours[0]}:00 - ${slotHours[slotHours.length - 1] + 1}:00` : '';
+            const slotRange = formatMergedSlots(res.slots || []);
             return (
               <button
                 key={res.id}
@@ -506,12 +880,77 @@ export default function OwnerReservations() {
     );
   };
 
+  // Loading skeleton component
+  const LoadingSkeleton = ({ className = '' }) => (
+    <div className={`animate-pulse bg-gray-200 dark:bg-gray-700 rounded ${className}`}></div>
+  );
+
   return (
     <>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        @media print {
+          .no-print {
+            display: none !important;
+          }
+          .print-break {
+            page-break-after: always;
+          }
+          body {
+            background: white !important;
+          }
+          .dark {
+            color: black !important;
+            background: white !important;
+          }
+        }
+        
+        /* Mobile scroll improvements */
+        @media (max-width: 768px) {
+          .overflow-x-auto {
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+          }
+          
+          .overflow-x-auto::-webkit-scrollbar {
+            height: 8px;
+          }
+          
+          .overflow-x-auto::-webkit-scrollbar-track {
+            background: rgba(243, 244, 246, 0.5);
+            border-radius: 4px;
+          }
+          
+          .overflow-x-auto::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.7);
+            border-radius: 4px;
+          }
+          
+          .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+            background: rgba(107, 114, 128, 0.8);
+          }
+          
+          .dark .overflow-x-auto::-webkit-scrollbar-track {
+            background: rgba(31, 41, 55, 0.5);
+          }
+          
+          .dark .overflow-x-auto::-webkit-scrollbar-thumb {
+            background: rgba(75, 85, 99, 0.7);
+          }
+          
+          .dark .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+            background: rgba(107, 114, 128, 0.9);
+          }
+        }
+      `,
+        }}
+      />
       <div dir="rtl" className="w-full overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-2 sm:px-4">
           {/* Page Header */}
-          <div className="mb-4 sm:mb-6">
+          <div className="mb-4 sm:mb-6 no-print">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-600 dark:to-emerald-600 flex items-center justify-center shadow-lg flex-shrink-0">
@@ -528,6 +967,14 @@ export default function OwnerReservations() {
               </div>
               <div className="flex items-center gap-2">
                 <button
+                  onClick={handlePrint}
+                  disabled={reservations.length === 0}
+                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span className="hidden sm:inline">طباعة</span>
+                </button>
+                <button
                   onClick={exportToCSV}
                   disabled={reservations.length === 0}
                   className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm"
@@ -539,254 +986,465 @@ export default function OwnerReservations() {
             </div>
           </div>
 
+          {/* Statistics Dashboard */}
+          {loading ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-4 sm:mb-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <LoadingSkeleton key={i} className="h-20 sm:h-24" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-3 sm:p-4 border border-blue-200 dark:border-blue-800">
+                <div className="flex items-center justify-between mb-2">
+                  <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                  {statistics.totalReservations}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">إجمالي الحجوزات</div>
+              </div>
+
+              <div className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-800/20 rounded-xl p-3 sm:p-4 border border-green-200 dark:border-green-800">
+                <div className="flex items-center justify-between mb-2">
+                  <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
+                </div>
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                  {statistics.totalRevenue.toFixed(2)}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">إجمالي الإيرادات</div>
+              </div>
+
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl p-3 sm:p-4 border border-purple-200 dark:border-purple-800">
+                <div className="flex items-center justify-between mb-2">
+                  <TrendingUp className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                </div>
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                  {statistics.averageRevenue.toFixed(2)}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">متوسط الحجز</div>
+              </div>
+
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl p-3 sm:p-4 border border-orange-200 dark:border-orange-800">
+                <div className="flex items-center justify-between mb-2">
+                  <Calendar className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                </div>
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                  {statistics.upcomingCount}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">حجوزات قادمة</div>
+              </div>
+
+              <div className="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 rounded-xl p-3 sm:p-4 border border-teal-200 dark:border-teal-800">
+                <div className="flex items-center justify-between mb-2">
+                  <BarChart3 className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                </div>
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                  {statistics.mostBookedDay ? format(parseISO(statistics.mostBookedDay), 'd', { locale: arSA }) : '-'}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">أكثر يوم حجز</div>
+              </div>
+
+              <div className="bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20 rounded-xl p-3 sm:p-4 border border-pink-200 dark:border-pink-800">
+                <div className="flex items-center justify-between mb-2">
+                  <Clock className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                </div>
+                <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                  {statistics.peakHour || '-'}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">ساعة الذروة</div>
+              </div>
+            </div>
+          )}
+
           <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl sm:rounded-2xl shadow dark:shadow-gray-900/50 p-3 sm:p-4 lg:p-6">
-            <div className="flex flex-col gap-3 sm:gap-4 lg:gap-6">
-              {/* Filters and Search */}
-              <div className="flex flex-col gap-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">الملاعب</label>
-                    <select
-                      value={selectedArena}
-                      onChange={(e) => setSelectedArena(e.target.value)}
-                      className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                    >
-                      {arenas.map((arena) => (
-                        <option key={arena.id} value={arena.id}>
-                          {arena.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">من تاريخ</label>
-                    <input
-                      type="date"
-                      value={startDate}
-                      max={endDateMax}
-                      onChange={(e) => {
-                        const nextStart = e.target.value;
-                        const nextEnd = clampRange(parseISO(nextStart), parseISO(endDate));
-                        setStartDate(nextStart);
-                        setEndDate(format(nextEnd, 'yyyy-MM-dd'));
-                      }}
-                      className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">إلى تاريخ</label>
-                    <input
-                      type="date"
-                      value={endDate}
-                      min={startDate}
-                      max={endDateMax}
-                      onChange={(e) => {
-                        const nextEnd = clampRange(parseISO(startDate), parseISO(e.target.value));
-                        setEndDate(format(nextEnd, 'yyyy-MM-dd'));
-                      }}
-                      className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                    />
-                  </div>
+            {/* Loading State */}
+            {loading && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <LoadingSkeleton key={i} className="h-12" />
+                  ))}
                 </div>
-
-                {/* Search */}
-                <div className="relative">
-                  <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="ابحث عن حجز (اسم اللاعب، التاريخ، المبلغ)..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-10 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                  />
+                <LoadingSkeleton className="h-10 w-full" />
+                <div className="grid grid-cols-7 gap-2">
+                  {Array.from({ length: 7 }).map((_, i) => (
+                    <LoadingSkeleton key={i} className="h-64" />
+                  ))}
                 </div>
               </div>
+            )}
 
-              {/* Action Buttons and Controls */}
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                <button
-                  onClick={() => fetchReservations()}
-                  disabled={!selectedArena || loading}
-                  className="inline-flex items-center justify-center px-3 sm:px-5 py-2 rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-700 dark:to-emerald-700 text-white text-xs sm:text-sm font-semibold hover:from-green-700 hover:to-emerald-700 dark:hover:from-green-600 dark:hover:to-emerald-600 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? 'جارٍ التحميل...' : 'تحديث الحجوزات'}
-                </button>
-                <button
-                  onClick={handleWeekFetch}
-                  disabled={!selectedArena || loading}
-                  className="inline-flex items-center justify-center px-3 sm:px-5 py-2 rounded-lg bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 dark:from-emerald-900/40 dark:to-teal-900/40 dark:text-emerald-200 text-xs sm:text-sm font-semibold hover:from-emerald-200 hover:to-teal-200 dark:hover:from-emerald-800 dark:hover:to-teal-800 transition-all duration-300 border border-emerald-200 dark:border-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? '...' : <span className="hidden sm:inline">جلب حجوزات الأسبوع</span>}
-                  {loading ? '...' : <span className="sm:hidden">الأسبوع</span>}
-                </button>
-
-                {/* View Mode Toggle */}
-                <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+            {!loading && (
+              <div className="flex flex-col gap-3 sm:gap-4 lg:gap-6">
+                {/* Quick Date Presets */}
+                <div className="flex flex-wrap items-center gap-2 no-print">
+                  <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">اختيار سريع:</span>
                   <button
-                    onClick={() => setViewMode('calendar')}
-                    className={`px-3 py-1.5 rounded-md text-xs sm:text-sm transition-colors ${
-                      viewMode === 'calendar'
-                        ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                    onClick={() => handleDatePreset('today')}
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-colors ${
+                      activeDatePreset === 'today'
+                        ? 'bg-green-600 text-white dark:bg-green-700'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
-                    <LayoutGrid className="w-4 h-4 sm:w-5 sm:h-5" />
+                    اليوم
                   </button>
                   <button
-                    onClick={() => setViewMode('list')}
-                    className={`px-3 py-1.5 rounded-md text-xs sm:text-sm transition-colors ${
-                      viewMode === 'list'
-                        ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                    onClick={() => handleDatePreset('tomorrow')}
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-colors ${
+                      activeDatePreset === 'tomorrow'
+                        ? 'bg-green-600 text-white dark:bg-green-700'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
-                    <List className="w-4 h-4 sm:w-5 sm:h-5" />
+                    غداً
+                  </button>
+                  <button
+                    onClick={() => handleDatePreset('thisWeek')}
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-colors ${
+                      activeDatePreset === 'thisWeek'
+                        ? 'bg-green-600 text-white dark:bg-green-700'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    هذا الأسبوع
+                  </button>
+                  <button
+                    onClick={() => handleDatePreset('nextWeek')}
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-colors ${
+                      activeDatePreset === 'nextWeek'
+                        ? 'bg-green-600 text-white dark:bg-green-700'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    الأسبوع القادم
+                  </button>
+                  <button
+                    onClick={() => handleDatePreset('thisMonth')}
+                    className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm transition-colors ${
+                      activeDatePreset === 'thisMonth'
+                        ? 'bg-green-600 text-white dark:bg-green-700'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    هذا الشهر
                   </button>
                 </div>
 
-                {/* Orientation Toggle */}
-                {viewMode === 'calendar' && (
-                  <button
-                    onClick={() => setOrientation(orientation === 'horizontal' ? 'vertical' : 'horizontal')}
-                    className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-xs sm:text-sm"
-                    title={orientation === 'horizontal' ? 'تبديل إلى الوضع العمودي' : 'تبديل إلى الوضع الأفقي'}
-                  >
-                    {orientation === 'horizontal' ? (
-                      <>
-                        <RotateCcw className="w-4 h-4" />
-                        <span className="hidden sm:inline">عمودي</span>
-                      </>
-                    ) : (
-                      <>
-                        <RotateCw className="w-4 h-4" />
-                        <span className="hidden sm:inline">أفقي</span>
-                      </>
-                    )}
-                  </button>
-                )}
-
-                {/* Settings Button */}
-                {viewMode === 'calendar' && (
-                  <button
-                    onClick={() => setShowSettings(!showSettings)}
-                    className={`inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm ${
-                      showSettings
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                    }`}
-                  >
-                    <Settings className="w-4 h-4" />
-                    <span className="hidden sm:inline">إعدادات</span>
-                  </button>
-                )}
-
-                {error && (
-                  <span className="text-xs sm:text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-red-200 dark:border-red-800">
-                    {error}
-                  </span>
-                )}
-              </div>
-
-              {/* Settings Panel */}
-              {showSettings && viewMode === 'calendar' && (
-                <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* Filters and Search */}
+                <div className="flex flex-col gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     <div className="flex flex-col gap-2">
-                      <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
-                        مدة الخانة (ساعات)
-                      </label>
+                      <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">الملاعب</label>
                       <select
-                        value={slotDuration}
-                        onChange={(e) => setSlotDuration(Number(e.target.value))}
-                        className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                        value={selectedArena}
+                        onChange={(e) => setSelectedArena(e.target.value)}
+                        className="h-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
                       >
-                        <option value={1}>1 ساعة</option>
-                        <option value={2}>2 ساعة</option>
-                        <option value={3}>3 ساعات</option>
-                        <option value={4}>4 ساعات</option>
+                        {arenas.map((arena) => (
+                          <option key={arena.id} value={arena.id}>
+                            {arena.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
                     <div className="flex flex-col gap-2">
                       <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
-                        ساعة البداية
+                        من تاريخ
                       </label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="23"
-                        value={startHour}
-                        onChange={(e) => {
-                          const val = Math.max(0, Math.min(23, Number(e.target.value)));
-                          setStartHour(val);
-                          if (val >= endHour) setEndHour(Math.min(23, val + 1));
-                        }}
-                        className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                      />
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => navigateDateRange('prev')}
+                          className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                          title="الفترة السابقة"
+                        >
+                          <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                        </button>
+                        <input
+                          type="date"
+                          value={startDate}
+                          max={endDateMax}
+                          onChange={(e) => {
+                            const nextStart = e.target.value;
+                            const nextEnd = clampRange(parseISO(nextStart), parseISO(endDate));
+                            setStartDate(nextStart);
+                            setEndDate(format(nextEnd, 'yyyy-MM-dd'));
+                            setActiveDatePreset(null);
+                          }}
+                          className="h-10 flex-1 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                      </div>
                     </div>
 
                     <div className="flex flex-col gap-2">
                       <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
-                        ساعة النهاية
+                        إلى تاريخ
                       </label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="23"
-                        value={endHour}
-                        onChange={(e) => {
-                          const val = Math.max(0, Math.min(23, Number(e.target.value)));
-                          setEndHour(val);
-                          if (val <= startHour) setStartHour(Math.max(0, val - 1));
-                        }}
-                        className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                      />
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="date"
+                          value={endDate}
+                          min={startDate}
+                          max={endDateMax}
+                          onChange={(e) => {
+                            const nextEnd = clampRange(parseISO(startDate), parseISO(e.target.value));
+                            setEndDate(format(nextEnd, 'yyyy-MM-dd'));
+                            setActiveDatePreset(null);
+                          }}
+                          className="h-10 flex-1 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                        <button
+                          onClick={() => navigateDateRange('next')}
+                          className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                          title="الفترة القادمة"
+                        >
+                          <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                        </button>
+                      </div>
                     </div>
+                  </div>
 
-                    <div className="flex items-end">
-                      <button
-                        onClick={() => {
-                          setStartHour(0);
-                          setEndHour(23);
-                          setSlotDuration(1);
-                        }}
-                        className="w-full px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm"
-                      >
-                        إعادة تعيين
-                      </button>
-                    </div>
+                  {/* Search */}
+                  <div className="relative">
+                    <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="ابحث عن حجز (اسم اللاعب، التاريخ، المبلغ)..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="h-10 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-10 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
                   </div>
                 </div>
-              )}
 
-              {/* Legend */}
-              <div className="flex flex-wrap items-center gap-2 text-xs">
-                <span className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-700 font-medium">
-                  • توجد حجوزات
-                </span>
-                <span className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 font-medium">
-                  • متاح
-                </span>
-                <span className="text-gray-500 dark:text-gray-400">إجمالي الحجوزات: {reservations.length}</span>
-              </div>
-
-              {/* Calendar or List View */}
-              {viewMode === 'calendar' ? renderCalendarView() : renderListView()}
-
-              {/* Selected day details */}
-              {selectedDay && viewMode === 'calendar' && (
-                <div className="border-t border-gray-100 dark:border-gray-700 pt-4">
-                  <div className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
-                    التفاصيل ليوم {format(selectedDay, 'PPP', { locale: arSA })}
+                {/* Action Buttons and Controls */}
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3 no-print">
+                  {/* View Mode Toggle */}
+                  <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                    <button
+                      onClick={() => setViewMode('calendar')}
+                      className={`px-3 py-1.5 rounded-md text-xs sm:text-sm transition-colors ${
+                        viewMode === 'calendar'
+                          ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
+                          : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <LayoutGrid className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </button>
+                    <button
+                      onClick={() => setViewMode('list')}
+                      className={`px-3 py-1.5 rounded-md text-xs sm:text-sm transition-colors ${
+                        viewMode === 'list'
+                          ? 'bg-white dark:bg-gray-600 text-gray-900 dark:text-white shadow-sm'
+                          : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <List className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </button>
                   </div>
-                  <div className="space-y-3">
-                    {(reservations.filter((r) => r.dateOfReservation === format(selectedDay, 'yyyy-MM-dd')) || []).map(
-                      (res) => {
-                        const slotHours = (res.slots || []).sort((a, b) => a - b);
-                        const slotRange =
-                          slotHours.length > 0 ? `${slotHours[0]}:00 - ${slotHours[slotHours.length - 1] + 1}:00` : '';
+
+                  {/* Orientation Toggle */}
+                  {viewMode === 'calendar' && (
+                    <button
+                      onClick={() => setOrientation(orientation === 'horizontal' ? 'vertical' : 'horizontal')}
+                      className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-xs sm:text-sm"
+                      title={orientation === 'horizontal' ? 'تبديل إلى الوضع العمودي' : 'تبديل إلى الوضع الأفقي'}
+                    >
+                      {orientation === 'horizontal' ? (
+                        <>
+                          <RotateCcw className="w-4 h-4" />
+                          <span className="hidden sm:inline">عمودي</span>
+                        </>
+                      ) : (
+                        <>
+                          <RotateCw className="w-4 h-4" />
+                          <span className="hidden sm:inline">أفقي</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+
+                  {/* Settings Button */}
+                  {viewMode === 'calendar' && (
+                    <button
+                      onClick={() => setShowSettings(!showSettings)}
+                      className={`inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg transition-colors text-xs sm:text-sm ${
+                        showSettings
+                          ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}
+                    >
+                      <Settings className="w-4 h-4" />
+                      <span className="hidden sm:inline">إعدادات</span>
+                    </button>
+                  )}
+
+                  {error && (
+                    <span className="text-xs sm:text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-red-200 dark:border-red-800">
+                      {error}
+                    </span>
+                  )}
+                </div>
+
+                {/* Settings Panel */}
+                {showSettings && viewMode === 'calendar' && (
+                  <div className="no-print">
+                    <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
+                            مدة الخانة (ساعات)
+                          </label>
+                          <select
+                            value={slotDuration}
+                            onChange={(e) => setSlotDuration(Number(e.target.value))}
+                            className="h-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                          >
+                            <option value={1}>1 ساعة</option>
+                            <option value={2}>2 ساعة</option>
+                            <option value={3}>3 ساعات</option>
+                            <option value={4}>4 ساعات</option>
+                          </select>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
+                            ساعة البداية
+                          </label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="23"
+                            value={startHour}
+                            onChange={(e) => {
+                              const val = Math.max(0, Math.min(23, Number(e.target.value)));
+                              setStartHour(val);
+                              if (val >= endHour) setEndHour(Math.min(23, val + 1));
+                            }}
+                            className="h-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                          />
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
+                            ساعة النهاية
+                          </label>
+                          <input
+                            type="number"
+                            min="0"
+                            max="23"
+                            value={endHour}
+                            onChange={(e) => {
+                              const val = Math.max(0, Math.min(23, Number(e.target.value)));
+                              setEndHour(val);
+                              if (val <= startHour) setStartHour(Math.max(0, val - 1));
+                            }}
+                            className="h-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                          />
+                        </div>
+
+                        <div className="flex items-end">
+                          <button
+                            onClick={() => {
+                              setStartHour(0);
+                              setEndHour(23);
+                              setSlotDuration(1);
+                            }}
+                            className="w-full px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm"
+                          >
+                            إعادة تعيين
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Revenue Summary Panel */}
+                {showRevenueSummary && !loading && (
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                        <DollarSign className="w-5 h-5 text-green-600 dark:text-green-400" />
+                        ملخص الإيرادات
+                      </h3>
+                      <button
+                        onClick={() => setShowRevenueSummary(false)}
+                        className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">إجمالي الإيرادات</div>
+                        <div className="text-xl font-bold text-green-600 dark:text-green-400">
+                          {statistics.totalRevenue.toFixed(2)} ج.م
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">عدد الحجوزات</div>
+                        <div className="text-xl font-bold text-gray-900 dark:text-white">
+                          {statistics.totalReservations}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">متوسط الحجز</div>
+                        <div className="text-xl font-bold text-gray-900 dark:text-white">
+                          {statistics.averageRevenue.toFixed(2)} ج.م
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Legend */}
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <span className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-700 font-medium">
+                    • توجد حجوزات
+                  </span>
+                  <span className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 font-medium">
+                    • متاح
+                  </span>
+                  {viewMode === 'calendar' && (
+                    <button
+                      onClick={() => setShowDensityHeatmap(!showDensityHeatmap)}
+                      className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border font-medium transition-colors ${
+                        showDensityHeatmap
+                          ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300 border-orange-200 dark:border-orange-700'
+                          : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600'
+                      }`}
+                    >
+                      خريطة الكثافة
+                    </button>
+                  )}
+                  {!showRevenueSummary && (
+                    <button
+                      onClick={() => setShowRevenueSummary(true)}
+                      className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    >
+                      عرض الملخص
+                    </button>
+                  )}
+                  <span className="text-gray-500 dark:text-gray-400">إجمالي الحجوزات: {reservations.length}</span>
+                </div>
+
+                {/* Calendar or List View */}
+                {viewMode === 'calendar' ? renderCalendarView() : renderListView()}
+
+                {/* Selected day details */}
+                {selectedDay && viewMode === 'calendar' && (
+                  <div className="border-t border-gray-100 dark:border-gray-700 pt-4">
+                    <div className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
+                      التفاصيل ليوم {format(selectedDay, 'PPP', { locale: arSA })}
+                    </div>
+                    <div className="space-y-3">
+                      {(
+                        reservations.filter((r) => r.dateOfReservation === format(selectedDay, 'yyyy-MM-dd')) || []
+                      ).map((res) => {
+                        const slotRange = formatMergedSlots(res.slots || []);
                         return (
                           <button
                             key={res.id}
@@ -818,16 +1476,16 @@ export default function OwnerReservations() {
                             )}
                           </button>
                         );
-                      },
-                    )}
-                    {(reservations.filter((r) => r.dateOfReservation === format(selectedDay, 'yyyy-MM-dd')) || [])
-                      .length === 0 && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400">لا توجد حجوزات في هذا اليوم.</p>
-                    )}
+                      })}
+                      {(reservations.filter((r) => r.dateOfReservation === format(selectedDay, 'yyyy-MM-dd')) || [])
+                        .length === 0 && (
+                        <p className="text-sm text-gray-500 dark:text-gray-400">لا توجد حجوزات في هذا اليوم.</p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
