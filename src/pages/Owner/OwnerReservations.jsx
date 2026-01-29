@@ -49,14 +49,38 @@ import {
 import { arenaService } from '@/services/arenaService';
 import { reservationService } from '@/services/reservationService';
 
+// Helper function to load from localStorage
+const loadFromStorage = (key, defaultValue) => {
+  try {
+    const item = localStorage.getItem(`ownerReservations_${key}`);
+    if (item === null) return defaultValue;
+    // Handle different types
+    if (typeof defaultValue === 'number') return Number(item);
+    if (typeof defaultValue === 'boolean') return item === 'true';
+    return item;
+  } catch (error) {
+    console.error(`Error loading ${key} from storage:`, error);
+    return defaultValue;
+  }
+};
+
+// Helper function to save to localStorage
+const saveToStorage = (key, value) => {
+  try {
+    localStorage.setItem(`ownerReservations_${key}`, String(value));
+  } catch (error) {
+    console.error(`Error saving ${key} to storage:`, error);
+  }
+};
+
 export default function OwnerReservations() {
   const today = useMemo(() => format(startOfDay(new Date()), 'yyyy-MM-dd'), []);
   const sevenDaysAgo = useMemo(() => format(subDays(startOfDay(new Date()), 6), 'yyyy-MM-dd'), []);
 
   const [arenas, setArenas] = useState([]);
-  const [selectedArena, setSelectedArena] = useState('');
-  const [startDate, setStartDate] = useState(sevenDaysAgo);
-  const [endDate, setEndDate] = useState(today);
+  const [selectedArena, setSelectedArena] = useState(loadFromStorage('selectedArena', ''));
+  const [startDate, setStartDate] = useState(loadFromStorage('startDate', sevenDaysAgo));
+  const [endDate, setEndDate] = useState(loadFromStorage('endDate', today));
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -65,20 +89,20 @@ export default function OwnerReservations() {
   const [detailsLoading, setDetailsLoading] = useState(false);
   const [detailsError, setDetailsError] = useState('');
 
-  // New flexible settings
-  const [orientation, setOrientation] = useState('horizontal'); // 'horizontal' (time left, days top) or 'vertical' (time top, days right)
-  const [slotDuration, setSlotDuration] = useState(1); // hours per slot (1, 2, 3, etc.)
-  const [startHour, setStartHour] = useState(0); // Start hour (0-23)
-  const [endHour, setEndHour] = useState(23); // End hour (0-23)
-  const [viewMode, setViewMode] = useState('calendar'); // 'calendar', 'list', 'compact'
+  // New flexible settings - Load from localStorage
+  const [orientation, setOrientation] = useState(loadFromStorage('orientation', 'horizontal'));
+  const [slotDuration, setSlotDuration] = useState(loadFromStorage('slotDuration', 1));
+  const [startHour, setStartHour] = useState(loadFromStorage('startHour', 0));
+  const [endHour, setEndHour] = useState(loadFromStorage('endHour', 23));
+  const [viewMode, setViewMode] = useState(loadFromStorage('viewMode', 'calendar'));
   const [searchQuery, setSearchQuery] = useState('');
   const [showSettings, setShowSettings] = useState(false);
-  const [statusFilter, setStatusFilter] = useState('all'); // 'all', 'confirmed', 'pending', 'paid', 'canceled', 'completed'
+  const [statusFilter, setStatusFilter] = useState('all');
   const [activeDatePreset, setActiveDatePreset] = useState(null);
-  const [showRevenueSummary, setShowRevenueSummary] = useState(true);
-  const [showDensityHeatmap, setShowDensityHeatmap] = useState(false);
+  const [showRevenueSummary, setShowRevenueSummary] = useState(loadFromStorage('showRevenueSummary', true));
+  const [showDensityHeatmap, setShowDensityHeatmap] = useState(loadFromStorage('showDensityHeatmap', false));
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(100);
+  const [zoomLevel, setZoomLevel] = useState(loadFromStorage('zoomLevel', 100));
 
   const statusLabel = (status) => {
     const map = {
@@ -173,6 +197,57 @@ export default function OwnerReservations() {
       setLoading(false);
     }
   };
+
+  // Save settings to localStorage whenever they change
+  useEffect(() => {
+    saveToStorage('orientation', orientation);
+  }, [orientation]);
+
+  useEffect(() => {
+    saveToStorage('slotDuration', slotDuration);
+  }, [slotDuration]);
+
+  useEffect(() => {
+    saveToStorage('startHour', startHour);
+  }, [startHour]);
+
+  useEffect(() => {
+    saveToStorage('endHour', endHour);
+  }, [endHour]);
+
+  useEffect(() => {
+    saveToStorage('viewMode', viewMode);
+  }, [viewMode]);
+
+  useEffect(() => {
+    saveToStorage('showRevenueSummary', showRevenueSummary);
+  }, [showRevenueSummary]);
+
+  useEffect(() => {
+    saveToStorage('showDensityHeatmap', showDensityHeatmap);
+  }, [showDensityHeatmap]);
+
+  useEffect(() => {
+    saveToStorage('zoomLevel', zoomLevel);
+  }, [zoomLevel]);
+
+  useEffect(() => {
+    if (selectedArena) {
+      saveToStorage('selectedArena', selectedArena);
+    }
+  }, [selectedArena]);
+
+  useEffect(() => {
+    if (startDate) {
+      saveToStorage('startDate', startDate);
+    }
+  }, [startDate]);
+
+  useEffect(() => {
+    if (endDate) {
+      saveToStorage('endDate', endDate);
+    }
+  }, [endDate]);
 
   // auto-fetch on arena/date change
   useEffect(() => {
